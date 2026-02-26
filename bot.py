@@ -115,7 +115,7 @@ def parse_float(text: str) -> Optional[float]:
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("Workout Diary Bot ✅")
+    await update.message.reply_text("Hey pussy!")
 
 
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
