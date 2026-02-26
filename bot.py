@@ -115,15 +115,7 @@ def parse_float(text: str) -> Optional[float]:
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text(
-        "Workout Diary Bot ✅\n\n"
-        "Commands:\n"
-        "/add - add a workout (gym + cardio)\n"
-        "/last - show last 10 workouts\n"
-        "/exercise <name> - gym history for an exercise\n"
-        "/help - show help\n"
-        "/cancel - cancel current flow"
-    )
+    await update.message.reply_text("Workout Diary Bot ✅")
 
 
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
