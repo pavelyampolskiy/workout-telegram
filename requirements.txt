@@ -1,1 +1,3 @@
 python-telegram-bot==21.6
+SQLAlchemy>=2.0
+psycopg[binary]>=3.1
