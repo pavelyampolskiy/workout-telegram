@@ -76,6 +76,36 @@ def format_history_title(w) -> str:
     return f"{d} — {day_label(w['type'])}"
 
 
+MUSCLE_EMOJI = {
+    "LEGS": "🦵", "BACK": "🏋️", "CHEST": "💪",
+    "BICEPS": "💪", "TRICEPS": "🦾", "SHOULDERS": "🎯",
+}
+NUM_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
+
+
+def set_bar(done: int, total: int) -> str:
+    filled = min(done, total)
+    return "▓" * filled + "░" * (total - filled) + f"  {done}/{total}"
+
+
+def mini_bar(value: int, max_val: int, width: int = 6) -> str:
+    if max_val == 0:
+        return "░" * width
+    filled = round(value / max_val * width)
+    return "▓" * filled + "░" * (width - filled)
+
+
+def trend(values: list) -> str:
+    if len(values) < 2:
+        return ""
+    delta = values[-1] - values[0]
+    if delta > 0:
+        return f"↑ +{fmt_weight(delta)} kg"
+    if delta < 0:
+        return f"↓ -{fmt_weight(abs(delta))} kg"
+    return "→ no change"
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Screen 0 — HOME
 # ─────────────────────────────────────────────────────────────────────────────
@@ -148,13 +178,21 @@ async def cb_day_ex(cq: CallbackQuery, state: FSMContext):
     await state.set_state(Flow.set_input)
     await state.update_data(current_ex_idx=idx, current_ex_db_id=ex_db_id, pending_set_text=None)
 
-    label = f"{ex_info['group']} — {ex_info['name']}"
-    lines = [f"{label} — set {k}/{target}", "Format: 140x12"]
+    grp = ex_info["group"]
+    emoji = MUSCLE_EMOJI.get(grp, "💪")
+    bar = set_bar(len(sets), target)
+    lines = [
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"{emoji} {grp} — {ex_info['name']}",
+        f"Sets: {bar}",
+        "━━━━━━━━━━━━━━━━━━━━",
+        "Format: 140x12",
+    ]
 
     last_date, last_sets = db_ops.get_last_exercise_sets(user_id, ex_info["name"], workout_id)
     if last_date and last_sets:
-        sets_str = ", ".join(f"{s['weight']}×{s['reps']}" for s in last_sets)
-        lines.append(f"\n🕐 Last time ({last_date}): {sets_str}")
+        sets_str = "  ".join(f"{fmt_weight(s['weight'])}×{s['reps']}" for s in last_sets)
+        lines.append(f"\n🕐 Last ({last_date}):\n{sets_str}")
 
     await safe_edit(cq, "\n".join(lines), kb_set_input(day))
 
@@ -226,13 +264,22 @@ async def msg_set_input(msg: Message, state: FSMContext):
     sets = db_ops.get_sets_for_exercise(ex_db_id)
     k = len(sets) + 1
     target = ex_info["target_sets"]
-    label = f"{ex_info['group']} — {ex_info['name']}"
+    grp = ex_info["group"]
+    emoji = MUSCLE_EMOJI.get(grp, "💪")
+    bar = set_bar(len(sets), target)
 
-    lines = [f"{label} — set {k}/{target}", f"Entered: {entry.weight}kg × {entry.reps} reps"]
+    lines = [
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"{emoji} {grp} — {ex_info['name']}",
+        f"Sets: {bar}",
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"Entered: {fmt_weight(entry.weight)} kg × {entry.reps} reps",
+    ]
     if sets:
         lines.append("\nRecorded sets:")
-        for s in sets:
-            lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
+        for i, s in enumerate(sets):
+            num = NUM_EMOJI[i] if i < len(NUM_EMOJI) else f"{i + 1}."
+            lines.append(f"  {num} {fmt_weight(s['weight'])} kg × {s['reps']}")
 
     await msg.answer("\n".join(lines), reply_markup=kb_set_input(day))
 
@@ -258,12 +305,21 @@ async def cb_set_save(cq: CallbackQuery, state: FSMContext):
     sets_updated = db_ops.get_sets_for_exercise(ex_db_id)
     k = len(sets_updated) + 1
     target = ex_info["target_sets"]
-    label = f"{ex_info['group']} — {ex_info['name']}"
+    grp = ex_info["group"]
+    emoji = MUSCLE_EMOJI.get(grp, "💪")
+    bar = set_bar(len(sets_updated), target)
 
-    lines = [f"✅ Set saved!\n\n{label} — set {k}/{target}"]
-    lines.append("\nRecorded sets:")
-    for s in sets_updated:
-        lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
+    lines = [
+        "✅ Set saved!",
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"{emoji} {grp} — {ex_info['name']}",
+        f"Sets: {bar}",
+        "━━━━━━━━━━━━━━━━━━━━",
+        "Recorded sets:",
+    ]
+    for i, s in enumerate(sets_updated):
+        num = NUM_EMOJI[i] if i < len(NUM_EMOJI) else f"{i + 1}."
+        lines.append(f"  {num} {fmt_weight(s['weight'])} kg × {s['reps']}")
 
     await safe_edit(cq, "\n".join(lines), kb_set_input(day))
 
@@ -281,8 +337,17 @@ async def cb_set_next(cq: CallbackQuery, state: FSMContext):
     sets = db_ops.get_sets_for_exercise(ex_db_id)
     k = len(sets) + 1
     target = ex_info["target_sets"]
-    label = f"{ex_info['group']} — {ex_info['name']}"
-    await safe_edit(cq, f"{label} — set {k}/{target}\nFormat: 140x12", kb_set_input(day))
+    grp = ex_info["group"]
+    emoji = MUSCLE_EMOJI.get(grp, "💪")
+    bar = set_bar(len(sets), target)
+    text = "\n".join([
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"{emoji} {grp} — {ex_info['name']}",
+        f"Sets: {bar}",
+        "━━━━━━━━━━━━━━━━━━━━",
+        "Format: 140x12",
+    ])
+    await safe_edit(cq, text, kb_set_input(day))
 
 
 @router.callback_query(F.data.startswith("set|edit_last|"))
@@ -321,12 +386,21 @@ async def cb_set_delete_last(cq: CallbackQuery, state: FSMContext):
     sets_updated = db_ops.get_sets_for_exercise(ex_db_id)
     k = len(sets_updated) + 1
     target = ex_info["target_sets"]
-    label = f"{ex_info['group']} — {ex_info['name']}"
-    lines = [f"🗑 Last set deleted.\n\n{label} — set {k}/{target}"]
+    grp = ex_info["group"]
+    emoji = MUSCLE_EMOJI.get(grp, "💪")
+    bar = set_bar(len(sets_updated), target)
+    lines = [
+        "🗑 Last set deleted.",
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"{emoji} {grp} — {ex_info['name']}",
+        f"Sets: {bar}",
+        "━━━━━━━━━━━━━━━━━━━━",
+    ]
     if sets_updated:
-        lines.append("\nRecorded sets:")
-        for s in sets_updated:
-            lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
+        lines.append("Recorded sets:")
+        for i, s in enumerate(sets_updated):
+            num = NUM_EMOJI[i] if i < len(NUM_EMOJI) else f"{i + 1}."
+            lines.append(f"  {num} {fmt_weight(s['weight'])} kg × {s['reps']}")
     await safe_edit(cq, "\n".join(lines), kb_set_input(day))
 
 
@@ -441,21 +515,28 @@ async def cb_hist_item(cq: CallbackQuery, state: FSMContext):
         await cq.answer("Entry not found", show_alert=True)
         return
 
-    lines = [format_history_title(w)]
+    lines = [
+        "━━━━━━━━━━━━━━━━━━━━",
+        format_history_title(w),
+        "━━━━━━━━━━━━━━━━━━━━",
+    ]
     if w["type"] == "CARDIO":
         c = db_ops.get_cardio(int(workout_id))
         if c:
-            lines.append(f"\n{c['text']}")
+            lines.append(f"❤️ {c['text']}")
     else:
         exs = db_ops.get_exercises_for_workout(int(workout_id))
         for ex in exs:
-            lines.append(f"\n{ex['grp']} — {ex['name']}")
+            emoji = MUSCLE_EMOJI.get(ex["grp"], "💪")
+            lines.append(f"\n{emoji} {ex['grp']} — {ex['name']}")
             sets = db_ops.get_sets_for_exercise(ex["id"])
-            for s in sets:
-                lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
+            for i, s in enumerate(sets):
+                num = NUM_EMOJI[i] if i < len(NUM_EMOJI) else f"{i + 1}."
+                lines.append(f"  {num} {fmt_weight(s['weight'])} kg × {s['reps']}")
         note = db_ops.get_workout_note(int(workout_id))
         if note:
-            lines.append(f"\n📝 {note['text']}")
+            lines.append("\n━━━━━━━━━━━━━━━━━━━━")
+            lines.append(f"📝 {note['text']}")
 
     await safe_edit(cq, "\n".join(lines), kb_history_entry(workout_id))
 
@@ -595,7 +676,16 @@ async def cb_stats_week(cq: CallbackQuery, state: FSMContext):
     a = by_type.get("DAY_A", 0)
     b = by_type.get("DAY_B", 0)
     c = by_type.get("DAY_C", 0)
-    text = f"📆 Week: {total} workouts (A {a} / B {b} / C {c})"
+    max_cnt = max(a, b, c, 1)
+    text = "\n".join([
+        "📆 This week",
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"Total: {total} workouts",
+        "",
+        f"Day A  {mini_bar(a, max_cnt)}  {a}",
+        f"Day B  {mini_bar(b, max_cnt)}  {b}",
+        f"Day C  {mini_bar(c, max_cnt)}  {c}",
+    ])
     await safe_edit(cq, text, kb_stats())
 
 
@@ -607,7 +697,16 @@ async def cb_stats_month(cq: CallbackQuery, state: FSMContext):
     a = by_type.get("DAY_A", 0)
     b = by_type.get("DAY_B", 0)
     c = by_type.get("DAY_C", 0)
-    text = f"📅 Month: {total} workouts (A {a} / B {b} / C {c})"
+    max_cnt = max(a, b, c, 1)
+    text = "\n".join([
+        "📅 This month",
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"Total: {total} workouts",
+        "",
+        f"Day A  {mini_bar(a, max_cnt)}  {a}",
+        f"Day B  {mini_bar(b, max_cnt)}  {b}",
+        f"Day C  {mini_bar(c, max_cnt)}  {c}",
+    ])
     await safe_edit(cq, text, kb_stats())
 
 
@@ -637,9 +736,20 @@ async def cb_progress_ex(cq: CallbackQuery, state: FSMContext):
         await cq.answer("No data for this exercise yet", show_alert=True)
         return
 
-    weights_str = " → ".join(fmt_weight(r["max_weight"]) for r in rows)
-    lines = [f"📊 {ex_name}\n", f"{weights_str} kg\n"]
+    weights = [r["max_weight"] for r in rows]
+    trend_str = trend(weights)
+    weights_str = " → ".join(fmt_weight(w) for w in weights)
+    max_w = max(weights)
+    lines = [
+        f"📊 {ex_name}",
+        "━━━━━━━━━━━━━━━━━━━━",
+        f"Trend: {trend_str}",
+        "",
+        f"{weights_str} kg",
+        "━━━━━━━━━━━━━━━━━━━━",
+    ]
     for r in rows:
-        lines.append(f"  {r['date']}: {fmt_weight(r['max_weight'])} kg")
+        bar = mini_bar(int(r["max_weight"]), int(max_w))
+        lines.append(f"  {r['date']}  {bar}  {fmt_weight(r['max_weight'])} kg")
 
     await safe_edit(cq, "\n".join(lines), kb_progress_result())
