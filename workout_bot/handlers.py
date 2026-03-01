@@ -34,10 +34,10 @@ async def send_home(target, state: FSMContext):
     await state.set_state(Flow.home)
     await state.update_data({})  # clear session data
     if isinstance(target, CallbackQuery):
-        await target.message.edit_text("Главное меню", reply_markup=kb_home())
+        await target.message.edit_text("Main menu", reply_markup=kb_home())
         await target.answer()
     else:
-        await target.answer("Главное меню", reply_markup=kb_home())
+        await target.answer("Main menu", reply_markup=kb_home())
 
 
 async def safe_edit(cq: CallbackQuery, text: str, markup):
@@ -80,7 +80,7 @@ async def cb_home(cq: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == "new|open")
 async def cb_new_open(cq: CallbackQuery, state: FSMContext):
     await state.set_state(Flow.new_workout)
-    await safe_edit(cq, "Выбери тренировку", kb_new_workout())
+    await safe_edit(cq, "Choose workout", kb_new_workout())
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ async def cb_new_day(cq: CallbackQuery, state: FSMContext):
     )
 
     buttons = exercise_buttons(day)
-    await safe_edit(cq, f"{day_label(day)} — выбери упражнение", kb_day_menu(day, buttons))
+    await safe_edit(cq, f"{day_label(day)} — choose exercise", kb_day_menu(day, buttons))
 
 
 @router.callback_query(F.data.startswith("day|ex|"))
@@ -131,7 +131,7 @@ async def cb_day_ex(cq: CallbackQuery, state: FSMContext):
     await state.update_data(current_ex_idx=idx, current_ex_db_id=ex_db_id, pending_set_text=None)
 
     label = f"{ex_info['group']} — {ex_info['name']}"
-    text = f"{label} — сет {k}/{target}\nФормат: 140x12"
+    text = f"{label} — set {k}/{target}\nFormat: 140x12"
     await safe_edit(cq, text, kb_set_input(day))
 
 
@@ -141,13 +141,13 @@ async def cb_day_save(cq: CallbackQuery, state: FSMContext):
     workout_id = data.get("workout_id")
     # workout already persisted, just go home
     await state.set_state(Flow.home)
-    await safe_edit(cq, "✅ Тренировка сохранена!\n\nГлавное меню", kb_home())
+    await safe_edit(cq, "✅ Workout saved!\n\nMain menu", kb_home())
 
 
 @router.callback_query(F.data.startswith("day|cancel|"))
 async def cb_day_cancel(cq: CallbackQuery, state: FSMContext):
     day = cq.data.split("|")[2]
-    await safe_edit(cq, "Отменить тренировку? Данные не сохранятся.", kb_cancel_confirm(day))
+    await safe_edit(cq, "Cancel workout? Data will not be saved.", kb_cancel_confirm(day))
 
 
 @router.callback_query(F.data.startswith("cancel|yes|"))
@@ -165,7 +165,7 @@ async def cb_cancel_no(cq: CallbackQuery, state: FSMContext):
     day = data.get("day", cq.data.split("|")[2])
     buttons = exercise_buttons(day)
     await state.set_state(Flow.day_menu)
-    await safe_edit(cq, f"{day_label(day)} — выбери упражнение", kb_day_menu(day, buttons))
+    await safe_edit(cq, f"{day_label(day)} — choose exercise", kb_day_menu(day, buttons))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -193,11 +193,11 @@ async def msg_set_input(msg: Message, state: FSMContext):
     target = ex_info["target_sets"]
     label = f"{ex_info['group']} — {ex_info['name']}"
 
-    lines = [f"{label} — сет {k}/{target}", f"Введено: {entry.weight}кг × {entry.reps} повт."]
+    lines = [f"{label} — set {k}/{target}", f"Entered: {entry.weight}kg × {entry.reps} reps"]
     if sets:
-        lines.append("\nЗаписанные сеты:")
+        lines.append("\nRecorded sets:")
         for s in sets:
-            lines.append(f"  Сет {s['set_number']}: {s['weight']}кг × {s['reps']}")
+            lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
 
     await msg.answer("\n".join(lines), reply_markup=kb_set_input(day))
 
@@ -211,7 +211,7 @@ async def cb_set_save(cq: CallbackQuery, state: FSMContext):
     pending = data.get("pending_set_text")
 
     if not pending:
-        await cq.answer("Сначала введите сет в формате 140x12", show_alert=True)
+        await cq.answer("Enter a set first in format 140x12", show_alert=True)
         return
 
     entry = parse_set(pending)
@@ -225,10 +225,10 @@ async def cb_set_save(cq: CallbackQuery, state: FSMContext):
     target = ex_info["target_sets"]
     label = f"{ex_info['group']} — {ex_info['name']}"
 
-    lines = [f"✅ Сет сохранён!\n\n{label} — сет {k}/{target}"]
-    lines.append("\nЗаписанные сеты:")
+    lines = [f"✅ Set saved!\n\n{label} — set {k}/{target}"]
+    lines.append("\nRecorded sets:")
     for s in sets_updated:
-        lines.append(f"  Сет {s['set_number']}: {s['weight']}кг × {s['reps']}")
+        lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
 
     await safe_edit(cq, "\n".join(lines), kb_set_input(day))
 
@@ -247,7 +247,7 @@ async def cb_set_next(cq: CallbackQuery, state: FSMContext):
     k = len(sets) + 1
     target = ex_info["target_sets"]
     label = f"{ex_info['group']} — {ex_info['name']}"
-    await safe_edit(cq, f"{label} — сет {k}/{target}\nФормат: 140x12", kb_set_input(day))
+    await safe_edit(cq, f"{label} — set {k}/{target}\nFormat: 140x12", kb_set_input(day))
 
 
 @router.callback_query(F.data.startswith("set|edit_last|"))
@@ -257,13 +257,13 @@ async def cb_set_edit_last(cq: CallbackQuery, state: FSMContext):
     ex_db_id = data["current_ex_db_id"]
     sets = db_ops.get_sets_for_exercise(ex_db_id)
     if not sets:
-        await cq.answer("Нет записанных сетов", show_alert=True)
+        await cq.answer("No recorded sets", show_alert=True)
         return
     last = sets[-1]
     await state.update_data(editing_set_id=last["id"])
     await safe_edit(
         cq,
-        f"Исправить сет {last['set_number']}: {last['weight']}кг × {last['reps']} повт.\nВведи новое значение:",
+        f"Edit set {last['set_number']}: {last['weight']}kg × {last['reps']} reps.\nEnter new value:",
         kb_set_input(day),
     )
     # Switch to a sub-state: we'll handle the next message as an edit
@@ -278,7 +278,7 @@ async def cb_set_delete_last(cq: CallbackQuery, state: FSMContext):
     ex_idx = data["current_ex_idx"]
     sets = db_ops.get_sets_for_exercise(ex_db_id)
     if not sets:
-        await cq.answer("Нет записанных сетов", show_alert=True)
+        await cq.answer("No recorded sets", show_alert=True)
         return
     db_ops.delete_set(sets[-1]["id"])
 
@@ -287,11 +287,11 @@ async def cb_set_delete_last(cq: CallbackQuery, state: FSMContext):
     k = len(sets_updated) + 1
     target = ex_info["target_sets"]
     label = f"{ex_info['group']} — {ex_info['name']}"
-    lines = [f"🗑 Последний сет удалён.\n\n{label} — сет {k}/{target}"]
+    lines = [f"🗑 Last set deleted.\n\n{label} — set {k}/{target}"]
     if sets_updated:
-        lines.append("\nЗаписанные сеты:")
+        lines.append("\nRecorded sets:")
         for s in sets_updated:
-            lines.append(f"  Сет {s['set_number']}: {s['weight']}кг × {s['reps']}")
+            lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
     await safe_edit(cq, "\n".join(lines), kb_set_input(day))
 
 
@@ -303,7 +303,7 @@ async def cb_set_finish_ex(cq: CallbackQuery, state: FSMContext):
     buttons = exercise_buttons(day)
     await state.set_state(Flow.day_menu)
     await state.update_data(pending_set_text=None, current_ex_idx=None, current_ex_db_id=None)
-    await safe_edit(cq, f"{day_label(day)} — выбери упражнение", kb_day_menu(day, buttons))
+    await safe_edit(cq, f"{day_label(day)} — choose exercise", kb_day_menu(day, buttons))
 
 
 @router.callback_query(F.data.startswith("set|back_to_day|"))
@@ -312,13 +312,13 @@ async def cb_set_back_to_day(cq: CallbackQuery, state: FSMContext):
     day = data["day"]
     buttons = exercise_buttons(day)
     await state.set_state(Flow.day_menu)
-    await safe_edit(cq, f"{day_label(day)} — выбери упражнение", kb_day_menu(day, buttons))
+    await safe_edit(cq, f"{day_label(day)} — choose exercise", kb_day_menu(day, buttons))
 
 
 @router.callback_query(F.data.startswith("set|cancel|"))
 async def cb_set_cancel(cq: CallbackQuery, state: FSMContext):
     day = cq.data.split("|")[2]
-    await safe_edit(cq, "Отменить тренировку? Данные не сохранятся.", kb_cancel_confirm(day))
+    await safe_edit(cq, "Cancel workout? Data will not be saved.", kb_cancel_confirm(day))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -333,7 +333,7 @@ async def cb_new_cardio(cq: CallbackQuery, state: FSMContext):
     await state.update_data(workout_id=workout_id)
     await safe_edit(
         cq,
-        "Кардио — введи одной строкой\nПример: Бег 30 мин",
+        "Cardio — enter in one line\nExample: Running 30 min",
         kb_cardio(),
     )
 
@@ -344,7 +344,7 @@ async def msg_cardio_input(msg: Message, state: FSMContext):
     workout_id = data["workout_id"]
     db_ops.add_cardio(workout_id, msg.text.strip())
     await state.set_state(Flow.home)
-    await msg.answer("✅ Кардио сохранено!\n\nГлавное меню", reply_markup=kb_home())
+    await msg.answer("✅ Cardio saved!\n\nMain menu", reply_markup=kb_home())
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -354,7 +354,7 @@ async def msg_cardio_input(msg: Message, state: FSMContext):
 @router.callback_query(F.data == "prog|open")
 async def cb_prog_open(cq: CallbackQuery, state: FSMContext):
     await state.set_state(Flow.home)
-    await safe_edit(cq, "Программа — выбери день", kb_program())
+    await safe_edit(cq, "Program — choose day", kb_program())
 
 
 @router.callback_query(F.data.startswith("prog|day|"))
@@ -363,7 +363,7 @@ async def cb_prog_day(cq: CallbackQuery, state: FSMContext):
     exs = PROGRAM[day]
     lines = [f"📋 {day_label(day)}\n"]
     for i, ex in enumerate(exs, 1):
-        lines.append(f"{i}. {ex['group']} — {ex['name']} ({ex['target_sets']} сет.)")
+        lines.append(f"{i}. {ex['group']} — {ex['name']} ({ex['target_sets']} sets)")
     await safe_edit(cq, "\n".join(lines), kb_program_day(day))
 
 
@@ -378,10 +378,10 @@ async def cb_hist_open(cq: CallbackQuery, state: FSMContext):
     await state.update_data(hist_offset=0)
     workouts, has_more = db_ops.get_history(user_id, offset=0, limit=HISTORY_PAGE_SIZE)
     if not workouts:
-        await safe_edit(cq, "История пуста.", kb_history([], False))
+        await safe_edit(cq, "History is empty.", kb_history([], False))
         return
     items = [(str(w["id"]), format_history_title(w)) for w in workouts]
-    await safe_edit(cq, "История — выбери запись", kb_history(items, has_more))
+    await safe_edit(cq, "History — choose entry", kb_history(items, has_more))
 
 
 @router.callback_query(F.data == "hist|more")
@@ -392,7 +392,7 @@ async def cb_hist_more(cq: CallbackQuery, state: FSMContext):
     await state.update_data(hist_offset=offset)
     workouts, has_more = db_ops.get_history(user_id, offset=offset, limit=HISTORY_PAGE_SIZE)
     items = [(str(w["id"]), format_history_title(w)) for w in workouts]
-    await safe_edit(cq, "История — выбери запись", kb_history(items, has_more))
+    await safe_edit(cq, "History — choose entry", kb_history(items, has_more))
 
 
 @router.callback_query(F.data.startswith("hist|item|"))
@@ -403,7 +403,7 @@ async def cb_hist_item(cq: CallbackQuery, state: FSMContext):
 
     w = db_ops.get_workout(int(workout_id))
     if not w:
-        await cq.answer("Запись не найдена", show_alert=True)
+        await cq.answer("Entry not found", show_alert=True)
         return
 
     lines = [format_history_title(w)]
@@ -417,7 +417,7 @@ async def cb_hist_item(cq: CallbackQuery, state: FSMContext):
             lines.append(f"\n{ex['grp']} — {ex['name']}")
             sets = db_ops.get_sets_for_exercise(ex["id"])
             for s in sets:
-                lines.append(f"  Сет {s['set_number']}: {s['weight']}кг × {s['reps']}")
+                lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
 
     await safe_edit(cq, "\n".join(lines), kb_history_entry(workout_id))
 
@@ -425,7 +425,7 @@ async def cb_hist_item(cq: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data.startswith("entry|delete|"))
 async def cb_entry_delete(cq: CallbackQuery, state: FSMContext):
     workout_id = cq.data.split("|")[2]
-    await safe_edit(cq, "Удалить запись? Данные не восстановятся.", kb_delete_confirm(workout_id))
+    await safe_edit(cq, "Delete entry? Data cannot be recovered.", kb_delete_confirm(workout_id))
 
 
 @router.callback_query(F.data.startswith("del|yes|"))
@@ -436,14 +436,14 @@ async def cb_del_yes(cq: CallbackQuery, state: FSMContext):
     workouts, has_more = db_ops.get_history(user_id, offset=0, limit=HISTORY_PAGE_SIZE)
     items = [(str(w["id"]), format_history_title(w)) for w in workouts]
     await state.set_state(Flow.history_menu)
-    await safe_edit(cq, "🗑 Запись удалена.\n\nИстория — выбери запись", kb_history(items, has_more))
+    await safe_edit(cq, "🗑 Entry deleted.\n\nHistory — choose entry", kb_history(items, has_more))
 
 
 @router.callback_query(F.data.startswith("del|no|"))
 async def cb_del_no(cq: CallbackQuery, state: FSMContext):
     workout_id = cq.data.split("|")[2]
     w = db_ops.get_workout(int(workout_id))
-    lines = [format_history_title(w)] if w else ["Запись"]
+    lines = [format_history_title(w)] if w else ["Entry"]
     await safe_edit(cq, "\n".join(lines), kb_history_entry(workout_id))
 
 
@@ -454,14 +454,14 @@ async def cb_entry_edit(cq: CallbackQuery, state: FSMContext):
     workout_id = cq.data.split("|")[2]
     w = db_ops.get_workout(int(workout_id))
     if not w or w["type"] == "CARDIO":
-        await cq.answer("Редактирование кардио пока не поддерживается.", show_alert=True)
+        await cq.answer("Cardio editing is not supported yet.", show_alert=True)
         return
 
     exs = db_ops.get_exercises_for_workout(int(workout_id))
     exercises = [(str(ex["id"]), f"{ex['grp']} — {ex['name']}") for ex in exs]
     await state.set_state(Flow.history_edit_select_ex)
     await state.update_data(editing_workout_id=workout_id)
-    await safe_edit(cq, "Выбери упражнение для редактирования", kb_history_edit_select_ex(exercises))
+    await safe_edit(cq, "Choose exercise to edit", kb_history_edit_select_ex(exercises))
 
 
 @router.callback_query(F.data.startswith("hedit|ex|"))
@@ -469,12 +469,12 @@ async def cb_hedit_ex(cq: CallbackQuery, state: FSMContext):
     ex_id = cq.data.split("|")[2]
     sets = db_ops.get_sets_for_exercise(int(ex_id))
     if not sets:
-        await cq.answer("Нет сетов для редактирования", show_alert=True)
+        await cq.answer("No sets to edit", show_alert=True)
         return
-    set_items = [(str(s["id"]), f"Сет {s['set_number']}: {s['weight']}кг × {s['reps']}") for s in sets]
+    set_items = [(str(s["id"]), f"Set {s['set_number']}: {s['weight']}kg × {s['reps']}") for s in sets]
     await state.set_state(Flow.history_edit_select_set)
     await state.update_data(hedit_ex_id=ex_id)
-    await safe_edit(cq, "Выбери сет для редактирования", kb_history_edit_select_set(set_items, ex_id))
+    await safe_edit(cq, "Choose set to edit", kb_history_edit_select_set(set_items, ex_id))
 
 
 @router.callback_query(F.data.startswith("hedit|back_ex|"))
@@ -487,7 +487,7 @@ async def cb_hedit_back_ex(cq: CallbackQuery, state: FSMContext):
     exs = db_ops.get_exercises_for_workout(int(workout_id))
     exercises = [(str(ex["id"]), f"{ex['grp']} — {ex['name']}") for ex in exs]
     await state.set_state(Flow.history_edit_select_ex)
-    await safe_edit(cq, "Выбери упражнение для редактирования", kb_history_edit_select_ex(exercises))
+    await safe_edit(cq, "Choose exercise to edit", kb_history_edit_select_ex(exercises))
 
 
 @router.callback_query(F.data.startswith("hedit|set|"))
@@ -498,7 +498,7 @@ async def cb_hedit_set(cq: CallbackQuery, state: FSMContext):
     await state.update_data(hedit_set_id=set_id)
     await safe_edit(
         cq,
-        f"Текущее значение сета {s['set_number']}: {s['weight']}кг × {s['reps']} повт.\n\nВведи новое значение (формат: 140x12):",
+        f"Current value of set {s['set_number']}: {s['weight']}kg × {s['reps']} reps.\n\nEnter new value (format: 140x12):",
         None,
     )
 
@@ -519,9 +519,9 @@ async def msg_hedit_set_input(msg: Message, state: FSMContext):
 
     # Return to set list for this exercise
     sets = db_ops.get_sets_for_exercise(int(ex_id))
-    set_items = [(str(s["id"]), f"Сет {s['set_number']}: {s['weight']}кг × {s['reps']}") for s in sets]
+    set_items = [(str(s["id"]), f"Set {s['set_number']}: {s['weight']}kg × {s['reps']}") for s in sets]
     await state.set_state(Flow.history_edit_select_set)
-    await msg.answer("✅ Сет обновлён!\n\nВыбери сет для редактирования", reply_markup=kb_history_edit_select_set(set_items, str(ex_id)))
+    await msg.answer("✅ Set updated!\n\nChoose set to edit", reply_markup=kb_history_edit_select_set(set_items, str(ex_id)))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -530,7 +530,7 @@ async def msg_hedit_set_input(msg: Message, state: FSMContext):
 
 @router.callback_query(F.data == "stats|open")
 async def cb_stats_open(cq: CallbackQuery, state: FSMContext):
-    await safe_edit(cq, "Статистика", kb_stats())
+    await safe_edit(cq, "Statistics", kb_stats())
 
 
 @router.callback_query(F.data == "stats|week")
@@ -541,7 +541,7 @@ async def cb_stats_week(cq: CallbackQuery, state: FSMContext):
     a = by_type.get("DAY_A", 0)
     b = by_type.get("DAY_B", 0)
     c = by_type.get("DAY_C", 0)
-    text = f"📆 Неделя: {total} тренировок (A {a} / B {b} / C {c})"
+    text = f"📆 Week: {total} workouts (A {a} / B {b} / C {c})"
     await safe_edit(cq, text, kb_stats())
 
 
@@ -553,7 +553,7 @@ async def cb_stats_month(cq: CallbackQuery, state: FSMContext):
     a = by_type.get("DAY_A", 0)
     b = by_type.get("DAY_B", 0)
     c = by_type.get("DAY_C", 0)
-    text = f"📅 Месяц: {total} тренировок (A {a} / B {b} / C {c})"
+    text = f"📅 Month: {total} workouts (A {a} / B {b} / C {c})"
     await safe_edit(cq, text, kb_stats())
 
 
@@ -561,5 +561,5 @@ async def cb_stats_month(cq: CallbackQuery, state: FSMContext):
 async def cb_stats_freq(cq: CallbackQuery, state: FSMContext):
     user_id = cq.from_user.id
     total, avg = db_ops.stats_frequency(user_id, weeks=4)
-    text = f"🔥 4 недели: {total} тренировок — в среднем {avg}/нед"
+    text = f"🔥 4 weeks: {total} workouts — avg {avg}/week"
     await safe_edit(cq, text, kb_stats())
