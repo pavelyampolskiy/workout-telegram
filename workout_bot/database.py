@@ -59,6 +59,12 @@ def init_db():
                 workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
                 text TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS workout_notes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+                text TEXT NOT NULL
+            );
         """)
 
 
@@ -168,6 +174,32 @@ def get_cardio(workout_id: int):
     with db() as conn:
         return conn.execute(
             "SELECT * FROM cardio_entries WHERE workout_id=?", (workout_id,)
+        ).fetchone()
+
+
+def update_cardio(workout_id: int, text: str):
+    with db() as conn:
+        conn.execute(
+            "UPDATE cardio_entries SET text=? WHERE workout_id=?",
+            (text, workout_id),
+        )
+
+
+# ── Notes ─────────────────────────────────────────────────────────────────────
+
+def add_workout_note(workout_id: int, text: str) -> int:
+    with db() as conn:
+        cur = conn.execute(
+            "INSERT INTO workout_notes (workout_id, text) VALUES (?,?)",
+            (workout_id, text),
+        )
+        return cur.lastrowid
+
+
+def get_workout_note(workout_id: int):
+    with db() as conn:
+        return conn.execute(
+            "SELECT * FROM workout_notes WHERE workout_id=?", (workout_id,)
         ).fetchone()
 
 

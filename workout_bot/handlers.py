@@ -16,6 +16,7 @@ from keyboards import (
     kb_set_input, kb_cardio, kb_program, kb_program_day,
     kb_history, kb_history_entry, kb_delete_confirm, kb_stats,
     kb_history_edit_select_ex, kb_history_edit_select_set,
+    kb_workout_note,
 )
 from parser import parse_set
 from program import PROGRAM, exercise_buttons
@@ -137,11 +138,22 @@ async def cb_day_ex(cq: CallbackQuery, state: FSMContext):
 
 @router.callback_query(F.data.startswith("day|save|"))
 async def cb_day_save(cq: CallbackQuery, state: FSMContext):
+    await state.set_state(Flow.workout_note)
+    await safe_edit(cq, "✅ Workout saved!\n\nAdd a note? (or skip)", kb_workout_note())
+
+
+@router.message(Flow.workout_note)
+async def msg_workout_note(msg: Message, state: FSMContext):
     data = await state.get_data()
     workout_id = data.get("workout_id")
-    # workout already persisted, just go home
-    await state.set_state(Flow.home)
-    await safe_edit(cq, "✅ Workout saved!\n\nHey, pussy!", kb_home())
+    if workout_id:
+        db_ops.add_workout_note(workout_id, msg.text.strip())
+    await send_home(msg, state)
+
+
+@router.callback_query(F.data == "note|skip")
+async def cb_note_skip(cq: CallbackQuery, state: FSMContext):
+    await send_home(cq, state)
 
 
 @router.callback_query(F.data.startswith("day|cancel|"))
@@ -418,6 +430,9 @@ async def cb_hist_item(cq: CallbackQuery, state: FSMContext):
             sets = db_ops.get_sets_for_exercise(ex["id"])
             for s in sets:
                 lines.append(f"  Set {s['set_number']}: {s['weight']}kg × {s['reps']}")
+        note = db_ops.get_workout_note(int(workout_id))
+        if note:
+            lines.append(f"\n📝 {note['text']}")
 
     await safe_edit(cq, "\n".join(lines), kb_history_entry(workout_id))
 
@@ -453,8 +468,16 @@ async def cb_del_no(cq: CallbackQuery, state: FSMContext):
 async def cb_entry_edit(cq: CallbackQuery, state: FSMContext):
     workout_id = cq.data.split("|")[2]
     w = db_ops.get_workout(int(workout_id))
-    if not w or w["type"] == "CARDIO":
-        await cq.answer("Cardio editing is not supported yet.", show_alert=True)
+    if not w:
+        await cq.answer("Entry not found", show_alert=True)
+        return
+
+    if w["type"] == "CARDIO":
+        c = db_ops.get_cardio(int(workout_id))
+        current = c["text"] if c else ""
+        await state.set_state(Flow.history_edit_cardio_input)
+        await state.update_data(editing_workout_id=workout_id)
+        await safe_edit(cq, f"Current cardio: {current}\n\nEnter new text:", None)
         return
 
     exs = db_ops.get_exercises_for_workout(int(workout_id))
@@ -462,6 +485,14 @@ async def cb_entry_edit(cq: CallbackQuery, state: FSMContext):
     await state.set_state(Flow.history_edit_select_ex)
     await state.update_data(editing_workout_id=workout_id)
     await safe_edit(cq, "Choose exercise to edit", kb_history_edit_select_ex(exercises))
+
+
+@router.message(Flow.history_edit_cardio_input)
+async def msg_hedit_cardio_input(msg: Message, state: FSMContext):
+    data = await state.get_data()
+    workout_id = int(data["editing_workout_id"])
+    db_ops.update_cardio(workout_id, msg.text.strip())
+    await send_home(msg, state)
 
 
 @router.callback_query(F.data.startswith("hedit|ex|"))

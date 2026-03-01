@@ -13,3 +13,5 @@ class Flow(StatesGroup):
     history_edit_select_ex = State()
     history_edit_select_set = State()
     history_edit_set_input = State()
+    workout_note = State()
+    history_edit_cardio_input = State()

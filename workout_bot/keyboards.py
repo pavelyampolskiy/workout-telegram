@@ -125,6 +125,13 @@ def kb_stats() -> InlineKeyboardMarkup:
     return kb.as_markup()
 
 
+def kb_workout_note() -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.button(text="⏭ Skip", callback_data=cb("note", "skip"))
+    kb.adjust(1)
+    return kb.as_markup()
+
+
 def kb_history_edit_select_ex(exercises: list[tuple[str, str]]) -> InlineKeyboardMarkup:
     """exercises: list of (ex_id, label)"""
     kb = InlineKeyboardBuilder()
