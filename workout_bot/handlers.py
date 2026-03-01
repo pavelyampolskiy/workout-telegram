@@ -34,10 +34,10 @@ async def send_home(target, state: FSMContext):
     await state.set_state(Flow.home)
     await state.update_data({})  # clear session data
     if isinstance(target, CallbackQuery):
-        await target.message.edit_text("Main menu", reply_markup=kb_home())
+        await target.message.edit_text("Hey, pussy!", reply_markup=kb_home())
         await target.answer()
     else:
-        await target.answer("Main menu", reply_markup=kb_home())
+        await target.answer("Hey, pussy!", reply_markup=kb_home())
 
 
 async def safe_edit(cq: CallbackQuery, text: str, markup):
@@ -141,7 +141,7 @@ async def cb_day_save(cq: CallbackQuery, state: FSMContext):
     workout_id = data.get("workout_id")
     # workout already persisted, just go home
     await state.set_state(Flow.home)
-    await safe_edit(cq, "✅ Workout saved!\n\nMain menu", kb_home())
+    await safe_edit(cq, "✅ Workout saved!\n\nHey, pussy!", kb_home())
 
 
 @router.callback_query(F.data.startswith("day|cancel|"))
@@ -344,7 +344,7 @@ async def msg_cardio_input(msg: Message, state: FSMContext):
     workout_id = data["workout_id"]
     db_ops.add_cardio(workout_id, msg.text.strip())
     await state.set_state(Flow.home)
-    await msg.answer("✅ Cardio saved!\n\nMain menu", reply_markup=kb_home())
+    await msg.answer("✅ Cardio saved!\n\nHey, pussy!", reply_markup=kb_home())
 
 
 # ─────────────────────────────────────────────────────────────────────────────
