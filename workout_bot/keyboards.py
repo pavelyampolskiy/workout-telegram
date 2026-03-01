@@ -120,8 +120,27 @@ def kb_stats() -> InlineKeyboardMarkup:
     kb.button(text="📆 Week", callback_data=cb("stats", "week"))
     kb.button(text="📅 Month", callback_data=cb("stats", "month"))
     kb.button(text="🔥 Frequency", callback_data=cb("stats", "freq"))
+    kb.button(text="📊 Progress", callback_data=cb("stats", "progress"))
     kb.button(text="⬅️ Back", callback_data=cb("home", "open"))
-    kb.adjust(3, 1)
+    kb.adjust(2, 2, 1)
+    return kb.as_markup()
+
+
+def kb_progress_exercises(exercises: list[tuple[str, str, str]]) -> InlineKeyboardMarkup:
+    """exercises: list of (day, idx_str, name)"""
+    kb = InlineKeyboardBuilder()
+    for day, idx_str, name in exercises:
+        kb.button(text=name, callback_data=cb("pex", day, idx_str))
+    kb.button(text="⬅️ Back", callback_data=cb("stats", "open"))
+    kb.adjust(*([1] * len(exercises)), 1)
+    return kb.as_markup()
+
+
+def kb_progress_result() -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.button(text="⬅️ Exercises", callback_data=cb("stats", "progress"))
+    kb.button(text="⬅️ Stats", callback_data=cb("stats", "open"))
+    kb.adjust(2)
     return kb.as_markup()
 
 

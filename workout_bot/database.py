@@ -209,6 +209,26 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
         return row["date"], sets
 
 
+# ── Progress ──────────────────────────────────────────────────────────────────
+
+def get_exercise_progress(user_id: int, exercise_name: str, limit: int = 6):
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT w.date, MAX(ws.weight) as max_weight
+            FROM workout_sets ws
+            JOIN workout_exercises we ON ws.workout_exercise_id = we.id
+            JOIN workouts w ON we.workout_id = w.id
+            WHERE w.user_id = ? AND we.name = ?
+            GROUP BY w.id
+            ORDER BY w.date DESC, w.id DESC
+            LIMIT ?
+            """,
+            (user_id, exercise_name, limit),
+        ).fetchall()
+    return list(reversed(rows))
+
+
 # ── Notes ─────────────────────────────────────────────────────────────────────
 
 def add_workout_note(workout_id: int, text: str) -> int:

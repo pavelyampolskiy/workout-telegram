@@ -16,7 +16,7 @@ from keyboards import (
     kb_set_input, kb_cardio, kb_program, kb_program_day,
     kb_history, kb_history_entry, kb_delete_confirm, kb_stats,
     kb_history_edit_select_ex, kb_history_edit_select_set,
-    kb_workout_note,
+    kb_workout_note, kb_progress_exercises, kb_progress_result,
 )
 from parser import parse_set
 from program import PROGRAM, exercise_buttons
@@ -51,6 +51,22 @@ async def safe_edit(cq: CallbackQuery, text: str, markup):
 
 def day_label(day: str) -> str:
     return day.replace("DAY_", "Day ")
+
+
+def fmt_weight(w: float) -> str:
+    return str(int(w)) if w == int(w) else str(w)
+
+
+def unique_exercises() -> list[tuple[str, str, str]]:
+    """Return deduplicated list of (day, idx_str, name) across all days."""
+    seen: set[str] = set()
+    result = []
+    for day in ["DAY_A", "DAY_B", "DAY_C"]:
+        for idx, ex in enumerate(PROGRAM[day]):
+            if ex["name"] not in seen:
+                seen.add(ex["name"])
+                result.append((day, str(idx), ex["name"]))
+    return result
 
 
 def format_history_title(w) -> str:
@@ -601,3 +617,29 @@ async def cb_stats_freq(cq: CallbackQuery, state: FSMContext):
     total, avg = db_ops.stats_frequency(user_id, weeks=4)
     text = f"🔥 4 weeks: {total} workouts — avg {avg}/week"
     await safe_edit(cq, text, kb_stats())
+
+
+@router.callback_query(F.data == "stats|progress")
+async def cb_stats_progress(cq: CallbackQuery, state: FSMContext):
+    exercises = unique_exercises()
+    await safe_edit(cq, "Progress — choose exercise", kb_progress_exercises(exercises))
+
+
+@router.callback_query(F.data.startswith("pex|"))
+async def cb_progress_ex(cq: CallbackQuery, state: FSMContext):
+    parts = cq.data.split("|")
+    day, idx = parts[1], int(parts[2])
+    user_id = cq.from_user.id
+    ex_name = PROGRAM[day][idx]["name"]
+
+    rows = db_ops.get_exercise_progress(user_id, ex_name, limit=6)
+    if not rows:
+        await cq.answer("No data for this exercise yet", show_alert=True)
+        return
+
+    weights_str = " → ".join(fmt_weight(r["max_weight"]) for r in rows)
+    lines = [f"📊 {ex_name}\n", f"{weights_str} kg\n"]
+    for r in rows:
+        lines.append(f"  {r['date']}: {fmt_weight(r['max_weight'])} kg")
+
+    await safe_edit(cq, "\n".join(lines), kb_progress_result())
