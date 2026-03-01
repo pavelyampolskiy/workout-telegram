@@ -114,6 +114,7 @@ async def cb_day_ex(cq: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     day = data["day"]
     workout_id = data["workout_id"]
+    user_id = cq.from_user.id
     ex_info = PROGRAM[day][idx]
 
     # Create or find the exercise entry in DB
@@ -132,8 +133,14 @@ async def cb_day_ex(cq: CallbackQuery, state: FSMContext):
     await state.update_data(current_ex_idx=idx, current_ex_db_id=ex_db_id, pending_set_text=None)
 
     label = f"{ex_info['group']} — {ex_info['name']}"
-    text = f"{label} — set {k}/{target}\nFormat: 140x12"
-    await safe_edit(cq, text, kb_set_input(day))
+    lines = [f"{label} — set {k}/{target}", "Format: 140x12"]
+
+    last_date, last_sets = db_ops.get_last_exercise_sets(user_id, ex_info["name"], workout_id)
+    if last_date and last_sets:
+        sets_str = ", ".join(f"{s['weight']}×{s['reps']}" for s in last_sets)
+        lines.append(f"\n🕐 Last time ({last_date}): {sets_str}")
+
+    await safe_edit(cq, "\n".join(lines), kb_set_input(day))
 
 
 @router.callback_query(F.data.startswith("day|save|"))
