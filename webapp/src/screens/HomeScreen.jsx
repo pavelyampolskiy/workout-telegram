@@ -41,8 +41,7 @@ export default function HomeScreen() {
       {/* Content */}
       <div className="relative z-10 p-5">
         <div className="pt-6 pb-8">
-          <h1 className="text-3xl font-extrabold text-white leading-tight font-bebas tracking-wider">Hey, pussy! 💪</h1>
-          <p className="text-slate-300 text-sm mt-1">Are you ready?</p>
+          <h1 className="text-3xl font-extrabold text-white leading-tight font-bebas tracking-wider">Are you ready?</h1>
         </div>
 
         <div className="space-y-3">
