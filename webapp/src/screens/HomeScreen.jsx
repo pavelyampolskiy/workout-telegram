@@ -1,51 +1,59 @@
 import { useApp } from '../App';
 
+const ITEMS = [
+  {
+    screen: 'workout',
+    icon: '🏋️',
+    iconBg: 'bg-blue-600',
+    title: 'New Workout',
+    sub: 'Start Day A, B, C or Cardio',
+    accent: 'text-blue-300',
+  },
+  {
+    screen: 'history',
+    icon: '📋',
+    iconBg: 'bg-slate-600',
+    title: 'History',
+    sub: 'View past workouts',
+    accent: 'text-slate-400',
+  },
+  {
+    screen: 'stats',
+    icon: '📊',
+    iconBg: 'bg-slate-600',
+    title: 'Statistics',
+    sub: 'Progress & frequency',
+    accent: 'text-slate-400',
+  },
+];
+
 export default function HomeScreen() {
   const { navigate } = useApp();
 
   return (
     <div className="p-5">
-      <div className="pt-4 pb-6">
-        <h1 className="text-3xl font-bold text-slate-100">Hey, pussy! 💪</h1>
-        <p className="text-slate-400 text-sm mt-1">What's the plan today?</p>
+      <div className="pt-6 pb-8">
+        <h1 className="text-3xl font-extrabold text-slate-100 leading-tight">Hey, pussy! 💪</h1>
+        <p className="text-slate-500 text-sm mt-1">What's the plan today?</p>
       </div>
 
       <div className="space-y-3">
-        <button
-          onClick={() => navigate('workout')}
-          className="w-full bg-blue-600 active:bg-blue-700 rounded-2xl p-5 text-left flex items-center gap-4 transition-colors"
-        >
-          <span className="text-4xl">🆕</span>
-          <div>
-            <div className="font-bold text-lg text-white">New Workout</div>
-            <div className="text-blue-200 text-sm">Start Day A, B, C or Cardio</div>
-          </div>
-          <span className="ml-auto text-blue-300 text-xl">›</span>
-        </button>
-
-        <button
-          onClick={() => navigate('history')}
-          className="w-full bg-slate-800 active:bg-slate-700 rounded-2xl p-5 text-left flex items-center gap-4 transition-colors"
-        >
-          <span className="text-4xl">📋</span>
-          <div>
-            <div className="font-bold text-lg">History</div>
-            <div className="text-slate-400 text-sm">View past workouts</div>
-          </div>
-          <span className="ml-auto text-slate-500 text-xl">›</span>
-        </button>
-
-        <button
-          onClick={() => navigate('stats')}
-          className="w-full bg-slate-800 active:bg-slate-700 rounded-2xl p-5 text-left flex items-center gap-4 transition-colors"
-        >
-          <span className="text-4xl">📈</span>
-          <div>
-            <div className="font-bold text-lg">Statistics</div>
-            <div className="text-slate-400 text-sm">Progress & frequency</div>
-          </div>
-          <span className="ml-auto text-slate-500 text-xl">›</span>
-        </button>
+        {ITEMS.map(item => (
+          <button
+            key={item.screen}
+            onClick={() => navigate(item.screen)}
+            className="w-full bg-slate-800 active:bg-slate-700 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors"
+          >
+            <span className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center text-2xl shrink-0`}>
+              {item.icon}
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="font-bold text-slate-100">{item.title}</div>
+              <div className={`text-xs mt-0.5 ${item.accent}`}>{item.sub}</div>
+            </div>
+            <span className="text-slate-600 text-xl shrink-0">›</span>
+          </button>
+        ))}
       </div>
     </div>
   );
