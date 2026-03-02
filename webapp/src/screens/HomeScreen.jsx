@@ -4,10 +4,10 @@ const ITEMS = [
   {
     screen: 'workout',
     icon: '🏋️',
-    iconBg: 'bg-blue-600',
+    iconBg: 'bg-slate-600',
     title: 'New Workout',
     sub: 'Start Day A, B, C or Cardio',
-    accent: 'text-blue-300',
+    accent: 'text-slate-400',
   },
   {
     screen: 'history',
