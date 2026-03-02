@@ -19,9 +19,9 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def main():
-    token = os.environ.get("BOT_TOKEN")
+    token = os.environ.get("BOT_TOKEN") or os.environ.get("TELEGRAM_BOT_TOKEN")
     if not token:
-        raise RuntimeError("BOT_TOKEN environment variable is not set!")
+        raise RuntimeError("BOT_TOKEN or TELEGRAM_BOT_TOKEN environment variable is not set!")
 
     db_ops.init_db()
 
