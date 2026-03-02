@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Workout Tracker</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      // Catch ALL JS errors and show them instead of blank screen
+      window.__errors = [];
+      window.onerror = function(msg, src, line, col, err) {
+        window.__errors.push('ERROR: ' + msg + '\nat ' + src + ':' + line);
+        var d = document.getElementById('__err');
+        if (!d) { d = document.createElement('div'); d.id = '__err'; d.style = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#0f172a;color:#f87171;padding:20px;font-family:monospace;font-size:13px;z-index:9999;overflow:auto;white-space:pre-wrap;'; document.body.appendChild(d); }
+        d.textContent = window.__errors.join('\n\n');
+        return false;
+      };
+      window.onunhandledrejection = function(e) {
+        var msg = e.reason && e.reason.message ? e.reason.message : String(e.reason);
+        window.__errors.push('PROMISE: ' + msg);
+        var d = document.getElementById('__err');
+        if (!d) { d = document.createElement('div'); d.id = '__err'; d.style = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#0f172a;color:#fb923c;padding:20px;font-family:monospace;font-size:13px;z-index:9999;overflow:auto;white-space:pre-wrap;'; document.body.appendChild(d); }
+        d.textContent = window.__errors.join('\n\n');
+      };
+    </script>
   </head>
   <body>
     <div id="root"></div>
