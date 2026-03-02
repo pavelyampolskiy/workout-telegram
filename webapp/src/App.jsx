@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useEffect, useCallback } from 'react';
+import { useState, createContext, useContext, useEffect, useCallback, Component } from 'react';
 
 import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
@@ -25,25 +25,56 @@ const SCREENS = {
   progress: ProgressScreen,
 };
 
+// Error boundary to catch rendering errors instead of blank screen
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { error: error?.message || String(error) };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 text-center">
+          <div className="text-4xl mb-4">⚠️</div>
+          <div className="text-red-400 font-semibold mb-2">Something went wrong</div>
+          <div className="text-slate-500 text-xs mb-6">{this.state.error}</div>
+          <button
+            onClick={() => this.setState({ error: null })}
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold"
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
-  // Shared active workout state so DayScreen survives ExerciseScreen navigation
   const [activeWorkout, setActiveWorkout] = useState(null);
 
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;
 
   useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-      const uid = tg.initDataUnsafe?.user?.id;
-      setUserId(uid || 0);
-    } else {
-      // Fallback for browser testing
-      setUserId(parseInt(localStorage.getItem('test_uid') || '1'));
+    try {
+      const tg = window.Telegram?.WebApp;
+      if (tg) {
+        tg.ready();
+        try { tg.expand(); } catch (_) {}
+        const uid = tg.initDataUnsafe?.user?.id;
+        setUserId(uid ? Number(uid) : 0);
+      } else {
+        setUserId(parseInt(localStorage.getItem('test_uid') || '1'));
+      }
+    } catch (e) {
+      setUserId(1);
     }
   }, []);
 
@@ -60,18 +91,20 @@ export default function App() {
     setActiveWorkout(null);
   }, []);
 
-  // Telegram native back button
+  // Telegram native back button — defensive
   useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (!tg) return;
-    if (stack.length > 1) {
-      tg.BackButton.show();
-    } else {
-      tg.BackButton.hide();
-    }
-    const handler = () => goBack();
-    tg.BackButton.onClick(handler);
-    return () => tg.BackButton.offClick(handler);
+    try {
+      const tg = window.Telegram?.WebApp;
+      if (!tg?.BackButton) return;
+      if (stack.length > 1) {
+        tg.BackButton.show();
+      } else {
+        tg.BackButton.hide();
+      }
+      const handler = () => goBack();
+      tg.BackButton.onClick(handler);
+      return () => { try { tg.BackButton.offClick(handler); } catch (_) {} };
+    } catch (_) {}
   }, [stack.length, goBack]);
 
   if (userId === null) {
@@ -95,7 +128,9 @@ export default function App() {
       }}
     >
       <div className="min-h-screen bg-slate-900 text-slate-100 max-w-lg mx-auto">
-        <Screen />
+        <ErrorBoundary key={current.screen}>
+          <Screen />
+        </ErrorBoundary>
       </div>
     </AppCtx.Provider>
   );
