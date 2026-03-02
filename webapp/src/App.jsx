@@ -37,7 +37,7 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.error) {
       return (
-        <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-6 text-center">
+        <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center">
           <div className="text-4xl mb-4">⚠️</div>
           <div className="text-red-400 font-semibold mb-2">Something went wrong</div>
           <div className="text-slate-500 text-xs mb-6">{this.state.error}</div>
@@ -109,7 +109,7 @@ export default function App() {
 
   if (userId === null) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-slate-400">
+      <div className="min-h-screen bg-black flex items-center justify-center text-slate-400">
         Loading…
       </div>
     );
@@ -127,7 +127,7 @@ export default function App() {
         setActiveWorkout,
       }}
     >
-      <div className="min-h-screen bg-slate-900 text-slate-100 max-w-lg mx-auto">
+      <div className="min-h-screen bg-black text-slate-100 max-w-lg mx-auto">
         <ErrorBoundary key={current.screen}>
           <Screen />
         </ErrorBoundary>
