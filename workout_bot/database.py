@@ -35,7 +35,14 @@ def init_db():
                 user_id INTEGER NOT NULL,
                 date TEXT NOT NULL,
                 type TEXT NOT NULL  -- DAY_A / DAY_B / DAY_C / CARDIO
-            );
+            );""")
+        # Migration: add date column if it was missing in older schema
+        try:
+            conn.execute("ALTER TABLE workouts ADD COLUMN date TEXT NOT NULL DEFAULT ''")
+            conn.commit()
+        except Exception:
+            pass  # Column already exists
+        conn.executescript("""
 
             CREATE TABLE IF NOT EXISTS workout_exercises (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
