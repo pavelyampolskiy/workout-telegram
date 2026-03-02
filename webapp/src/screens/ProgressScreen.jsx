@@ -98,7 +98,7 @@ export default function ProgressScreen() {
 
   return (
     <div className="p-5">
-      <h1 className="text-xl font-bold pt-2 mb-5">Progress</h1>
+      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Progress</h1>
 
       {/* Exercise selector */}
       <div className="relative mb-5">

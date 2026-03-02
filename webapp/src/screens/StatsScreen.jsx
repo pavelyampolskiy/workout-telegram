@@ -76,11 +76,11 @@ export default function StatsScreen() {
       return (
         <div className="space-y-4">
           <div className="bg-slate-800 rounded-2xl p-5 text-center">
-            <div className="text-5xl font-bold text-orange-400 mb-1">{total}</div>
+            <div className="text-5xl font-bebas text-orange-400 mb-1">{total}</div>
             <div className="text-slate-400 text-sm">workouts in {weeks} weeks</div>
           </div>
           <div className="bg-slate-800 rounded-2xl p-5 text-center">
-            <div className="text-5xl font-bold text-yellow-400 mb-1">{avg}</div>
+            <div className="text-5xl font-bebas text-yellow-400 mb-1">{avg}</div>
             <div className="text-slate-400 text-sm">avg per week</div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function StatsScreen() {
     return (
       <div className="space-y-4">
         <div className="bg-slate-800 rounded-2xl p-5 text-center">
-          <div className="text-5xl font-bold text-blue-400 mb-1">{total}</div>
+          <div className="text-5xl font-bebas text-blue-400 mb-1">{total}</div>
           <div className="text-slate-400 text-sm">total workouts</div>
         </div>
 
@@ -137,7 +137,7 @@ export default function StatsScreen() {
 
   return (
     <div className="p-5">
-      <h1 className="text-xl font-bold pt-2 mb-5">Statistics</h1>
+      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Statistics</h1>
 
       {/* Tabs */}
       <div className="flex gap-1 mb-5 bg-slate-800 p-1 rounded-2xl overflow-x-auto">

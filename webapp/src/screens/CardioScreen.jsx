@@ -35,7 +35,7 @@ export default function CardioScreen() {
     <div className="p-5">
       <div className="pt-2 mb-6">
         <div className="text-4xl mb-2">❤️</div>
-        <h1 className="text-xl font-bold">Cardio</h1>
+        <h1 className="text-xl font-bebas tracking-wider">Cardio</h1>
         <p className="text-slate-400 text-sm mt-1">Describe your session</p>
       </div>
 

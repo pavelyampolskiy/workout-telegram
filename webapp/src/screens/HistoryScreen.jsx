@@ -60,7 +60,7 @@ export default function HistoryScreen() {
 
   return (
     <div className="p-5">
-      <h1 className="text-xl font-bold pt-2 mb-5">History</h1>
+      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">History</h1>
 
       {items.length === 0 ? (
         <div className="text-center text-slate-500 py-16">

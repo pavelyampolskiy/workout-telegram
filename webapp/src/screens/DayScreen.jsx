@@ -97,7 +97,7 @@ export default function DayScreen() {
       <div className="p-5">
         <div className="pt-4 mb-2">
           <span className="text-3xl">✅</span>
-          <h2 className="text-xl font-bold mt-2">Workout saved!</h2>
+          <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
           <p className="text-slate-400 text-sm mt-1">Add a note (optional)</p>
         </div>
         <textarea
@@ -128,7 +128,7 @@ export default function DayScreen() {
     <div className="pb-32">
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
-        <h1 className="text-xl font-bold">{dayLabel}</h1>
+        <h1 className="text-xl font-bebas tracking-wider">{dayLabel}</h1>
         <button onClick={handleCancel} className="text-red-400 text-sm font-medium">
           Cancel
         </button>

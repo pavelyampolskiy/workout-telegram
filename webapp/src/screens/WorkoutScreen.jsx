@@ -12,7 +12,7 @@ export default function WorkoutScreen() {
 
   return (
     <div className="p-5">
-      <h1 className="text-xl font-bold mb-6 pt-2">New Workout</h1>
+      <h1 className="text-xl font-bold mb-6 pt-2 font-bebas tracking-wider">New Workout</h1>
       <div className="space-y-3">
         {OPTIONS.map(o => (
           <button

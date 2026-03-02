@@ -121,7 +121,7 @@ export default function ExerciseScreen() {
           <span className="text-2xl">{emoji}</span>
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{ex?.group}</span>
         </div>
-        <h1 className="text-xl font-bold text-slate-100 leading-tight">{ex?.name}</h1>
+        <h1 className="text-xl font-bebas tracking-wider text-slate-100 leading-tight">{ex?.name}</h1>
 
         {/* Progress bar */}
         <div className="mt-3 flex items-center gap-3">

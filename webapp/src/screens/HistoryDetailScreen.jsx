@@ -59,7 +59,7 @@ export default function HistoryDetailScreen() {
         <div className="flex items-center gap-3 mb-1">
           <span className="font-mono text-slate-400 text-sm">{workout.date}</span>
         </div>
-        <h1 className="text-xl font-bold">{dayLabel(workout.type)}</h1>
+        <h1 className="text-xl font-bebas tracking-wider">{dayLabel(workout.type)}</h1>
       </div>
 
       {/* Cardio */}
