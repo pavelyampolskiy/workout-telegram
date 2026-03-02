@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 
-const MUSCLE_EMOJI = {
-  LEGS: '🦵', BACK: '🏋️', CHEST: '💪', BICEPS: '💪', TRICEPS: '🦾', SHOULDERS: '🎯',
-};
+const NUM_EMOJI = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣'];
 
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, activeWorkout, setActiveWorkout } = useApp();
@@ -143,7 +141,6 @@ export default function DayScreen() {
           const done = info?.setsCount || 0;
           const total = ex.target_sets;
           const complete = done >= total;
-          const emoji = MUSCLE_EMOJI[ex.group] || '💪';
 
           return (
             <button
@@ -155,7 +152,7 @@ export default function DayScreen() {
                   : 'bg-slate-800 active:bg-slate-700'
               }`}
             >
-              <span className="text-2xl shrink-0">{emoji}</span>
+              <span className="text-2xl shrink-0">{NUM_EMOJI[idx] || String(idx + 1)}</span>
               <div className="flex-1 min-w-0">
                 <div className={`font-semibold text-sm leading-tight ${complete ? 'text-green-400' : 'text-slate-100'}`}>
                   {ex.name}
