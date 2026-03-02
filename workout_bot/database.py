@@ -29,11 +29,11 @@ def db():
 
 def init_db():
     with db() as conn:
-        # Check if workouts table is missing the date column and recreate if needed
-        try:
-            conn.execute("SELECT date FROM workouts LIMIT 1")
-        except Exception:
-            # Old schema without date column — drop and recreate
+        # Check exact schema — drop all tables if workouts is missing required columns
+        info = conn.execute("PRAGMA table_info(workouts)").fetchall()
+        existing = {row[1] for row in info}
+        needed = {'id', 'user_id', 'date', 'type'}
+        if not needed.issubset(existing):
             conn.execute("DROP TABLE IF EXISTS workout_notes")
             conn.execute("DROP TABLE IF EXISTS cardio_entries")
             conn.execute("DROP TABLE IF EXISTS workout_sets")
