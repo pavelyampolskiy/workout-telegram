@@ -1,0 +1,186 @@
+import { useState, useEffect } from 'react';
+import { useApp } from '../App';
+import { api } from '../api';
+
+function fmtW(w) {
+  return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
+}
+
+function LineChart({ data }) {
+  if (!data || data.length < 2) return null;
+  const W = 300, H = 100, PAD = 16;
+  const weights = data.map(d => d.max_weight);
+  const minW = Math.min(...weights);
+  const maxW = Math.max(...weights);
+  const range = maxW - minW || 1;
+  const xs = data.map((_, i) => PAD + (i / (data.length - 1)) * (W - PAD * 2));
+  const ys = weights.map(w => H - PAD - ((w - minW) / range) * (H - PAD * 2));
+  const pathD = xs.map((x, i) => `${i === 0 ? 'M' : 'L'}${x},${ys[i]}`).join(' ');
+  const areaD = `${pathD} L${xs[xs.length - 1]},${H} L${xs[0]},${H} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 100 }}>
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={areaD} fill="url(#grad)" />
+      <path d={pathD} fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinejoin="round" />
+      {xs.map((x, i) => (
+        <circle key={i} cx={x} cy={ys[i]} r={4} fill="#3b82f6" />
+      ))}
+    </svg>
+  );
+}
+
+export default function ProgressScreen() {
+  const { userId } = useApp();
+  const [program, setProgram] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [progress, setProgress] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadingProg, setLoadingProg] = useState(false);
+  const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    api.getProgram()
+      .then(p => {
+        // Deduplicate exercises across days
+        const seen = new Set();
+        const list = [];
+        for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) {
+          for (const ex of p[day]) {
+            if (!seen.has(ex.name)) {
+              seen.add(ex.name);
+              list.push(ex);
+            }
+          }
+        }
+        setProgram(list);
+      })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleSelect = async (ex) => {
+    setSelected(ex);
+    setOpen(false);
+    setLoadingProg(true);
+    try {
+      const data = await api.getProgress(userId, ex.name);
+      setProgress(data);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoadingProg(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-screen text-slate-400">Loading…</div>;
+  }
+  if (error) {
+    return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
+  }
+
+  const trend = () => {
+    if (!progress || progress.length < 2) return null;
+    const delta = progress[progress.length - 1].max_weight - progress[0].max_weight;
+    if (delta > 0) return { text: `↑ +${fmtW(delta)} kg`, color: 'text-green-400' };
+    if (delta < 0) return { text: `↓ ${fmtW(delta)} kg`, color: 'text-red-400' };
+    return { text: '→ No change', color: 'text-slate-400' };
+  };
+
+  const t = trend();
+
+  return (
+    <div className="p-5">
+      <h1 className="text-xl font-bold pt-2 mb-5">Progress</h1>
+
+      {/* Exercise selector */}
+      <div className="relative mb-5">
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-full bg-slate-800 active:bg-slate-700 rounded-2xl p-4 text-left flex items-center justify-between transition-colors"
+        >
+          <span className={selected ? 'text-slate-100 font-semibold' : 'text-slate-400'}>
+            {selected ? selected.name : 'Select exercise…'}
+          </span>
+          <span className="text-slate-500 text-lg">{open ? '▲' : '▼'}</span>
+        </button>
+
+        {open && (
+          <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden shadow-xl max-h-60 overflow-y-auto">
+            {program.map((ex, i) => (
+              <button
+                key={i}
+                onClick={() => handleSelect(ex)}
+                className="w-full text-left px-4 py-3 hover:bg-slate-700 active:bg-slate-700 border-b border-slate-700/50 last:border-0 transition-colors"
+              >
+                <div className="text-sm font-medium text-slate-200">{ex.name}</div>
+                <div className="text-xs text-slate-500">{ex.group}</div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Progress data */}
+      {loadingProg && (
+        <div className="text-center text-slate-400 py-12">Loading data…</div>
+      )}
+
+      {!loadingProg && selected && progress && (
+        progress.length === 0 ? (
+          <div className="text-center text-slate-500 py-12">
+            <div className="text-4xl mb-3">📭</div>
+            <p>No data yet for {selected.name}</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {/* Trend */}
+            {t && (
+              <div className="bg-slate-800 rounded-2xl p-4 flex items-center gap-3">
+                <span className={`text-2xl font-bold ${t.color}`}>{t.text}</span>
+                <span className="text-slate-400 text-sm">over {progress.length} sessions</span>
+              </div>
+            )}
+
+            {/* Chart */}
+            <div className="bg-slate-800 rounded-2xl p-4">
+              <div className="text-xs text-slate-400 mb-3 uppercase tracking-wider font-semibold">
+                Max weight per session (kg)
+              </div>
+              <LineChart data={progress} />
+            </div>
+
+            {/* Session list */}
+            <div className="bg-slate-800 rounded-2xl p-4">
+              <div className="text-xs text-slate-400 mb-3 uppercase tracking-wider font-semibold">
+                Sessions
+              </div>
+              <div className="space-y-2">
+                {[...progress].reverse().map((r, i) => (
+                  <div key={i} className="flex items-center justify-between">
+                    <span className="text-slate-400 text-sm font-mono">{r.date}</span>
+                    <span className="text-slate-200 font-semibold">{fmtW(r.max_weight)} kg</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      )}
+
+      {!selected && !loadingProg && (
+        <div className="text-center text-slate-500 py-16">
+          <div className="text-5xl mb-3">📊</div>
+          <p>Select an exercise above</p>
+        </div>
+      )}
+    </div>
+  );
+}
