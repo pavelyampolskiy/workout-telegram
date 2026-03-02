@@ -4,7 +4,7 @@ const ITEMS = [
   {
     screen: 'workout',
     icon: '🏋️',
-    iconBg: 'bg-slate-600',
+    iconBg: 'bg-white',
     title: 'New Workout',
     sub: 'Start Day A, B, C or Cardio',
     accent: 'text-slate-400',
@@ -12,7 +12,7 @@ const ITEMS = [
   {
     screen: 'history',
     icon: '📋',
-    iconBg: 'bg-slate-600',
+    iconBg: 'bg-white',
     title: 'History',
     sub: 'View past workouts',
     accent: 'text-slate-400',
@@ -20,7 +20,7 @@ const ITEMS = [
   {
     screen: 'stats',
     icon: '📊',
-    iconBg: 'bg-slate-600',
+    iconBg: 'bg-white',
     title: 'Statistics',
     sub: 'Progress & frequency',
     accent: 'text-slate-400',
