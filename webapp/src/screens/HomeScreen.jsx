@@ -42,7 +42,7 @@ export default function HomeScreen() {
       <div className="relative z-10 p-5">
         <div className="pt-6 pb-8">
           <h1 className="text-3xl font-extrabold text-white leading-tight">Hey, pussy! 💪</h1>
-          <p className="text-slate-300 text-sm mt-1">What's the plan today?</p>
+          <p className="text-slate-300 text-sm mt-1">Are you ready?</p>
         </div>
 
         <div className="space-y-3">
