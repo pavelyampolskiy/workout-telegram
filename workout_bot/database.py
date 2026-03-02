@@ -29,19 +29,25 @@ def db():
 
 def init_db():
     with db() as conn:
+        # Check if workouts table is missing the date column and recreate if needed
+        try:
+            conn.execute("SELECT date FROM workouts LIMIT 1")
+        except Exception:
+            # Old schema without date column — drop and recreate
+            conn.execute("DROP TABLE IF EXISTS workout_notes")
+            conn.execute("DROP TABLE IF EXISTS cardio_entries")
+            conn.execute("DROP TABLE IF EXISTS workout_sets")
+            conn.execute("DROP TABLE IF EXISTS workout_exercises")
+            conn.execute("DROP TABLE IF EXISTS workouts")
+            conn.commit()
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS workouts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER NOT NULL,
                 date TEXT NOT NULL,
-                type TEXT NOT NULL  -- DAY_A / DAY_B / DAY_C / CARDIO
-            );""")
-        # Migration: add date column if it was missing in older schema
-        try:
-            conn.execute("ALTER TABLE workouts ADD COLUMN date TEXT NOT NULL DEFAULT ''")
-            conn.commit()
-        except Exception:
-            pass  # Column already exists
+                type TEXT NOT NULL
+            );
+        """)
         conn.executescript("""
 
             CREATE TABLE IF NOT EXISTS workout_exercises (
