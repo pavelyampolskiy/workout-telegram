@@ -55,7 +55,7 @@ export default function HomeScreen() {
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <div className="font-bold text-white">{item.title}</div>
+                <div className="font-bebas tracking-wider text-lg text-white">{item.title}</div>
                 <div className={`text-xs mt-0.5 ${item.accent}`}>{item.sub}</div>
               </div>
               <span className="text-white/40 text-xl shrink-0">›</span>
