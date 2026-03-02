@@ -154,7 +154,7 @@ export default function DayScreen() {
             >
               <span className="text-2xl shrink-0">{NUM_EMOJI[idx] || String(idx + 1)}</span>
               <div className="flex-1 min-w-0">
-                <div className={`font-semibold text-sm leading-tight ${complete ? 'text-green-400' : 'text-slate-100'}`}>
+                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-green-400' : 'text-slate-100'}`}>
                   {ex.name}
                 </div>
                 <div className="text-slate-500 text-xs mt-1">{ex.group}</div>
