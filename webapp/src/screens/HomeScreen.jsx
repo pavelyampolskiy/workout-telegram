@@ -39,12 +39,10 @@ export default function HomeScreen() {
       {/* Content */}
       <div className="relative z-10 p-5">
         <div className="pt-6 pb-10">
-          <h1
-            className="font-bebas text-white/85 leading-none w-full"
-            style={{ fontSize: '11vw', wordSpacing: '0.6em', letterSpacing: '0.45em' }}
-          >
-            Are you ready?
-          </h1>
+          <div className="font-bebas text-white/85 leading-none w-full" style={{ letterSpacing: '0.45em' }}>
+            <div style={{ fontSize: '9vw', wordSpacing: '0.6em' }}>Are you</div>
+            <div style={{ fontSize: '17vw' }}>Ready?</div>
+          </div>
         </div>
 
         <div className="space-y-16">
