@@ -48,6 +48,10 @@ def init_db():
                 type TEXT NOT NULL
             );
         """)
+        # Safe migration: add created_at if missing
+        cols = {row[1] for row in conn.execute("PRAGMA table_info(workouts)").fetchall()}
+        if 'created_at' not in cols:
+            conn.execute("ALTER TABLE workouts ADD COLUMN created_at TEXT")
         conn.executescript("""
 
             CREATE TABLE IF NOT EXISTS workout_exercises (
@@ -86,8 +90,8 @@ def init_db():
 def create_workout(user_id: int, workout_type: str) -> int:
     with db() as conn:
         cur = conn.execute(
-            "INSERT INTO workouts (user_id, date, type) VALUES (?, ?, ?)",
-            (user_id, date.today().isoformat(), workout_type),
+            "INSERT INTO workouts (user_id, date, type, created_at) VALUES (?, ?, ?, ?)",
+            (user_id, date.today().isoformat(), workout_type, datetime.utcnow().isoformat()),
         )
         return cur.lastrowid
 
@@ -112,6 +116,7 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10):
         rows = conn.execute(
             """
             SELECT w.id, w.date, w.type,
+                   COALESCE(w.created_at, MIN(ws.ts)) AS started_at,
                    COUNT(ws.id) AS total_sets,
                    COALESCE(CAST(SUM(ws.weight * ws.reps) AS INTEGER), 0) AS total_volume
             FROM workouts w

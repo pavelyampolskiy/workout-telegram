@@ -79,7 +79,7 @@ def get_workout(workout_id: int):
 def get_history(user_id: int, offset: int = 0, limit: int = 10):
     rows, has_more = db_ops.get_history(user_id, offset, limit)
     return {
-        "items": [{"id": r["id"], "date": r["date"], "type": r["type"], "total_sets": r["total_sets"], "total_volume": r["total_volume"]} for r in rows],
+        "items": [{"id": r["id"], "date": r["date"], "type": r["type"], "started_at": r["started_at"], "total_sets": r["total_sets"], "total_volume": r["total_volume"]} for r in rows],
         "has_more": has_more,
     }
 

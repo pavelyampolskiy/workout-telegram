@@ -20,6 +20,14 @@ function formatDate(dateStr) {
   return `${day} ${MONTHS_ABBR[parseInt(month) - 1]} ${year}`;
 }
 
+// "14:32" from ISO datetime string (UTC → local)
+function formatTime(isoStr) {
+  if (!isoStr) return null;
+  const d = new Date(isoStr.includes('T') ? isoStr : isoStr.replace(' ', 'T') + 'Z');
+  if (isNaN(d.getTime())) return null;
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+
 function fmtLabel(type) {
   if (type === 'CARDIO') return 'Cardio';
   return type.replace('DAY_', 'Day ');
@@ -135,8 +143,15 @@ export default function HistoryScreen() {
                         <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.05em' }}>
                           {fmtLabel(w.type)}
                         </div>
-                        <div className="font-bebas text-white/40 mt-1" style={{ fontSize: '14px', letterSpacing: '0.08em' }}>
-                          {formatDate(w.date)}
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="font-bebas text-white/40" style={{ fontSize: '14px', letterSpacing: '0.08em' }}>
+                            {formatDate(w.date)}
+                          </span>
+                          {formatTime(w.started_at) && (
+                            <span className="font-bebas text-white/25" style={{ fontSize: '13px', letterSpacing: '0.05em' }}>
+                              {formatTime(w.started_at)}
+                            </span>
+                          )}
                         </div>
                         {summary ? (
                           <div className="text-white/35 mt-1.5 leading-snug" style={{ fontSize: '11px' }}>
