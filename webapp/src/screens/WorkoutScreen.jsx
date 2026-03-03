@@ -26,24 +26,30 @@ export default function WorkoutScreen() {
   const { navigate } = useApp();
 
   return (
-    <div className="p-5">
-      <h1 className="text-xl font-bold mb-6 pt-2 font-bebas tracking-wider">New Workout</h1>
-      <div className="space-y-3">
-        {OPTIONS.map(o => (
-          <button
-            key={o.key}
-            onClick={() => navigate(o.key === 'CARDIO' ? 'cardio' : 'day', { day: o.key })}
-            className="w-full bg-white/10 backdrop-blur-sm active:bg-white/20 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors"
-          >
-            <span className="w-10 h-10 rounded-xl border border-white/20 flex items-center justify-center text-white shrink-0">
-              {o.icon}
-            </span>
-            <div className="min-w-0">
-              <div className="font-bebas tracking-wider text-lg text-slate-100">{o.label}</div>
-            </div>
-            <span className="ml-auto text-slate-500 text-xl shrink-0">›</span>
-          </button>
-        ))}
+    <div
+      className="min-h-screen relative"
+      style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="relative z-10 p-5">
+        <h1 className="text-xl font-bold mb-6 pt-2 font-bebas tracking-wider">New Workout</h1>
+        <div className="space-y-3">
+          {OPTIONS.map(o => (
+            <button
+              key={o.key}
+              onClick={() => navigate(o.key === 'CARDIO' ? 'cardio' : 'day', { day: o.key })}
+              className="w-full bg-black/40 backdrop-blur-sm active:bg-black/60 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.06)]"
+            >
+              <span className="w-10 h-10 rounded-xl border border-white/20 flex items-center justify-center text-white shrink-0">
+                {o.icon}
+              </span>
+              <div className="min-w-0">
+                <div className="font-bebas tracking-wider text-lg text-white">{o.label}</div>
+              </div>
+              <span className="ml-auto text-white/40 text-xl shrink-0">›</span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

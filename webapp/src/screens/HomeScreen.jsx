@@ -41,7 +41,7 @@ export default function HomeScreen() {
         <div className="pt-6 pb-10">
           <div className="font-bebas text-white/85 leading-none w-full" style={{ letterSpacing: '0.45em' }}>
             <div style={{ fontSize: '9vw', wordSpacing: '0.6em' }}>Are you</div>
-            <div style={{ fontSize: '17vw' }}>Ready?</div>
+            <div style={{ fontSize: '17vw', letterSpacing: '1.9em' }}>Ready?</div>
           </div>
         </div>
 
