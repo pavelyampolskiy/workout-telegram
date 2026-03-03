@@ -97,6 +97,11 @@ def delete_workout(workout_id: int):
         conn.execute("DELETE FROM workouts WHERE id=?", (workout_id,))
 
 
+def delete_all_workouts(user_id: int):
+    with db() as conn:
+        conn.execute("DELETE FROM workouts WHERE user_id=?", (user_id,))
+
+
 def get_workout(workout_id: int):
     with db() as conn:
         return conn.execute("SELECT * FROM workouts WHERE id=?", (workout_id,)).fetchone()

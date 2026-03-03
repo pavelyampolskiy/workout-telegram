@@ -28,6 +28,7 @@ export const api = {
   getWorkout: (id) => req('GET', `/api/workouts/${id}`),
   getHistory: (user_id, offset = 0, limit = 10) =>
     req('GET', `/api/history?user_id=${user_id}&offset=${offset}&limit=${limit}`),
+  deleteAllHistory: (user_id) => req('DELETE', `/api/history?user_id=${user_id}`),
 
   createExercise: (workout_id, grp, name, target_sets) =>
     req('POST', `/api/workouts/${workout_id}/exercises`, { grp, name, target_sets }),

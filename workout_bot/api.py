@@ -84,6 +84,12 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10):
     }
 
 
+@app.delete("/api/history")
+def delete_all_history(user_id: int):
+    db_ops.delete_all_workouts(user_id)
+    return {"ok": True}
+
+
 # ── Exercises ─────────────────────────────────────────────────────────────────
 
 class ExerciseBody(BaseModel):
