@@ -151,7 +151,7 @@ export default function ExerciseScreen() {
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
         <div className="rounded-2xl p-3 mb-5 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
-          <div className="flex items-center gap-1 text-xs text-white/40 mb-1.5">
+          <div className="flex items-center gap-1 text-xs text-white/40 mb-1.5 font-bebas tracking-wider">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3.5 3.5"/>
@@ -175,7 +175,7 @@ export default function ExerciseScreen() {
         </div>
         <div className="flex gap-3 mb-4">
           <div className="flex-1">
-            <label className="text-xs mb-1 block" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+            <label className="text-xs mb-1 block font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
             <input
               ref={weightRef}
               type="number"
@@ -190,7 +190,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="flex items-end pb-0.5 text-white/30 text-xl font-bebas">×</div>
           <div className="flex-1">
-            <label className="text-xs mb-1 block" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+            <label className="text-xs mb-1 block font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
             <input
               type="number"
               inputMode="numeric"
@@ -215,7 +215,7 @@ export default function ExerciseScreen() {
               : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
           }
         >
-          {saving ? 'Saving…' : '✓ Save Set'}
+          {saving ? 'Saving…' : 'Save Set'}
         </button>
       </div>
 
@@ -255,11 +255,8 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="card-press flex-1 bg-white/8 border border-white/15 text-white/92 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5"
+            className="card-press flex-1 bg-white/8 border border-white/15 text-white/92 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
             Finish Exercise
           </button>
         </div>
