@@ -125,7 +125,12 @@ export default function DayScreen() {
   }
 
   return (
-    <div className="pb-32">
+    <div
+      className="min-h-screen relative pb-32"
+      style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="absolute inset-0 bg-black/65" />
+      <div className="relative z-10">
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
         <h1 className="text-xl font-bebas tracking-wider">{dayLabel}</h1>
@@ -198,6 +203,7 @@ export default function DayScreen() {
         >
           Save Workout
         </button>
+      </div>
       </div>
     </div>
   );
