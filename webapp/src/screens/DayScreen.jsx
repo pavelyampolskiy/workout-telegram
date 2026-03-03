@@ -94,7 +94,7 @@ export default function DayScreen() {
     return (
       <div className="p-5">
         <div className="pt-4 mb-2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-green-400">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-green-400">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
           <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>

@@ -41,7 +41,7 @@ export default function CardioScreen() {
       <div className="relative z-10 p-5">
         <div className="pt-2 mb-6">
           <div className="mb-2 text-white">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9">
               <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
             </svg>
           </div>

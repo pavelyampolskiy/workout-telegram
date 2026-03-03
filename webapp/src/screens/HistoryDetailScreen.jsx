@@ -70,7 +70,7 @@ export default function HistoryDetailScreen() {
       {workout.exercises?.map(ex => (
         <div key={ex.id} className="bg-slate-800 rounded-2xl p-4 mb-3">
           <div className="flex items-center gap-2 mb-3">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
               <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
             </svg>
             <div>
@@ -100,7 +100,7 @@ export default function HistoryDetailScreen() {
       {workout.note && (
         <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
           <div className="flex items-center gap-1 text-xs text-slate-400 mb-1 font-semibold">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
               <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
             </svg>
@@ -133,7 +133,7 @@ export default function HistoryDetailScreen() {
             onClick={() => setConfirming(true)}
             className="w-full bg-slate-800 active:bg-slate-700 text-red-400 font-medium py-3 rounded-2xl border border-red-900/40 flex items-center justify-center gap-2"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
             </svg>
             Delete Workout

@@ -113,7 +113,7 @@ export default function ExerciseScreen() {
       {/* Exercise header */}
       <div className="pt-2 mb-5">
         <div className="flex items-center gap-2 mb-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
           </svg>
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{ex?.group}</span>
@@ -138,7 +138,7 @@ export default function ExerciseScreen() {
       {lastDate && lastSets.length > 0 && (
         <div className="bg-slate-800/60 rounded-xl p-3 mb-5 border border-slate-700/50">
           <div className="flex items-center gap-1 text-xs text-slate-400 mb-1.5">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3.5 3.5"/>
             </svg>
@@ -229,7 +229,7 @@ export default function ExerciseScreen() {
             disabled={!sets.length}
             className="flex-1 bg-slate-800 active:bg-slate-700 disabled:opacity-40 text-red-400 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
             </svg>
             Delete Last
@@ -238,7 +238,7 @@ export default function ExerciseScreen() {
             onClick={handleFinish}
             className="flex-1 bg-green-600 active:bg-green-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M20 6L9 17l-5-5"/>
             </svg>
             Finish Exercise
