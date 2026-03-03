@@ -78,16 +78,12 @@ export default function StatsScreen() {
 
     if (tab === 'freq') {
       const { total, avg, weeks } = data.freq;
-      const thisWeek = data.week?.total || 0;
       return (
         <div className="space-y-4">
           <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas text-white leading-none">{total}</div>
               <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Workouts</div>
-              {thisWeek > 0 && (
-                <div className="text-white/40 text-xs mt-2">+{thisWeek} this week</div>
-              )}
             </div>
           </div>
           <div className={CARD.className} style={CARD.style}>
@@ -107,7 +103,6 @@ export default function StatsScreen() {
     const c = by_type?.DAY_C || 0;
     const cardio = by_type?.CARDIO || 0;
     const maxV = Math.max(a, b, c, cardio, 1);
-    const thisWeek = data.week?.total || 0;
 
     return (
       <div className="space-y-4">
@@ -115,9 +110,6 @@ export default function StatsScreen() {
           <div className="text-center">
             <div className="text-5xl font-bebas text-white leading-none">{total}</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Workouts</div>
-            {tab === 'month' && thisWeek > 0 && (
-              <div className="text-white/40 text-xs mt-2">+{thisWeek} this week</div>
-            )}
           </div>
         </div>
 
