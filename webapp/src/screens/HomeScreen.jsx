@@ -33,7 +33,7 @@ export default function HomeScreen() {
       {/* Blurred background */}
       <div
         className="absolute inset-0 scale-110"
-        style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(6px)' }}
+        style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(3px)' }}
       />
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/65" />
