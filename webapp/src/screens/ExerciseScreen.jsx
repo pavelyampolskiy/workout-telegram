@@ -132,7 +132,7 @@ export default function ExerciseScreen() {
               style={{ width: `${pct}%` }}
             />
           </div>
-          <span className="font-mono shrink-0 text-sm">
+          <span className="font-bebas shrink-0 text-base tracking-wider">
             <span className="text-white/70">{done}/{target}</span>
             <span className="text-white/40"> sets</span>
           </span>
