@@ -28,7 +28,7 @@ export default function HomeScreen() {
           </h1>
         </div>
 
-        <div className="space-y-64">
+        <div className="space-y-16">
           {ITEMS.map(item => (
             <button
               key={item.screen}
