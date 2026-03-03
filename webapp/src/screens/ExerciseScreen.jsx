@@ -141,7 +141,7 @@ export default function ExerciseScreen() {
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
-        <div className="bg-white/8 rounded-xl p-3 mb-5 border border-white/10">
+        <div className="rounded-2xl p-3 mb-5 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
           <div className="flex items-center gap-1 text-xs text-white/40 mb-1.5">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
@@ -160,7 +160,7 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div className="bg-white/10 border border-white/10 rounded-2xl p-4 mb-4">
+      <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
         <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
           Set {done + 1}
         </div>
@@ -207,7 +207,7 @@ export default function ExerciseScreen() {
 
       {/* Recorded sets */}
       {sets.length > 0 && (
-        <div className="bg-white/10 border border-white/10 rounded-2xl p-4 mb-4">
+        <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
           <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
             Recorded sets
           </div>

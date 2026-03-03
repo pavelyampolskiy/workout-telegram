@@ -150,11 +150,11 @@ export default function DayScreen() {
             <button
               key={idx}
               onClick={() => handleExerciseTap(idx)}
-              className={`w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${
-                complete
-                  ? 'bg-white/15 border border-white/18'
-                  : 'card-press bg-white/8 border border-white/8'
-              }`}
+              className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              style={{
+                background: complete ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.65)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
+              }}
             >
               <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
                 {idx + 1}

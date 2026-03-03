@@ -139,7 +139,8 @@ export default function HistoryScreen() {
                     {/* Card */}
                     <button
                       onClick={() => navigate('history-detail', { workoutId: w.id })}
-                      className="card-press flex-1 ml-2 bg-white/5 rounded-xl p-4 text-left"
+                      className="card-press flex-1 ml-2 backdrop-blur-sm rounded-2xl p-4 text-left"
+                      style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
