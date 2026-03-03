@@ -34,7 +34,7 @@ export default function HomeScreen() {
       style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-black/65" />
       {/* Top gradient — deepens header zone */}
       <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-black/60 to-transparent" />
 
@@ -42,8 +42,8 @@ export default function HomeScreen() {
       <div className="relative z-10 p-5">
         <div className="pt-6 pb-10">
           <div className="font-bebas leading-none w-full">
-            <div style={{ fontSize: '9vw', letterSpacing: '0.45em', wordSpacing: '0.6em', color: 'rgba(255,255,255,0.83)' }}>Are you</div>
-            <div style={{ fontSize: '14vw', letterSpacing: '0.52em', color: 'rgba(255,255,255,0.91)' }}>Ready?</div>
+            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.83)' }}>Are you</div>
+            <div style={{ fontSize: '15.5vw', letterSpacing: '0.36em', color: 'rgba(255,255,255,0.91)' }}>Ready?</div>
           </div>
         </div>
 
@@ -52,9 +52,13 @@ export default function HomeScreen() {
             <button
               key={item.screen}
               onClick={() => navigate(item.screen)}
-              className="card-press w-full bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 shadow-[0_0_20px_rgba(255,255,255,0.12)]"
+              className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left flex items-center gap-4"
+              style={{
+                background: 'rgba(0,0,0,0.65)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
+              }}
             >
-              <span className="w-12 h-12 rounded-xl border border-white/20 flex items-center justify-center text-white shrink-0">
+              <span className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
