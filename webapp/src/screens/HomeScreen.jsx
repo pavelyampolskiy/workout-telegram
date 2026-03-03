@@ -29,12 +29,20 @@ export default function HomeScreen() {
   const { navigate } = useApp();
 
   return (
-    <div
-      className="min-h-screen relative"
-      style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Blurred background image */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: 'url(/gym-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(6px)',
+          transform: 'scale(1.06)',
+        }}
+      />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/55" />
+      <div className="absolute inset-0 bg-black/60" />
       {/* Top gradient — deepens header zone */}
       <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-black/60 to-transparent" />
 
