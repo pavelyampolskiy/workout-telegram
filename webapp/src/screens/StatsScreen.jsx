@@ -102,7 +102,7 @@ export default function StatsScreen() {
             onClick={() => navigate('progress')}
             className="card-press text-white/90 font-bebas tracking-wider px-8 py-3.5"
             style={{
-              background: '#1A1A1A',
+              background: 'rgba(26,26,26,0.5)',
               borderRadius: '22px',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
               fontSize: '15px',
