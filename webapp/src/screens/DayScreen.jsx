@@ -149,7 +149,7 @@ export default function DayScreen() {
               className={`w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${
                 complete
                   ? 'bg-green-900/40 border border-green-800/60'
-                  : 'bg-white/10 border border-white/10 active:bg-white/20'
+                  : 'card-press bg-white/10 border border-white/10'
               }`}
             >
               <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">

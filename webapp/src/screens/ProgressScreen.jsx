@@ -104,7 +104,7 @@ export default function ProgressScreen() {
       <div className="relative mb-5">
         <button
           onClick={() => setOpen(!open)}
-          className="w-full bg-white/10 border border-white/10 active:bg-white/20 rounded-2xl p-4 text-left flex items-center justify-between transition-colors"
+          className="card-press w-full bg-white/10 border border-white/10 rounded-2xl p-4 text-left flex items-center justify-between"
         >
           <span className={selected ? 'text-white font-semibold' : 'text-white/40'}>
             {selected ? selected.name : 'Select exercise…'}

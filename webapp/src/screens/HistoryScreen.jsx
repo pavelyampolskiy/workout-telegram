@@ -81,7 +81,7 @@ export default function HistoryScreen() {
             <button
               key={w.id}
               onClick={() => navigate('history-detail', { workoutId: w.id })}
-              className="w-full bg-white/10 backdrop-blur-sm active:bg-white/20 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              className="card-press w-full bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-4 text-left flex items-center gap-3"
             >
               <span className={`text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${dayColor(w.type)}`}>
                 {dayLabel(w.type)}

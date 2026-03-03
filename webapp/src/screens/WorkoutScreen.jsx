@@ -38,7 +38,7 @@ export default function WorkoutScreen() {
             <button
               key={o.key}
               onClick={() => navigate(o.key === 'CARDIO' ? 'cardio' : 'day', { day: o.key })}
-              className="w-full bg-black/40 backdrop-blur-sm active:bg-black/60 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.06)]"
+              className="card-press w-full bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 shadow-[0_0_20px_rgba(255,255,255,0.06)]"
             >
               <span className="w-10 h-10 rounded-xl border border-white/20 flex items-center justify-center text-white shrink-0">
                 {o.icon}
