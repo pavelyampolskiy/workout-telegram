@@ -129,8 +129,8 @@ export default function HistoryScreen() {
 
                   <button
                     onClick={() => navigate('history-detail', { workoutId: w.id })}
-                    className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left"
-                    style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}
+                    className="card-press w-full rounded-2xl p-4 text-left"
+                    style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
@@ -189,7 +189,8 @@ export default function HistoryScreen() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl transition-colors"
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
+                style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
               >
                 Keep history
               </button>

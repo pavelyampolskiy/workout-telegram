@@ -111,7 +111,8 @@ export default function DayScreen() {
         <button
           onClick={handleFinish}
           disabled={saving}
-          className="card-press w-full mt-3 bg-white/10 border border-white/15 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
+          className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
         >
           {saving ? 'Saving…' : 'Done'}
         </button>
@@ -150,10 +151,11 @@ export default function DayScreen() {
             <button
               key={idx}
               onClick={() => handleExerciseTap(idx)}
-              className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
               style={{
-                background: complete ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.65)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
+                background: complete ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)',
               }}
             >
               <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
@@ -201,7 +203,8 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
-          className="card-press w-full bg-white/5 border border-white/[0.075] text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
+          className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
         >
           Save Workout
         </button>
@@ -216,7 +219,8 @@ export default function DayScreen() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowCancelConfirm(false)}
-                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl transition-colors"
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
+                style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
               >
                 Keep working
               </button>

@@ -58,7 +58,8 @@ export default function CardioScreen() {
         <button
           onClick={handleSave}
           disabled={saving || !text.trim() || !workoutId}
-          className="card-press w-full mt-4 bg-white/10 border border-white/15 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
+          className="card-press w-full mt-4 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
         >
           {saving ? 'Saving…' : 'Save Cardio'}
         </button>

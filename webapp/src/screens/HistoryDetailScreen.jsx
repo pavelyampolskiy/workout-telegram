@@ -124,8 +124,8 @@ export default function HistoryDetailScreen() {
           <div className="flex flex-col gap-2">
             <button
               onClick={() => setConfirming(false)}
-              className="card-press w-full backdrop-blur-sm text-white/90 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-              style={CARD_STYLE}
+              className="card-press w-full text-white/90 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+              style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
             >
               Keep workout
             </button>
