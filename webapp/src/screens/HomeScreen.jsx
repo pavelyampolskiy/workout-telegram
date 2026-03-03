@@ -1,9 +1,28 @@
 import { useApp } from '../App';
 
+const WorkoutIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
+  </svg>
+);
+
+const HistoryIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 7v5l3.5 3.5"/>
+  </svg>
+);
+
+const StatsIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <path d="M4 20V12M8 20V16M12 20V8M16 20V14M20 20V4"/>
+  </svg>
+);
+
 const ITEMS = [
-  { screen: 'workout', icon: '🏋️', iconBg: 'bg-white', title: 'New Workout' },
-  { screen: 'history', icon: '📋', iconBg: 'bg-white', title: 'History' },
-  { screen: 'stats',   icon: '📊', iconBg: 'bg-white', title: 'Statistics' },
+  { screen: 'workout', icon: <WorkoutIcon />, title: 'New Workout' },
+  { screen: 'history', icon: <HistoryIcon />, title: 'History' },
+  { screen: 'stats',   icon: <StatsIcon />,   title: 'Statistics' },
 ];
 
 export default function HomeScreen() {
@@ -35,7 +54,7 @@ export default function HomeScreen() {
               onClick={() => navigate(item.screen)}
               className="w-full bg-black/40 backdrop-blur-sm active:bg-black/60 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.12)]"
             >
-              <span className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center text-2xl shrink-0`}>
+              <span className="w-12 h-12 rounded-xl border border-white/20 flex items-center justify-center text-white shrink-0">
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
