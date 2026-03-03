@@ -13,6 +13,7 @@ export default function DayScreen() {
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
@@ -133,8 +134,8 @@ export default function DayScreen() {
       <div className="relative z-10">
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
-        <h1 className="text-xl font-bebas tracking-wider">{dayLabel}</h1>
-        <button onClick={handleCancel} className="text-white/40 active:text-white/70 text-sm font-medium transition-colors">
+        <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
+        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 text-sm font-medium transition-colors">
           Cancel
         </button>
       </div>
@@ -153,8 +154,8 @@ export default function DayScreen() {
               onClick={() => handleExerciseTap(idx)}
               className={`w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${
                 complete
-                  ? 'bg-white/18 border border-white/20'
-                  : 'card-press bg-white/10 border border-white/10'
+                  ? 'bg-white/15 border border-white/18'
+                  : 'card-press bg-white/8 border border-white/8'
               }`}
             >
               <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
@@ -182,7 +183,10 @@ export default function DayScreen() {
                   </span>
                 )}
                 {!done && (
-                  <span className="text-xs text-white/30">{total} sets</span>
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-sm font-mono text-white/70">{total}</span>
+                    <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
+                  </div>
                 )}
                 {complete ? (
                   <span className="text-white/70 text-lg">✓</span>
@@ -204,6 +208,30 @@ export default function DayScreen() {
           Save Workout
         </button>
       </div>
+
+      {/* Cancel confirmation modal */}
+      {showCancelConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Cancel workout?</h3>
+            <p className="text-sm text-white/40 mb-6">All progress will be lost.</p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => setShowCancelConfirm(false)}
+                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-semibold py-3 rounded-xl transition-colors"
+              >
+                Keep working
+              </button>
+              <button
+                onClick={handleCancel}
+                className="w-full text-white/50 active:text-white/80 py-3 text-sm font-medium transition-colors"
+              >
+                Cancel workout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
