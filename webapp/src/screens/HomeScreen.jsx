@@ -55,10 +55,10 @@ export default function HomeScreen() {
             <button
               key={item.screen}
               onClick={() => navigate(item.screen)}
-              className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left flex items-center gap-4"
+              className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left flex items-center gap-4 border border-white/[0.13]"
               style={{
-                background: 'rgba(0,0,0,0.65)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 0 0 1px rgba(255,255,255,0.10), 0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)',
+                background: 'rgba(255,255,255,0.05)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30), 0 4px 24px rgba(0,0,0,0.4)',
               }}
             >
               <span className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
