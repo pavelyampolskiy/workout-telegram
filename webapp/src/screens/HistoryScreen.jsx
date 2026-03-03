@@ -92,10 +92,8 @@ export default function HistoryScreen() {
   }
 
   return (
-    <div
-      className="min-h-screen relative"
-      style={{ backgroundImage: 'url(/history-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/history-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
       <div className="absolute inset-0 bg-black/65" />
       <div className="relative z-10 p-5">
         <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>

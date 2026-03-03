@@ -126,10 +126,8 @@ export default function DayScreen() {
   }
 
   return (
-    <div
-      className="min-h-screen relative pb-32"
-      style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
+    <div className="min-h-screen relative pb-32 overflow-hidden">
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
       <div className="absolute inset-0 bg-black/65" />
       <div className="relative z-10">
       {/* Header */}

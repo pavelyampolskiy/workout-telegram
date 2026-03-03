@@ -32,10 +32,8 @@ export default function CardioScreen() {
   }
 
   return (
-    <div
-      className="min-h-screen relative"
-      style={{ backgroundImage: 'url(/cardio-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/cardio-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
       <div className="absolute inset-0 bg-black/60" />
 
       <div className="relative z-10 p-5">

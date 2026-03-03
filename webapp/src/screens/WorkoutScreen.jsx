@@ -26,10 +26,8 @@ export default function WorkoutScreen() {
   const { navigate } = useApp();
 
   return (
-    <div
-      className="min-h-screen relative"
-      style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
       <div className="absolute inset-0 bg-black/60" />
       <div className="relative z-10 p-5">
         <h1 className="text-xl font-bold mb-6 pt-2 font-bebas tracking-wider">New Workout</h1>
