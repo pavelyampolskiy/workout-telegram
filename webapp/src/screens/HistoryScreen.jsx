@@ -92,7 +92,7 @@ export default function HistoryScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen screen-bg">
       <div className="p-5">
         <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           History

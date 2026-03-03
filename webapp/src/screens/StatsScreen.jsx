@@ -151,7 +151,7 @@ export default function StatsScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen screen-bg">
       <div className="p-5">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
