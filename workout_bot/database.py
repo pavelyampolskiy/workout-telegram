@@ -52,6 +52,15 @@ def init_db():
         cols = {row[1] for row in conn.execute("PRAGMA table_info(workouts)").fetchall()}
         if 'created_at' not in cols:
             conn.execute("ALTER TABLE workouts ADD COLUMN created_at TEXT")
+        # Backfill created_at for old records using earliest set timestamp
+        conn.execute("""
+            UPDATE workouts SET created_at = (
+                SELECT MIN(ws.ts)
+                FROM workout_exercises we
+                JOIN workout_sets ws ON ws.workout_exercise_id = we.id
+                WHERE we.workout_id = workouts.id
+            ) WHERE created_at IS NULL
+        """)
         conn.executescript("""
 
             CREATE TABLE IF NOT EXISTS workout_exercises (

@@ -23,7 +23,9 @@ function formatDate(dateStr) {
 // "14:32" from ISO datetime string (UTC → local)
 function formatTime(isoStr) {
   if (!isoStr) return null;
-  const d = new Date(isoStr.includes('T') ? isoStr : isoStr.replace(' ', 'T') + 'Z');
+  // Normalize Python isoformat (no timezone) → always treat as UTC
+  const normalized = isoStr.replace(' ', 'T').replace(/(\.\d+)?$/, 'Z');
+  const d = new Date(normalized);
   if (isNaN(d.getTime())) return null;
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 }
