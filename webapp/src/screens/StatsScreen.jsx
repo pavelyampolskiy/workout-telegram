@@ -2,17 +2,22 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 
+const CARD = {
+  className: 'bg-white/5 rounded-2xl p-5',
+  style: { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' },
+};
+
 function Bar({ value, max }) {
   const pct = max > 0 ? (value / max) * 100 : 0;
   return (
     <div className="flex items-center gap-3">
       <div className="flex-1 h-2 bg-white/8 rounded-full overflow-hidden">
         <div
-          className="h-full bg-white/60 rounded-full transition-all duration-500"
+          className="h-full bg-white/75 rounded-full transition-all duration-500"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-sm font-mono text-white/50 w-4 text-right">{value}</span>
+      <span className="text-sm font-mono text-white/70 w-4 text-right">{value}</span>
     </div>
   );
 }
@@ -73,15 +78,23 @@ export default function StatsScreen() {
 
     if (tab === 'freq') {
       const { total, avg, weeks } = data.freq;
+      const thisWeek = data.week?.total || 0;
       return (
         <div className="space-y-4">
-          <div className="bg-white/8 rounded-2xl p-5 text-center">
-            <div className="text-5xl font-bebas text-white mb-1">{total}</div>
-            <div className="text-white/40 text-sm">workouts in {weeks} weeks</div>
+          <div className={CARD.className} style={CARD.style}>
+            <div className="text-center">
+              <div className="text-5xl font-bebas text-white leading-none">{total}</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Workouts</div>
+              {thisWeek > 0 && (
+                <div className="text-white/40 text-xs mt-2">+{thisWeek} this week</div>
+              )}
+            </div>
           </div>
-          <div className="bg-white/8 rounded-2xl p-5 text-center">
-            <div className="text-5xl font-bebas text-white mb-1">{avg}</div>
-            <div className="text-white/40 text-sm">avg per week</div>
+          <div className={CARD.className} style={CARD.style}>
+            <div className="text-center">
+              <div className="text-5xl font-bebas text-white leading-none">{avg}</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Avg / Week</div>
+            </div>
           </div>
         </div>
       );
@@ -94,42 +107,50 @@ export default function StatsScreen() {
     const c = by_type?.DAY_C || 0;
     const cardio = by_type?.CARDIO || 0;
     const maxV = Math.max(a, b, c, cardio, 1);
+    const thisWeek = data.week?.total || 0;
 
     return (
       <div className="space-y-4">
-        <div className="bg-white/8 rounded-2xl p-5 text-center">
-          <div className="text-5xl font-bebas text-white mb-1">{total}</div>
-          <div className="text-white/40 text-sm">total workouts</div>
+        <div className={CARD.className} style={CARD.style}>
+          <div className="text-center">
+            <div className="text-5xl font-bebas text-white leading-none">{total}</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Workouts</div>
+            {tab === 'month' && thisWeek > 0 && (
+              <div className="text-white/40 text-xs mt-2">+{thisWeek} this week</div>
+            )}
+          </div>
         </div>
 
-        <div className="bg-white/8 rounded-2xl p-5 space-y-3">
+        <div className={CARD.className} style={CARD.style}>
           <div className="text-[10px] text-white/35 uppercase tracking-widest font-semibold mb-3">By type</div>
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm text-white/70">Day A</span>
-            </div>
-            <Bar value={a} max={maxV} />
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm text-white/70">Day B</span>
-            </div>
-            <Bar value={b} max={maxV} />
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-sm text-white/70">Day C</span>
-            </div>
-            <Bar value={c} max={maxV} />
-          </div>
-          {cardio > 0 && (
+          <div className="space-y-3">
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-white/70">Cardio</span>
+                <span className="text-sm text-white/70">Day A</span>
               </div>
-              <Bar value={cardio} max={maxV} />
+              <Bar value={a} max={maxV} />
             </div>
-          )}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm text-white/70">Day B</span>
+              </div>
+              <Bar value={b} max={maxV} />
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm text-white/70">Day C</span>
+              </div>
+              <Bar value={c} max={maxV} />
+            </div>
+            {cardio > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-sm text-white/70">Cardio</span>
+                </div>
+                <Bar value={cardio} max={maxV} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -140,15 +161,15 @@ export default function StatsScreen() {
       <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-5 bg-white/6 p-1 rounded-2xl overflow-x-auto">
+      <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
         {TABS.map(t => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`flex-1 py-2 px-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
               tab === t.key
-                ? 'bg-white/20 text-white'
-                : 'text-white/40 active:bg-white/10'
+                ? 'text-white/92'
+                : 'text-white/40 active:text-white/60'
             }`}
           >
             {t.label}
