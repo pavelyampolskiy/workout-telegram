@@ -51,11 +51,28 @@ export default function HistoryDetailScreen() {
     }
   };
 
+  const screenBg = (
+    <>
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+      <div className="absolute inset-0 bg-black/65" />
+    </>
+  );
+
   if (loading) {
-    return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {screenBg}
+        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
+      </div>
+    );
   }
   if (error) {
-    return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {screenBg}
+        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+      </div>
+    );
   }
   if (!workout) return null;
 

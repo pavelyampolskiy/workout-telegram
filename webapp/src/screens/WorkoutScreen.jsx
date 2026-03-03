@@ -45,7 +45,7 @@ export default function WorkoutScreen() {
               <div className="min-w-0">
                 <div className="font-bebas tracking-wider text-lg text-white">{o.label}</div>
               </div>
-              <span className="ml-auto text-white/40 text-xl shrink-0">›</span>
+              <span className="ml-auto text-white/35 text-xl shrink-0">›</span>
             </button>
           ))}
         </div>

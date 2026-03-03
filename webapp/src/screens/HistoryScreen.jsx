@@ -163,7 +163,7 @@ export default function HistoryScreen() {
                           </div>
                         ) : null}
                       </div>
-                      <span className="text-white/20 text-base shrink-0 mt-0.5">›</span>
+                      <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
                     </div>
                   </button>
                 </div>

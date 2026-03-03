@@ -2,9 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 
+const BG = { backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' };
+const REST_DURATION = 90;
 
 function fmtW(w) {
   return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
+}
+
+function fmtTime(s) {
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
 export default function ExerciseScreen() {
@@ -22,6 +28,8 @@ export default function ExerciseScreen() {
   const [reps, setReps] = useState('');
   const [saving, setSaving] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [inputError, setInputError] = useState('');
+  const [restTimer, setRestTimer] = useState(null);
 
   const weightRef = useRef(null);
 
@@ -46,14 +54,28 @@ export default function ExerciseScreen() {
     init();
   }, []);
 
+  // Rest timer countdown
+  useEffect(() => {
+    if (restTimer === null || restTimer <= 0) {
+      if (restTimer === 0) {
+        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+        setRestTimer(null);
+      }
+      return;
+    }
+    const t = setTimeout(() => setRestTimer(r => r - 1), 1000);
+    return () => clearTimeout(t);
+  }, [restTimer]);
+
   const ex = program;
   const target = ex?.target_sets || 4;
 
   const handleSaveSet = async () => {
     const w = parseFloat(weight);
     const r = parseInt(reps);
-    if (!w || w <= 0) { alert('Enter weight'); return; }
-    if (!r || r <= 0 || r > 100) { alert('Enter reps (1–100)'); return; }
+    if (!w || w <= 0) { setInputError('Enter weight'); return; }
+    if (!r || r <= 0 || r > 100) { setInputError('Enter reps (1–100)'); return; }
+    setInputError('');
 
     setSaving(true);
     try {
@@ -63,7 +85,7 @@ export default function ExerciseScreen() {
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      // Update active workout context
+      setRestTimer(REST_DURATION);
       setActiveWorkout(prev => prev ? {
         ...prev,
         exerciseMap: {
@@ -75,7 +97,7 @@ export default function ExerciseScreen() {
       setReps('');
       weightRef.current?.focus();
     } catch (e) {
-      alert(e.message);
+      setInputError(e.message);
     } finally {
       setSaving(false);
     }
@@ -96,17 +118,34 @@ export default function ExerciseScreen() {
         },
       } : prev);
     } catch (e) {
-      alert(e.message);
+      setInputError(e.message);
     }
   };
 
   const handleFinish = () => goBack();
 
+  const screenBg = (
+    <>
+      <div className="absolute inset-0 scale-110" style={BG} />
+      <div className="absolute inset-0 bg-black/70" />
+    </>
+  );
+
   if (loading) {
-    return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {screenBg}
+        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
+      </div>
+    );
   }
   if (error) {
-    return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {screenBg}
+        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+      </div>
+    );
   }
 
   const done = sets.length;
@@ -114,15 +153,15 @@ export default function ExerciseScreen() {
 
   return (
     <div className="min-h-screen relative pb-28 overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+      <div className="absolute inset-0 scale-110" style={BG} />
       <div className="absolute inset-0 bg-black/70" />
       <div className="relative z-10 p-5">
+
       {/* Exercise header */}
       <div className="pt-2 mb-5">
-        {/* Breadcrumb */}
         <button onClick={handleFinish} className="flex items-center gap-1 mb-3 -ml-0.5">
-          <span className="text-white/30 text-base leading-none">‹</span>
-          <span className="font-bebas tracking-wider text-white/30 text-sm">{day.replace('DAY_', 'Day ')}</span>
+          <span className="text-white/35 text-base leading-none">‹</span>
+          <span className="font-bebas tracking-wider text-white/35 text-sm">{day.replace('DAY_', 'Day ')}</span>
         </button>
         <div className="flex items-center gap-2 mb-1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
@@ -132,7 +171,6 @@ export default function ExerciseScreen() {
         </div>
         <h1 className="text-xl font-bebas tracking-wider text-white leading-tight">{ex?.name}</h1>
 
-        {/* Progress bar */}
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
@@ -147,6 +185,19 @@ export default function ExerciseScreen() {
           </span>
         </div>
       </div>
+
+      {/* Rest timer */}
+      {restTimer !== null && (
+        <button
+          onClick={() => setRestTimer(null)}
+          className="w-full rounded-2xl p-4 mb-4 text-center backdrop-blur-sm"
+          style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
+        >
+          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-0.5">REST</div>
+          <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
+          <div className="text-xs font-bebas tracking-wider text-white/25 mt-1.5">tap to skip</div>
+        </button>
+      )}
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
@@ -173,7 +224,7 @@ export default function ExerciseScreen() {
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
-        <div className="flex gap-3 mb-4">
+        <div className="flex gap-3 mb-3">
           <div className="flex-1">
             <label className="text-xs mb-1 block font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
             <input
@@ -183,7 +234,7 @@ export default function ExerciseScreen() {
               step="0.5"
               min="0"
               value={weight}
-              onChange={e => setWeight(e.target.value)}
+              onChange={e => { setWeight(e.target.value); setInputError(''); }}
               placeholder="140"
               className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
@@ -198,12 +249,16 @@ export default function ExerciseScreen() {
               min="1"
               max="100"
               value={reps}
-              onChange={e => setReps(e.target.value)}
+              onChange={e => { setReps(e.target.value); setInputError(''); }}
               placeholder="12"
               className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
           </div>
         </div>
+
+        {inputError && (
+          <div className="text-xs font-bebas tracking-wider text-red-400/80 text-center mb-2">{inputError}</div>
+        )}
 
         <button
           onClick={handleSaveSet}
@@ -246,7 +301,7 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="flex-1 bg-white/10 active:bg-white/20 border border-white/10 disabled:opacity-30 text-white/50 active:text-white/80 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5"
+            className="flex-1 bg-white/6 active:bg-white/12 border border-white/8 disabled:opacity-20 text-white/40 active:text-white/70 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
@@ -255,7 +310,8 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="card-press flex-1 bg-white/8 border border-white/15 text-white/92 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center"
+            className="card-press flex-1 border text-white/92 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center"
+            style={{ background: 'rgba(255,255,255,0.14)', borderColor: 'rgba(255,255,255,0.22)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}
           >
             Finish Exercise
           </button>

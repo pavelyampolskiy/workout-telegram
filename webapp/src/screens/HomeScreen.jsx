@@ -68,7 +68,7 @@ export default function HomeScreen() {
               <div className="min-w-0 flex-1">
                 <div className="font-bebas tracking-wider text-lg text-white">{item.title}</div>
               </div>
-              <span className="text-white/40 text-xl shrink-0">›</span>
+              <span className="text-white/35 text-xl shrink-0">›</span>
             </button>
           ))}
         </div>

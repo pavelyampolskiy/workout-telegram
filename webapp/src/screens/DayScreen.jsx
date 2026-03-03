@@ -81,8 +81,10 @@ export default function DayScreen() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen text-white/40">
-        Setting up workout…
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Setting up workout…</div>
       </div>
     );
   }
@@ -93,35 +95,39 @@ export default function DayScreen() {
 
   if (showNote) {
     return (
-      <div className="p-5">
-        <div className="pt-4 mb-2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
-            <path d="M20 6L9 17l-5-5"/>
-          </svg>
-          <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
-          <p className="text-white/40 text-sm mt-1 font-bebas tracking-wider">Add a note (optional)</p>
+      <div className="min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+        <div className="absolute inset-0 bg-black/70" />
+        <div className="relative z-10 p-5">
+          <div className="pt-4 mb-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
+            <p className="text-white/40 text-sm mt-1 font-bebas tracking-wider">Add a note (optional)</p>
+          </div>
+          <textarea
+            value={note}
+            onChange={e => setNote(e.target.value)}
+            placeholder="E.g. Felt strong today…"
+            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm font-bebas tracking-wider"
+            autoFocus
+          />
+          <button
+            onClick={handleFinish}
+            disabled={saving}
+            className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+            style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+          >
+            {saving ? 'Saving…' : 'Done'}
+          </button>
+          <button
+            onClick={() => resetTo('home')}
+            className="w-full mt-2 text-white/40 py-2 font-bebas tracking-wider text-sm"
+          >
+            Skip
+          </button>
         </div>
-        <textarea
-          value={note}
-          onChange={e => setNote(e.target.value)}
-          placeholder="E.g. Felt strong today…"
-          className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm"
-          autoFocus
-        />
-        <button
-          onClick={handleFinish}
-          disabled={saving}
-          className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
-        >
-          {saving ? 'Saving…' : 'Done'}
-        </button>
-        <button
-          onClick={() => resetTo('home')}
-          className="w-full mt-2 text-white/40 py-2 font-bebas tracking-wider text-sm"
-        >
-          Skip
-        </button>
       </div>
     );
   }
@@ -168,7 +174,7 @@ export default function DayScreen() {
                 <div className="text-white/30 text-xs mt-1">{ex.group}</div>
                 {/* Progress bar */}
                 {done > 0 && (
-                  <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
+                  <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
                       className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
                       style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
