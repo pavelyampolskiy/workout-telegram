@@ -3,8 +3,8 @@ import { useApp } from '../App';
 import { api } from '../api';
 
 const CARD = {
-  className: 'bg-black/40 backdrop-blur-sm rounded-2xl p-5',
-  style: { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)' },
+  className: 'bg-white/5 rounded-2xl p-5',
+  style: { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' },
 };
 
 function Bar({ value, max }) {
@@ -68,7 +68,7 @@ export default function StatsScreen() {
           <p className="text-white/40 mb-4">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
-            className="card-press bg-black/40 backdrop-blur-sm border border-white/8 text-white/90 px-6 py-3 rounded-xl font-semibold"
+            className="card-press bg-white/10 border border-white/8 text-white/90 px-6 py-3 rounded-xl font-semibold"
           >
             Choose Exercise →
           </button>
@@ -157,40 +157,27 @@ export default function StatsScreen() {
   };
 
   return (
-    <div
-      className="min-h-screen relative"
-      style={{ backgroundImage: 'url(/stats-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center top' }}
-    >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/62" />
-      {/* Top gradient — deepens header zone */}
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-black/60 to-transparent" />
-      {/* Bottom fade */}
-      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent" />
+    <div className="p-5">
+      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
-      {/* Content */}
-      <div className="relative z-10 p-5">
-        <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
-
-        {/* Tabs */}
-        <div className="flex gap-1 mb-5 bg-black/30 backdrop-blur-sm p-1 rounded-2xl overflow-x-auto">
-          {TABS.map(t => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`flex-1 py-2 px-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
-                tab === t.key
-                  ? 'text-white/92'
-                  : 'text-white/40 active:text-white/60'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {renderContent()}
+      {/* Tabs */}
+      <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
+        {TABS.map(t => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`flex-1 py-2 px-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
+              tab === t.key
+                ? 'text-white/92'
+                : 'text-white/40 active:text-white/60'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
+
+      {renderContent()}
     </div>
   );
 }
