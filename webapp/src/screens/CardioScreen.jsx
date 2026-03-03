@@ -34,7 +34,7 @@ export default function CardioScreen() {
   return (
     <div
       className="min-h-screen relative"
-      style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/cardio-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <div className="absolute inset-0 bg-black/60" />
 
