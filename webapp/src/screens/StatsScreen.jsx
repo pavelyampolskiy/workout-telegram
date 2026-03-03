@@ -68,9 +68,16 @@ export default function StatsScreen() {
           <p className="text-white/40 mb-4">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
-            className="card-press bg-white/10 border border-white/8 text-white/90 px-6 py-3 rounded-xl font-semibold"
+            className="card-press text-white/90 font-bold px-8 py-3.5"
+            style={{
+              background: '#1A1A1A',
+              borderRadius: '22px',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
+              fontSize: '15px',
+              letterSpacing: '0.01em',
+            }}
           >
-            Choose Exercise →
+            Choose Exercise <span style={{ fontSize: '12px', opacity: 0.6 }}>›</span>
           </button>
         </div>
       );
