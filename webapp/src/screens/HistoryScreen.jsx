@@ -107,7 +107,7 @@ export default function HistoryScreen() {
               <rect x="9" y="3" width="6" height="4" rx="1"/>
               <path d="M9 12h6M9 16h4"/>
             </svg>
-            <p className="text-sm">No workouts yet</p>
+            <p className="text-sm font-bebas tracking-wider">No workouts yet</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -185,7 +185,7 @@ export default function HistoryScreen() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Delete all history?</h3>
-            <p className="text-sm text-white/40 mb-6">All workouts will be permanently removed.</p>
+            <p className="text-sm text-white/40 mb-6 font-bebas tracking-wider">All workouts will be permanently removed.</p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowDeleteConfirm(false)}

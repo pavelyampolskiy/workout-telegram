@@ -68,7 +68,7 @@ export default function StatsScreen() {
     if (tab === 'progress') {
       return (
         <div className="text-center py-8">
-          <p className="text-white/40 mb-4">Select an exercise to view progress</p>
+          <p className="text-white/40 mb-4 font-bebas tracking-wider">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
             className="card-press text-white/90 font-bebas tracking-wider px-8 py-3.5"

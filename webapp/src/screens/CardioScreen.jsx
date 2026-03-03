@@ -44,7 +44,7 @@ export default function CardioScreen() {
             </svg>
           </div>
           <h1 className="text-xl font-bebas tracking-wider">Cardio</h1>
-          <p className="text-white/60 text-sm mt-1">Describe your session</p>
+          <p className="text-white/60 text-sm mt-1 font-bebas tracking-wider">Describe your session</p>
         </div>
 
         <textarea
