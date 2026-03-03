@@ -68,11 +68,11 @@ export default function StatsScreen() {
           <p className="text-white/40 mb-4">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
-            className="card-press text-white font-bold px-8 py-3.5"
+            className="card-press text-white/90 font-bold px-8 py-3.5"
             style={{
-              background: '#242426',
+              background: '#1A1A1A',
               borderRadius: '22px',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(0,0,0,0.3)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
               fontSize: '15px',
               letterSpacing: '0.01em',
             }}
