@@ -58,7 +58,7 @@ export default function HomeScreen() {
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
               style={{
                 background: 'rgba(0,0,0,0.10)',
-                border: '1px solid rgba(255,255,255,0.13)',
+                border: '1px solid rgba(255,255,255,0.05)',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)',
               }}
             >
