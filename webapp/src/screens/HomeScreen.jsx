@@ -37,8 +37,8 @@ export default function HomeScreen() {
           backgroundImage: 'url(/gym-bg.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          filter: 'blur(6px)',
-          transform: 'scale(1.06)',
+          filter: 'blur(3px)',
+          transform: 'scale(1.03)',
         }}
       />
       {/* Dark overlay */}
