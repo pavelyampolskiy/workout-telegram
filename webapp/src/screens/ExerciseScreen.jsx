@@ -109,7 +109,12 @@ export default function ExerciseScreen() {
   const pct = Math.min((done / target) * 100, 100);
 
   return (
-    <div className="p-5 pb-28">
+    <div
+      className="min-h-screen relative pb-28"
+      style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="absolute inset-0 bg-black/70" />
+      <div className="relative z-10 p-5">
       {/* Exercise header */}
       <div className="pt-2 mb-5">
         <div className="flex items-center gap-2 mb-1">
@@ -171,7 +176,7 @@ export default function ExerciseScreen() {
               value={weight}
               onChange={e => setWeight(e.target.value)}
               placeholder="140"
-              className="w-full bg-white/8 border border-white/10 rounded-xl px-3 py-3 text-white text-lg font-mono text-center outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-lg font-mono text-center outline-none focus:ring-2 focus:ring-white/30"
             />
           </div>
           <div className="flex items-end pb-0.5 text-white/30 text-xl font-light">×</div>
@@ -186,7 +191,7 @@ export default function ExerciseScreen() {
               value={reps}
               onChange={e => setReps(e.target.value)}
               placeholder="12"
-              className="w-full bg-white/8 border border-white/10 rounded-xl px-3 py-3 text-white text-lg font-mono text-center outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-lg font-mono text-center outline-none focus:ring-2 focus:ring-white/30"
             />
           </div>
         </div>
@@ -244,6 +249,7 @@ export default function ExerciseScreen() {
             Finish Exercise
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
