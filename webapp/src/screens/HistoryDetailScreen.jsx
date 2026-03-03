@@ -61,7 +61,7 @@ export default function HistoryDetailScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-28">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/history-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
       <div className="absolute inset-0 bg-black/65" />
 
       <div className="relative z-10 p-5">
