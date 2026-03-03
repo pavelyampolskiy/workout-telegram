@@ -148,11 +148,11 @@ export default function HistoryScreen() {
                           {fmtLabel(w.type)}
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="font-bebas text-white/40" style={{ fontSize: '14px', letterSpacing: '0.08em' }}>
+                          <span className="font-sans text-white/40" style={{ fontSize: '13px' }}>
                             {formatDate(w.date)}
                           </span>
                           {formatTime(w.started_at) && (
-                            <span className="font-bebas text-white/25" style={{ fontSize: '13px', letterSpacing: '0.05em' }}>
+                            <span className="font-sans text-white/25" style={{ fontSize: '12px' }}>
                               {formatTime(w.started_at)}
                             </span>
                           )}
@@ -175,7 +175,7 @@ export default function HistoryScreen() {
                 <button
                   onClick={handleMore}
                   disabled={loadingMore}
-                  className="text-white/35 font-bebas tracking-wider text-sm py-2"
+                  className="text-white/35 font-sans text-sm py-2"
                 >
                   {loadingMore ? 'Loading…' : 'Load more'}
                 </button>
@@ -189,7 +189,7 @@ export default function HistoryScreen() {
           <div className="mt-10 mb-6 flex justify-center">
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="text-white/25 active:text-white/50 font-bebas tracking-wider text-xs transition-colors"
+              className="text-white/25 active:text-white/50 font-sans text-xs transition-colors"
             >
               Delete all history
             </button>
@@ -202,7 +202,7 @@ export default function HistoryScreen() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Delete all history?</h3>
-            <p className="text-sm text-white/40 mb-6 font-bebas tracking-wider">All workouts will be permanently removed.</p>
+            <p className="text-sm text-white/40 mb-6 font-sans">All workouts will be permanently removed.</p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowDeleteConfirm(false)}

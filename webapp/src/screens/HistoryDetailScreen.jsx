@@ -84,14 +84,14 @@ export default function HistoryDetailScreen() {
       <div className="relative z-10 p-5">
         {/* Header */}
         <div className="pt-2 mb-5">
-          <div className="font-bebas text-white/35 tracking-wider text-sm mb-0.5">{formatDate(workout.date)}</div>
+          <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
           <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
         </div>
 
         {/* Cardio */}
         {workout.type === 'CARDIO' && workout.cardio && (
           <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={CARD_STYLE}>
-            <div className="font-bebas text-white/40 tracking-wider text-sm mb-1">Cardio</div>
+            <div className="font-sans text-white/40 text-sm mb-1">Cardio</div>
             <p className="text-white/80 text-sm">{workout.cardio}</p>
           </div>
         )}
@@ -111,10 +111,10 @@ export default function HistoryDetailScreen() {
             <div className="space-y-1.5">
               {ex.sets.map((s, i) => (
                 <div key={s.id} className="flex items-center gap-3">
-                  <span className="w-5 h-5 rounded-full border border-white/15 flex items-center justify-center text-white/35 text-xs font-bebas tracking-wider shrink-0">
+                  <span className="w-5 h-5 rounded-full border border-white/15 flex items-center justify-center text-white/35 text-xs font-sans shrink-0">
                     {i + 1}
                   </span>
-                  <span className="text-white/70 font-bebas tracking-wider text-sm">
+                  <span className="text-white/70 font-sans text-sm">
                     {fmtW(s.weight)} kg × {s.reps} reps
                   </span>
                 </div>
@@ -129,7 +129,7 @@ export default function HistoryDetailScreen() {
         {/* Note */}
         {workout.note && (
           <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={CARD_STYLE}>
-            <div className="font-bebas text-white/40 tracking-wider text-sm mb-1">Note</div>
+            <div className="font-sans text-white/40 text-sm mb-1">Note</div>
             <p className="text-white/70 text-sm">{workout.note}</p>
           </div>
         )}

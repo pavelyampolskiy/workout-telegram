@@ -97,7 +97,7 @@ export default function StatsScreen() {
     if (tab === 'progress') {
       return (
         <div className="text-center py-8">
-          <p className="text-white/40 mb-4 font-bebas tracking-wider">Select an exercise to view progress</p>
+          <p className="text-white/40 mb-4 font-sans text-sm">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
             className="card-press text-white/90 font-bebas tracking-wider px-8 py-3.5"
@@ -122,13 +122,13 @@ export default function StatsScreen() {
           <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas text-white leading-none">{total}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workouts</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-sans mt-1">Workouts</div>
             </div>
           </div>
           <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas text-white leading-none">{avg}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-sans mt-1">Avg / Week</div>
             </div>
           </div>
         </div>
@@ -148,12 +148,12 @@ export default function StatsScreen() {
         <div className={CARD.className} style={CARD.style}>
           <div className="text-center">
             <div className="text-5xl font-bebas text-white leading-none">{total}</div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workouts</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/50 font-sans mt-1">Workouts</div>
           </div>
         </div>
 
         <div className={CARD.className} style={CARD.style}>
-          <div className="text-[10px] uppercase tracking-widest font-bebas mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
+          <div className="text-[10px] uppercase tracking-widest font-sans mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
           <div className="space-y-4">
             <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
             <Bar label="Day B" value={b} max={maxV} mounted={barMounted} />

@@ -104,13 +104,13 @@ export default function DayScreen() {
               <path d="M20 6L9 17l-5-5"/>
             </svg>
             <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
-            <p className="text-white/40 text-sm mt-1 font-bebas tracking-wider">Add a note (optional)</p>
+            <p className="text-white/40 text-sm mt-1 font-sans">Add a note (optional)</p>
           </div>
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}
             placeholder="E.g. Felt strong today…"
-            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm font-bebas tracking-wider"
+            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm font-sans"
             autoFocus
           />
           <button
@@ -221,7 +221,7 @@ export default function DayScreen() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Cancel workout?</h3>
-            <p className="text-sm text-white/40 mb-6 font-bebas tracking-wider">All progress will be lost.</p>
+            <p className="text-sm text-white/40 mb-6 font-sans">All progress will be lost.</p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowCancelConfirm(false)}
