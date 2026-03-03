@@ -139,27 +139,31 @@ export default function StatsScreen() {
   };
 
   return (
-    <div className="p-5">
-      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+      <div className="absolute inset-0 bg-black/65" />
+      <div className="relative z-10 p-5">
+        <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
-      {/* Tabs */}
-      <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
-        {TABS.map(t => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors ${
-              tab === t.key
-                ? 'text-white/92'
-                : 'text-white/40 active:text-white/60'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+        {/* Tabs */}
+        <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
+          {TABS.map(t => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors ${
+                tab === t.key
+                  ? 'text-white/92'
+                  : 'text-white/40 active:text-white/60'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {renderContent()}
       </div>
-
-      {renderContent()}
     </div>
   );
 }
