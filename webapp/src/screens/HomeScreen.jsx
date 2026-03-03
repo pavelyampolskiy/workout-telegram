@@ -33,7 +33,7 @@ export default function HomeScreen() {
             <button
               key={item.screen}
               onClick={() => navigate(item.screen)}
-              className="w-full bg-black/40 backdrop-blur-sm active:bg-black/60 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors"
+              className="w-full bg-white/5 active:bg-white/10 border border-white/8 rounded-2xl p-4 text-left flex items-center gap-4 transition-colors"
             >
               <span className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center text-2xl shrink-0`}>
                 {item.icon}
