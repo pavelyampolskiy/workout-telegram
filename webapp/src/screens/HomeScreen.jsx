@@ -35,13 +35,15 @@ export default function HomeScreen() {
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/55" />
+      {/* Top gradient — deepens header zone */}
+      <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-black/60 to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 p-5">
         <div className="pt-6 pb-10">
-          <div className="font-bebas text-white/85 leading-none w-full">
-            <div style={{ fontSize: '9vw', letterSpacing: '0.45em', wordSpacing: '0.6em' }}>Are you</div>
-            <div style={{ fontSize: '14vw', letterSpacing: '0.52em' }}>Ready?</div>
+          <div className="font-bebas leading-none w-full">
+            <div style={{ fontSize: '9vw', letterSpacing: '0.45em', wordSpacing: '0.6em', color: 'rgba(255,255,255,0.83)' }}>Are you</div>
+            <div style={{ fontSize: '14vw', letterSpacing: '0.52em', color: 'rgba(255,255,255,0.91)' }}>Ready?</div>
           </div>
         </div>
 
