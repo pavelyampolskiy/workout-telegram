@@ -6,20 +6,8 @@ const DayAIcon = () => (
   </svg>
 );
 
-const DayBIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <circle cx="12" cy="12" r="9"/>
-    <circle cx="12" cy="12" r="4.5"/>
-  </svg>
-);
-
-const DayCIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <circle cx="12" cy="15" r="6"/>
-    <path d="M9 9h6"/>
-    <path d="M9 9c0-2 1-3.5 3-3.5s3 1.5 3 3.5"/>
-  </svg>
-);
+const DayBIcon = DayAIcon;
+const DayCIcon = DayAIcon;
 
 const CardioIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
