@@ -50,10 +50,10 @@ export default function StatsScreen() {
   }
 
   const TABS = [
-    { key: 'week', label: '📆 Week' },
-    { key: 'month', label: '📅 Month' },
-    { key: 'freq', label: '🔥 Frequency' },
-    { key: 'progress', label: '📊 Progress' },
+    { key: 'week', label: 'Week' },
+    { key: 'month', label: 'Month' },
+    { key: 'freq', label: 'Frequency' },
+    { key: 'progress', label: 'Progress' },
   ];
 
   const renderContent = () => {

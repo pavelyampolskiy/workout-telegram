@@ -2,10 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 
-const MUSCLE_EMOJI = {
-  LEGS: '🦵', BACK: '🏋️', CHEST: '💪', BICEPS: '💪', TRICEPS: '🦾', SHOULDERS: '🎯',
-};
-const NUM_EMOJI = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
 function fmtW(w) {
   return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
@@ -51,7 +47,6 @@ export default function ExerciseScreen() {
 
   const ex = program;
   const target = ex?.target_sets || 4;
-  const emoji = MUSCLE_EMOJI[ex?.group] || '💪';
 
   const handleSaveSet = async () => {
     const w = parseFloat(weight);
@@ -118,7 +113,9 @@ export default function ExerciseScreen() {
       {/* Exercise header */}
       <div className="pt-2 mb-5">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-2xl">{emoji}</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
+            <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
+          </svg>
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{ex?.group}</span>
         </div>
         <h1 className="text-xl font-bebas tracking-wider text-slate-100 leading-tight">{ex?.name}</h1>
@@ -140,7 +137,13 @@ export default function ExerciseScreen() {
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
         <div className="bg-slate-800/60 rounded-xl p-3 mb-5 border border-slate-700/50">
-          <div className="text-xs text-slate-400 mb-1.5">🕐 Last time ({lastDate})</div>
+          <div className="flex items-center gap-1 text-xs text-slate-400 mb-1.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3.5 3.5"/>
+            </svg>
+            Last time ({lastDate})
+          </div>
           <div className="flex flex-wrap gap-2">
             {lastSets.map((s, i) => (
               <span key={i} className="text-sm text-slate-300 bg-slate-700/60 rounded-lg px-2 py-0.5 font-mono">
@@ -206,7 +209,9 @@ export default function ExerciseScreen() {
           <div className="space-y-2">
             {sets.map((s, i) => (
               <div key={s.id} className="flex items-center gap-3">
-                <span className="text-base shrink-0">{NUM_EMOJI[i] || `${i + 1}.`}</span>
+                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
+                  {i + 1}
+                </span>
                 <span className="text-slate-200 font-mono text-sm">
                   {fmtW(s.weight)} kg × {s.reps} reps
                 </span>
@@ -222,15 +227,21 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="flex-1 bg-slate-800 active:bg-slate-700 disabled:opacity-40 text-red-400 font-medium py-3 rounded-xl text-sm transition-colors"
+            className="flex-1 bg-slate-800 active:bg-slate-700 disabled:opacity-40 text-red-400 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
-            🗑 Delete Last
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+            </svg>
+            Delete Last
           </button>
           <button
             onClick={handleFinish}
-            className="flex-1 bg-green-600 active:bg-green-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
+            className="flex-1 bg-green-600 active:bg-green-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
-            ✅ Finish Exercise
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            Finish Exercise
           </button>
         </div>
       </div>

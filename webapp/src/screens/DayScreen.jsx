@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 
-const NUM_EMOJI = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣'];
-
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, activeWorkout, setActiveWorkout } = useApp();
   const { day } = params;
@@ -96,7 +94,9 @@ export default function DayScreen() {
     return (
       <div className="p-5">
         <div className="pt-4 mb-2">
-          <span className="text-3xl">✅</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-green-400">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
           <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
           <p className="text-slate-400 text-sm mt-1">Add a note (optional)</p>
         </div>
@@ -112,7 +112,7 @@ export default function DayScreen() {
           disabled={saving}
           className="w-full mt-3 bg-green-600 active:bg-green-700 text-white font-semibold py-4 rounded-2xl transition-colors"
         >
-          {saving ? 'Saving…' : 'Done ✓'}
+          {saving ? 'Saving…' : 'Done'}
         </button>
         <button
           onClick={() => resetTo('home')}
@@ -152,7 +152,9 @@ export default function DayScreen() {
                   : 'bg-slate-800 active:bg-slate-700'
               }`}
             >
-              <span className="text-2xl shrink-0">{NUM_EMOJI[idx] || String(idx + 1)}</span>
+              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
+                {idx + 1}
+              </span>
               <div className="flex-1 min-w-0">
                 <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-green-400' : 'text-slate-100'}`}>
                   {ex.name}
@@ -194,7 +196,7 @@ export default function DayScreen() {
           onClick={handleSave}
           className="w-full bg-blue-600 active:bg-blue-700 text-white font-bold py-4 rounded-2xl text-base transition-colors"
         >
-          Save Workout ✅
+          Save Workout
         </button>
       </div>
     </div>

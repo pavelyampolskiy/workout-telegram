@@ -3,15 +3,12 @@ import { useApp } from '../App';
 import { api } from '../api';
 
 function dayLabel(type) {
-  if (type === 'CARDIO') return '❤️ Cardio';
+  if (type === 'CARDIO') return 'Cardio';
   return type.replace('DAY_', 'Day ');
 }
 
 function dayColor(type) {
-  if (type === 'CARDIO') return 'text-red-400 bg-red-900/30';
-  if (type === 'DAY_A') return 'text-blue-400 bg-blue-900/30';
-  if (type === 'DAY_B') return 'text-purple-400 bg-purple-900/30';
-  return 'text-green-400 bg-green-900/30';
+  return 'text-white bg-white/15';
 }
 
 export default function HistoryScreen() {
@@ -64,7 +61,13 @@ export default function HistoryScreen() {
 
       {items.length === 0 ? (
         <div className="text-center text-slate-500 py-16">
-          <div className="text-5xl mb-3">📋</div>
+          <div className="flex justify-center mb-3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+              <path d="M9 12h6M9 16h4"/>
+            </svg>
+          </div>
           <p>No workouts yet</p>
         </div>
       ) : (
@@ -73,7 +76,7 @@ export default function HistoryScreen() {
             <button
               key={w.id}
               onClick={() => navigate('history-detail', { workoutId: w.id })}
-              className="w-full bg-slate-800 active:bg-slate-700 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              className="w-full bg-white/10 backdrop-blur-sm active:bg-white/20 border border-white/10 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
             >
               <span className={`text-xs font-bold px-2 py-1 rounded-lg shrink-0 ${dayColor(w.type)}`}>
                 {dayLabel(w.type)}
@@ -87,9 +90,17 @@ export default function HistoryScreen() {
             <button
               onClick={handleMore}
               disabled={loadingMore}
-              className="w-full mt-2 py-3 text-blue-400 text-sm font-medium"
+              className="w-full mt-2 py-3 text-slate-400 text-sm font-medium"
             >
-              {loadingMore ? 'Loading…' : '🔄 Load more'}
+              {loadingMore ? 'Loading…' : (
+                <span className="flex items-center justify-center gap-1.5">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+                    <path d="M1 4v6h6M23 20v-6h-6"/>
+                    <path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/>
+                  </svg>
+                  Load more
+                </span>
+              )}
             </button>
           )}
         </div>

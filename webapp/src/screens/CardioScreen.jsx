@@ -40,7 +40,11 @@ export default function CardioScreen() {
 
       <div className="relative z-10 p-5">
         <div className="pt-2 mb-6">
-          <div className="text-4xl mb-2">❤️</div>
+          <div className="mb-2 text-white">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9">
+              <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
+            </svg>
+          </div>
           <h1 className="text-xl font-bebas tracking-wider">Cardio</h1>
           <p className="text-slate-300 text-sm mt-1">Describe your session</p>
         </div>
@@ -58,7 +62,7 @@ export default function CardioScreen() {
           disabled={saving || !text.trim() || !workoutId}
           className="w-full mt-4 bg-white/10 backdrop-blur-sm active:bg-white/20 border border-white/10 disabled:opacity-40 text-white font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
         >
-          {saving ? 'Saving…' : '✅ Save Cardio'}
+          {saving ? 'Saving…' : 'Save Cardio'}
         </button>
       </div>
     </div>

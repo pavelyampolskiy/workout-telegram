@@ -2,17 +2,13 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 
-const MUSCLE_EMOJI = {
-  LEGS: '🦵', BACK: '🏋️', CHEST: '💪', BICEPS: '💪', TRICEPS: '🦾', SHOULDERS: '🎯',
-};
-const NUM_EMOJI = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
 function fmtW(w) {
   return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
 }
 
 function dayLabel(type) {
-  if (type === 'CARDIO') return '❤️ Cardio';
+  if (type === 'CARDIO') return 'Cardio';
   return type.replace('DAY_', 'Day ');
 }
 
@@ -74,7 +70,9 @@ export default function HistoryDetailScreen() {
       {workout.exercises?.map(ex => (
         <div key={ex.id} className="bg-slate-800 rounded-2xl p-4 mb-3">
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-xl">{MUSCLE_EMOJI[ex.grp] || '💪'}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
+              <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
+            </svg>
             <div>
               <div className="font-bebas tracking-wider text-base text-slate-100">{ex.name}</div>
               <div className="text-xs text-slate-500">{ex.grp}</div>
@@ -83,7 +81,9 @@ export default function HistoryDetailScreen() {
           <div className="space-y-1.5">
             {ex.sets.map((s, i) => (
               <div key={s.id} className="flex items-center gap-3">
-                <span className="text-sm shrink-0">{NUM_EMOJI[i] || `${i + 1}.`}</span>
+                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
+                  {i + 1}
+                </span>
                 <span className="text-slate-300 font-mono text-sm">
                   {fmtW(s.weight)} kg × {s.reps} reps
                 </span>
@@ -99,7 +99,13 @@ export default function HistoryDetailScreen() {
       {/* Note */}
       {workout.note && (
         <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 mb-4">
-          <div className="text-xs text-slate-400 mb-1 font-semibold">📝 Note</div>
+          <div className="flex items-center gap-1 text-xs text-slate-400 mb-1 font-semibold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Note
+          </div>
           <p className="text-slate-300 text-sm">{workout.note}</p>
         </div>
       )}
@@ -125,9 +131,12 @@ export default function HistoryDetailScreen() {
         ) : (
           <button
             onClick={() => setConfirming(true)}
-            className="w-full bg-slate-800 active:bg-slate-700 text-red-400 font-medium py-3 rounded-2xl border border-red-900/40"
+            className="w-full bg-slate-800 active:bg-slate-700 text-red-400 font-medium py-3 rounded-2xl border border-red-900/40 flex items-center justify-center gap-2"
           >
-            🗑 Delete Workout
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+            </svg>
+            Delete Workout
           </button>
         )}
       </div>

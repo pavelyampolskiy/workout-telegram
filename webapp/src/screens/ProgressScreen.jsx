@@ -136,7 +136,11 @@ export default function ProgressScreen() {
       {!loadingProg && selected && progress && (
         progress.length === 0 ? (
           <div className="text-center text-slate-500 py-12">
-            <div className="text-4xl mb-3">📭</div>
+            <div className="flex justify-center mb-3 text-slate-500">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
             <p>No data yet for {selected.name}</p>
           </div>
         ) : (
@@ -177,7 +181,11 @@ export default function ProgressScreen() {
 
       {!selected && !loadingProg && (
         <div className="text-center text-slate-500 py-16">
-          <div className="text-5xl mb-3">📊</div>
+          <div className="flex justify-center mb-3 text-slate-500">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12">
+            <path d="M4 20V12M8 20V16M12 20V8M16 20V14M20 20V4"/>
+          </svg>
+        </div>
           <p>Select an exercise above</p>
         </div>
       )}
