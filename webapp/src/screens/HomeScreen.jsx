@@ -1,30 +1,9 @@
 import { useApp } from '../App';
 
 const ITEMS = [
-  {
-    screen: 'workout',
-    icon: '🏋️',
-    iconBg: 'bg-white',
-    title: 'New Workout',
-    sub: 'Start Day A, B, C or Cardio',
-    accent: 'text-slate-400',
-  },
-  {
-    screen: 'history',
-    icon: '📋',
-    iconBg: 'bg-white',
-    title: 'History',
-    sub: 'View past workouts',
-    accent: 'text-slate-400',
-  },
-  {
-    screen: 'stats',
-    icon: '📊',
-    iconBg: 'bg-white',
-    title: 'Statistics',
-    sub: 'Progress & frequency',
-    accent: 'text-slate-400',
-  },
+  { screen: 'workout', icon: '🏋️', iconBg: 'bg-white', title: 'New Workout' },
+  { screen: 'history', icon: '📋', iconBg: 'bg-white', title: 'History' },
+  { screen: 'stats',   icon: '📊', iconBg: 'bg-white', title: 'Statistics' },
 ];
 
 export default function HomeScreen() {
@@ -40,11 +19,16 @@ export default function HomeScreen() {
 
       {/* Content */}
       <div className="relative z-10 p-5">
-        <div className="pt-6 pb-8">
-          <h1 className="text-3xl font-extrabold text-white leading-tight font-bebas tracking-wider">Are you ready?</h1>
+        <div className="pt-6 pb-10">
+          <h1
+            className="font-bebas text-white/85 leading-none w-full"
+            style={{ fontSize: '13vw', wordSpacing: '0.4em', letterSpacing: '0.05em' }}
+          >
+            Are you ready?
+          </h1>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-8">
           {ITEMS.map(item => (
             <button
               key={item.screen}
@@ -56,7 +40,6 @@ export default function HomeScreen() {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="font-bebas tracking-wider text-lg text-white">{item.title}</div>
-                <div className={`text-xs mt-0.5 ${item.accent}`}>{item.sub}</div>
               </div>
               <span className="text-white/40 text-xl shrink-0">›</span>
             </button>

@@ -25,7 +25,6 @@ export default function WorkoutScreen() {
             </span>
             <div className="min-w-0">
               <div className="font-bebas tracking-wider text-lg text-slate-100">{o.label}</div>
-              <div className="text-slate-400 text-xs mt-0.5 truncate">{o.desc}</div>
             </div>
             <span className="ml-auto text-slate-500 text-xl shrink-0">›</span>
           </button>
