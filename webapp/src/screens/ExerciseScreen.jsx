@@ -59,6 +59,7 @@ export default function ExerciseScreen() {
       const { id } = await api.addSet(exDbId, w, r);
       const updated = [...sets, { id, set_number: sets.length + 1, weight: w, reps: r }];
       setSets(updated);
+      window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
       // Update active workout context
       setActiveWorkout(prev => prev ? {
         ...prev,
@@ -127,14 +128,15 @@ export default function ExerciseScreen() {
 
         {/* Progress bar */}
         <div className="mt-3 flex items-center gap-3">
-          <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+          <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-white/60 rounded-full transition-all duration-300"
+              className="h-full bg-white/60 rounded-full transition-all duration-500"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <span className="text-sm text-white/40 font-mono shrink-0">
-            {done}/{target} sets
+          <span className="font-mono shrink-0 text-sm">
+            <span className="text-white/70">{done}/{target}</span>
+            <span className="text-white/40"> sets</span>
           </span>
         </div>
       </div>
@@ -199,7 +201,7 @@ export default function ExerciseScreen() {
         <button
           onClick={handleSaveSet}
           disabled={saving || !weight || !reps}
-          className="w-full bg-blue-600 active:bg-blue-700 disabled:bg-white/10 disabled:text-white/30 text-white font-semibold py-3 rounded-xl transition-colors"
+          className="card-press w-full bg-white/10 border border-white/20 disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 text-white/92 font-semibold py-3 rounded-xl transition-colors"
         >
           {saving ? 'Saving…' : '✓ Save Set'}
         </button>
@@ -232,7 +234,7 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="flex-1 bg-white/10 active:bg-white/20 border border-white/10 disabled:opacity-40 text-red-400 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
+            className="flex-1 bg-white/10 active:bg-white/20 border border-white/10 disabled:opacity-30 text-white/50 active:text-white/80 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
@@ -241,7 +243,7 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="flex-1 bg-green-600 active:bg-green-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
+            className="card-press flex-1 bg-white/8 border border-white/15 text-white/92 font-semibold py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M20 6L9 17l-5-5"/>

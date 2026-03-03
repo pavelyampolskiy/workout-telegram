@@ -94,7 +94,7 @@ export default function DayScreen() {
     return (
       <div className="p-5">
         <div className="pt-4 mb-2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-green-400">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
             <path d="M20 6L9 17l-5-5"/>
           </svg>
           <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
@@ -110,7 +110,7 @@ export default function DayScreen() {
         <button
           onClick={handleFinish}
           disabled={saving}
-          className="w-full mt-3 bg-green-600 active:bg-green-700 text-white font-semibold py-4 rounded-2xl transition-colors"
+          className="card-press w-full mt-3 bg-white/10 border border-white/15 text-white/92 font-semibold py-4 rounded-2xl transition-colors"
         >
           {saving ? 'Saving…' : 'Done'}
         </button>
@@ -134,7 +134,7 @@ export default function DayScreen() {
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
         <h1 className="text-xl font-bebas tracking-wider">{dayLabel}</h1>
-        <button onClick={handleCancel} className="text-red-400 text-sm font-medium">
+        <button onClick={handleCancel} className="text-white/40 active:text-white/70 text-sm font-medium transition-colors">
           Cancel
         </button>
       </div>
@@ -153,7 +153,7 @@ export default function DayScreen() {
               onClick={() => handleExerciseTap(idx)}
               className={`w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${
                 complete
-                  ? 'bg-green-900/40 border border-green-800/60'
+                  ? 'bg-white/18 border border-white/20'
                   : 'card-press bg-white/10 border border-white/10'
               }`}
             >
@@ -161,7 +161,7 @@ export default function DayScreen() {
                 {idx + 1}
               </span>
               <div className="flex-1 min-w-0">
-                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-green-400' : 'text-white'}`}>
+                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-white' : 'text-white/80'}`}>
                   {ex.name}
                 </div>
                 <div className="text-white/30 text-xs mt-1">{ex.group}</div>
@@ -169,7 +169,7 @@ export default function DayScreen() {
                 {done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
                     <div
-                      className={`h-full rounded-full transition-all ${complete ? 'bg-green-500' : 'bg-white/60'}`}
+                      className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
                       style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
                     />
                   </div>
@@ -177,7 +177,7 @@ export default function DayScreen() {
               </div>
               <div className="shrink-0 flex flex-col items-end gap-1">
                 {done > 0 && (
-                  <span className={`text-sm font-mono ${complete ? 'text-green-400' : 'text-white/40'}`}>
+                  <span className={`text-sm font-mono ${complete ? 'text-white/70' : 'text-white/40'}`}>
                     {done}/{total}
                   </span>
                 )}
@@ -185,7 +185,7 @@ export default function DayScreen() {
                   <span className="text-xs text-white/30">{total} sets</span>
                 )}
                 {complete ? (
-                  <span className="text-green-400 text-lg">✓</span>
+                  <span className="text-white/70 text-lg">✓</span>
                 ) : (
                   <span className="text-white/20 text-lg">›</span>
                 )}
@@ -199,7 +199,7 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
-          className="w-full bg-blue-600 active:bg-blue-700 text-white font-bold py-4 rounded-2xl text-base transition-colors"
+          className="card-press w-full bg-white/10 border border-white/15 text-white/92 font-bold py-4 rounded-2xl text-base transition-colors"
         >
           Save Workout
         </button>
