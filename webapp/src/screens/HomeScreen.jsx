@@ -37,8 +37,9 @@ export default function HomeScreen() {
       />
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/65" />
-      {/* Top gradient — deepens header zone */}
-      <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-black/60 to-transparent" />
+      {/* Top gradient — absorbs Telegram header */}
+      <div className="absolute inset-x-0 top-0 h-32 bg-black/90" />
+      <div className="absolute inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 p-5">
