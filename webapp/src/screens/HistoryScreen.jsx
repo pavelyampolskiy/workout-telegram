@@ -56,7 +56,12 @@ export default function HistoryScreen() {
   }
 
   return (
-    <div className="p-5">
+    <div
+      className="min-h-screen relative"
+      style={{ backgroundImage: 'url(/history-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="absolute inset-0 bg-black/65" />
+      <div className="relative z-10 p-5">
       <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">History</h1>
 
       {items.length === 0 ? (
@@ -105,6 +110,7 @@ export default function HistoryScreen() {
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }
