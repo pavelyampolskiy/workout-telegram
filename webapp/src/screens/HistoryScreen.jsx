@@ -110,10 +110,7 @@ export default function HistoryScreen() {
             <p className="text-sm">No workouts yet</p>
           </div>
         ) : (
-          <div className="relative ml-2">
-            {/* Timeline */}
-            <div className="absolute left-[5px] top-3 bottom-3 w-px bg-white/6 pointer-events-none" />
-
+          <div className="space-y-2">
             {items.map((w, idx) => {
               const isNewMonth = idx === 0 || getMonthKey(w.date) !== getMonthKey(items[idx - 1].date);
               const summary = [
@@ -125,47 +122,39 @@ export default function HistoryScreen() {
                 <div key={w.id}>
                   {/* Month separator */}
                   {isNewMonth && (
-                    <div className={`pl-7 text-[10px] uppercase tracking-widest text-white/35 font-semibold ${idx === 0 ? 'mb-3' : 'mt-5 mb-3'}`}>
+                    <div className={`font-bebas tracking-widest text-white/35 text-sm ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
                       {formatMonthLabel(w.date)}
                     </div>
                   )}
 
-                  <div className="flex items-start mb-2">
-                    {/* Dot on timeline */}
-                    <div className="w-3 shrink-0 flex justify-center pt-[15px] z-10">
-                      <div className="w-[6px] h-[6px] rounded-full bg-white/20" />
-                    </div>
-
-                    {/* Card */}
-                    <button
-                      onClick={() => navigate('history-detail', { workoutId: w.id })}
-                      className="card-press flex-1 ml-2 backdrop-blur-sm rounded-2xl p-4 text-left"
-                      style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.02em' }}>
-                            {fmtLabel(w.type)}
-                          </div>
-                          <div className="text-white/60 mt-1.5" style={{ fontSize: '13px', letterSpacing: '0.04em' }}>
-                            {formatDate(w.date)}
-                          </div>
-                          {summary ? (
-                            <div className="text-white/40 mt-2 leading-snug" style={{ fontSize: '12px' }}>
-                              {summary}
-                            </div>
-                          ) : null}
+                  <button
+                    onClick={() => navigate('history-detail', { workoutId: w.id })}
+                    className="card-press w-full backdrop-blur-sm rounded-2xl p-4 text-left"
+                    style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.05em' }}>
+                          {fmtLabel(w.type)}
                         </div>
-                        <span className="text-white/20 text-base shrink-0 mt-0.5">›</span>
+                        <div className="font-bebas text-white/40 mt-1" style={{ fontSize: '13px', letterSpacing: '0.05em' }}>
+                          {formatDate(w.date)}
+                        </div>
+                        {summary ? (
+                          <div className="text-white/35 mt-1.5 leading-snug" style={{ fontSize: '11px' }}>
+                            {summary}
+                          </div>
+                        ) : null}
                       </div>
-                    </button>
-                  </div>
+                      <span className="text-white/20 text-base shrink-0 mt-0.5">›</span>
+                    </div>
+                  </button>
                 </div>
               );
             })}
 
             {hasMore && (
-              <div className="pl-7 mt-1">
+              <div className="mt-1">
                 <button
                   onClick={handleMore}
                   disabled={loadingMore}
