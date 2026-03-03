@@ -237,7 +237,7 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="flex-1 bg-white/10 active:bg-white/20 border border-white/10 disabled:opacity-30 text-white/50 active:text-white/80 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
+            className="flex-1 bg-white/10 active:bg-white/20 border border-white/10 disabled:opacity-30 text-white/50 active:text-white/80 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
@@ -246,7 +246,7 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="card-press flex-1 bg-white/8 border border-white/15 text-white/92 font-semibold py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
+            className="card-press flex-1 bg-white/8 border border-white/15 text-white/92 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M20 6L9 17l-5-5"/>
