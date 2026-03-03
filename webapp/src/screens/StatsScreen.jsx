@@ -12,7 +12,7 @@ function Bar({ label, value, max }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-sm" style={{ color: 'rgba(255,255,255,0.87)' }}>{label}</span>
+        <span className="text-sm font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.87)' }}>{label}</span>
         <span className="text-sm font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.77)' }}>{value}</span>
       </div>
       <div className="h-2.5 rounded-lg" style={{ background: '#1F1F1F' }}>
@@ -153,7 +153,7 @@ export default function StatsScreen() {
               onClick={() => setTab(t.key)}
               className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors ${
                 tab === t.key
-                  ? 'text-white/92'
+                  ? 'bg-white/12 text-white/92'
                   : 'text-white/40 active:text-white/60'
               }`}
             >
