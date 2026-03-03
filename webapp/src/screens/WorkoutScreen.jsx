@@ -8,18 +8,16 @@ const DayAIcon = () => (
 
 const DayBIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <path d="M5 6h14M7 12h10M9 18h6"/>
+    <circle cx="12" cy="12" r="9"/>
+    <circle cx="12" cy="12" r="4.5"/>
   </svg>
 );
 
 const DayCIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <circle cx="12" cy="12" r="9"/>
-    <circle cx="12" cy="12" r="4"/>
-    <line x1="12" y1="2" x2="12" y2="8"/>
-    <line x1="12" y1="16" x2="12" y2="22"/>
-    <line x1="2" y1="12" x2="8" y2="12"/>
-    <line x1="16" y1="12" x2="22" y2="12"/>
+    <circle cx="12" cy="15" r="6"/>
+    <path d="M9 9h6"/>
+    <path d="M9 9c0-2 1-3.5 3-3.5s3 1.5 3 3.5"/>
   </svg>
 );
 
