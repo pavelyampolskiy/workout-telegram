@@ -116,6 +116,11 @@ export default function ExerciseScreen() {
       <div className="relative z-10 p-5">
       {/* Exercise header */}
       <div className="pt-2 mb-5">
+        {/* Breadcrumb */}
+        <button onClick={handleFinish} className="flex items-center gap-1 mb-3 -ml-0.5">
+          <span className="text-white/30 text-base leading-none">‹</span>
+          <span className="font-bebas tracking-wider text-white/30 text-sm">{day.replace('DAY_', 'Day ')}</span>
+        </button>
         <div className="flex items-center gap-2 mb-1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
