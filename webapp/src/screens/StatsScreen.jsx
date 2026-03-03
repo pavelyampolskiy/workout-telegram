@@ -46,7 +46,7 @@ export default function StatsScreen() {
     return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
   }
   if (error) {
-    return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
+    return <div className="p-5 text-center text-white/40 pt-20">{error}</div>;
   }
 
   const TABS = [
@@ -63,7 +63,7 @@ export default function StatsScreen() {
           <p className="text-white/40 mb-4">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
-            className="bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl font-semibold"
+            className="card-press bg-white/10 border border-white/8 text-white/90 px-6 py-3 rounded-xl font-semibold"
           >
             Choose Exercise →
           </button>
@@ -75,11 +75,11 @@ export default function StatsScreen() {
       const { total, avg, weeks } = data.freq;
       return (
         <div className="space-y-4">
-          <div className="bg-white/8 border border-white/8 rounded-2xl p-5 text-center">
+          <div className="bg-white/8 rounded-2xl p-5 text-center">
             <div className="text-5xl font-bebas text-white mb-1">{total}</div>
             <div className="text-white/40 text-sm">workouts in {weeks} weeks</div>
           </div>
-          <div className="bg-white/8 border border-white/8 rounded-2xl p-5 text-center">
+          <div className="bg-white/8 rounded-2xl p-5 text-center">
             <div className="text-5xl font-bebas text-white mb-1">{avg}</div>
             <div className="text-white/40 text-sm">avg per week</div>
           </div>
@@ -97,13 +97,13 @@ export default function StatsScreen() {
 
     return (
       <div className="space-y-4">
-        <div className="bg-white/8 border border-white/8 rounded-2xl p-5 text-center">
+        <div className="bg-white/8 rounded-2xl p-5 text-center">
           <div className="text-5xl font-bebas text-white mb-1">{total}</div>
           <div className="text-white/40 text-sm">total workouts</div>
         </div>
 
-        <div className="bg-white/8 border border-white/8 rounded-2xl p-5 space-y-3">
-          <div className="text-xs text-white/40 uppercase tracking-wider font-semibold mb-3">By type</div>
+        <div className="bg-white/8 rounded-2xl p-5 space-y-3">
+          <div className="text-[10px] text-white/35 uppercase tracking-widest font-semibold mb-3">By type</div>
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-sm text-white/70">Day A</span>
@@ -137,10 +137,10 @@ export default function StatsScreen() {
 
   return (
     <div className="p-5">
-      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Statistics</h1>
+      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-5 bg-white/8 p-1 rounded-2xl overflow-x-auto">
+      <div className="flex gap-1 mb-5 bg-white/6 p-1 rounded-2xl overflow-x-auto">
         {TABS.map(t => (
           <button
             key={t.key}
