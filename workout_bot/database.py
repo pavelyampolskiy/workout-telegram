@@ -105,7 +105,18 @@ def get_workout(workout_id: int):
 def get_history(user_id: int, offset: int = 0, limit: int = 10):
     with db() as conn:
         rows = conn.execute(
-            "SELECT * FROM workouts WHERE user_id=? ORDER BY date DESC, id DESC LIMIT ? OFFSET ?",
+            """
+            SELECT w.id, w.date, w.type,
+                   COUNT(ws.id) AS total_sets,
+                   COALESCE(CAST(SUM(ws.weight * ws.reps) AS INTEGER), 0) AS total_volume
+            FROM workouts w
+            LEFT JOIN workout_exercises we ON we.workout_id = w.id
+            LEFT JOIN workout_sets ws ON ws.workout_exercise_id = we.id
+            WHERE w.user_id = ?
+            GROUP BY w.id, w.date, w.type
+            ORDER BY w.date DESC, w.id DESC
+            LIMIT ? OFFSET ?
+            """,
             (user_id, limit + 1, offset),
         ).fetchall()
     has_more = len(rows) > limit
