@@ -135,24 +135,24 @@ export default function HistoryScreen() {
                   <div className="flex items-start mb-2">
                     {/* Dot on timeline */}
                     <div className="w-3 shrink-0 flex justify-center pt-[15px] z-10">
-                      <div className="w-[5px] h-[5px] rounded-full bg-white/20 ring-2 ring-black/60" />
+                      <div className="w-[6px] h-[6px] rounded-full bg-white/20" />
                     </div>
 
                     {/* Card */}
                     <button
                       onClick={() => navigate('history-detail', { workoutId: w.id })}
-                      className="card-press flex-1 ml-2 bg-white/8 border border-white/8 rounded-xl p-4 text-left"
+                      className="card-press flex-1 ml-2 bg-white/5 rounded-xl p-4 text-left"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
                           <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.02em' }}>
                             {fmtLabel(w.type)}
                           </div>
-                          <div className="text-white/60 mt-1" style={{ fontSize: '13px', letterSpacing: '0.04em' }}>
+                          <div className="text-white/60 mt-1.5" style={{ fontSize: '13px', letterSpacing: '0.04em' }}>
                             {formatDate(w.date)}
                           </div>
                           {summary ? (
-                            <div className="text-white/40 mt-1.5 leading-snug" style={{ fontSize: '12px' }}>
+                            <div className="text-white/40 mt-2 leading-snug" style={{ fontSize: '12px' }}>
                               {summary}
                             </div>
                           ) : null}
