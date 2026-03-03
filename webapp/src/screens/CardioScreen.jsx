@@ -46,21 +46,21 @@ export default function CardioScreen() {
             </svg>
           </div>
           <h1 className="text-xl font-bebas tracking-wider">Cardio</h1>
-          <p className="text-slate-300 text-sm mt-1">Describe your session</p>
+          <p className="text-white/60 text-sm mt-1">Describe your session</p>
         </div>
 
         <textarea
           value={text}
           onChange={e => setText(e.target.value)}
           placeholder="E.g. Running 30 min, 5 km"
-          className="w-full bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-white placeholder-slate-500 resize-none h-36 outline-none text-sm focus:ring-2 focus:ring-red-500"
+          className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/40 resize-none h-36 outline-none text-sm focus:border-white/20"
           autoFocus
         />
 
         <button
           onClick={handleSave}
           disabled={saving || !text.trim() || !workoutId}
-          className="w-full mt-4 bg-white/10 backdrop-blur-sm active:bg-white/20 border border-white/10 disabled:opacity-40 text-white font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
+          className="card-press w-full mt-4 bg-white/10 border border-white/15 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
         >
           {saving ? 'Saving…' : 'Save Cardio'}
         </button>
