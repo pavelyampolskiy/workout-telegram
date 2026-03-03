@@ -176,7 +176,7 @@ export default function ExerciseScreen() {
               value={weight}
               onChange={e => setWeight(e.target.value)}
               placeholder="140"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none focus:ring-2 focus:ring-white/30 placeholder-white/20"
             />
           </div>
           <div className="flex items-end pb-0.5 text-white/30 text-xl font-light">×</div>
@@ -191,7 +191,7 @@ export default function ExerciseScreen() {
               value={reps}
               onChange={e => setReps(e.target.value)}
               placeholder="12"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none focus:ring-2 focus:ring-white/30 placeholder-white/20"
             />
           </div>
         </div>
