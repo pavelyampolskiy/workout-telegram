@@ -136,27 +136,33 @@ export default function StatsScreen() {
   };
 
   return (
-    <div className="p-5">
-      <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Statistics</h1>
+    <div
+      className="min-h-screen relative"
+      style={{ backgroundImage: 'url(/history-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="absolute inset-0 bg-black/70" />
+      <div className="relative z-10 p-5">
+        <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Statistics</h1>
 
-      {/* Tabs */}
-      <div className="flex gap-1 mb-5 bg-white/8 p-1 rounded-2xl overflow-x-auto">
-        {TABS.map(t => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`flex-1 py-2 px-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
-              tab === t.key
-                ? 'bg-white/20 text-white'
-                : 'text-white/40 active:bg-white/10'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+        {/* Tabs */}
+        <div className="flex gap-1 mb-5 bg-white/8 p-1 rounded-2xl overflow-x-auto">
+          {TABS.map(t => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`flex-1 py-2 px-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
+                tab === t.key
+                  ? 'bg-white/20 text-white'
+                  : 'text-white/40 active:bg-white/10'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {renderContent()}
       </div>
-
-      {renderContent()}
     </div>
   );
 }
