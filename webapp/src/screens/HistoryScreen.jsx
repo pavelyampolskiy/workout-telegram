@@ -137,7 +137,7 @@ export default function HistoryScreen() {
                         <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.05em' }}>
                           {fmtLabel(w.type)}
                         </div>
-                        <div className="font-bebas text-white/40 mt-1" style={{ fontSize: '13px', letterSpacing: '0.05em' }}>
+                        <div className="font-bebas text-white/40 mt-1" style={{ fontSize: '14px', letterSpacing: '0.08em' }}>
                           {formatDate(w.date)}
                         </div>
                         {summary ? (
