@@ -99,7 +99,7 @@ export default function ExerciseScreen() {
   const handleFinish = () => goBack();
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen text-slate-400">Loading…</div>;
+    return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
   }
   if (error) {
     return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
@@ -113,22 +113,22 @@ export default function ExerciseScreen() {
       {/* Exercise header */}
       <div className="pt-2 mb-5">
         <div className="flex items-center gap-2 mb-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 shrink-0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
           </svg>
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{ex?.group}</span>
+          <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">{ex?.group}</span>
         </div>
-        <h1 className="text-xl font-bebas tracking-wider text-slate-100 leading-tight">{ex?.name}</h1>
+        <h1 className="text-xl font-bebas tracking-wider text-white leading-tight">{ex?.name}</h1>
 
         {/* Progress bar */}
         <div className="mt-3 flex items-center gap-3">
-          <div className="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
+          <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-blue-500 rounded-full transition-all duration-300"
+              className="h-full bg-white/60 rounded-full transition-all duration-300"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <span className="text-sm text-slate-400 font-mono shrink-0">
+          <span className="text-sm text-white/40 font-mono shrink-0">
             {done}/{target} sets
           </span>
         </div>
@@ -136,8 +136,8 @@ export default function ExerciseScreen() {
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
-        <div className="bg-slate-800/60 rounded-xl p-3 mb-5 border border-slate-700/50">
-          <div className="flex items-center gap-1 text-xs text-slate-400 mb-1.5">
+        <div className="bg-white/8 rounded-xl p-3 mb-5 border border-white/10">
+          <div className="flex items-center gap-1 text-xs text-white/40 mb-1.5">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3.5 3.5"/>
@@ -146,7 +146,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="flex flex-wrap gap-2">
             {lastSets.map((s, i) => (
-              <span key={i} className="text-sm text-slate-300 bg-slate-700/60 rounded-lg px-2 py-0.5 font-mono">
+              <span key={i} className="text-sm text-white/70 bg-white/8 rounded-lg px-2 py-0.5 font-mono">
                 {fmtW(s.weight)}×{s.reps}
               </span>
             ))}
@@ -155,13 +155,13 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div className="bg-slate-800 rounded-2xl p-4 mb-4">
-        <div className="text-xs text-slate-400 mb-3 uppercase tracking-wider font-semibold">
+      <div className="bg-white/10 border border-white/10 rounded-2xl p-4 mb-4">
+        <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
           Set {done + 1}
         </div>
         <div className="flex gap-3 mb-4">
           <div className="flex-1">
-            <label className="text-xs text-slate-400 mb-1 block">Weight (kg)</label>
+            <label className="text-xs text-white/40 mb-1 block">Weight (kg)</label>
             <input
               ref={weightRef}
               type="number"
@@ -171,12 +171,12 @@ export default function ExerciseScreen() {
               value={weight}
               onChange={e => setWeight(e.target.value)}
               placeholder="140"
-              className="w-full bg-slate-700 rounded-xl px-3 py-3 text-slate-100 text-lg font-mono text-center outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-white/8 border border-white/10 rounded-xl px-3 py-3 text-white text-lg font-mono text-center outline-none focus:ring-2 focus:ring-white/30"
             />
           </div>
-          <div className="flex items-end pb-0.5 text-slate-500 text-xl font-light">×</div>
+          <div className="flex items-end pb-0.5 text-white/30 text-xl font-light">×</div>
           <div className="flex-1">
-            <label className="text-xs text-slate-400 mb-1 block">Reps</label>
+            <label className="text-xs text-white/40 mb-1 block">Reps</label>
             <input
               type="number"
               inputMode="numeric"
@@ -186,7 +186,7 @@ export default function ExerciseScreen() {
               value={reps}
               onChange={e => setReps(e.target.value)}
               placeholder="12"
-              className="w-full bg-slate-700 rounded-xl px-3 py-3 text-slate-100 text-lg font-mono text-center outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-white/8 border border-white/10 rounded-xl px-3 py-3 text-white text-lg font-mono text-center outline-none focus:ring-2 focus:ring-white/30"
             />
           </div>
         </div>
@@ -194,7 +194,7 @@ export default function ExerciseScreen() {
         <button
           onClick={handleSaveSet}
           disabled={saving || !weight || !reps}
-          className="w-full bg-blue-600 active:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 text-white font-semibold py-3 rounded-xl transition-colors"
+          className="w-full bg-blue-600 active:bg-blue-700 disabled:bg-white/10 disabled:text-white/30 text-white font-semibold py-3 rounded-xl transition-colors"
         >
           {saving ? 'Saving…' : '✓ Save Set'}
         </button>
@@ -202,8 +202,8 @@ export default function ExerciseScreen() {
 
       {/* Recorded sets */}
       {sets.length > 0 && (
-        <div className="bg-slate-800 rounded-2xl p-4 mb-4">
-          <div className="text-xs text-slate-400 mb-3 uppercase tracking-wider font-semibold">
+        <div className="bg-white/10 border border-white/10 rounded-2xl p-4 mb-4">
+          <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
             Recorded sets
           </div>
           <div className="space-y-2">
@@ -212,7 +212,7 @@ export default function ExerciseScreen() {
                 <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-slate-200 font-mono text-sm">
+                <span className="text-white/80 font-mono text-sm">
                   {fmtW(s.weight)} kg × {s.reps} reps
                 </span>
               </div>
@@ -222,12 +222,12 @@ export default function ExerciseScreen() {
       )}
 
       {/* Action buttons */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-slate-900 via-slate-900/95 to-transparent pt-6">
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <div className="flex gap-2">
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="flex-1 bg-slate-800 active:bg-slate-700 disabled:opacity-40 text-red-400 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
+            className="flex-1 bg-white/10 active:bg-white/20 border border-white/10 disabled:opacity-40 text-red-400 font-medium py-3 rounded-xl text-sm transition-colors flex items-center justify-center gap-1.5"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>

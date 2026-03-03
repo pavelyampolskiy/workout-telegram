@@ -80,7 +80,7 @@ export default function DayScreen() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen text-slate-400">
+      <div className="flex items-center justify-center h-screen text-white/40">
         Setting up workout…
       </div>
     );
@@ -98,13 +98,13 @@ export default function DayScreen() {
             <path d="M20 6L9 17l-5-5"/>
           </svg>
           <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
-          <p className="text-slate-400 text-sm mt-1">Add a note (optional)</p>
+          <p className="text-white/40 text-sm mt-1">Add a note (optional)</p>
         </div>
         <textarea
           value={note}
           onChange={e => setNote(e.target.value)}
           placeholder="E.g. Felt strong today…"
-          className="w-full bg-slate-800 rounded-xl p-3 text-slate-100 placeholder-slate-500 resize-none h-28 outline-none mt-4 text-sm"
+          className="w-full bg-white/8 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm"
           autoFocus
         />
         <button
@@ -116,7 +116,7 @@ export default function DayScreen() {
         </button>
         <button
           onClick={() => resetTo('home')}
-          className="w-full mt-2 text-slate-400 py-2 text-sm"
+          className="w-full mt-2 text-white/40 py-2 text-sm"
         >
           Skip
         </button>
@@ -149,22 +149,22 @@ export default function DayScreen() {
               className={`w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${
                 complete
                   ? 'bg-green-900/40 border border-green-800/60'
-                  : 'bg-slate-800 active:bg-slate-700'
+                  : 'bg-white/10 border border-white/10 active:bg-white/20'
               }`}
             >
               <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
                 {idx + 1}
               </span>
               <div className="flex-1 min-w-0">
-                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-green-400' : 'text-slate-100'}`}>
+                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-green-400' : 'text-white'}`}>
                   {ex.name}
                 </div>
-                <div className="text-slate-500 text-xs mt-1">{ex.group}</div>
+                <div className="text-white/30 text-xs mt-1">{ex.group}</div>
                 {/* Progress bar */}
                 {done > 0 && (
-                  <div className="mt-2 h-1.5 bg-slate-700 rounded-full overflow-hidden w-24">
+                  <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-24">
                     <div
-                      className={`h-full rounded-full transition-all ${complete ? 'bg-green-500' : 'bg-blue-500'}`}
+                      className={`h-full rounded-full transition-all ${complete ? 'bg-green-500' : 'bg-white/60'}`}
                       style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
                     />
                   </div>
@@ -172,17 +172,17 @@ export default function DayScreen() {
               </div>
               <div className="shrink-0 flex flex-col items-end gap-1">
                 {done > 0 && (
-                  <span className={`text-sm font-mono ${complete ? 'text-green-400' : 'text-slate-400'}`}>
+                  <span className={`text-sm font-mono ${complete ? 'text-green-400' : 'text-white/40'}`}>
                     {done}/{total}
                   </span>
                 )}
                 {!done && (
-                  <span className="text-xs text-slate-500">{total} sets</span>
+                  <span className="text-xs text-white/30">{total} sets</span>
                 )}
                 {complete ? (
                   <span className="text-green-400 text-lg">✓</span>
                 ) : (
-                  <span className="text-slate-600 text-lg">›</span>
+                  <span className="text-white/20 text-lg">›</span>
                 )}
               </div>
             </button>
@@ -191,7 +191,7 @@ export default function DayScreen() {
       </div>
 
       {/* Fixed bottom button */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-slate-900 via-slate-900/95 to-transparent pt-6">
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
           className="w-full bg-blue-600 active:bg-blue-700 text-white font-bold py-4 rounded-2xl text-base transition-colors"
