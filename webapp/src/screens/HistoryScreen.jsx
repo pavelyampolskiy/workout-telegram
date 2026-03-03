@@ -4,8 +4,8 @@ import { api } from '../api';
 
 const MONTHS_LONG = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
   'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
-const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun',
-  'Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN',
+  'JUL','AUG','SEP','OCT','NOV','DEC'];
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
 
@@ -14,9 +14,10 @@ function formatMonthLabel(dateStr) {
   return `${MONTHS_LONG[parseInt(month) - 1]} ${year}`;
 }
 
+// "03 MAR 2026"
 function formatDate(dateStr) {
-  const [, month, day] = dateStr.split('-');
-  return `${MONTHS_SHORT[parseInt(month) - 1]} ${parseInt(day)}`;
+  const [year, month, day] = dateStr.split('-');
+  return `${day} ${MONTHS_ABBR[parseInt(month) - 1]} ${year}`;
 }
 
 function fmtLabel(type) {
@@ -144,19 +145,19 @@ export default function HistoryScreen() {
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <div className="font-bebas text-white/90 leading-none tracking-wider text-lg">
+                          <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.02em' }}>
                             {fmtLabel(w.type)}
                           </div>
-                          <div className="text-xs text-white/50 mt-0.5">
+                          <div className="text-white/60 mt-1" style={{ fontSize: '13px', letterSpacing: '0.04em' }}>
                             {formatDate(w.date)}
                           </div>
                           {summary ? (
-                            <div className="text-[11px] text-white/35 mt-2">
+                            <div className="text-white/40 mt-1.5 leading-snug" style={{ fontSize: '12px' }}>
                               {summary}
                             </div>
                           ) : null}
                         </div>
-                        <span className="text-white/20 text-lg shrink-0 mt-0.5">›</span>
+                        <span className="text-white/20 text-base shrink-0 mt-0.5">›</span>
                       </div>
                     </button>
                   </div>
