@@ -201,7 +201,7 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
-          className="card-press w-full bg-white/10 border border-white/15 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
+          className="card-press w-full bg-white/5 border border-white/[0.075] text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
         >
           Save Workout
         </button>
