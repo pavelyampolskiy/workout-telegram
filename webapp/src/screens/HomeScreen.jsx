@@ -22,7 +22,7 @@ export default function HomeScreen() {
         <div className="pt-6 pb-10">
           <h1
             className="font-bebas text-white/85 leading-none w-full"
-            style={{ fontSize: '11vw', wordSpacing: '0.5em', letterSpacing: '0.35em' }}
+            style={{ fontSize: '11vw', wordSpacing: '0.6em', letterSpacing: '0.45em' }}
           >
             Are you ready?
           </h1>
