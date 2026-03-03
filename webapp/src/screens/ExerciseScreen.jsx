@@ -126,15 +126,15 @@ export default function ExerciseScreen() {
 
         {/* Progress bar */}
         <div className="mt-3 flex items-center gap-3">
-          <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+          <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-white/60 rounded-full transition-all duration-500"
+              className="h-full bg-white/60 rounded-full transition-all duration-300"
               style={{ width: `${pct}%` }}
             />
           </div>
           <span className="font-bebas shrink-0 text-base tracking-wider">
-            <span className="text-white/70">{done}/{target}</span>
-            <span className="text-white/40"> sets</span>
+            <span className="text-white">{done}/{target}</span>
+            <span className="text-white/60"> sets</span>
           </span>
         </div>
       </div>
@@ -161,12 +161,12 @@ export default function ExerciseScreen() {
 
       {/* Input */}
       <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
-        <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
+        <div className="text-xs mb-3 uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
         <div className="flex gap-3 mb-4">
           <div className="flex-1">
-            <label className="text-xs text-white/40 mb-1 block">Weight (kg)</label>
+            <label className="text-xs mb-1 block" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
             <input
               ref={weightRef}
               type="number"
@@ -176,12 +176,12 @@ export default function ExerciseScreen() {
               value={weight}
               onChange={e => setWeight(e.target.value)}
               placeholder="140"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none focus:ring-2 focus:ring-white/30 placeholder-white/20"
+              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
           </div>
           <div className="flex items-end pb-0.5 text-white/30 text-xl font-light">×</div>
           <div className="flex-1">
-            <label className="text-xs text-white/40 mb-1 block">Reps</label>
+            <label className="text-xs mb-1 block" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
             <input
               type="number"
               inputMode="numeric"
@@ -191,7 +191,7 @@ export default function ExerciseScreen() {
               value={reps}
               onChange={e => setReps(e.target.value)}
               placeholder="12"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none focus:ring-2 focus:ring-white/30 placeholder-white/20"
+              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
           </div>
         </div>
@@ -199,7 +199,12 @@ export default function ExerciseScreen() {
         <button
           onClick={handleSaveSet}
           disabled={saving || !weight || !reps}
-          className="card-press w-full bg-white/10 border border-white/20 disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 text-white/92 font-semibold py-3 rounded-xl transition-colors"
+          className="card-press w-full rounded-xl py-3 font-semibold transition-all disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 border"
+          style={
+            weight && reps
+              ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)', color: 'rgba(255,255,255,1)' }
+              : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
+          }
         >
           {saving ? 'Saving…' : '✓ Save Set'}
         </button>
