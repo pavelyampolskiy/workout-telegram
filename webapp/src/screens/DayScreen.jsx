@@ -105,7 +105,7 @@ export default function DayScreen() {
           value={note}
           onChange={e => setNote(e.target.value)}
           placeholder="E.g. Felt strong today…"
-          className="w-full bg-white/8 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm"
+          className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm"
           autoFocus
         />
         <button
