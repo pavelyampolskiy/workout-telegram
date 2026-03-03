@@ -21,6 +21,7 @@ export default function ExerciseScreen() {
   const [weight, setWeight] = useState('');
   const [reps, setReps] = useState('');
   const [saving, setSaving] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
 
   const weightRef = useRef(null);
 
@@ -60,6 +61,8 @@ export default function ExerciseScreen() {
       const updated = [...sets, { id, set_number: sets.length + 1, weight: w, reps: r }];
       setSets(updated);
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 400);
       // Update active workout context
       setActiveWorkout(prev => prev ? {
         ...prev,
@@ -138,7 +141,8 @@ export default function ExerciseScreen() {
             />
           </div>
           <span className="font-bebas shrink-0 text-base tracking-wider">
-            <span className="text-white">{done}/{target}</span>
+            <span key={done} className="text-white counter-pop">{done}</span>
+            <span className="text-white">/{target}</span>
             <span className="text-white/60"> sets</span>
           </span>
         </div>
@@ -165,7 +169,7 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
+      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm ${justSaved ? 'save-flash' : ''}`} style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
@@ -223,7 +227,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="space-y-2">
             {sets.map((s, i) => (
-              <div key={s.id} className="flex items-center gap-3">
+              <div key={s.id} className={`flex items-center gap-3 ${i === sets.length - 1 ? 'row-in' : ''}`}>
                 <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
                   {i + 1}
                 </span>
