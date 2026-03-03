@@ -97,7 +97,10 @@ export default function ProgressScreen() {
   const t = trend();
 
   return (
-    <div className="p-5">
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
+      <div className="absolute inset-0 bg-black/65" />
+      <div className="relative z-10 p-5">
       <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Progress</h1>
 
       {/* Exercise selector */}
@@ -106,7 +109,7 @@ export default function ProgressScreen() {
           onClick={() => setOpen(!open)}
           className="card-press w-full bg-white/10 border border-white/10 rounded-2xl p-4 text-left flex items-center justify-between"
         >
-          <span className={selected ? 'text-white font-semibold' : 'text-white/40'}>
+          <span className={selected ? 'text-white font-bebas tracking-wider' : 'text-white/40 font-bebas tracking-wider'}>
             {selected ? selected.name : 'Select exercise…'}
           </span>
           <span className="text-white/30 text-lg">{open ? '▲' : '▼'}</span>
@@ -120,7 +123,7 @@ export default function ProgressScreen() {
                 onClick={() => handleSelect(ex)}
                 className="w-full text-left px-4 py-3 active:bg-white/10 border-b border-white/10 last:border-0 transition-colors"
               >
-                <div className="text-sm font-medium text-white/80">{ex.name}</div>
+                <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
                 <div className="text-xs text-white/30">{ex.group}</div>
               </button>
             ))}
@@ -148,14 +151,14 @@ export default function ProgressScreen() {
             {/* Trend */}
             {t && (
               <div className="bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center gap-3">
-                <span className={`text-2xl font-bold ${t.color}`}>{t.text}</span>
+                <span className={`text-2xl font-bebas tracking-wider ${t.color}`}>{t.text}</span>
                 <span className="text-white/40 text-sm">over {progress.length} sessions</span>
               </div>
             )}
 
             {/* Chart */}
             <div className="bg-white/10 border border-white/10 rounded-2xl p-4">
-              <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
+              <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-bebas">
                 Max weight per session (kg)
               </div>
               <LineChart data={progress} />
@@ -163,14 +166,14 @@ export default function ProgressScreen() {
 
             {/* Session list */}
             <div className="bg-white/10 border border-white/10 rounded-2xl p-4">
-              <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
+              <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-bebas">
                 Sessions
               </div>
               <div className="space-y-2">
                 {[...progress].reverse().map((r, i) => (
                   <div key={i} className="flex items-center justify-between">
-                    <span className="text-white/40 text-sm font-mono">{r.date}</span>
-                    <span className="text-white/80 font-semibold">{fmtW(r.max_weight)} kg</span>
+                    <span className="text-white/40 text-sm font-bebas tracking-wider">{r.date}</span>
+                    <span className="text-white/80 font-bebas tracking-wider">{fmtW(r.max_weight)} kg</span>
                   </div>
                 ))}
               </div>
@@ -189,6 +192,7 @@ export default function ProgressScreen() {
           <p>Select an exercise above</p>
         </div>
       )}
+      </div>
     </div>
   );
 }

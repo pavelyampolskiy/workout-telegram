@@ -125,7 +125,7 @@ export default function ExerciseScreen() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
           </svg>
-          <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">{ex?.group}</span>
+          <span className="text-xs font-bebas tracking-wider text-white/40 uppercase">{ex?.group}</span>
         </div>
         <h1 className="text-xl font-bebas tracking-wider text-white leading-tight">{ex?.name}</h1>
 
@@ -156,7 +156,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="flex flex-wrap gap-2">
             {lastSets.map((s, i) => (
-              <span key={i} className="text-sm text-white/70 bg-white/8 rounded-lg px-2 py-0.5 font-mono">
+              <span key={i} className="text-sm text-white/70 bg-white/8 rounded-lg px-2 py-0.5 font-bebas tracking-wider">
                 {fmtW(s.weight)}×{s.reps}
               </span>
             ))}
@@ -166,7 +166,7 @@ export default function ExerciseScreen() {
 
       {/* Input */}
       <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
-        <div className="text-xs mb-3 uppercase tracking-wider font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>
+        <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
         <div className="flex gap-3 mb-4">
@@ -184,7 +184,7 @@ export default function ExerciseScreen() {
               className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
           </div>
-          <div className="flex items-end pb-0.5 text-white/30 text-xl font-light">×</div>
+          <div className="flex items-end pb-0.5 text-white/30 text-xl font-bebas">×</div>
           <div className="flex-1">
             <label className="text-xs mb-1 block" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
             <input
@@ -218,16 +218,16 @@ export default function ExerciseScreen() {
       {/* Recorded sets */}
       {sets.length > 0 && (
         <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
-          <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-semibold">
+          <div className="text-xs text-white/40 mb-3 uppercase tracking-wider font-bebas">
             Recorded sets
           </div>
           <div className="space-y-2">
             {sets.map((s, i) => (
               <div key={s.id} className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
+                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-white/80 font-mono text-sm">
+                <span className="text-white/80 font-bebas tracking-wider text-sm">
                   {fmtW(s.weight)} kg × {s.reps} reps
                 </span>
               </div>

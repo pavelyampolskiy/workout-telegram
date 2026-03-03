@@ -156,7 +156,7 @@ export default function DayScreen() {
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
               }}
             >
-              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-mono shrink-0">
+              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
                 {idx + 1}
               </span>
               <div className="flex-1 min-w-0">
@@ -176,13 +176,13 @@ export default function DayScreen() {
               </div>
               <div className="shrink-0 flex flex-col items-end gap-1">
                 {done > 0 && (
-                  <span className={`text-sm font-mono ${complete ? 'text-white/70' : 'text-white/40'}`}>
+                  <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
                     {done}/{total}
                   </span>
                 )}
                 {!done && (
                   <div className="flex flex-col items-end leading-none">
-                    <span className="text-sm font-mono text-white/70">{total}</span>
+                    <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
                   </div>
                 )}

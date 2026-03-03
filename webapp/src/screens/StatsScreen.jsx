@@ -13,7 +13,7 @@ function Bar({ label, value, max }) {
     <div>
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-sm" style={{ color: 'rgba(255,255,255,0.87)' }}>{label}</span>
-        <span className="text-sm font-mono" style={{ color: 'rgba(255,255,255,0.77)' }}>{value}</span>
+        <span className="text-sm font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.77)' }}>{value}</span>
       </div>
       <div className="h-2.5 rounded-lg" style={{ background: '#1F1F1F' }}>
         <div
@@ -71,7 +71,7 @@ export default function StatsScreen() {
           <p className="text-white/40 mb-4">Select an exercise to view progress</p>
           <button
             onClick={() => navigate('progress')}
-            className="card-press text-white/90 font-bold px-8 py-3.5"
+            className="card-press text-white/90 font-bebas tracking-wider px-8 py-3.5"
             style={{
               background: '#1A1A1A',
               borderRadius: '22px',
@@ -93,13 +93,13 @@ export default function StatsScreen() {
           <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas text-white leading-none">{total}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Workouts</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workouts</div>
             </div>
           </div>
           <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas text-white leading-none">{avg}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Avg / Week</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
             </div>
           </div>
         </div>
@@ -119,12 +119,12 @@ export default function StatsScreen() {
         <div className={CARD.className} style={CARD.style}>
           <div className="text-center">
             <div className="text-5xl font-bebas text-white leading-none">{total}</div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold mt-1">Workouts</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workouts</div>
           </div>
         </div>
 
         <div className={CARD.className} style={CARD.style}>
-          <div className="text-[10px] uppercase tracking-widest font-semibold mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
+          <div className="text-[10px] uppercase tracking-widest font-bebas mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
           <div className="space-y-4">
             <Bar label="Day A" value={a} max={maxV} />
             <Bar label="Day B" value={b} max={maxV} />

@@ -94,10 +94,10 @@ export default function HistoryDetailScreen() {
             <div className="space-y-1.5">
               {ex.sets.map((s, i) => (
                 <div key={s.id} className="flex items-center gap-3">
-                  <span className="w-5 h-5 rounded-full border border-white/15 flex items-center justify-center text-white/35 text-xs font-mono shrink-0">
+                  <span className="w-5 h-5 rounded-full border border-white/15 flex items-center justify-center text-white/35 text-xs font-bebas tracking-wider shrink-0">
                     {i + 1}
                   </span>
-                  <span className="text-white/70 font-mono text-sm">
+                  <span className="text-white/70 font-bebas tracking-wider text-sm">
                     {fmtW(s.weight)} kg × {s.reps} reps
                   </span>
                 </div>
