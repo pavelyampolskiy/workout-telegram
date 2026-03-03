@@ -7,17 +7,20 @@ const CARD = {
   style: { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' },
 };
 
-function Bar({ value, max }) {
+function Bar({ label, value, max }) {
   const pct = max > 0 ? (value / max) * 100 : 0;
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex-1 h-2 bg-white/8 rounded-full overflow-hidden">
+    <div>
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-sm" style={{ color: 'rgba(255,255,255,0.87)' }}>{label}</span>
+        <span className="text-sm font-mono" style={{ color: 'rgba(255,255,255,0.77)' }}>{value}</span>
+      </div>
+      <div className="h-2.5 rounded-lg" style={{ background: '#1F1F1F' }}>
         <div
-          className="h-full bg-white/75 rounded-full transition-all duration-500"
-          style={{ width: `${pct}%` }}
+          className="h-full rounded-lg transition-all duration-500"
+          style={{ width: `${pct}%`, background: '#DCDCDC' }}
         />
       </div>
-      <span className="text-sm font-mono text-white/70 w-4 text-right">{value}</span>
     </div>
   );
 }
@@ -121,33 +124,13 @@ export default function StatsScreen() {
         </div>
 
         <div className={CARD.className} style={CARD.style}>
-          <div className="text-[10px] text-white/35 uppercase tracking-widest font-semibold mb-3">By type</div>
-          <div className="space-y-3">
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-white/70">Day A</span>
-              </div>
-              <Bar value={a} max={maxV} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-white/70">Day B</span>
-              </div>
-              <Bar value={b} max={maxV} />
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm text-white/70">Day C</span>
-              </div>
-              <Bar value={c} max={maxV} />
-            </div>
+          <div className="text-[10px] uppercase tracking-widest font-semibold mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
+          <div className="space-y-4">
+            <Bar label="Day A" value={a} max={maxV} />
+            <Bar label="Day B" value={b} max={maxV} />
+            <Bar label="Day C" value={c} max={maxV} />
             {cardio > 0 && (
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-sm text-white/70">Cardio</span>
-                </div>
-                <Bar value={cardio} max={maxV} />
-              </div>
+              <Bar label="Cardio" value={cardio} max={maxV} />
             )}
           </div>
         </div>
