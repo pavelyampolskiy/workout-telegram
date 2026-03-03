@@ -111,13 +111,13 @@ export default function DayScreen() {
         <button
           onClick={handleFinish}
           disabled={saving}
-          className="card-press w-full mt-3 bg-white/10 border border-white/15 text-white/92 font-semibold py-4 rounded-2xl transition-colors"
+          className="card-press w-full mt-3 bg-white/10 border border-white/15 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl transition-colors"
         >
           {saving ? 'Saving…' : 'Done'}
         </button>
         <button
           onClick={() => resetTo('home')}
-          className="w-full mt-2 text-white/40 py-2 text-sm"
+          className="w-full mt-2 text-white/40 py-2 font-bebas tracking-wider text-sm"
         >
           Skip
         </button>
@@ -133,7 +133,7 @@ export default function DayScreen() {
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
         <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
-        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 text-sm font-medium transition-colors">
+        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors">
           Cancel
         </button>
       </div>
@@ -216,13 +216,13 @@ export default function DayScreen() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowCancelConfirm(false)}
-                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-semibold py-3 rounded-xl transition-colors"
+                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl transition-colors"
               >
                 Keep working
               </button>
               <button
                 onClick={handleCancel}
-                className="w-full text-white/50 active:text-white/80 py-3 text-sm font-medium transition-colors"
+                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
               >
                 Cancel workout
               </button>

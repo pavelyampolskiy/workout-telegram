@@ -132,7 +132,7 @@ export default function HistoryDetailScreen() {
             <button
               onClick={handleDelete}
               disabled={deleting}
-              className="w-full text-white/40 active:text-white/70 disabled:opacity-40 py-3 text-sm font-medium transition-colors"
+              className="w-full text-white/40 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors"
             >
               {deleting ? 'Deleting…' : 'Yes, delete'}
             </button>
@@ -140,7 +140,7 @@ export default function HistoryDetailScreen() {
         ) : (
           <button
             onClick={() => setConfirming(true)}
-            className="w-full text-white/35 active:text-white/60 py-3 text-sm font-medium transition-colors flex items-center justify-center gap-2"
+            className="w-full text-white/35 active:text-white/60 py-3 font-bebas tracking-wider text-sm transition-colors flex items-center justify-center gap-2"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>

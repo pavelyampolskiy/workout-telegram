@@ -199,7 +199,7 @@ export default function ExerciseScreen() {
         <button
           onClick={handleSaveSet}
           disabled={saving || !weight || !reps}
-          className="card-press w-full rounded-xl py-3 font-semibold transition-all disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 border"
+          className="card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 border"
           style={
             weight && reps
               ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)', color: 'rgba(255,255,255,1)' }

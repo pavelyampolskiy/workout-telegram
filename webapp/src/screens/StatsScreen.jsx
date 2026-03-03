@@ -148,7 +148,7 @@ export default function StatsScreen() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`flex-1 py-2 px-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
+            className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors ${
               tab === t.key
                 ? 'text-white/92'
                 : 'text-white/40 active:text-white/60'

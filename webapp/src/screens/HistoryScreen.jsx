@@ -158,7 +158,7 @@ export default function HistoryScreen() {
                 <button
                   onClick={handleMore}
                   disabled={loadingMore}
-                  className="text-white/35 text-sm py-2"
+                  className="text-white/35 font-bebas tracking-wider text-sm py-2"
                 >
                   {loadingMore ? 'Loading…' : 'Load more'}
                 </button>
@@ -172,7 +172,7 @@ export default function HistoryScreen() {
           <div className="mt-10 mb-6 flex justify-center">
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="text-white/25 active:text-white/50 text-xs transition-colors"
+              className="text-white/25 active:text-white/50 font-bebas tracking-wider text-xs transition-colors"
             >
               Delete all history
             </button>
@@ -189,14 +189,14 @@ export default function HistoryScreen() {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-semibold py-3 rounded-xl transition-colors"
+                className="card-press w-full bg-white/10 border border-white/15 text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl transition-colors"
               >
                 Keep history
               </button>
               <button
                 onClick={handleDeleteAll}
                 disabled={deleting}
-                className="w-full text-white/45 active:text-white/70 disabled:opacity-40 py-3 text-sm font-medium transition-colors"
+                className="w-full text-white/45 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors"
               >
                 {deleting ? 'Deleting…' : 'Delete all'}
               </button>
