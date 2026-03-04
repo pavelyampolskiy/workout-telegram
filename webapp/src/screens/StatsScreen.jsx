@@ -162,7 +162,7 @@ export default function StatsScreen() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
-      <div className="relative z-10 p-5">
+      <div className="relative z-10 flex flex-col min-h-screen p-5">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
         {/* Tabs */}
@@ -182,6 +182,7 @@ export default function StatsScreen() {
           ))}
         </div>
 
+        <div className="flex-1" />
         {renderContent()}
       </div>
     </div>
