@@ -55,7 +55,7 @@ export default function HomeScreen() {
         </div>
 
         {/* Push cards to bottom */}
-        <div className="flex-1" />
+        <div className="flex-1 max-h-[28vh]" />
 
         {/* Navigation cards */}
         <div className="space-y-3 pb-14">
