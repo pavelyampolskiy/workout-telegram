@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useApp } from '../App';
+import { api } from '../api';
 import { CARD_BTN_STYLE } from '../shared';
 
 const WorkoutIcon = () => (
@@ -21,13 +23,77 @@ const StatsIcon = () => (
 );
 
 const ITEMS = [
-  { screen: 'workout', icon: <WorkoutIcon />, title: 'New Workout' },
+  { screen: 'workout', icon: <WorkoutIcon />, title: 'New Workout', primary: true },
   { screen: 'history', icon: <HistoryIcon />, title: 'History' },
   { screen: 'stats',   icon: <StatsIcon />,   title: 'Statistics' },
 ];
 
+const PRIMARY_CARD_STYLE = {
+  background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 100%) rgba(0,0,0,0.10)',
+  border: '1px solid rgba(255,255,255,0.20)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30), 0 0 22px rgba(255,255,255,0.09), 0 0 7px rgba(255,255,255,0.05)',
+};
+
+function daysAgoLabel(dateStr) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const d = new Date(dateStr);
+  d.setHours(0, 0, 0, 0);
+  const diff = Math.round((today - d) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yesterday';
+  if (diff < 7) return `${diff} days ago`;
+  return dateStr.split('-').slice(1).reverse().join('.');
+}
+
+function StatusWidget({ userId }) {
+  const [stats, setStats] = useState(undefined); // undefined = loading
+
+  useEffect(() => {
+    Promise.all([
+      api.getHistory(userId, 0, 1),
+      api.getStats(userId, 7),
+      api.getFrequency(userId),
+    ]).then(([hist, week, freq]) => {
+      setStats({
+        lastDate: hist.items?.[0]?.date ?? null,
+        weekCount: week.total ?? 0,
+        total: freq.total ?? 0,
+      });
+    }).catch(() => setStats(null));
+  }, [userId]);
+
+  if (stats === undefined) return <div className="mt-4 h-9" />;
+  if (!stats) return null;
+
+  const { lastDate, weekCount, total } = stats;
+  const parts = [
+    `${total} workout${total !== 1 ? 's' : ''}`,
+    `Last: ${lastDate ? daysAgoLabel(lastDate) : '—'}`,
+    `${weekCount} this week`,
+  ];
+
+  return (
+    <div
+      className="mt-4 rounded-2xl px-4 py-2.5 flex items-center"
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
+      }}
+    >
+      {parts.map((p, i) => (
+        <span key={i} className="flex items-center">
+          {i > 0 && <span className="mx-2 text-white/20 text-xs">·</span>}
+          <span className="font-bebas tracking-wider text-white/55 text-sm">{p}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function HomeScreen() {
-  const { navigate } = useApp();
+  const { navigate, userId } = useApp();
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -54,6 +120,9 @@ export default function HomeScreen() {
           </div>
         </div>
 
+        {/* Status widget */}
+        <StatusWidget userId={userId} />
+
         {/* Push cards to bottom */}
         <div className="flex-1" />
 
@@ -64,15 +133,15 @@ export default function HomeScreen() {
               key={item.screen}
               onClick={() => navigate(item.screen)}
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
-              style={CARD_BTN_STYLE}
+              style={item.primary ? PRIMARY_CARD_STYLE : CARD_BTN_STYLE}
             >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: item.primary ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.82)' }}>
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <div className="font-bebas tracking-wider text-lg text-white">{item.title}</div>
+                <div className={`font-bebas tracking-wider text-lg ${item.primary ? 'text-white' : 'text-white/85'}`}>{item.title}</div>
               </div>
-              <span className="text-white/35 text-xl shrink-0">›</span>
+              <span className={`text-xl shrink-0 ${item.primary ? 'text-white/50' : 'text-white/35'}`}>›</span>
             </button>
           ))}
         </div>
