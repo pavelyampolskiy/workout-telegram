@@ -74,7 +74,14 @@ function StatusWidget({ userId }) {
   ];
 
   return (
-    <div className="mt-3 flex items-center">
+    <div
+      className="mt-4 rounded-2xl px-4 py-2.5 flex items-center"
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
+      }}
+    >
       {parts.map((p, i) => (
         <span key={i} className="flex items-center">
           {i > 0 && <span className="mx-2 text-white/20 text-xs">·</span>}
