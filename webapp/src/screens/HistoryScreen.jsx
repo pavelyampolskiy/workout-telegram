@@ -138,7 +138,7 @@ export default function HistoryScreen() {
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <div className="font-sans font-semibold text-white/92 leading-none text-sm tracking-wide uppercase">
+                        <div className="font-bebas text-white/92 leading-none text-base tracking-wider">
                           {fmtLabel(w.type)}
                         </div>
                         <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
