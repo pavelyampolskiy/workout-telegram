@@ -42,16 +42,21 @@ export default function HomeScreen() {
       <div className="absolute inset-x-0 top-0 h-32 bg-black/90" />
       <div className="absolute inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />
 
-      {/* Content */}
-      <div className="relative z-10 p-5">
-        <div className="pt-2 pb-8">
+      {/* Content: title top, cards bottom */}
+      <div className="relative z-10 flex flex-col min-h-screen p-5">
+        {/* Headline */}
+        <div className="pt-2">
           <div className="font-bebas leading-none w-full">
             <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
             <div style={{ fontSize: '18vw', letterSpacing: '0.36em', color: 'rgba(255,255,255,1)' }}>Ready?</div>
           </div>
         </div>
 
-        <div className="space-y-16">
+        {/* Push cards to bottom */}
+        <div className="flex-1" />
+
+        {/* Navigation cards */}
+        <div className="space-y-3 pb-8">
           {ITEMS.map(item => (
             <button
               key={item.screen}
@@ -59,7 +64,7 @@ export default function HomeScreen() {
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
