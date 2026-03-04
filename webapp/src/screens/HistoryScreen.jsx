@@ -5,8 +5,8 @@ import ScreenBg from '../ScreenBg';
 import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE } from '../shared';
 
 const MONTHS_LONG = [
-  'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
-  'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER',
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
 ];
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
@@ -126,7 +126,7 @@ export default function HistoryScreen() {
                 <div key={w.id}>
                   {/* Month separator */}
                   {isNewMonth && (
-                    <div className={`font-sans font-medium text-white/30 text-xs tracking-widest uppercase ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
+                    <div className={`font-sans font-medium text-white/30 text-xs tracking-widest ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
                       {formatMonthLabel(w.date)}
                     </div>
                   )}
