@@ -69,9 +69,9 @@ function StatusWidget({ userId }) {
   const { lastDate, weekCount, total } = stats;
   const parts = [
     `${total} workout${total !== 1 ? 's' : ''}`,
-    `Last: ${lastDate ? daysAgoLabel(lastDate) : '—'}`,
+    lastDate ? `Last: ${daysAgoLabel(lastDate)}` : null,
     `${weekCount} this week`,
-  ];
+  ].filter(Boolean);
 
   return (
     <div className="mt-3 flex items-center">
