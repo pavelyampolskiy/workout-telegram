@@ -150,12 +150,12 @@ export default function ProgressScreen() {
           </button>
 
           {open && (
-            <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-black/90 border border-white/10 rounded-2xl overflow-hidden shadow-xl max-h-60 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 z-10 mt-1 border border-white/[0.07] rounded-2xl overflow-hidden shadow-xl max-h-60 overflow-y-auto backdrop-blur-xl" style={{ background: 'rgba(18,18,18,0.82)' }}>
               {program.map((ex, i) => (
                 <button
                   key={i}
                   onClick={() => handleSelect(ex)}
-                  className="w-full text-left px-4 py-3 active:bg-white/10 border-b border-white/8 last:border-0 transition-colors"
+                  className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
                 >
                   <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
                   <div className="text-xs text-white/30 font-sans">{ex.group}</div>
