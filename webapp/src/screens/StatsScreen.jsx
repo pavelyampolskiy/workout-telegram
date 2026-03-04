@@ -135,32 +135,26 @@ export default function StatsScreen() {
     const cardio = by_type?.CARDIO || 0;
     const maxV = Math.max(a, b, c, cardio, 1);
 
-    const activeBars = [
-      { label: 'Day A', value: a },
-      { label: 'Day B', value: b },
-      { label: 'Day C', value: c },
-      { label: 'Cardio', value: cardio },
-    ].filter(bar => bar.value > 0);
-
     return (
-      <div className={CARD.className} style={CARD.style}>
-        <div className="flex items-baseline gap-2 mb-4">
-          <span className="text-5xl font-bebas text-white leading-none">{total}</span>
-          <span className="text-[10px] uppercase tracking-widest text-white/50 font-sans">Workout{total !== 1 ? 's' : ''}</span>
+      <div className="space-y-4">
+        <div className={CARD.className} style={CARD.style}>
+          <div className="text-center">
+            <div className="text-5xl font-bebas text-white leading-none">{total}</div>
+            <div className="text-[10px] uppercase tracking-widest text-white/50 font-sans mt-1">Workout{total !== 1 ? 's' : ''}</div>
+          </div>
         </div>
-        {activeBars.length > 0 ? (
-          <>
-            <div className="h-px bg-white/8 mb-4" />
-            <div className="text-[10px] uppercase tracking-widest font-sans mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>By type</div>
-            <div className="space-y-4">
-              {activeBars.map(bar => (
-                <Bar key={bar.label} label={bar.label} value={bar.value} max={maxV} mounted={barMounted} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <div className="text-white/25 text-xs font-sans">No workouts this period</div>
-        )}
+
+        <div className={CARD.className} style={CARD.style}>
+          <div className="text-[10px] uppercase tracking-widest font-sans mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
+          <div className="space-y-4">
+            <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
+            <Bar label="Day B" value={b} max={maxV} mounted={barMounted} />
+            <Bar label="Day C" value={c} max={maxV} mounted={barMounted} />
+            {cardio > 0 && (
+              <Bar label="Cardio" value={cardio} max={maxV} mounted={barMounted} />
+            )}
+          </div>
+        </div>
       </div>
     );
   };
