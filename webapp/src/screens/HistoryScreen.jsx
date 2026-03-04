@@ -145,9 +145,9 @@ export default function HistoryScreen() {
                           <span className="font-sans text-white/40" style={{ fontSize: '13px' }}>
                             {formatDate(w.date)}
                           </span>
-                          {formatTime(w.started_at) && (
+                          {w.duration_min > 0 && (
                             <span className="font-sans text-white/25" style={{ fontSize: '12px' }}>
-                              {formatTime(w.started_at)}
+                              {w.duration_min} min
                             </span>
                           )}
                         </div>

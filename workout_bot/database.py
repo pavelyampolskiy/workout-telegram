@@ -52,6 +52,8 @@ def init_db():
         cols = {row[1] for row in conn.execute("PRAGMA table_info(workouts)").fetchall()}
         if 'created_at' not in cols:
             conn.execute("ALTER TABLE workouts ADD COLUMN created_at TEXT")
+        if 'finished_at' not in cols:
+            conn.execute("ALTER TABLE workouts ADD COLUMN finished_at TEXT")
         # Backfill created_at for old records using earliest set timestamp
         conn.execute("""
             UPDATE workouts SET created_at = (
@@ -105,6 +107,14 @@ def create_workout(user_id: int, workout_type: str) -> int:
         return cur.lastrowid
 
 
+def finish_workout(workout_id: int):
+    with db() as conn:
+        conn.execute(
+            "UPDATE workouts SET finished_at=? WHERE id=?",
+            (datetime.utcnow().isoformat(), workout_id),
+        )
+
+
 def delete_workout(workout_id: int):
     with db() as conn:
         conn.execute("DELETE FROM workouts WHERE id=?", (workout_id,))
@@ -127,7 +137,8 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10):
             SELECT w.id, w.date, w.type,
                    COALESCE(w.created_at, MIN(ws.ts)) AS started_at,
                    COUNT(ws.id) AS total_sets,
-                   COALESCE(CAST(SUM(ws.weight * ws.reps) AS INTEGER), 0) AS total_volume
+                   COALESCE(CAST(SUM(ws.weight * ws.reps) AS INTEGER), 0) AS total_volume,
+                   CAST((julianday(w.finished_at) - julianday(COALESCE(w.created_at, MIN(ws.ts)))) * 1440 AS INTEGER) AS duration_min
             FROM workouts w
             LEFT JOIN workout_exercises we ON we.workout_id = w.id
             LEFT JOIN workout_sets ws ON ws.workout_exercise_id = we.id

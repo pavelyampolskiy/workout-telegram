@@ -16,6 +16,7 @@ export default function DayScreen() {
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [durationMin, setDurationMin] = useState(null);
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
@@ -30,7 +31,7 @@ export default function DayScreen() {
         // Create workout if not already active (or different day)
         if (!activeWorkout || activeWorkout.day !== day) {
           const { id } = await api.createWorkout(userId, day);
-          setActiveWorkout({ id, day, exerciseMap: {} });
+          setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
         }
       } catch (e) {
         setError(e.message);
@@ -59,7 +60,14 @@ export default function DayScreen() {
     navigate('exercise', { exIdx: idx, exDbId, workoutId, day, userId });
   };
 
-  const handleSave = () => setShowNote(true);
+  const handleSave = () => {
+    const mins = activeWorkout?.startedAt
+      ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
+      : null;
+    setDurationMin(mins);
+    if (workoutId) api.finishWorkout(workoutId).catch(() => {});
+    setShowNote(true);
+  };
 
   const handleFinish = async () => {
     setSaving(true);
@@ -104,6 +112,9 @@ export default function DayScreen() {
               <path d="M20 6L9 17l-5-5"/>
             </svg>
             <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
+            {durationMin !== null && durationMin > 0 && (
+              <p className="text-white/55 text-sm mt-1 font-bebas tracking-wider">{durationMin} min</p>
+            )}
             <p className="text-white/40 text-sm mt-1 font-sans">Add a note (optional)</p>
           </div>
           <textarea

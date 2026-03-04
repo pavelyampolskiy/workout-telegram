@@ -40,6 +40,7 @@ export const api = {
   deleteSet: (set_id) => req('DELETE', `/api/sets/${set_id}`),
 
   addCardio: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/cardio`, { text }),
+  finishWorkout: (id) => req('PATCH', `/api/workouts/${id}/finish`),
   addNote: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/note`, { text }),
 
   getStats: (user_id, days) => req('GET', `/api/stats?user_id=${user_id}&days=${days}`),
