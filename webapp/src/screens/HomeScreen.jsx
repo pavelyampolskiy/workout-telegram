@@ -56,7 +56,7 @@ export default function HomeScreen() {
         <div className="flex-1" />
 
         {/* Navigation cards */}
-        <div className="space-y-3 pb-8">
+        <div className="space-y-3 pb-14">
           {ITEMS.map(item => (
             <button
               key={item.screen}
