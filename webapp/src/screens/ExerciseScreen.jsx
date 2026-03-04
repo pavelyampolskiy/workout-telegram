@@ -144,7 +144,7 @@ export default function ExerciseScreen() {
   return (
     <div className="min-h-screen relative pb-28 overflow-hidden">
       <ScreenBg />
-      <div className="relative z-10 p-5">
+      <div className="relative z-10 flex flex-col min-h-screen p-5">
 
       {/* Exercise header */}
       <div className="pt-2 mb-5">
@@ -188,6 +188,9 @@ export default function ExerciseScreen() {
         </button>
       )}
 
+      {/* Push content to bottom */}
+      <div className="flex-1" />
+
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
         <div className="rounded-2xl p-3 mb-5 backdrop-blur-sm" style={DARK_CARD_STYLE}>
@@ -203,6 +206,27 @@ export default function ExerciseScreen() {
               <span key={i} className="text-sm text-white/70 bg-white/8 rounded-lg px-2 py-0.5 font-sans">
                 {fmtW(s.weight)}×{s.reps}
               </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Recorded sets */}
+      {sets.length > 0 && (
+        <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={DARK_CARD_STYLE}>
+          <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
+            Recorded sets
+          </div>
+          <div className="space-y-2">
+            {sets.map((s, i) => (
+              <div key={s.id} className={`flex items-center gap-3 ${i === sets.length - 1 ? 'row-in' : ''}`}>
+                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+                  {i + 1}
+                </span>
+                <span className="text-white/80 font-sans text-sm">
+                  {fmtW(s.weight)} kg × {s.reps} reps
+                </span>
+              </div>
             ))}
           </div>
         </div>
@@ -262,27 +286,6 @@ export default function ExerciseScreen() {
           {saving ? 'Saving…' : 'Save Set'}
         </button>
       </div>
-
-      {/* Recorded sets */}
-      {sets.length > 0 && (
-        <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={DARK_CARD_STYLE}>
-          <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
-            Recorded sets
-          </div>
-          <div className="space-y-2">
-            {sets.map((s, i) => (
-              <div key={s.id} className={`flex items-center gap-3 ${i === sets.length - 1 ? 'row-in' : ''}`}>
-                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
-                  {i + 1}
-                </span>
-                <span className="text-white/80 font-sans text-sm">
-                  {fmtW(s.weight)} kg × {s.reps} reps
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Action buttons */}
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
