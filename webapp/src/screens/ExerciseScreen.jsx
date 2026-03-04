@@ -190,17 +190,17 @@ export default function ExerciseScreen() {
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
-        <div className="rounded-2xl p-3 mb-5 backdrop-blur-sm" style={DARK_CARD_STYLE}>
-          <div className="flex items-center gap-1 text-xs text-white/40 mb-1.5 font-sans">
+        <div className="mb-5">
+          <div className="flex items-center gap-1 text-xs text-white/35 mb-2 font-sans">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3.5 3.5"/>
             </svg>
-            Last time ({lastDate})
+            Last time {lastDate}
           </div>
           <div className="flex flex-wrap gap-2">
             {lastSets.map((s, i) => (
-              <span key={i} className="text-sm text-white/70 bg-white/8 rounded-lg px-2 py-0.5 font-sans">
+              <span key={i} className="text-sm text-white/60 font-sans">
                 {fmtW(s.weight)}×{s.reps}
               </span>
             ))}
