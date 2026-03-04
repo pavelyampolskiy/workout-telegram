@@ -114,7 +114,7 @@ export default function StatsScreen() {
       return (
         <div className={CARD.className} style={CARD.style}>
           <div className="flex">
-            <div className="flex-1 text-center border-r border-white/8 pr-4">
+            <div className="flex-1 text-center border-r border-white/[0.06] pr-4">
               <div className="text-5xl font-bebas text-white leading-none">{total}</div>
               <div className="text-[10px] uppercase tracking-widest text-white/50 font-sans mt-1">Workout{total !== 1 ? 's' : ''}</div>
             </div>
