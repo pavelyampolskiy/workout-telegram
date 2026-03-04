@@ -170,7 +170,8 @@ export default function DayScreen() {
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
             >
-              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+              <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bebas tracking-wider shrink-0"
+                style={{ border: '1px solid rgba(201,169,110,0.35)', color: '#C9A96E' }}>
                 {idx + 1}
               </span>
               <div className="flex-1 min-w-0">
@@ -215,8 +216,8 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
-          className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={CARD_BTN_STYLE}
+          className="card-press w-full font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{ background: 'rgba(210,190,155,0.15)', border: '1px solid rgba(210,190,155,0.40)', color: '#E0D5C0', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)' }}
         >
           Save Workout
         </button>
