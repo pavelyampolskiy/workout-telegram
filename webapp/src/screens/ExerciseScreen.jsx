@@ -144,7 +144,7 @@ export default function ExerciseScreen() {
   return (
     <div className="min-h-screen relative pb-28 overflow-hidden">
       <ScreenBg />
-      <div className="relative z-10 flex flex-col min-h-screen p-5">
+      <div className="relative z-10 flex flex-col min-h-screen px-5 pt-5 pb-32">
 
       {/* Exercise header */}
       <div className="pt-2 mb-5">
