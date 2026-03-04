@@ -144,7 +144,7 @@ export default function ExerciseScreen() {
   return (
     <div className="min-h-screen relative pb-28 overflow-hidden">
       <ScreenBg />
-      <div className="relative z-10 flex flex-col min-h-screen px-5 pt-5 pb-32">
+      <div className="relative z-10 px-5 pt-5 pb-28">
 
       {/* Exercise header */}
       <div className="pt-2 mb-5">
@@ -187,9 +187,6 @@ export default function ExerciseScreen() {
           <div className="text-xs font-sans text-white/25 mt-1.5">tap to skip</div>
         </button>
       )}
-
-      {/* Push content to bottom */}
-      <div className="flex-1" />
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
