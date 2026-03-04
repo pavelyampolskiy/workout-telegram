@@ -69,17 +69,14 @@ function StatusWidget({ userId }) {
   const { lastDate, weekCount, total } = stats;
   const parts = [
     `${total} workout${total !== 1 ? 's' : ''}`,
-    lastDate ? `Last: ${daysAgoLabel(lastDate)}` : null,
+    lastDate ? `Last ${daysAgoLabel(lastDate)}` : null,
     `${weekCount} this week`,
   ].filter(Boolean);
 
   return (
-    <div className="mt-3 flex items-center">
+    <div className="mt-3 flex items-center gap-4">
       {parts.map((p, i) => (
-        <span key={i} className="flex items-center">
-          {i > 0 && <span className="mx-2 text-white/20 text-xs">·</span>}
-          <span className="font-bebas tracking-wider text-white/55 text-sm">{p}</span>
-        </span>
+        <span key={i} className="font-bebas tracking-wider text-white/55 text-sm">{p}</span>
       ))}
     </div>
   );
