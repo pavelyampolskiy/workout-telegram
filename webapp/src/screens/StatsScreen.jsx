@@ -88,27 +88,6 @@ export default function StatsScreen() {
   ];
 
   const renderContent = () => {
-    if (tab === 'progress') {
-      return (
-        <div className="text-center py-8">
-          <p className="text-white/40 mb-4 font-sans text-sm">Select an exercise to view progress</p>
-          <button
-            onClick={() => navigate('progress')}
-            className="card-press text-white/90 font-bebas tracking-wider px-8 py-3.5"
-            style={{
-              background: 'rgba(26,26,26,0.5)',
-              borderRadius: '22px',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
-              fontSize: '15px',
-              letterSpacing: '0.01em',
-            }}
-          >
-            Choose Exercise <span style={{ fontSize: '12px', opacity: 0.6 }}>›</span>
-          </button>
-        </div>
-      );
-    }
-
     if (tab === 'freq') {
       const { total, avg } = data.freq;
       return (
@@ -170,7 +149,7 @@ export default function StatsScreen() {
           {TABS.map(t => (
             <button
               key={t.key}
-              onClick={() => setTab(t.key)}
+              onClick={() => t.key === 'progress' ? navigate('progress') : setTab(t.key)}
               className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-all duration-200 ${
                 tab === t.key
                   ? 'bg-white/12 text-white/92'
