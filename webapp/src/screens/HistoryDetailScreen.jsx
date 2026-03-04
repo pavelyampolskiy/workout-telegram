@@ -1,27 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-
-const MONTHS_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-
-function fmtW(w) {
-  return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
-}
+import ScreenBg from '../ScreenBg';
+import { formatDate, fmtW, DARK_CARD_STYLE } from '../shared';
 
 function dayLabel(type) {
   if (type === 'CARDIO') return 'Cardio';
   return type.replace('DAY_', 'Day ');
 }
-
-function formatDate(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  return `${day} ${MONTHS_ABBR[parseInt(month) - 1]} ${year}`;
-}
-
-const CARD_STYLE = {
-  background: 'rgba(0,0,0,0.65)',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
-};
 
 export default function HistoryDetailScreen() {
   const { params, goBack } = useApp();
@@ -51,17 +37,10 @@ export default function HistoryDetailScreen() {
     }
   };
 
-  const screenBg = (
-    <>
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/65" />
-    </>
-  );
-
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
     );
@@ -69,7 +48,7 @@ export default function HistoryDetailScreen() {
   if (error) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
       </div>
     );
@@ -78,8 +57,7 @@ export default function HistoryDetailScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-28">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/65" />
+      <ScreenBg overlay="bg-black/65" />
 
       <div className="relative z-10 p-5">
         {/* Header */}
@@ -90,7 +68,7 @@ export default function HistoryDetailScreen() {
 
         {/* Cardio */}
         {workout.type === 'CARDIO' && workout.cardio && (
-          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={CARD_STYLE}>
+          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
             <div className="font-sans text-white/40 text-sm mb-1">Cardio</div>
             <p className="text-white/80 text-sm">{workout.cardio}</p>
           </div>
@@ -98,7 +76,7 @@ export default function HistoryDetailScreen() {
 
         {/* Exercises */}
         {workout.exercises?.map(ex => (
-          <div key={ex.id} className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={CARD_STYLE}>
+          <div key={ex.id} className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
             <div className="flex items-center gap-2 mb-3">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
@@ -128,7 +106,7 @@ export default function HistoryDetailScreen() {
 
         {/* Note */}
         {workout.note && (
-          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={CARD_STYLE}>
+          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
             <div className="font-sans text-white/40 text-sm mb-1">Note</div>
             <p className="text-white/70 text-sm">{workout.note}</p>
           </div>

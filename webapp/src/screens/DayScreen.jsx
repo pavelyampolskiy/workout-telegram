@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import ScreenBg from '../ScreenBg';
+import { CARD_BTN_STYLE } from '../shared';
 
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, activeWorkout, setActiveWorkout } = useApp();
@@ -82,8 +84,7 @@ export default function DayScreen() {
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-        <div className="absolute inset-0 bg-black/65" />
+        <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Setting up workout…</div>
       </div>
     );
@@ -96,8 +97,7 @@ export default function DayScreen() {
   if (showNote) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-        <div className="absolute inset-0 bg-black/70" />
+        <ScreenBg overlay="bg-black/70" />
         <div className="relative z-10 p-5">
           <div className="pt-4 mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
@@ -117,7 +117,7 @@ export default function DayScreen() {
             onClick={handleFinish}
             disabled={saving}
             className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-            style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+            style={CARD_BTN_STYLE}
           >
             {saving ? 'Saving…' : 'Done'}
           </button>
@@ -134,8 +134,7 @@ export default function DayScreen() {
 
   return (
     <div className="min-h-screen relative pb-32 overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/65" />
+      <ScreenBg overlay="bg-black/65" />
       <div className="relative z-10">
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
@@ -158,11 +157,7 @@ export default function DayScreen() {
               key={idx}
               onClick={() => handleExerciseTap(idx)}
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-              style={{
-                background: complete ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)',
-                border: '1px solid rgba(255,255,255,0.05)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)',
-              }}
+              style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
             >
               <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
                 {idx + 1}
@@ -210,7 +205,7 @@ export default function DayScreen() {
         <button
           onClick={handleSave}
           className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+          style={CARD_BTN_STYLE}
         >
           Save Workout
         </button>
@@ -226,7 +221,7 @@ export default function DayScreen() {
               <button
                 onClick={() => setShowCancelConfirm(false)}
                 className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
-                style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+                style={CARD_BTN_STYLE}
               >
                 Keep working
               </button>

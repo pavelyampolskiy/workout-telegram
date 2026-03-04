@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import ScreenBg from '../ScreenBg';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
@@ -62,17 +63,10 @@ export default function StatsScreen() {
     return () => clearTimeout(t);
   }, [tab, loading]);
 
-  const screenBg = (
-    <>
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/70" />
-    </>
-  );
-
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
     );
@@ -80,7 +74,7 @@ export default function StatsScreen() {
   if (error) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
       </div>
     );
@@ -116,7 +110,7 @@ export default function StatsScreen() {
     }
 
     if (tab === 'freq') {
-      const { total, avg, weeks } = data.freq;
+      const { total, avg } = data.freq;
       return (
         <div className="space-y-4">
           <div className={CARD.className} style={CARD.style}>
@@ -169,8 +163,7 @@ export default function StatsScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/70" />
+      <ScreenBg />
       <div className="relative z-10 p-5">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 

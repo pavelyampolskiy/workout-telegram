@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import ScreenBg from '../ScreenBg';
+import { CARD_BTN_STYLE } from '../shared';
 
 export default function CardioScreen() {
   const { userId, resetTo } = useApp();
@@ -33,8 +35,7 @@ export default function CardioScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/cardio-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/60" />
+      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
 
       <div className="relative z-10 p-5">
         <div className="pt-2 mb-6">
@@ -59,7 +60,7 @@ export default function CardioScreen() {
           onClick={handleSave}
           disabled={saving || !text.trim() || !workoutId}
           className="card-press w-full mt-4 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+          style={CARD_BTN_STYLE}
         >
           {saving ? 'Saving…' : 'Save Cardio'}
         </button>

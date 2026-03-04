@@ -1,23 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import ScreenBg from '../ScreenBg';
+import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE } from '../shared';
 
-const MONTHS_LONG = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
-  'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
-const MONTHS_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN',
-  'JUL','AUG','SEP','OCT','NOV','DEC'];
+const MONTHS_LONG = [
+  'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+  'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER',
+];
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
 
 function formatMonthLabel(dateStr) {
   const [year, month] = dateStr.split('-');
   return `${MONTHS_LONG[parseInt(month) - 1]} ${year}`;
-}
-
-// "03 MAR 2026"
-function formatDate(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  return `${day} ${MONTHS_ABBR[parseInt(month) - 1]} ${year}`;
 }
 
 // "14:32" from ISO datetime string (UTC → local)
@@ -96,15 +92,13 @@ export default function HistoryScreen() {
   if (loading) {
     return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
   }
-
   if (error) {
     return <div className="p-5 text-center text-white/40 pt-20">{error}</div>;
   }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={{ backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }} />
-      <div className="absolute inset-0 bg-black/70" />
+      <ScreenBg />
       <div className="relative z-10 p-5">
         <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           History
@@ -140,7 +134,7 @@ export default function HistoryScreen() {
                   <button
                     onClick={() => navigate('history-detail', { workoutId: w.id })}
                     className="card-press w-full rounded-2xl p-4 text-left"
-                    style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+                    style={CARD_BTN_STYLE}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
@@ -207,7 +201,7 @@ export default function HistoryScreen() {
               <button
                 onClick={() => setShowDeleteConfirm(false)}
                 className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
-                style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+                style={CARD_BTN_STYLE}
               >
                 Keep history
               </button>

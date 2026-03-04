@@ -1,4 +1,5 @@
 import { useApp } from '../App';
+import { CARD_BTN_STYLE } from '../shared';
 
 const WorkoutIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -56,11 +57,7 @@ export default function HomeScreen() {
               key={item.screen}
               onClick={() => navigate(item.screen)}
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
-              style={{
-                background: 'rgba(0,0,0,0.10)',
-                border: '1px solid rgba(255,255,255,0.05)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)',
-              }}
+              style={CARD_BTN_STYLE}
             >
               <span className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
                 {item.icon}

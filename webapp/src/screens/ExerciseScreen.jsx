@@ -1,13 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import ScreenBg from '../ScreenBg';
+import { fmtW, DARK_CARD_STYLE } from '../shared';
 
-const BG = { backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' };
 const REST_DURATION = 90;
-
-function fmtW(w) {
-  return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
-}
 
 function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -124,17 +121,10 @@ export default function ExerciseScreen() {
 
   const handleFinish = () => goBack();
 
-  const screenBg = (
-    <>
-      <div className="absolute inset-0 scale-110" style={BG} />
-      <div className="absolute inset-0 bg-black/70" />
-    </>
-  );
-
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
     );
@@ -142,7 +132,7 @@ export default function ExerciseScreen() {
   if (error) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
       </div>
     );
@@ -153,8 +143,7 @@ export default function ExerciseScreen() {
 
   return (
     <div className="min-h-screen relative pb-28 overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={BG} />
-      <div className="absolute inset-0 bg-black/70" />
+      <ScreenBg />
       <div className="relative z-10 p-5">
 
       {/* Exercise header */}
@@ -201,7 +190,7 @@ export default function ExerciseScreen() {
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
-        <div className="rounded-2xl p-3 mb-5 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
+        <div className="rounded-2xl p-3 mb-5 backdrop-blur-sm" style={DARK_CARD_STYLE}>
           <div className="flex items-center gap-1 text-xs text-white/40 mb-1.5 font-sans">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
@@ -220,7 +209,7 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm ${justSaved ? 'save-flash' : ''}`} style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
+      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
@@ -276,7 +265,7 @@ export default function ExerciseScreen() {
 
       {/* Recorded sets */}
       {sets.length > 0 && (
-        <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)' }}>
+        <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={DARK_CARD_STYLE}>
           <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
             Recorded sets
           </div>

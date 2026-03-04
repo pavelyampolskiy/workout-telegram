@@ -1,18 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-
-const MONTHS_ABBR = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-const BG = { backgroundImage: 'url(/workout-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' };
-
-function fmtW(w) {
-  return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
-}
-
-function fmtDate(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  return `${day} ${MONTHS_ABBR[parseInt(month) - 1]} ${year}`;
-}
+import ScreenBg from '../ScreenBg';
+import { formatDate as fmtDate, fmtW } from '../shared';
 
 function LineChart({ data }) {
   if (!data || data.length < 2) return null;
@@ -114,17 +104,10 @@ export default function ProgressScreen() {
     }
   };
 
-  const screenBg = (
-    <>
-      <div className="absolute inset-0 scale-110" style={BG} />
-      <div className="absolute inset-0 bg-black/70" />
-    </>
-  );
-
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
     );
@@ -132,7 +115,7 @@ export default function ProgressScreen() {
   if (error) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        {screenBg}
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
       </div>
     );
@@ -150,8 +133,7 @@ export default function ProgressScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <div className="absolute inset-0 scale-110" style={BG} />
-      <div className="absolute inset-0 bg-black/70" />
+      <ScreenBg />
       <div className="relative z-10 p-5">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Progress</h1>
 
