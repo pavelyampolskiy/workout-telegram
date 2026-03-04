@@ -183,7 +183,7 @@ export default function HistoryScreen() {
           <div className="mt-10 mb-6 flex justify-center">
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="text-white/25 active:text-white/50 font-sans text-xs transition-colors"
+              className="font-sans font-medium text-white/30 text-xs tracking-widest active:text-white/50 transition-colors"
             >
               Delete all history
             </button>
