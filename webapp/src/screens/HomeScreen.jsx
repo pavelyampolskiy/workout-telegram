@@ -41,6 +41,8 @@ export default function HomeScreen() {
       {/* Top gradient — absorbs Telegram header */}
       <div className="absolute inset-x-0 top-0 h-32 bg-black/90" />
       <div className="absolute inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />
+      {/* Bottom gradient — grounds the cards */}
+      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
 
       {/* Content: title top, cards bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">
