@@ -30,8 +30,8 @@ const ITEMS = [
 
 const PRIMARY_CARD_STYLE = {
   background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 100%) rgba(0,0,0,0.10)',
-  border: '1px solid rgba(255,255,255,0.20)',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30), 0 0 22px rgba(255,255,255,0.09), 0 0 7px rgba(255,255,255,0.05)',
+  border: '1px solid rgba(255,255,255,0.38)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.40), 0 0 28px rgba(255,255,255,0.12), 0 0 8px rgba(255,255,255,0.07)',
 };
 
 function daysAgoLabel(dateStr) {
