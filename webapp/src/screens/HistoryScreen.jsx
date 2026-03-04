@@ -125,10 +125,8 @@ export default function HistoryScreen() {
               return (
                 <div key={w.id}>
                   {/* Month separator */}
-                  {isNewMonth && (
-                    <div className={`font-sans font-medium text-white/30 text-xs tracking-widest uppercase ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
-                      {formatMonthLabel(w.date)}
-                    </div>
+                  {isNewMonth && idx > 0 && (
+                    <div className="mt-4 mb-1" />
                   )}
 
                   <button
