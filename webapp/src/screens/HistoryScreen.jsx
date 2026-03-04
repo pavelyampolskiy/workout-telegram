@@ -141,18 +141,18 @@ export default function HistoryScreen() {
                         <div className="font-sans font-semibold text-white/92 leading-none text-sm tracking-wide uppercase">
                           {fmtLabel(w.type)}
                         </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="font-sans text-white/40" style={{ fontSize: '13px' }}>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <span className="font-sans text-white/40 text-xs">
                             {formatDate(w.date)}
                           </span>
                           {w.duration_min > 0 && (
-                            <span className="font-sans text-white/25" style={{ fontSize: '12px' }}>
+                            <span className="font-sans text-white/40 text-xs">
                               {w.duration_min} min
                             </span>
                           )}
                         </div>
                         {summary ? (
-                          <div className="text-white/35 mt-1.5 leading-snug" style={{ fontSize: '11px' }}>
+                          <div className="font-sans text-white/40 text-xs mt-1">
                             {summary}
                           </div>
                         ) : null}

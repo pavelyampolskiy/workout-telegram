@@ -1,8 +1,8 @@
 // ─── Date helpers ─────────────────────────────────────────────────────────────
 
 export const MONTHS_ABBR = [
-  'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC',
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
 /** "03 MAR 2026" from "2026-03-03" */
