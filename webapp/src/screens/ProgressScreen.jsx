@@ -150,7 +150,7 @@ export default function ProgressScreen() {
           </button>
 
           {open && (
-            <div className="absolute top-full left-0 right-0 z-10 mt-1 border border-white/[0.07] rounded-2xl overflow-hidden shadow-xl max-h-60 overflow-y-auto backdrop-blur-xl" style={{ background: 'rgba(18,18,18,0.82)' }}>
+            <div className="absolute top-full left-0 right-0 z-10 mt-1 border border-white/[0.07] rounded-2xl overflow-hidden shadow-xl max-h-60 overflow-y-auto backdrop-blur-xl" style={{ background: 'rgba(18,18,18,0.55)' }}>
               {program.map((ex, i) => (
                 <button
                   key={i}
