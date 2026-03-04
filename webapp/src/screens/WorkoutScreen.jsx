@@ -52,7 +52,7 @@ export default function WorkoutScreen() {
         {/* Push cards to bottom */}
         <div className="flex-1" />
 
-        <div className="pb-14">
+        <div className="pb-20">
           {/* Day cards */}
           <div className="space-y-3">
             {DAY_OPTIONS.map(o => (
