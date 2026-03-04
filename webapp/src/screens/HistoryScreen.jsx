@@ -118,7 +118,7 @@ export default function HistoryScreen() {
             {items.map((w, idx) => {
               const isNewMonth = idx === 0 || getMonthKey(w.date) !== getMonthKey(items[idx - 1].date);
               const summary = [
-                w.total_sets > 0 && `${w.total_sets} sets`,
+                w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
                 w.total_volume > 0 && fmtVol(w.total_volume),
               ].filter(Boolean).join(' • ');
 
