@@ -100,7 +100,7 @@ export default function HistoryScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-sans font-semibold text-white/85 pt-2 mb-6 text-xl tracking-wide uppercase">
+        <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           History
         </h1>
 
