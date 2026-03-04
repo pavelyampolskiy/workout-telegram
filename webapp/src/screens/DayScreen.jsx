@@ -182,8 +182,8 @@ export default function DayScreen() {
                 {done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
-                      className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
-                      style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
+                      className="h-full rounded-full transition-all"
+                      style={{ width: `${Math.min((done / total) * 100, 100)}%`, background: 'linear-gradient(90deg, #C0A870, #F0EBE2)' }}
                     />
                   </div>
                 )}
@@ -201,7 +201,7 @@ export default function DayScreen() {
                   </div>
                 )}
                 {complete ? (
-                  <span className="text-white/70 text-lg">✓</span>
+                  <span className="text-lg" style={{ color: '#D4C4A0' }}>✓</span>
                 ) : (
                   <span className="text-white/20 text-lg">›</span>
                 )}
