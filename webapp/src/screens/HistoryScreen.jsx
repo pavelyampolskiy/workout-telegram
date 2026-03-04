@@ -100,7 +100,7 @@ export default function HistoryScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <h1 className="font-sans font-semibold text-white/85 pt-2 mb-6 text-xl tracking-wide uppercase">
           History
         </h1>
 
@@ -126,7 +126,7 @@ export default function HistoryScreen() {
                 <div key={w.id}>
                   {/* Month separator */}
                   {isNewMonth && (
-                    <div className={`font-bebas tracking-widest text-white/35 text-sm ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
+                    <div className={`font-sans font-medium text-white/30 text-xs tracking-widest uppercase ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
                       {formatMonthLabel(w.date)}
                     </div>
                   )}
@@ -138,7 +138,7 @@ export default function HistoryScreen() {
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <div className="font-bebas text-white/92 leading-none" style={{ fontSize: '17px', letterSpacing: '0.05em' }}>
+                        <div className="font-sans font-semibold text-white/92 leading-none text-sm tracking-wide uppercase">
                           {fmtLabel(w.type)}
                         </div>
                         <div className="flex items-center gap-2 mt-1">
