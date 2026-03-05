@@ -120,17 +120,17 @@ export default function HistoryScreen() {
           History
         </h1>
 
-        {/* Filter chips */}
-        <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+        {/* Filter tabs */}
+        <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
           {FILTERS.map(f => (
             <button
               key={f.label}
               onClick={() => handleFilter(f.value)}
-              className="shrink-0 px-3 py-1 rounded-full font-bebas tracking-wider text-sm transition-colors"
-              style={activeFilter === f.value
-                ? { background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.92)', border: '1px solid rgba(255,255,255,0.25)' }
-                : { background: 'transparent', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.10)' }
-              }
+              className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-all duration-200 ${
+                activeFilter === f.value
+                  ? 'bg-white/12 text-white/92'
+                  : 'text-white/35 active:text-white/60'
+              }`}
             >
               {f.label}
             </button>
