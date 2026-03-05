@@ -174,7 +174,16 @@ export default function HomeScreen() {
                 </button>
               </>
             ) : (
-              <div className="bg-black/90 border border-white/10 rounded-2xl p-5">
+              <div 
+                className="rounded-2xl p-5"
+                style={{
+                  background: 'rgba(0, 0, 0, 0.45)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4)',
+                }}
+              >
                 <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Dismiss workout?</h3>
                 <p className="text-sm text-white/40 mb-5 font-sans">This unfinished workout will be deleted.</p>
                 <div className="flex flex-col gap-2">
