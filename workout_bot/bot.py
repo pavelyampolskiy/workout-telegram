@@ -9,8 +9,6 @@ import os
 
 import uvicorn
 from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
-
 import database as db_ops
 from api import app as fastapi_app
 from handlers import router
@@ -26,7 +24,7 @@ async def main():
     db_ops.init_db()
 
     bot = Bot(token=token)
-    dp = Dispatcher(storage=MemoryStorage())
+    dp = Dispatcher()
     dp.include_router(router)
 
     port = int(os.environ.get("PORT", 8000))
