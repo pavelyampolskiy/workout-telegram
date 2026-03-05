@@ -156,7 +156,7 @@ export default function ExerciseScreen() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
           </svg>
-          <span className="text-xs font-sans text-white/40 uppercase tracking-wide">{ex?.group}</span>
+          <span className="text-xs font-bebas text-white/40 uppercase tracking-wide">{ex?.group}</span>
         </div>
         <h1 className="text-xl font-bebas tracking-wider text-white leading-tight">{ex?.name}</h1>
 
@@ -184,14 +184,14 @@ export default function ExerciseScreen() {
         >
           <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-0.5">REST</div>
           <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
-          <div className="text-xs font-sans text-white/25 mt-1.5">tap to skip</div>
+          <div className="text-xs font-bebas text-white/25 mt-1.5">tap to skip</div>
         </button>
       )}
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
         <div className="mb-5">
-          <div className="flex items-center gap-1 text-xs text-white/35 mb-2 font-sans">
+          <div className="flex items-center gap-1 text-xs text-white/35 mb-2 font-bebas">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3.5 3.5"/>
@@ -200,7 +200,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="flex flex-wrap gap-2">
             {lastSets.map((s, i) => (
-              <span key={i} className="text-sm text-white/60 font-sans">
+              <span key={i} className="text-sm text-white/60 font-bebas">
                 {fmtW(s.weight)}×{s.reps}
               </span>
             ))}
@@ -211,7 +211,7 @@ export default function ExerciseScreen() {
       {/* Recorded sets */}
       {sets.length > 0 && (
         <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={DARK_CARD_STYLE}>
-          <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
+          <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-bebas">
             Recorded sets
           </div>
           <div className="space-y-2">
@@ -220,7 +220,7 @@ export default function ExerciseScreen() {
                 <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
                   {i + 1}
                 </span>
-                <span className="text-white/80 font-sans text-sm">
+                <span className="text-white/80 font-bebas text-sm">
                   {fmtW(s.weight)} kg × {s.reps} reps
                 </span>
               </div>
@@ -236,7 +236,7 @@ export default function ExerciseScreen() {
         </div>
         <div className="flex gap-3 mb-3">
           <div className="flex-1">
-            <label className="text-xs mb-1 block font-sans" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+            <label className="text-xs mb-1 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
             <input
               ref={weightRef}
               type="number"
@@ -251,7 +251,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="flex items-end pb-0.5 text-white/30 text-xl font-bebas">×</div>
           <div className="flex-1">
-            <label className="text-xs mb-1 block font-sans" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+            <label className="text-xs mb-1 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
             <input
               type="number"
               inputMode="numeric"
@@ -267,7 +267,7 @@ export default function ExerciseScreen() {
         </div>
 
         {inputError && (
-          <div className="text-xs font-sans text-red-400/80 text-center mb-2">{inputError}</div>
+          <div className="text-xs font-bebas text-red-400/80 text-center mb-2">{inputError}</div>
         )}
 
         <button
