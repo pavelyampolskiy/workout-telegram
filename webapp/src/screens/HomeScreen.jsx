@@ -148,7 +148,15 @@ export default function HomeScreen() {
               </svg>
             </span>
             <div className="min-w-0 flex-1">
-              <div className="font-bebas tracking-wider text-lg text-white/92">Continue Workout</div>
+              <div 
+                className="font-bebas tracking-wider text-lg"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >Continue Workout</div>
               <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type.replace('DAY_', 'Day ')}</div>
             </div>
             <span className="text-xl shrink-0 text-white/35">›</span>
