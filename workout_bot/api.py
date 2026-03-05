@@ -4,15 +4,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import date, timedelta
 
+import os
+
 import database as db_ops
 from auth import get_current_user
 from program import PROGRAM
 
 app = FastAPI(title="Workout API")
 
+_webapp_url = os.getenv("WEBAPP_URL", "")
+_origins = [_webapp_url] if _webapp_url else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
