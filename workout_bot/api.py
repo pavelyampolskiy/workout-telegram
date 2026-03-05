@@ -71,20 +71,7 @@ def get_workout(workout_id: int):
     w = db_ops.get_workout(workout_id)
     if not w:
         raise HTTPException(status_code=404, detail="Not found")
-    exs = db_ops.get_exercises_for_workout(workout_id)
-    exercises = []
-    for ex in exs:
-        sets = db_ops.get_sets_for_exercise(ex["id"])
-        exercises.append({
-            "id": ex["id"],
-            "grp": ex["grp"],
-            "name": ex["name"],
-            "target_sets": ex["target_sets"],
-            "sets": [
-                {"id": s["id"], "set_number": s["set_number"], "weight": s["weight"], "reps": s["reps"]}
-                for s in sets
-            ],
-        })
+    exercises = db_ops.get_exercises_with_sets(workout_id)
     cardio = db_ops.get_cardio(workout_id)
     note = db_ops.get_workout_note(workout_id)
     return {
@@ -161,8 +148,8 @@ def get_sets(ex_id: int):
 
 @app.post("/api/exercises/{ex_id}/sets")
 def add_set(ex_id: int, body: SetBody):
-    sets = db_ops.get_sets_for_exercise(ex_id)
-    sid = db_ops.add_set(ex_id, len(sets) + 1, body.weight, body.reps)
+    next_num = db_ops.count_sets_for_exercise(ex_id) + 1
+    sid = db_ops.add_set(ex_id, next_num, body.weight, body.reps)
     return {"id": sid}
 
 

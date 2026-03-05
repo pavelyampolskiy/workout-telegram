@@ -202,6 +202,39 @@ def get_exercises_for_workout(workout_id: int):
         ).fetchall()
 
 
+def get_exercises_with_sets(workout_id: int):
+    """Return exercises with all their sets in 2 queries (no N+1)."""
+    with db() as conn:
+        exs = conn.execute(
+            "SELECT * FROM workout_exercises WHERE workout_id=? ORDER BY id",
+            (workout_id,),
+        ).fetchall()
+        if not exs:
+            return []
+        ex_ids = [e["id"] for e in exs]
+        placeholders = ",".join("?" * len(ex_ids))
+        sets = conn.execute(
+            f"SELECT * FROM workout_sets WHERE workout_exercise_id IN ({placeholders}) ORDER BY workout_exercise_id, set_number",
+            ex_ids,
+        ).fetchall()
+    sets_by_ex = {}
+    for s in sets:
+        sets_by_ex.setdefault(s["workout_exercise_id"], []).append(s)
+    return [
+        {
+            "id": e["id"],
+            "grp": e["grp"],
+            "name": e["name"],
+            "target_sets": e["target_sets"],
+            "sets": [
+                {"id": s["id"], "set_number": s["set_number"], "weight": s["weight"], "reps": s["reps"]}
+                for s in sets_by_ex.get(e["id"], [])
+            ],
+        }
+        for e in exs
+    ]
+
+
 def get_exercise(ex_id: int):
     with db() as conn:
         return conn.execute("SELECT * FROM workout_exercises WHERE id=?", (ex_id,)).fetchone()
@@ -216,6 +249,13 @@ def add_set(ex_id: int, set_number: int, weight: float, reps: int) -> int:
             (ex_id, set_number, weight, reps, datetime.utcnow().isoformat()),
         )
         return cur.lastrowid
+
+
+def count_sets_for_exercise(ex_id: int) -> int:
+    with db() as conn:
+        return conn.execute(
+            "SELECT COUNT(*) FROM workout_sets WHERE workout_exercise_id=?", (ex_id,)
+        ).fetchone()[0]
 
 
 def get_sets_for_exercise(ex_id: int):
