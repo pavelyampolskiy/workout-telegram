@@ -34,8 +34,8 @@ export default function CardioScreen() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
+    <div className="min-h-screen relative">
+      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
 
       <div className="relative z-10 p-5">
         <div className="pt-2 mb-6">
