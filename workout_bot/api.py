@@ -1,7 +1,7 @@
 # api.py
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import date, timedelta
 
 import os
@@ -124,8 +124,8 @@ def get_workout(workout_id: int, user_id: int = Depends(get_current_user)):
 
 
 @app.get("/api/history")
-def get_history(offset: int = 0, limit: int = 10, type: str = None,
-                user_id: int = Depends(get_current_user)):
+def get_history(offset: int = Query(0, ge=0), limit: int = Query(10, ge=1, le=100),
+                type: str = None, user_id: int = Depends(get_current_user)):
     rows, has_more = db_ops.get_history(user_id, offset, limit, workout_type=type)
     return {
         "items": [{"id": r["id"], "date": r["date"], "type": r["type"], "started_at": r["started_at"], "total_sets": r["total_sets"], "total_volume": r["total_volume"], "duration_min": r["duration_min"]} for r in rows],
@@ -157,9 +157,8 @@ def create_exercise(workout_id: int, body: ExerciseBody, user_id: int = Depends(
 @app.get("/api/exercises/{ex_id}/last")
 def get_last_exercise(ex_id: int, exclude_wid: int,
                       user_id: int = Depends(get_current_user)):
+    _check_exercise(ex_id, user_id)
     ex = db_ops.get_exercise(ex_id)
-    if not ex:
-        raise HTTPException(status_code=404, detail="Not found")
     last_date, last_sets = db_ops.get_last_exercise_sets(user_id, ex["name"], exclude_wid)
     if not last_date:
         return {"date": None, "sets": []}
@@ -174,6 +173,20 @@ def get_last_exercise(ex_id: int, exclude_wid: int,
 class SetBody(BaseModel):
     weight: float
     reps: int
+
+    @field_validator("weight")
+    @classmethod
+    def weight_positive(cls, v: float) -> float:
+        if v <= 0:
+            raise ValueError("weight must be > 0")
+        return v
+
+    @field_validator("reps")
+    @classmethod
+    def reps_positive(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("reps must be >= 1")
+        return v
 
 
 @app.get("/api/exercises/{ex_id}/sets")
@@ -240,14 +253,14 @@ def add_note(workout_id: int, body: TextBody, user_id: int = Depends(get_current
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/stats")
-def get_stats(days: int = 7, user_id: int = Depends(get_current_user)):
+def get_stats(days: int = Query(7, ge=1, le=365), user_id: int = Depends(get_current_user)):
     since = date.today() - timedelta(days=days)
     total, by_type = db_ops.stats_period(user_id, since)
     return {"total": total, "by_type": by_type}
 
 
 @app.get("/api/stats/frequency")
-def get_frequency(weeks: int = 4, user_id: int = Depends(get_current_user)):
+def get_frequency(weeks: int = Query(4, ge=1, le=52), user_id: int = Depends(get_current_user)):
     total, avg = db_ops.stats_frequency(user_id, weeks)
     return {"total": total, "avg": avg, "weeks": weeks}
 
@@ -255,7 +268,7 @@ def get_frequency(weeks: int = 4, user_id: int = Depends(get_current_user)):
 # ── Progress ──────────────────────────────────────────────────────────────────
 
 @app.get("/api/progress")
-def get_progress(exercise_name: str, limit: int = 8,
+def get_progress(exercise_name: str, limit: int = Query(8, ge=1, le=50),
                  user_id: int = Depends(get_current_user)):
     rows = db_ops.get_exercise_progress(user_id, exercise_name, limit)
     return [{"date": r["date"], "max_weight": r["max_weight"]} for r in rows]

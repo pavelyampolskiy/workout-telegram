@@ -1,7 +1,7 @@
 # database.py
 import sqlite3
 import os
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, timezone
 from contextlib import contextmanager
 
 DB_PATH = os.getenv("DB_PATH", "workouts.db")
@@ -123,7 +123,7 @@ def create_workout(user_id: int, workout_type: str) -> int:
     with db() as conn:
         cur = conn.execute(
             "INSERT INTO workouts (user_id, date, type, created_at) VALUES (?, ?, ?, ?)",
-            (user_id, date.today().isoformat(), workout_type, datetime.utcnow().isoformat()),
+            (user_id, date.today().isoformat(), workout_type, datetime.now(timezone.utc).isoformat()),
         )
         return cur.lastrowid
 
@@ -132,7 +132,7 @@ def finish_workout(workout_id: int):
     with db() as conn:
         conn.execute(
             "UPDATE workouts SET finished_at=? WHERE id=?",
-            (datetime.utcnow().isoformat(), workout_id),
+            (datetime.now(timezone.utc).isoformat(), workout_id),
         )
 
 
@@ -266,7 +266,7 @@ def add_set(ex_id: int, set_number: int, weight: float, reps: int) -> int:
     with db() as conn:
         cur = conn.execute(
             "INSERT INTO workout_sets (workout_exercise_id, set_number, weight, reps, ts) VALUES (?,?,?,?,?)",
-            (ex_id, set_number, weight, reps, datetime.utcnow().isoformat()),
+            (ex_id, set_number, weight, reps, datetime.now(timezone.utc).isoformat()),
         )
         return cur.lastrowid
 

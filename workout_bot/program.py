@@ -26,9 +26,3 @@ PROGRAM = {
         {"group": "SHOULDERS", "name": "Standing Dumbbell Lateral Raises", "target_sets": 4},
     ],
 }
-
-
-def exercise_buttons(day: str) -> list[str]:
-    if day not in PROGRAM:
-        raise ValueError(f"Unknown day: {day}")
-    return [f"{ex['group']} — {ex['name']}" for ex in PROGRAM[day]]
