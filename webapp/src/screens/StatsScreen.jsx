@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -46,6 +46,15 @@ export default function StatsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [barMounted, setBarMounted] = useState(false);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const tabsRef = useRef(null);
+
+  const TABS = [
+    { key: 'week', label: 'Week' },
+    { key: 'month', label: 'Month' },
+    { key: 'freq', label: 'Frequency' },
+    { key: 'progress', label: 'Progress' },
+  ];
 
   useEffect(() => {
     async function load() {
@@ -72,6 +81,20 @@ export default function StatsScreen() {
     return () => clearTimeout(t);
   }, [tab, loading]);
 
+  // Update indicator position when tab changes
+  useEffect(() => {
+    if (!tabsRef.current) return;
+    const activeIndex = TABS.findIndex(t => t.key === tab);
+    const tabs = tabsRef.current.querySelectorAll('button');
+    if (tabs[activeIndex]) {
+      const tabEl = tabs[activeIndex];
+      setIndicatorStyle({
+        left: tabEl.offsetLeft,
+        width: tabEl.offsetWidth,
+      });
+    }
+  }, [tab, loading]);
+
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
@@ -88,13 +111,6 @@ export default function StatsScreen() {
       </div>
     );
   }
-
-  const TABS = [
-    { key: 'week', label: 'Week' },
-    { key: 'month', label: 'Month' },
-    { key: 'freq', label: 'Frequency' },
-    { key: 'progress', label: 'Progress' },
-  ];
 
   const renderContent = () => {
     if (tab === 'freq') {
@@ -154,14 +170,25 @@ export default function StatsScreen() {
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
+        <div 
+          ref={tabsRef}
+          className="relative flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto"
+        >
+          {/* Sliding indicator */}
+          <div
+            className="absolute top-1 bottom-1 rounded-xl bg-white/12 transition-all duration-300 ease-out"
+            style={{
+              left: indicatorStyle.left,
+              width: indicatorStyle.width,
+            }}
+          />
           {TABS.map(t => (
             <button
               key={t.key}
               onClick={() => t.key === 'progress' ? navigate('progress') : setTab(t.key)}
-              className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-all duration-200 ${
+              className={`relative z-10 flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors duration-200 ${
                 tab === t.key
-                  ? 'bg-white/12 text-white/92'
+                  ? 'text-white/92'
                   : 'text-white/35 active:text-white/60'
               }`}
             >
