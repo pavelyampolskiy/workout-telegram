@@ -42,6 +42,7 @@ export const api = {
 
   getSets: (ex_id) => req('GET', `/api/exercises/${ex_id}/sets`),
   addSet: (ex_id, weight, reps) => req('POST', `/api/exercises/${ex_id}/sets`, { weight, reps }),
+  updateSet: (set_id, weight, reps) => req('PUT', `/api/sets/${set_id}`, { weight, reps }),
   deleteSet: (set_id) => req('DELETE', `/api/sets/${set_id}`),
 
   addCardio: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/cardio`, { text }),

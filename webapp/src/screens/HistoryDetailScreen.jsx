@@ -18,6 +18,9 @@ export default function HistoryDetailScreen() {
   const [error, setError] = useState(null);
   const [confirming, setConfirming] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editingSet, setEditingSet] = useState(null); // { exId, setId, weight, reps }
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     api.getWorkout(workoutId)
@@ -34,6 +37,67 @@ export default function HistoryDetailScreen() {
     } catch (e) {
       setError(e.message);
       setDeleting(false);
+    }
+  };
+
+  const handleEditSet = (exId, set) => {
+    setEditingSet({ exId, setId: set.id, weight: String(set.weight), reps: String(set.reps) });
+  };
+
+  const handleSaveSet = async () => {
+    if (!editingSet) return;
+    const weight = parseFloat(editingSet.weight);
+    const reps = parseInt(editingSet.reps);
+    if (isNaN(weight) || weight < 0 || isNaN(reps) || reps <= 0) return;
+    
+    setSaving(true);
+    try {
+      await api.updateSet(editingSet.setId, weight, reps);
+      // Update local state
+      setWorkout(prev => ({
+        ...prev,
+        exercises: prev.exercises.map(ex => 
+          ex.id === editingSet.exId 
+            ? {
+                ...ex,
+                sets: ex.sets.map(s => 
+                  s.id === editingSet.setId ? { ...s, weight, reps } : s
+                ),
+                volume: ex.sets.reduce((sum, s) => 
+                  sum + (s.id === editingSet.setId ? weight * reps : s.weight * s.reps), 0
+                ),
+              }
+            : ex
+        ),
+      }));
+      setEditingSet(null);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDeleteSet = async (exId, setId) => {
+    setSaving(true);
+    try {
+      await api.deleteSet(setId);
+      setWorkout(prev => ({
+        ...prev,
+        exercises: prev.exercises.map(ex => 
+          ex.id === exId 
+            ? {
+                ...ex,
+                sets: ex.sets.filter(s => s.id !== setId),
+                volume: ex.sets.filter(s => s.id !== setId).reduce((sum, s) => sum + s.weight * s.reps, 0),
+              }
+            : ex
+        ),
+      }));
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -63,20 +127,30 @@ export default function HistoryDetailScreen() {
         {/* Header */}
         <div className="pt-2 mb-5">
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
-          <div className="flex items-center gap-3">
-            <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
-            {workout.rating && (
-              <div className="flex items-center gap-0.5 mt-1">
-                {[1, 2, 3, 4, 5].map(star => (
-                  <span 
-                    key={star} 
-                    className="text-lg"
-                    style={{ color: star <= workout.rating ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.15)' }}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
+              {workout.rating && (
+                <div className="flex items-center gap-0.5 mt-1">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <span 
+                      key={star} 
+                      className="text-lg"
+                      style={{ color: star <= workout.rating ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.15)' }}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            {workout.type !== 'CARDIO' && (
+              <button
+                onClick={() => setEditMode(!editMode)}
+                className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
+              >
+                {editMode ? 'Done' : 'Edit'}
+              </button>
             )}
           </div>
         </div>
@@ -119,9 +193,60 @@ export default function HistoryDetailScreen() {
                   <span className="w-5 h-5 rounded-full border border-white/15 flex items-center justify-center text-white/35 text-xs font-sans shrink-0">
                     {i + 1}
                   </span>
-                  <span className="text-white/70 font-sans text-sm">
-                    {fmtW(s.weight)} kg × {s.reps} reps
-                  </span>
+                  {editMode && editingSet?.setId === s.id ? (
+                    <div className="flex items-center gap-2 flex-1">
+                      <input
+                        type="number"
+                        value={editingSet.weight}
+                        onChange={e => setEditingSet(prev => ({ ...prev, weight: e.target.value }))}
+                        className="w-16 bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm text-center"
+                        step="0.5"
+                      />
+                      <span className="text-white/40 text-sm">kg ×</span>
+                      <input
+                        type="number"
+                        value={editingSet.reps}
+                        onChange={e => setEditingSet(prev => ({ ...prev, reps: e.target.value }))}
+                        className="w-14 bg-white/10 border border-white/20 rounded px-2 py-1 text-white text-sm text-center"
+                      />
+                      <button
+                        onClick={handleSaveSet}
+                        disabled={saving}
+                        className="text-green-400 text-sm font-bebas tracking-wider px-2"
+                      >
+                        {saving ? '...' : '✓'}
+                      </button>
+                      <button
+                        onClick={() => setEditingSet(null)}
+                        className="text-white/40 text-sm"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 flex-1">
+                      <span className="text-white/70 font-sans text-sm flex-1">
+                        {fmtW(s.weight)} kg × {s.reps} reps
+                      </span>
+                      {editMode && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleEditSet(ex.id, s)}
+                            className="text-white/40 text-xs px-2 py-1"
+                          >
+                            ✎
+                          </button>
+                          <button
+                            onClick={() => handleDeleteSet(ex.id, s.id)}
+                            disabled={saving}
+                            className="text-red-400/60 text-xs px-2 py-1"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
               {ex.sets.length === 0 && (
