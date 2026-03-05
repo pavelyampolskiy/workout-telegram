@@ -75,16 +75,28 @@ export default function HistoryDetailScreen() {
         )}
 
         {/* Exercises */}
-        {workout.exercises?.map(ex => (
+        {workout.exercises?.map(ex => {
+          const prevVolume = workout.prev_exercises?.[ex.name];
+          const currentVolume = ex.volume || 0;
+          const diff = prevVolume != null ? currentVolume - prevVolume : null;
+          const diffPct = prevVolume > 0 ? Math.round((diff / prevVolume) * 100) : null;
+          
+          return (
           <div key={ex.id} className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
             <div className="flex items-center gap-2 mb-3">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 shrink-0" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
               </svg>
-              <div>
+              <div className="flex-1">
                 <div className="font-bebas tracking-wider text-base text-white">{ex.name}</div>
                 <div className="text-xs text-white/30">{ex.grp}</div>
               </div>
+              {diff !== null && diff !== 0 && (
+                <div className={`flex items-center gap-1 text-xs font-bebas tracking-wider ${diff > 0 ? 'text-green-400/80' : 'text-red-400/80'}`}>
+                  <span>{diff > 0 ? '↑' : '↓'}</span>
+                  <span>{diffPct != null ? `${Math.abs(diffPct)}%` : ''}</span>
+                </div>
+              )}
             </div>
             <div className="space-y-1.5">
               {ex.sets.map((s, i) => (
@@ -102,7 +114,8 @@ export default function HistoryDetailScreen() {
               )}
             </div>
           </div>
-        ))}
+          );
+        })}
 
         {/* Note */}
         {workout.note && (

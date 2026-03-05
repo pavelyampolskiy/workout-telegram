@@ -70,11 +70,13 @@ def get_workout(workout_id: int):
     exercises = []
     for ex in exs:
         sets = db_ops.get_sets_for_exercise(ex["id"])
+        volume = sum(s["weight"] * s["reps"] for s in sets)
         exercises.append({
             "id": ex["id"],
             "grp": ex["grp"],
             "name": ex["name"],
             "target_sets": ex["target_sets"],
+            "volume": volume,
             "sets": [
                 {"id": s["id"], "set_number": s["set_number"], "weight": s["weight"], "reps": s["reps"]}
                 for s in sets
@@ -82,12 +84,24 @@ def get_workout(workout_id: int):
         })
     cardio = db_ops.get_cardio(workout_id)
     note = db_ops.get_workout_note(workout_id)
+    
+    # Get previous workout of same type for comparison
+    prev_exercises = {}
+    prev_workout = db_ops.get_previous_workout(w["user_id"], w["type"], workout_id)
+    if prev_workout:
+        prev_exs = db_ops.get_exercises_for_workout(prev_workout["id"])
+        for pex in prev_exs:
+            psets = db_ops.get_sets_for_exercise(pex["id"])
+            prev_volume = sum(s["weight"] * s["reps"] for s in psets)
+            prev_exercises[pex["name"]] = prev_volume
+    
     return {
         "id": w["id"],
         "user_id": w["user_id"],
         "date": w["date"],
         "type": w["type"],
         "exercises": exercises,
+        "prev_exercises": prev_exercises,
         "cardio": cardio["text"] if cardio else None,
         "note": note["text"] if note else None,
     }
