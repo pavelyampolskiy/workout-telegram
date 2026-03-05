@@ -63,7 +63,22 @@ export default function HistoryDetailScreen() {
         {/* Header */}
         <div className="pt-2 mb-5">
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
-          <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
+            {workout.rating && (
+              <div className="flex items-center gap-0.5 mt-1">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <span 
+                    key={star} 
+                    className="text-lg"
+                    style={{ color: star <= workout.rating ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.15)' }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Cardio */}

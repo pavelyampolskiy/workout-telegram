@@ -116,6 +116,7 @@ def get_workout(workout_id: int):
         "user_id": w["user_id"],
         "date": w["date"],
         "type": w["type"],
+        "rating": w["rating"],
         "exercises": exercises,
         "prev_exercises": prev_exercises,
         "cardio": cardio["text"] if cardio else None,
