@@ -127,7 +127,14 @@ export default function HomeScreen() {
         <div className="pt-2">
           <div className="font-bebas leading-none w-full">
             <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
-            <div style={{ fontSize: '18vw', letterSpacing: '0.36em', color: 'rgba(255,255,255,1)' }}>Ready?</div>
+            <div style={{ 
+              fontSize: '18vw', 
+              letterSpacing: '0.36em',
+              background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>Ready?</div>
           </div>
         </div>
 
