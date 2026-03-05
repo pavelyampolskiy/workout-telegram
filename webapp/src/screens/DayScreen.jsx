@@ -119,11 +119,11 @@ export default function DayScreen() {
             {durationMin !== null && durationMin > 0 && (
               <p className="text-white/55 text-sm mt-1 font-bebas tracking-wider">{durationMin} min</p>
             )}
-            <p className="font-sans text-white/25 text-xs mt-1">Add a note (optional)</p>
           </div>
 
           {/* Rating slider */}
-          <div className="mb-4">
+          <div className="mb-5">
+            <p className="font-sans text-white/25 text-xs mb-3">How was your workout?</p>
             <div className="flex justify-between font-bebas text-xs tracking-widest text-white/35 mb-2.5">
               <span>← Easy</span>
               <span>Hard →</span>
@@ -141,6 +141,7 @@ export default function DayScreen() {
             />
           </div>
 
+          <p className="font-sans text-white/25 text-xs mb-2">Add a note (optional)</p>
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}
