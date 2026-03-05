@@ -15,6 +15,8 @@ import database as db_ops
 from auth import get_current_user
 from program import PROGRAM
 
+_VALID_TYPES = set(PROGRAM.keys())
+
 app = FastAPI(title="Workout API")
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
@@ -70,6 +72,13 @@ def get_program():
 
 class WorkoutBody(BaseModel):
     type: str
+
+    @field_validator("type")
+    @classmethod
+    def type_valid(cls, v: str) -> str:
+        if v not in _VALID_TYPES:
+            raise ValueError(f"type must be one of {sorted(_VALID_TYPES)}")
+        return v
 
 
 @app.post("/api/workouts")
@@ -145,6 +154,13 @@ class ExerciseBody(BaseModel):
     grp: str
     name: str
     target_sets: int
+
+    @field_validator("target_sets")
+    @classmethod
+    def target_sets_positive(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("target_sets must be >= 1")
+        return v
 
 
 @app.post("/api/workouts/{workout_id}/exercises")
@@ -225,6 +241,13 @@ def delete_set(set_id: int, user_id: int = Depends(get_current_user)):
 
 class TextBody(BaseModel):
     text: str
+
+    @field_validator("text")
+    @classmethod
+    def text_not_empty(cls, v: str) -> str:
+        if not v or len(v) > 2000:
+            raise ValueError("text must be 1–2000 characters")
+        return v
 
 
 @app.post("/api/workouts/{workout_id}/cardio")
