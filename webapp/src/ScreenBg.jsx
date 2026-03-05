@@ -1,7 +1,8 @@
 const IMG_STYLE = { backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' };
 
-// 100lvh = large viewport height — doesn't shrink when iOS keyboard opens
-const FIXED_STYLE = { position: 'fixed', top: 0, left: 0, width: '100%', height: '100lvh' };
+// Capture height before any keyboard interaction (module-level = runs once on load)
+const SCREEN_H = typeof window !== 'undefined' ? window.innerHeight : 812;
+const FIXED_STYLE = { position: 'fixed', top: 0, left: 0, width: '100%', height: `${SCREEN_H}px` };
 
 /** Blurred workout background + dark overlay. Place inside `relative overflow-hidden`.
  *  Pass `fixed` to lock the background to the viewport (prevents jump on iOS keyboard open). */
