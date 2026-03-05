@@ -137,7 +137,7 @@ export default function DayScreen() {
   }
 
   return (
-    <div className="min-h-screen relative pb-32 overflow-hidden">
+    <div className="min-h-screen relative pb-44 overflow-hidden">
       <ScreenBg overlay="bg-black/65" />
       <div className="relative z-10">
       {/* Header */}
