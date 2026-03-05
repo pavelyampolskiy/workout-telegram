@@ -86,6 +86,21 @@ def init_db():
                 workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
                 text TEXT NOT NULL
             );
+
+            CREATE INDEX IF NOT EXISTS idx_workouts_user_id
+                ON workouts(user_id);
+            CREATE INDEX IF NOT EXISTS idx_workouts_user_date
+                ON workouts(user_id, date);
+            CREATE INDEX IF NOT EXISTS idx_workout_exercises_workout_id
+                ON workout_exercises(workout_id);
+            CREATE INDEX IF NOT EXISTS idx_workout_exercises_name
+                ON workout_exercises(name);
+            CREATE INDEX IF NOT EXISTS idx_workout_sets_exercise_id
+                ON workout_sets(workout_exercise_id);
+            CREATE INDEX IF NOT EXISTS idx_cardio_entries_workout_id
+                ON cardio_entries(workout_id);
+            CREATE INDEX IF NOT EXISTS idx_workout_notes_workout_id
+                ON workout_notes(workout_id);
         """)
         # Backfill created_at for old records using earliest set timestamp
         conn.execute("""
