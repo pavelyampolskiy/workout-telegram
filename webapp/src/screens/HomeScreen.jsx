@@ -83,7 +83,26 @@ function StatusWidget({ userId }) {
 }
 
 export default function HomeScreen() {
-  const { navigate, userId } = useApp();
+  const { navigate, userId, setActiveWorkout } = useApp();
+  const [unfinished, setUnfinished] = useState(null);
+
+  useEffect(() => {
+    if (!userId) return;
+    api.getUnfinishedWorkout(userId)
+      .then(data => setUnfinished(data.workout))
+      .catch(() => {});
+  }, [userId]);
+
+  const handleContinue = () => {
+    if (!unfinished) return;
+    setActiveWorkout({
+      id: unfinished.id,
+      day: unfinished.type,
+      startedAt: unfinished.created_at ? new Date(unfinished.created_at).getTime() : Date.now(),
+      exerciseMap: {},
+    });
+    navigate('day', { day: unfinished.type });
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -112,6 +131,30 @@ export default function HomeScreen() {
 
         {/* Status widget */}
         <StatusWidget userId={userId} />
+
+        {/* Continue workout banner */}
+        {unfinished && (
+          <button
+            onClick={handleContinue}
+            className="card-press w-full rounded-2xl p-4 mt-4 text-left flex items-center gap-3"
+            style={{
+              background: 'linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.05) 100%)',
+              border: '1px solid rgba(34,197,94,0.3)',
+              boxShadow: '0 0 20px rgba(34,197,94,0.1)',
+            }}
+          >
+            <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-green-500/20">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-green-400">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="font-bebas tracking-wider text-lg text-green-400">Continue Workout</div>
+              <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type.replace('DAY_', 'Day ')}</div>
+            </div>
+            <span className="text-xl shrink-0 text-green-400/50">›</span>
+          </button>
+        )}
 
         {/* Push cards to bottom */}
         <div className="flex-1" />

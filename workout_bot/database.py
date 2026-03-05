@@ -151,6 +151,17 @@ def get_previous_workout(user_id: int, workout_type: str, exclude_workout_id: in
         ).fetchone()
 
 
+def get_unfinished_workout(user_id: int):
+    """Get the most recent unfinished workout for a user."""
+    with db() as conn:
+        return conn.execute(
+            """SELECT * FROM workouts 
+               WHERE user_id=? AND finished_at IS NULL 
+               ORDER BY id DESC LIMIT 1""",
+            (user_id,),
+        ).fetchone()
+
+
 def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: str = None):
     type_clause = "AND w.type = ?" if workout_type else ""
     params = [user_id] + ([workout_type] if workout_type else []) + [limit + 1, offset]

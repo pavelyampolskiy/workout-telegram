@@ -107,6 +107,22 @@ def get_workout(workout_id: int):
     }
 
 
+@app.get("/api/workouts/unfinished")
+def get_unfinished_workout(user_id: int):
+    """Get the most recent unfinished workout for a user."""
+    w = db_ops.get_unfinished_workout(user_id)
+    if not w:
+        return {"workout": None}
+    return {
+        "workout": {
+            "id": w["id"],
+            "type": w["type"],
+            "date": w["date"],
+            "created_at": w["created_at"],
+        }
+    }
+
+
 @app.get("/api/history")
 def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None):
     rows, has_more = db_ops.get_history(user_id, offset, limit, workout_type=type)
