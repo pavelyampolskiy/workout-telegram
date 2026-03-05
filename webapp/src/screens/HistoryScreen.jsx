@@ -36,22 +36,32 @@ function fmtVol(v) {
   return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u202F') + ' kg';
 }
 
+const FILTERS = [
+  { label: 'All', value: null },
+  { label: 'Day A', value: 'DAY_A' },
+  { label: 'Day B', value: 'DAY_B' },
+  { label: 'Day C', value: 'DAY_C' },
+  { label: 'Cardio', value: 'CARDIO' },
+];
+
 export default function HistoryScreen() {
   const { userId, navigate } = useApp();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [filterLoading, setFilterLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [activeFilter, setActiveFilter] = useState(null);
 
   const PAGE = 10;
 
-  const load = async (off = 0, append = false) => {
+  const load = async (off = 0, append = false, type = activeFilter) => {
     try {
-      const data = await api.getHistory(userId, off, PAGE);
+      const data = await api.getHistory(userId, off, PAGE, type);
       if (append) {
         setItems(prev => [...prev, ...data.items]);
       } else {
@@ -68,9 +78,15 @@ export default function HistoryScreen() {
     load(0).finally(() => setLoading(false));
   }, []);
 
+  const handleFilter = (value) => {
+    setActiveFilter(value);
+    setFilterLoading(true);
+    load(0, false, value).finally(() => setFilterLoading(false));
+  };
+
   const handleMore = async () => {
     setLoadingMore(true);
-    await load(offset, true);
+    await load(offset, true, activeFilter);
     setLoadingMore(false);
   };
 
@@ -100,11 +116,30 @@ export default function HistoryScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           History
         </h1>
 
-        {items.length === 0 ? (
+        {/* Filter chips */}
+        <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+          {FILTERS.map(f => (
+            <button
+              key={f.label}
+              onClick={() => handleFilter(f.value)}
+              className="shrink-0 px-3 py-1 rounded-full font-bebas tracking-wider text-sm transition-colors"
+              style={activeFilter === f.value
+                ? { background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.92)', border: '1px solid rgba(255,255,255,0.25)' }
+                : { background: 'transparent', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.10)' }
+              }
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {filterLoading ? (
+          <div className="text-center text-white/30 py-10 text-sm font-bebas tracking-wider">Loading…</div>
+        ) : items.length === 0 ? (
           <div className="text-center text-white/30 py-16">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 mx-auto mb-3 opacity-30">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
