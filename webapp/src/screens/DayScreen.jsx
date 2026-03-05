@@ -168,7 +168,7 @@ export default function DayScreen() {
           {/* Star rating */}
           <div className="mb-5">
             <p className="font-sans text-white/60 text-xs mb-3">How was your workout?</p>
-            <div className="flex justify-center gap-3">
+            <div className="flex justify-start gap-3">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
