@@ -74,6 +74,13 @@ export default function ExerciseScreen() {
         setSets(setsData);
         setLastDate(lastData.date);
         setLastSets(lastData.sets);
+        
+        // Auto-fill from last workout's first set (if no sets done yet)
+        if (setsData.length === 0 && lastData.sets?.length > 0) {
+          const firstLastSet = lastData.sets[0];
+          setWeight(firstLastSet.weight === 0 ? 'BAR' : String(firstLastSet.weight));
+          setReps(String(firstLastSet.reps));
+        }
       } catch (e) {
         setError(e.message);
       } finally {
@@ -110,8 +117,17 @@ export default function ExerciseScreen() {
           [exIdx]: { dbId: exDbId, setsCount: updated.length },
         },
       } : prev);
-      setWeight('');
-      setReps('');
+      // Auto-fill for next set: prefer last workout's corresponding set, fallback to just saved values
+      const nextSetIdx = updated.length; // 0-indexed, so this is the index of the NEXT set
+      if (lastSets && lastSets[nextSetIdx]) {
+        const nextLastSet = lastSets[nextSetIdx];
+        setWeight(nextLastSet.weight === 0 ? 'BAR' : String(nextLastSet.weight));
+        setReps(String(nextLastSet.reps));
+      } else {
+        // Fallback: keep the same weight/reps from the set we just saved
+        setWeight(w === 0 ? 'BAR' : String(w));
+        setReps(String(r));
+      }
       weightRef.current?.focus();
     } catch (e) {
       setInputError(e.message);
