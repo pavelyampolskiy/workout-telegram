@@ -261,7 +261,7 @@ export default function ExerciseScreen() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setWeight(w => String(Math.max(0, (parseFloat(w) || 0) - 2.5)))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               −
@@ -279,7 +279,7 @@ export default function ExerciseScreen() {
             />
             <button
               onClick={() => setWeight(w => String((parseFloat(w) || 0) + 2.5))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               +
@@ -293,7 +293,7 @@ export default function ExerciseScreen() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setReps(r => String(Math.max(1, (parseInt(r) || 0) - 1)))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               −
@@ -311,7 +311,7 @@ export default function ExerciseScreen() {
             />
             <button
               onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               +
