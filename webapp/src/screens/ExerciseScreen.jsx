@@ -88,9 +88,9 @@ export default function ExerciseScreen() {
   const target = ex?.target_sets || 4;
 
   const handleSaveSet = async () => {
-    const w = weight === 'BW' ? 0 : parseFloat(weight);
+    const w = (weight === 'BW' || weight === 'BAR') ? 0 : parseFloat(weight);
     const r = parseInt(reps);
-    if (weight !== 'BW' && (isNaN(w) || w < 0)) { setInputError('Enter weight'); return; }
+    if (weight !== 'BW' && weight !== 'BAR' && (isNaN(w) || w < 0)) { setInputError('Enter weight'); return; }
     if (!r || r <= 0 || r > 100) { setInputError('Enter reps (1–100)'); return; }
     setInputError('');
 
@@ -262,9 +262,9 @@ export default function ExerciseScreen() {
             <button
               onClick={() => {
                 if (weight === 'BW') return;
-                if (weight === '' || weight === '0') { setWeight('BW'); return; }
+                if (weight === '' || weight === '0' || weight === 'BAR') { setWeight('BW'); return; }
                 const w = parseFloat(weight) || 0;
-                if (w <= 1.25) { setWeight('0'); return; }
+                if (w <= 1.25) { setWeight('BAR'); return; }
                 if (w <= 2.5) { setWeight('1.25'); return; }
                 setWeight(String(w - 2.5));
               }}
@@ -284,7 +284,8 @@ export default function ExerciseScreen() {
             />
             <button
               onClick={() => {
-                if (weight === 'BW') { setWeight('0'); return; }
+                if (weight === 'BW') { setWeight('BAR'); return; }
+                if (weight === 'BAR') { setWeight('1.25'); return; }
                 const w = parseFloat(weight) || 0;
                 if (w < 1.25) { setWeight('1.25'); return; }
                 if (w < 2.5) { setWeight('2.5'); return; }
