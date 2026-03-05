@@ -115,13 +115,13 @@ export default function DayScreen() {
             {durationMin !== null && durationMin > 0 && (
               <p className="text-white/55 text-sm mt-1 font-bebas tracking-wider">{durationMin} min</p>
             )}
-            <p className="text-white/40 text-sm mt-1 font-sans">Add a note (optional)</p>
+            <p className="font-sans text-white/25 text-xs mt-1">Add a note (optional)</p>
           </div>
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}
             placeholder="E.g. Felt strong today…"
-            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/20 resize-none h-28 outline-none mt-4 text-sm font-sans"
+            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
             autoFocus
           />
           <button
