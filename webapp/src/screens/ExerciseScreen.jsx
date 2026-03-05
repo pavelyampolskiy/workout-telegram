@@ -88,9 +88,9 @@ export default function ExerciseScreen() {
   const target = ex?.target_sets || 4;
 
   const handleSaveSet = async () => {
-    const w = parseFloat(weight);
+    const w = weight === 'BW' ? 0 : parseFloat(weight);
     const r = parseInt(reps);
-    if (!w || w <= 0) { setInputError('Enter weight'); return; }
+    if (weight !== 'BW' && (isNaN(w) || w < 0)) { setInputError('Enter weight'); return; }
     if (!r || r <= 0 || r > 100) { setInputError('Enter reps (1–100)'); return; }
     setInputError('');
 
@@ -260,7 +260,13 @@ export default function ExerciseScreen() {
           <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setWeight(w => String(Math.max(0, (parseFloat(w) || 0) - 2.5)))}
+              onClick={() => {
+                if (weight === 'BW') return;
+                if (weight === '' || weight === '0') { setWeight('BW'); return; }
+                const w = parseFloat(weight) || 0;
+                if (w === 1.25) { setWeight('0'); return; }
+                setWeight(String(Math.max(0, w - 2.5)));
+              }}
               className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
@@ -268,17 +274,20 @@ export default function ExerciseScreen() {
             </button>
             <input
               ref={weightRef}
-              type="number"
+              type="text"
               inputMode="decimal"
-              step="0.5"
-              min="0"
               value={weight}
               onChange={e => { setWeight(e.target.value); setInputError(''); }}
               placeholder="0"
               className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
             <button
-              onClick={() => setWeight(w => String((parseFloat(w) || 0) + 2.5))}
+              onClick={() => {
+                if (weight === 'BW') { setWeight('0'); return; }
+                const w = parseFloat(weight) || 0;
+                if (w === 0) { setWeight('1.25'); return; }
+                setWeight(String(w + 2.5));
+              }}
               className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
