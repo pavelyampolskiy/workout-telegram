@@ -17,6 +17,13 @@ def db_path(tmp_path, monkeypatch):
     yield path
 
 
+@pytest.fixture(autouse=True)
+def reset_rate_limits():
+    """Reset slowapi counters before each test to prevent cross-test interference."""
+    import api
+    api.limiter.reset()
+
+
 @pytest.fixture()
 def client(db_path):
     """FastAPI TestClient backed by the isolated per-test database."""

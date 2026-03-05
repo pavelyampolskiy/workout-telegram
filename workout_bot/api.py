@@ -6,11 +6,21 @@ from datetime import date, timedelta
 
 import os
 
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
+
 import database as db_ops
 from auth import get_current_user
 from program import PROGRAM
 
 app = FastAPI(title="Workout API")
+
+limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 _webapp_url = os.getenv("WEBAPP_URL", "")
 _origins = [_webapp_url] if _webapp_url else ["*"]
