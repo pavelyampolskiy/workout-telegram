@@ -51,9 +51,9 @@ function StatusWidget({ userId }) {
 
   useEffect(() => {
     Promise.all([
-      api.getHistory(userId, 0, 1),
-      api.getStats(userId, 7),
-      api.getFrequency(userId),
+      api.getHistory(0, 1),
+      api.getStats(7),
+      api.getFrequency(),
     ]).then(([hist, week, freq]) => {
       setStats({
         lastDate: hist.items?.[0]?.date ?? null,

@@ -31,7 +31,7 @@ export default function DayScreen() {
 
         // Create workout if not already active (or different day)
         if (!activeWorkout || activeWorkout.day !== day) {
-          const { id } = await api.createWorkout(userId, day);
+          const { id } = await api.createWorkout(day);
           setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
         }
       } catch (e) {

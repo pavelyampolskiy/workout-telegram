@@ -36,7 +36,7 @@ export default function ExerciseScreen() {
         const [prog, setsData, lastData] = await Promise.all([
           api.getProgram(),
           api.getSets(exDbId),
-          api.getLastExercise(exDbId, userId, workoutId),
+          api.getLastExercise(exDbId, workoutId),
         ]);
         setProgram(prog[day][exIdx]);
         setSets(setsData);

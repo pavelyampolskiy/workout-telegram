@@ -95,7 +95,7 @@ export default function ProgressScreen() {
     setOpen(false);
     setLoadingProg(true);
     try {
-      const data = await api.getProgress(userId, ex.name);
+      const data = await api.getProgress(ex.name);
       setProgress(data);
     } catch (e) {
       setError(e.message);

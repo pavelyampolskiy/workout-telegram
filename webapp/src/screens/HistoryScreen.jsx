@@ -61,7 +61,7 @@ export default function HistoryScreen() {
 
   const load = async (off = 0, append = false, type = activeFilter) => {
     try {
-      const data = await api.getHistory(userId, off, PAGE, type);
+      const data = await api.getHistory(off, PAGE, type);
       if (append) {
         setItems(prev => [...prev, ...data.items]);
       } else {
@@ -93,7 +93,7 @@ export default function HistoryScreen() {
   const handleDeleteAll = async () => {
     setDeleting(true);
     try {
-      await api.deleteAllHistory(userId);
+      await api.deleteAllHistory();
       setItems([]);
       setHasMore(false);
       setOffset(0);

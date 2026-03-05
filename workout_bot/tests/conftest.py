@@ -22,5 +22,8 @@ def client(db_path):
     """FastAPI TestClient backed by the isolated per-test database."""
     from starlette.testclient import TestClient
     import api
+    from auth import get_current_user
+    api.app.dependency_overrides[get_current_user] = lambda: 1
     with TestClient(api.app, raise_server_exceptions=True) as c:
         yield c
+    api.app.dependency_overrides.clear()

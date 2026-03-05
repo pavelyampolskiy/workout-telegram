@@ -1,7 +1,17 @@
 const BASE = import.meta.env.VITE_API_URL || '';
 
+function getInitData() {
+  return window.Telegram?.WebApp?.initData || '';
+}
+
 async function req(method, path, body) {
-  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  const opts = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Telegram-Init-Data': getInitData(),
+    },
+  };
   if (body !== undefined) opts.body = JSON.stringify(body);
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 10000);
@@ -23,17 +33,17 @@ async function req(method, path, body) {
 export const api = {
   getProgram: () => req('GET', '/api/program'),
 
-  createWorkout: (user_id, type) => req('POST', '/api/workouts', { user_id, type }),
+  createWorkout: (type) => req('POST', '/api/workouts', { type }),
   deleteWorkout: (id) => req('DELETE', `/api/workouts/${id}`),
   getWorkout: (id) => req('GET', `/api/workouts/${id}`),
-  getHistory: (user_id, offset = 0, limit = 10, type = null) =>
-    req('GET', `/api/history?user_id=${user_id}&offset=${offset}&limit=${limit}${type ? `&type=${type}` : ''}`),
-  deleteAllHistory: (user_id) => req('DELETE', `/api/history?user_id=${user_id}`),
+  getHistory: (offset = 0, limit = 10, type = null) =>
+    req('GET', `/api/history?offset=${offset}&limit=${limit}${type ? `&type=${type}` : ''}`),
+  deleteAllHistory: () => req('DELETE', '/api/history'),
 
   createExercise: (workout_id, grp, name, target_sets) =>
     req('POST', `/api/workouts/${workout_id}/exercises`, { grp, name, target_sets }),
-  getLastExercise: (ex_id, user_id, exclude_wid) =>
-    req('GET', `/api/exercises/${ex_id}/last?user_id=${user_id}&exclude_wid=${exclude_wid}`),
+  getLastExercise: (ex_id, exclude_wid) =>
+    req('GET', `/api/exercises/${ex_id}/last?exclude_wid=${exclude_wid}`),
 
   getSets: (ex_id) => req('GET', `/api/exercises/${ex_id}/sets`),
   addSet: (ex_id, weight, reps) => req('POST', `/api/exercises/${ex_id}/sets`, { weight, reps }),
@@ -44,8 +54,8 @@ export const api = {
   saveRating: (workout_id, rating) => req('PATCH', `/api/workouts/${workout_id}/rating`, { rating }),
   addNote: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/note`, { text }),
 
-  getStats: (user_id, days) => req('GET', `/api/stats?user_id=${user_id}&days=${days}`),
-  getFrequency: (user_id) => req('GET', `/api/stats/frequency?user_id=${user_id}`),
-  getProgress: (user_id, exercise_name) =>
-    req('GET', `/api/progress?user_id=${user_id}&exercise_name=${encodeURIComponent(exercise_name)}`),
+  getStats: (days) => req('GET', `/api/stats?days=${days}`),
+  getFrequency: () => req('GET', '/api/stats/frequency'),
+  getProgress: (exercise_name) =>
+    req('GET', `/api/progress?exercise_name=${encodeURIComponent(exercise_name)}`),
 };
