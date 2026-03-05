@@ -264,8 +264,9 @@ export default function ExerciseScreen() {
                 if (weight === 'BW') return;
                 if (weight === '' || weight === '0') { setWeight('BW'); return; }
                 const w = parseFloat(weight) || 0;
-                if (w === 1.25) { setWeight('0'); return; }
-                setWeight(String(Math.max(0, w - 2.5)));
+                if (w <= 1.25) { setWeight('0'); return; }
+                if (w <= 2.5) { setWeight('1.25'); return; }
+                setWeight(String(w - 2.5));
               }}
               className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
@@ -285,7 +286,8 @@ export default function ExerciseScreen() {
               onClick={() => {
                 if (weight === 'BW') { setWeight('0'); return; }
                 const w = parseFloat(weight) || 0;
-                if (w === 0) { setWeight('1.25'); return; }
+                if (w < 1.25) { setWeight('1.25'); return; }
+                if (w < 2.5) { setWeight('2.5'); return; }
                 setWeight(String(w + 2.5));
               }}
               className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
