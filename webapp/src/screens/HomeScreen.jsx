@@ -134,33 +134,45 @@ export default function HomeScreen() {
 
         {/* Continue workout banner */}
         {unfinished && (
-          <button
-            onClick={handleContinue}
-            className="card-press w-full rounded-2xl p-4 mt-4 text-left flex items-center gap-4"
-            style={{
-              ...CARD_BTN_STYLE,
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
-            }}
-          >
-            <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                <polygon points="5 3 19 12 5 21 5 3"/>
-              </svg>
-            </span>
-            <div className="min-w-0 flex-1">
-              <div 
-                className="font-bebas tracking-wider text-lg"
-                style={{
-                  background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >Continue Workout</div>
-              <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type.replace('DAY_', 'Day ')}</div>
-            </div>
-            <span className="text-xl shrink-0 text-white/35">›</span>
-          </button>
+          <div className="mt-4">
+            <button
+              onClick={handleContinue}
+              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
+              style={{
+                ...CARD_BTN_STYLE,
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
+              }}
+            >
+              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              </span>
+              <div className="min-w-0 flex-1">
+                <div 
+                  className="font-bebas tracking-wider text-lg"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >Continue Workout</div>
+                <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+              </div>
+              <span className="text-xl shrink-0 text-white/35">›</span>
+            </button>
+            <button
+              onClick={() => {
+                if (window.confirm('Delete this unfinished workout?')) {
+                  api.deleteWorkout(unfinished.id).then(() => setUnfinished(null)).catch(() => {});
+                }
+              }}
+              className="w-full text-center text-white/30 text-xs font-bebas tracking-wider py-2 mt-1"
+            >
+              Dismiss
+            </button>
+          </div>
         )}
 
         {/* Push cards to bottom */}
