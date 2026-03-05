@@ -18,6 +18,13 @@ export default function DayScreen() {
   const [saving, setSaving] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [durationMin, setDurationMin] = useState(null);
+  const [showAddExercise, setShowAddExercise] = useState(false);
+  const [customExName, setCustomExName] = useState('');
+  const [customExGroup, setCustomExGroup] = useState('CHEST');
+  const [customExercises, setCustomExercises] = useState([]);
+  const [addingEx, setAddingEx] = useState(false);
+
+  const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
@@ -91,6 +98,43 @@ export default function DayScreen() {
       api.deleteWorkout(workoutId).catch(() => {});
     }
     resetTo('home');
+  };
+
+  const handleAddCustomExercise = async () => {
+    if (!customExName.trim() || !workoutId) return;
+    setAddingEx(true);
+    try {
+      const { id } = await api.createExercise(workoutId, customExGroup, customExName.trim(), 4);
+      const newEx = {
+        id,
+        group: customExGroup,
+        name: customExName.trim(),
+        target_sets: 4,
+        isCustom: true,
+      };
+      setCustomExercises(prev => [...prev, newEx]);
+      setActiveWorkout(prev => ({
+        ...prev,
+        exerciseMap: { ...prev.exerciseMap, [`custom_${id}`]: { dbId: id, setsCount: 0 } },
+      }));
+      setCustomExName('');
+      setShowAddExercise(false);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setAddingEx(false);
+    }
+  };
+
+  const handleCustomExerciseTap = (ex) => {
+    navigate('exercise', {
+      exIdx: `custom_${ex.id}`,
+      exDbId: ex.id,
+      workoutId,
+      day,
+      userId,
+      customEx: ex,
+    });
   };
 
   if (loading) {
@@ -234,6 +278,72 @@ export default function DayScreen() {
             </button>
           );
         })}
+
+        {/* Custom exercises */}
+        {customExercises.map((ex) => {
+          const info = exerciseMap[`custom_${ex.id}`];
+          const done = info?.setsCount || 0;
+          const total = ex.target_sets;
+          const complete = done >= total;
+
+          return (
+            <button
+              key={`custom_${ex.id}`}
+              onClick={() => handleCustomExerciseTap(ex)}
+              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
+            >
+              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+                +
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-white' : 'text-white/80'}`}>
+                  {ex.name}
+                </div>
+                <div className="text-white/30 text-xs mt-1">{ex.group} • Custom</div>
+                {done > 0 && (
+                  <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
+                    <div
+                      className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
+                      style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="shrink-0 flex flex-col items-end gap-1">
+                {done > 0 ? (
+                  <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
+                    {done}/{total}
+                  </span>
+                ) : (
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
+                    <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
+                  </div>
+                )}
+                {complete ? (
+                  <span className="text-white/70 text-lg">✓</span>
+                ) : (
+                  <span className="text-white/20 text-lg">›</span>
+                )}
+              </div>
+            </button>
+          );
+        })}
+
+        {/* Add Exercise button */}
+        <button
+          onClick={() => setShowAddExercise(true)}
+          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.15)' }}
+        >
+          <span className="w-7 h-7 rounded-full border border-dashed border-white/25 flex items-center justify-center text-white/40 text-lg shrink-0">
+            +
+          </span>
+          <div className="font-bebas tracking-wider text-base text-white/50">
+            Add Exercise
+          </div>
+        </button>
       </div>
 
       {/* Fixed bottom button */}
@@ -266,6 +376,65 @@ export default function DayScreen() {
                 className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
               >
                 Cancel workout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Exercise modal */}
+      {showAddExercise && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
+            
+            {/* Muscle group selector */}
+            <div className="mb-4">
+              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Muscle Group</label>
+              <div className="flex flex-wrap gap-2">
+                {MUSCLE_GROUPS.map(grp => (
+                  <button
+                    key={grp}
+                    onClick={() => setCustomExGroup(grp)}
+                    className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
+                      customExGroup === grp
+                        ? 'bg-white/20 text-white border border-white/30'
+                        : 'bg-white/5 text-white/50 border border-white/10'
+                    }`}
+                  >
+                    {grp}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Exercise name input */}
+            <div className="mb-5">
+              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Exercise Name</label>
+              <input
+                type="text"
+                value={customExName}
+                onChange={e => setCustomExName(e.target.value)}
+                placeholder="e.g. Dumbbell Curls"
+                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
+                autoFocus
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={handleAddCustomExercise}
+                disabled={!customExName.trim() || addingEx}
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40"
+                style={CARD_BTN_STYLE}
+              >
+                {addingEx ? 'Adding…' : 'Add Exercise'}
+              </button>
+              <button
+                onClick={() => { setShowAddExercise(false); setCustomExName(''); }}
+                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
+              >
+                Cancel
               </button>
             </div>
           </div>

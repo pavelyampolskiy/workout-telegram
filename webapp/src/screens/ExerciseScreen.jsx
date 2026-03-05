@@ -4,7 +4,16 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { fmtW, DARK_CARD_STYLE } from '../shared';
 
-const REST_DURATION = 90;
+// Rest times by muscle group (in seconds)
+const REST_TIMES = {
+  LEGS: 180,      // 3 minutes for legs
+  BACK: 90,
+  CHEST: 90,
+  BICEPS: 60,
+  TRICEPS: 60,
+  SHOULDERS: 90,
+};
+const DEFAULT_REST = 90;
 
 function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -12,7 +21,7 @@ function fmtTime(s) {
 
 export default function ExerciseScreen() {
   const { params, goBack, setActiveWorkout } = useApp();
-  const { exIdx, exDbId, workoutId, day, userId } = params;
+  const { exIdx, exDbId, workoutId, day, userId, customEx } = params;
 
   const [program, setProgram] = useState(null);
   const [sets, setSets] = useState([]);
@@ -33,6 +42,15 @@ export default function ExerciseScreen() {
   useEffect(() => {
     async function init() {
       try {
+        // If it's a custom exercise, use the passed data
+        if (customEx) {
+          setProgram(customEx);
+          const setsData = await api.getSets(exDbId);
+          setSets(setsData);
+          setLoading(false);
+          return;
+        }
+
         const [prog, setsData, lastData] = await Promise.all([
           api.getProgram(),
           api.getSets(exDbId),
@@ -82,7 +100,10 @@ export default function ExerciseScreen() {
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      setRestTimer(REST_DURATION);
+      // Set rest time based on muscle group
+      const muscleGroup = program?.group?.toUpperCase();
+      const restDuration = REST_TIMES[muscleGroup] || DEFAULT_REST;
+      setRestTimer(restDuration);
       setActiveWorkout(prev => prev ? {
         ...prev,
         exerciseMap: {
@@ -177,15 +198,38 @@ export default function ExerciseScreen() {
 
       {/* Rest timer */}
       {restTimer !== null && (
-        <button
-          onClick={() => setRestTimer(null)}
-          className="w-full rounded-2xl p-4 mb-4 text-center backdrop-blur-sm"
+        <div
+          className="w-full rounded-2xl p-4 mb-4 backdrop-blur-sm"
           style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
         >
-          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-0.5">REST</div>
-          <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
-          <div className="text-xs font-bebas text-white/25 mt-1.5">tap to skip</div>
-        </button>
+          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-0.5 text-center">REST</div>
+          <div className="text-5xl font-bebas text-white leading-none text-center">{fmtTime(restTimer)}</div>
+          
+          {/* Timer control buttons */}
+          <div className="flex items-center justify-center gap-3 mt-3">
+            <button
+              onClick={() => setRestTimer(t => Math.max(30, t - 30))}
+              className="px-4 py-2 rounded-xl font-bebas tracking-wider text-white/70 active:text-white transition-colors"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              -30s
+            </button>
+            <button
+              onClick={() => setRestTimer(null)}
+              className="px-5 py-2 rounded-xl font-bebas tracking-wider text-white/90 active:text-white transition-colors"
+              style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)' }}
+            >
+              Skip
+            </button>
+            <button
+              onClick={() => setRestTimer(t => t + 30)}
+              className="px-4 py-2 rounded-xl font-bebas tracking-wider text-white/70 active:text-white transition-colors"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              +30s
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Last performance */}

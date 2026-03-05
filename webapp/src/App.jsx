@@ -55,10 +55,43 @@ class ErrorBoundary extends Component {
   }
 }
 
+const ACTIVE_WORKOUT_KEY = 'activeWorkout';
+
 export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
-  const [activeWorkout, setActiveWorkout] = useState(null);
+  const [activeWorkout, setActiveWorkoutState] = useState(null);
+
+  // Wrap setActiveWorkout to persist to localStorage
+  const setActiveWorkout = useCallback((value) => {
+    setActiveWorkoutState(prev => {
+      const next = typeof value === 'function' ? value(prev) : value;
+      if (next) {
+        localStorage.setItem(ACTIVE_WORKOUT_KEY, JSON.stringify(next));
+      } else {
+        localStorage.removeItem(ACTIVE_WORKOUT_KEY);
+      }
+      return next;
+    });
+  }, []);
+
+  // Restore activeWorkout from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(ACTIVE_WORKOUT_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Only restore if workout is from today (not stale)
+        const workoutDate = new Date(parsed.startedAt).toDateString();
+        const today = new Date().toDateString();
+        if (workoutDate === today) {
+          setActiveWorkoutState(parsed);
+        } else {
+          localStorage.removeItem(ACTIVE_WORKOUT_KEY);
+        }
+      }
+    } catch (_) {}
+  }, []);
 
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;
@@ -90,7 +123,8 @@ export default function App() {
   const resetTo = useCallback((screen = 'home', params = {}) => {
     setStack([{ screen, params }]);
     setActiveWorkout(null);
-  }, []);
+    localStorage.removeItem(ACTIVE_WORKOUT_KEY);
+  }, [setActiveWorkout]);
 
   // Telegram native back button — defensive
   useEffect(() => {
