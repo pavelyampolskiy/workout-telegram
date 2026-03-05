@@ -95,16 +95,6 @@ def test_create_and_get_exercise(db_path):
     assert ex["target_sets"] == 4
 
 
-def test_get_exercises_for_workout(db_path):
-    wid = db.create_workout(user_id=1, workout_type="DAY_A")
-    db.create_exercise(wid, grp="LEGS", name="Squat", target_sets=4)
-    db.create_exercise(wid, grp="BACK", name="Deadlift", target_sets=3)
-    exs = db.get_exercises_for_workout(wid)
-    assert len(exs) == 2
-    names = {e["name"] for e in exs}
-    assert names == {"Squat", "Deadlift"}
-
-
 def test_get_exercise_missing_returns_none(db_path):
     assert db.get_exercise(9999) is None
 

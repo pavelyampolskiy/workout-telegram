@@ -222,13 +222,6 @@ def create_exercise(workout_id: int, grp: str, name: str, target_sets: int) -> i
         return cur.lastrowid
 
 
-def get_exercises_for_workout(workout_id: int):
-    with db() as conn:
-        return conn.execute(
-            "SELECT * FROM workout_exercises WHERE workout_id=?", (workout_id,)
-        ).fetchall()
-
-
 def get_exercises_with_sets(workout_id: int):
     """Return exercises with all their sets in 2 queries (no N+1)."""
     with db() as conn:

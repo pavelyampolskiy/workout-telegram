@@ -18,4 +18,4 @@ async def cmd_start(msg: Message):
             web_app=WebAppInfo(url=WEBAPP_URL),
         )
     ]])
-    await msg.answer("Hey, pussy! 💪\n\nTap the button to open the app.", reply_markup=kb)
+    await msg.answer("Hey! 💪\n\nTap the button to open the app.", reply_markup=kb)
