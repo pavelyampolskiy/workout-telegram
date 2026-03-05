@@ -123,15 +123,15 @@ export default function HomeScreen() {
               key={item.screen}
               onClick={() => navigate(item.screen)}
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
-              style={item.primary ? PRIMARY_CARD_STYLE : CARD_BTN_STYLE}
+              style={CARD_BTN_STYLE}
             >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: item.primary ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.82)' }}>
+              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <div className={`font-bebas tracking-wider text-lg ${item.primary ? 'text-white' : 'text-white/65'}`}>{item.title}</div>
+                <div className="font-bebas tracking-wider text-lg text-white/65">{item.title}</div>
               </div>
-              <span className={`text-xl shrink-0 ${item.primary ? 'text-white/50' : 'text-white/35'}`}>›</span>
+              <span className="text-xl shrink-0 text-white/35">›</span>
             </button>
           ))}
         </div>
