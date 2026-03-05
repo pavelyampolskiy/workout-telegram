@@ -10,6 +10,44 @@ function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
+// Play a beep sound using Web Audio API
+function playTimerSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    
+    oscillator.frequency.value = 880; // A5 note
+    oscillator.type = 'sine';
+    gain.gain.value = 0.3;
+    
+    oscillator.start();
+    
+    // Fade out
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    oscillator.stop(ctx.currentTime + 0.5);
+    
+    // Second beep after short pause
+    setTimeout(() => {
+      try {
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.frequency.value = 1100; // Higher pitch
+        osc2.type = 'sine';
+        gain2.gain.value = 0.3;
+        osc2.start();
+        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+        osc2.stop(ctx.currentTime + 0.5);
+      } catch (_) {}
+    }, 200);
+  } catch (_) {}
+}
+
 export default function ExerciseScreen() {
   const { params, goBack, setActiveWorkout } = useApp();
   const { exIdx, exDbId, workoutId, day, userId, customEx } = params;
@@ -43,6 +81,7 @@ export default function ExerciseScreen() {
       setRestTimer(remaining);
       
       if (remaining <= 0) {
+        playTimerSound();
         window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
         setRestEndTime(null);
       }
