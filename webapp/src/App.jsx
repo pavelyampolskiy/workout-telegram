@@ -1,4 +1,5 @@
 import { useState, createContext, useContext, useEffect, useCallback, Component } from 'react';
+import { useSwipeBack } from './hooks/useSwipeBack';
 
 import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
@@ -107,6 +108,9 @@ export default function App() {
       return () => { try { tg.BackButton.offClick(handler); } catch (_) {} };
     } catch (_) {}
   }, [stack.length, goBack]);
+
+  // Swipe-back gesture (swipe from left edge to go back)
+  useSwipeBack(goBack, stack.length > 1);
 
   if (userId === null) {
     return (
