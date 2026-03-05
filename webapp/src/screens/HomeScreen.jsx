@@ -83,13 +83,7 @@ function StatusWidget({ userId }) {
 }
 
 export default function HomeScreen() {
-  const { navigate, userId, activeWorkout } = useApp();
-
-  const handleResume = () => {
-    if (activeWorkout?.day) {
-      navigate('day', { day: activeWorkout.day });
-    }
-  };
+  const { navigate, userId } = useApp();
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -118,30 +112,6 @@ export default function HomeScreen() {
 
         {/* Status widget */}
         <StatusWidget userId={userId} />
-
-        {/* Resume workout banner */}
-        {activeWorkout && (
-          <button
-            onClick={handleResume}
-            className="card-press mt-5 w-full rounded-2xl p-4 text-left flex items-center gap-4"
-            style={{
-              background: 'linear-gradient(180deg, rgba(255,200,100,0.15) 0%, rgba(255,150,50,0.08) 100%)',
-              border: '1px solid rgba(255,180,80,0.35)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 0 20px rgba(255,150,50,0.12)',
-            }}
-          >
-            <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-2xl">
-              ▶️
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="font-bebas tracking-wider text-lg text-white/95">Continue Workout</div>
-              <div className="font-bebas tracking-wider text-sm text-white/50">
-                {activeWorkout.day?.replace('DAY_', 'Day ')} in progress
-              </div>
-            </div>
-            <span className="text-xl shrink-0 text-white/50">›</span>
-          </button>
-        )}
 
         {/* Push cards to bottom */}
         <div className="flex-1" />
