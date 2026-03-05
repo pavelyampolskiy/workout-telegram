@@ -129,7 +129,7 @@ export default function HomeScreen() {
                 {item.icon}
               </span>
               <div className="min-w-0 flex-1">
-                <div className="font-bebas tracking-wider text-lg text-white/65">{item.title}</div>
+                <div className={`font-bebas tracking-wider text-lg ${item.primary ? 'text-white/92' : 'text-white/65'}`}>{item.title}</div>
               </div>
               <span className="text-xl shrink-0 text-white/35">›</span>
             </button>
