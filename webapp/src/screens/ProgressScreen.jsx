@@ -158,7 +158,7 @@ export default function ProgressScreen() {
                   className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
                 >
                   <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
-                  <div className="text-xs text-white/30 font-sans">{ex.group}</div>
+                  <div className="text-xs text-white/30 font-bebas">{ex.group}</div>
                 </button>
               ))}
             </div>
@@ -178,32 +178,32 @@ export default function ProgressScreen() {
                   <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                 </svg>
               </div>
-              <p className="font-sans text-sm">No data yet for {selected.name}</p>
+              <p className="font-bebas text-sm">No data yet for {selected.name}</p>
             </div>
           ) : (
             <div className="space-y-4">
               {t && (
                 <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
                   <span className={`text-2xl font-bebas tracking-wider ${t.color}`}>{t.text}</span>
-                  <span className="text-white/40 text-sm font-sans">over {progress.length} sessions</span>
+                  <span className="text-white/40 text-sm font-bebas">over {progress.length} sessions</span>
                 </div>
               )}
 
               <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4">
-                <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
+                <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-bebas">
                   Max weight per session (kg)
                 </div>
                 <LineChart data={progress} />
               </div>
 
               <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4">
-                <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
+                <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-bebas">
                   Sessions
                 </div>
                 <div className="space-y-2">
                   {[...progress].reverse().map((r, i) => (
                     <div key={i} className="flex items-center justify-between">
-                      <span className="text-white/40 text-sm font-sans">{fmtDate(r.date)}</span>
+                      <span className="text-white/40 text-sm font-bebas">{fmtDate(r.date)}</span>
                       <span className="text-white/80 font-bebas tracking-wider">{fmtW(r.max_weight)} kg</span>
                     </div>
                   ))}
@@ -220,7 +220,7 @@ export default function ProgressScreen() {
                 <path d="M4 20V12M8 20V16M12 20V8M16 20V14M20 20V4"/>
               </svg>
             </div>
-            <p className="font-sans text-sm">Select an exercise above</p>
+            <p className="font-bebas text-sm">Select an exercise above</p>
           </div>
         )}
       </div>
