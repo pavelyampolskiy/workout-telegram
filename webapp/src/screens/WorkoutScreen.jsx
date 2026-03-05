@@ -33,7 +33,7 @@ function Card({ o, onPress }) {
         {o.icon}
       </span>
       <div className="min-w-0 flex-1">
-        <div className="font-bebas tracking-wider text-lg text-white">{o.label}</div>
+        <div className="font-bebas tracking-wider text-lg text-white/65">{o.label}</div>
       </div>
       <span className="ml-auto text-white/35 text-xl shrink-0">›</span>
     </button>
