@@ -136,40 +136,74 @@ export default function HomeScreen() {
 
         {/* Continue workout banner */}
         {unfinished && (
-          <div className="mt-4">
-            <button
-              onClick={handleContinue}
-              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
-              style={{
-                ...CARD_BTN_STYLE,
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
-              }}
-            >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-              </span>
-              <div className="min-w-0 flex-1">
-                <div 
-                  className="font-bebas tracking-wider text-lg"
+          <div className="mt-4 relative">
+            {!showDismissConfirm ? (
+              <>
+                <button
+                  onClick={handleContinue}
+                  className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
                   style={{
-                    background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
+                    ...CARD_BTN_STYLE,
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
                   }}
-                >Continue Workout</div>
-                <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                >
+                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                      <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div 
+                      className="font-bebas tracking-wider text-lg"
+                      style={{
+                        background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >Continue Workout</div>
+                    <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                  </div>
+                  <span className="text-xl shrink-0 text-white/35">›</span>
+                </button>
+                <button
+                  onClick={() => setShowDismissConfirm(true)}
+                  className="w-full text-center text-white/30 text-xs font-bebas tracking-wider py-2 mt-1"
+                >
+                  Dismiss
+                </button>
+              </>
+            ) : (
+              <div className="bg-black/90 border border-white/10 rounded-2xl p-5">
+                <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Dismiss workout?</h3>
+                <p className="text-sm text-white/40 mb-5 font-sans">This unfinished workout will be deleted.</p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => setShowDismissConfirm(false)}
+                    className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
+                    style={CARD_BTN_STYLE}
+                  >
+                    Keep it
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDismissing(true);
+                      api.deleteWorkout(unfinished.id)
+                        .then(() => {
+                          setUnfinished(null);
+                          setShowDismissConfirm(false);
+                        })
+                        .catch(() => {})
+                        .finally(() => setDismissing(false));
+                    }}
+                    disabled={dismissing}
+                    className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50"
+                  >
+                    {dismissing ? 'Deleting…' : 'Delete workout'}
+                  </button>
+                </div>
               </div>
-              <span className="text-xl shrink-0 text-white/35">›</span>
-            </button>
-            <button
-              onClick={() => setShowDismissConfirm(true)}
-              className="w-full text-center text-white/30 text-xs font-bebas tracking-wider py-2 mt-1"
-            >
-              Dismiss
-            </button>
+            )}
           </div>
         )}
 
@@ -197,40 +231,6 @@ export default function HomeScreen() {
         </div>
       </div>
 
-      {/* Dismiss confirmation modal */}
-      {showDismissConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
-            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Dismiss workout?</h3>
-            <p className="text-sm text-white/40 mb-6 font-sans">This unfinished workout will be deleted.</p>
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => setShowDismissConfirm(false)}
-                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
-                style={CARD_BTN_STYLE}
-              >
-                Keep it
-              </button>
-              <button
-                onClick={() => {
-                  setDismissing(true);
-                  api.deleteWorkout(unfinished.id)
-                    .then(() => {
-                      setUnfinished(null);
-                      setShowDismissConfirm(false);
-                    })
-                    .catch(() => {})
-                    .finally(() => setDismissing(false));
-                }}
-                disabled={dismissing}
-                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50"
-              >
-                {dismissing ? 'Deleting…' : 'Delete workout'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
