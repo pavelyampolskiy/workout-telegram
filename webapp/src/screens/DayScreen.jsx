@@ -125,8 +125,8 @@ export default function DayScreen() {
           <div className="mb-5">
             <p className="font-sans text-white/60 text-xs mb-3">How was your workout?</p>
             <div className="flex justify-between font-bebas text-xs tracking-widest text-white/35 mb-2.5">
-              <span>← Easy</span>
-              <span>Hard →</span>
+              <span>Easy</span>
+              <span>Hard</span>
             </div>
             <input
               type="range"
