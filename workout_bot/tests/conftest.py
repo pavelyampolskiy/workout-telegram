@@ -1,7 +1,7 @@
 import sys
 import os
 
-# Add workout_bot/ to sys.path so bare imports (database, api, program, parser) resolve correctly
+# Add workout_bot/ to sys.path so bare imports (database, api, program) resolve correctly
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import pytest
