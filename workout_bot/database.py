@@ -159,6 +159,33 @@ def get_workout(workout_id: int):
         return conn.execute("SELECT * FROM workouts WHERE id=?", (workout_id,)).fetchone()
 
 
+def get_workout_owner(workout_id: int):
+    with db() as conn:
+        row = conn.execute("SELECT user_id FROM workouts WHERE id=?", (workout_id,)).fetchone()
+    return row["user_id"] if row else None
+
+
+def get_exercise_owner(ex_id: int):
+    with db() as conn:
+        row = conn.execute(
+            "SELECT w.user_id FROM workout_exercises we JOIN workouts w ON we.workout_id=w.id WHERE we.id=?",
+            (ex_id,),
+        ).fetchone()
+    return row["user_id"] if row else None
+
+
+def get_set_owner(set_id: int):
+    with db() as conn:
+        row = conn.execute(
+            """SELECT w.user_id FROM workout_sets ws
+               JOIN workout_exercises we ON ws.workout_exercise_id=we.id
+               JOIN workouts w ON we.workout_id=w.id
+               WHERE ws.id=?""",
+            (set_id,),
+        ).fetchone()
+    return row["user_id"] if row else None
+
+
 def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: str = None):
     type_clause = "AND w.type = ?" if workout_type else ""
     params = [user_id] + ([workout_type] if workout_type else []) + [limit + 1, offset]

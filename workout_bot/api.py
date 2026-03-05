@@ -33,6 +33,32 @@ app.add_middleware(
 )
 
 
+# ── Ownership helpers ─────────────────────────────────────────────────────────
+
+def _check_workout(workout_id: int, user_id: int):
+    owner = db_ops.get_workout_owner(workout_id)
+    if owner is None:
+        raise HTTPException(status_code=404, detail="Not found")
+    if owner != user_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+
+def _check_exercise(ex_id: int, user_id: int):
+    owner = db_ops.get_exercise_owner(ex_id)
+    if owner is None:
+        raise HTTPException(status_code=404, detail="Not found")
+    if owner != user_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+
+def _check_set(set_id: int, user_id: int):
+    owner = db_ops.get_set_owner(set_id)
+    if owner is None:
+        raise HTTPException(status_code=404, detail="Not found")
+    if owner != user_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+
 # ── Program ───────────────────────────────────────────────────────────────────
 
 @app.get("/api/program")
@@ -53,7 +79,8 @@ def create_workout(body: WorkoutBody, user_id: int = Depends(get_current_user)):
 
 
 @app.patch("/api/workouts/{workout_id}/finish")
-def finish_workout(workout_id: int):
+def finish_workout(workout_id: int, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     db_ops.finish_workout(workout_id)
     return {"ok": True}
 
@@ -63,24 +90,25 @@ class RatingBody(BaseModel):
 
 
 @app.patch("/api/workouts/{workout_id}/rating")
-def save_rating(workout_id: int, body: RatingBody):
+def save_rating(workout_id: int, body: RatingBody, user_id: int = Depends(get_current_user)):
     if not (1 <= body.rating <= 5):
         raise HTTPException(status_code=422, detail="rating must be 1–5")
+    _check_workout(workout_id, user_id)
     db_ops.save_rating(workout_id, body.rating)
     return {"ok": True}
 
 
 @app.delete("/api/workouts/{workout_id}")
-def delete_workout(workout_id: int):
+def delete_workout(workout_id: int, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     db_ops.delete_workout(workout_id)
     return {"ok": True}
 
 
 @app.get("/api/workouts/{workout_id}")
-def get_workout(workout_id: int):
+def get_workout(workout_id: int, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     w = db_ops.get_workout(workout_id)
-    if not w:
-        raise HTTPException(status_code=404, detail="Not found")
     exercises = db_ops.get_exercises_with_sets(workout_id)
     cardio = db_ops.get_cardio(workout_id)
     note = db_ops.get_workout_note(workout_id)
@@ -120,7 +148,8 @@ class ExerciseBody(BaseModel):
 
 
 @app.post("/api/workouts/{workout_id}/exercises")
-def create_exercise(workout_id: int, body: ExerciseBody):
+def create_exercise(workout_id: int, body: ExerciseBody, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     eid = db_ops.create_exercise(workout_id, body.grp, body.name, body.target_sets)
     return {"id": eid}
 
@@ -148,7 +177,8 @@ class SetBody(BaseModel):
 
 
 @app.get("/api/exercises/{ex_id}/sets")
-def get_sets(ex_id: int):
+def get_sets(ex_id: int, user_id: int = Depends(get_current_user)):
+    _check_exercise(ex_id, user_id)
     sets = db_ops.get_sets_for_exercise(ex_id)
     return [
         {"id": s["id"], "set_number": s["set_number"], "weight": s["weight"], "reps": s["reps"]}
@@ -157,20 +187,23 @@ def get_sets(ex_id: int):
 
 
 @app.post("/api/exercises/{ex_id}/sets")
-def add_set(ex_id: int, body: SetBody):
+def add_set(ex_id: int, body: SetBody, user_id: int = Depends(get_current_user)):
+    _check_exercise(ex_id, user_id)
     next_num = db_ops.count_sets_for_exercise(ex_id) + 1
     sid = db_ops.add_set(ex_id, next_num, body.weight, body.reps)
     return {"id": sid}
 
 
 @app.put("/api/sets/{set_id}")
-def update_set(set_id: int, body: SetBody):
+def update_set(set_id: int, body: SetBody, user_id: int = Depends(get_current_user)):
+    _check_set(set_id, user_id)
     db_ops.update_set(set_id, body.weight, body.reps)
     return {"ok": True}
 
 
 @app.delete("/api/sets/{set_id}")
-def delete_set(set_id: int):
+def delete_set(set_id: int, user_id: int = Depends(get_current_user)):
+    _check_set(set_id, user_id)
     db_ops.delete_set(set_id)
     return {"ok": True}
 
@@ -182,13 +215,15 @@ class TextBody(BaseModel):
 
 
 @app.post("/api/workouts/{workout_id}/cardio")
-def add_cardio(workout_id: int, body: TextBody):
+def add_cardio(workout_id: int, body: TextBody, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     cid = db_ops.add_cardio(workout_id, body.text)
     return {"id": cid}
 
 
 @app.put("/api/workouts/{workout_id}/cardio")
-def update_cardio(workout_id: int, body: TextBody):
+def update_cardio(workout_id: int, body: TextBody, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     db_ops.update_cardio(workout_id, body.text)
     return {"ok": True}
 
@@ -196,7 +231,8 @@ def update_cardio(workout_id: int, body: TextBody):
 # ── Notes ─────────────────────────────────────────────────────────────────────
 
 @app.post("/api/workouts/{workout_id}/note")
-def add_note(workout_id: int, body: TextBody):
+def add_note(workout_id: int, body: TextBody, user_id: int = Depends(get_current_user)):
+    _check_workout(workout_id, user_id)
     nid = db_ops.add_workout_note(workout_id, body.text)
     return {"id": nid}
 
