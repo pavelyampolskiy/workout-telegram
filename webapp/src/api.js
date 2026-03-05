@@ -9,7 +9,11 @@ async function req(method, path, body) {
     const res = await fetch(`${BASE}${path}`, { ...opts, signal: controller.signal });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.detail || `Error ${res.status}`);
+      let msg = `Error ${res.status}`;
+      if (typeof err.detail === 'string') msg = err.detail;
+      else if (Array.isArray(err.detail)) msg = err.detail.map(e => e.msg || e.message || JSON.stringify(e)).join(', ');
+      else if (err.detail?.msg) msg = err.detail.msg;
+      throw new Error(msg);
     }
     return res.json();
   } catch (e) {
