@@ -54,6 +54,8 @@ def init_db():
             conn.execute("ALTER TABLE workouts ADD COLUMN created_at TEXT")
         if 'finished_at' not in cols:
             conn.execute("ALTER TABLE workouts ADD COLUMN finished_at TEXT")
+        if 'rating' not in cols:
+            conn.execute("ALTER TABLE workouts ADD COLUMN rating INTEGER")
         # Backfill created_at for old records using earliest set timestamp
         conn.execute("""
             UPDATE workouts SET created_at = (
@@ -112,6 +114,14 @@ def finish_workout(workout_id: int):
         conn.execute(
             "UPDATE workouts SET finished_at=? WHERE id=?",
             (datetime.utcnow().isoformat(), workout_id),
+        )
+
+
+def save_rating(workout_id: int, rating: int):
+    with db() as conn:
+        conn.execute(
+            "UPDATE workouts SET rating=? WHERE id=?",
+            (rating, workout_id),
         )
 
 

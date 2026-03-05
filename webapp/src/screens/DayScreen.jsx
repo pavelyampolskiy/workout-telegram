@@ -14,6 +14,7 @@ export default function DayScreen() {
   const [error, setError] = useState(null);
   const [showNote, setShowNote] = useState(false);
   const [note, setNote] = useState('');
+  const [rating, setRating] = useState(3);
   const [saving, setSaving] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [durationMin, setDurationMin] = useState(null);
@@ -72,6 +73,9 @@ export default function DayScreen() {
   const handleFinish = async () => {
     setSaving(true);
     try {
+      if (workoutId) {
+        await api.saveRating(workoutId, rating);
+      }
       if (note.trim() && workoutId) {
         await api.addNote(workoutId, note.trim());
       }
@@ -117,6 +121,26 @@ export default function DayScreen() {
             )}
             <p className="font-sans text-white/25 text-xs mt-1">Add a note (optional)</p>
           </div>
+
+          {/* Rating slider */}
+          <div className="mb-4">
+            <div className="flex justify-between font-bebas text-xs tracking-widest text-white/35 mb-2.5">
+              <span>← Easy</span>
+              <span>Hard →</span>
+            </div>
+            <input
+              type="range"
+              min="1"
+              max="5"
+              value={rating}
+              onChange={e => setRating(Number(e.target.value))}
+              className="rating-slider"
+              style={{
+                background: `linear-gradient(to right, rgba(255,255,255,0.65) ${(rating - 1) / 4 * 100}%, rgba(255,255,255,0.1) ${(rating - 1) / 4 * 100}%)`,
+              }}
+            />
+          </div>
+
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}

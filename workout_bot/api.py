@@ -43,6 +43,18 @@ def finish_workout(workout_id: int):
     return {"ok": True}
 
 
+class RatingBody(BaseModel):
+    rating: int
+
+
+@app.patch("/api/workouts/{workout_id}/rating")
+def save_rating(workout_id: int, body: RatingBody):
+    if not (1 <= body.rating <= 5):
+        raise HTTPException(status_code=422, detail="rating must be 1–5")
+    db_ops.save_rating(workout_id, body.rating)
+    return {"ok": True}
+
+
 @app.delete("/api/workouts/{workout_id}")
 def delete_workout(workout_id: int):
     db_ops.delete_workout(workout_id)
