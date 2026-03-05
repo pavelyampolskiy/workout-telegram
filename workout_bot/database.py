@@ -56,15 +56,6 @@ def init_db():
             conn.execute("ALTER TABLE workouts ADD COLUMN finished_at TEXT")
         if 'rating' not in cols:
             conn.execute("ALTER TABLE workouts ADD COLUMN rating INTEGER")
-        # Backfill created_at for old records using earliest set timestamp
-        conn.execute("""
-            UPDATE workouts SET created_at = (
-                SELECT MIN(ws.ts)
-                FROM workout_exercises we
-                JOIN workout_sets ws ON ws.workout_exercise_id = we.id
-                WHERE we.workout_id = workouts.id
-            ) WHERE created_at IS NULL
-        """)
         conn.executescript("""
 
             CREATE TABLE IF NOT EXISTS workout_exercises (
@@ -95,6 +86,15 @@ def init_db():
                 workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
                 text TEXT NOT NULL
             );
+        """)
+        # Backfill created_at for old records using earliest set timestamp
+        conn.execute("""
+            UPDATE workouts SET created_at = (
+                SELECT MIN(ws.ts)
+                FROM workout_exercises we
+                JOIN workout_sets ws ON ws.workout_exercise_id = we.id
+                WHERE we.workout_id = workouts.id
+            ) WHERE created_at IS NULL
         """)
 
 
