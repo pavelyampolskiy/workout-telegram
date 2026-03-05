@@ -89,12 +89,28 @@ export default function App() {
         tg.ready();
         try { tg.expand(); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
-        setUserId(uid ? Number(uid) : 0);
+        if (uid) {
+          setUserId(Number(uid));
+        } else {
+          // Generate unique negative ID for non-Telegram users
+          let localId = localStorage.getItem('local_user_id');
+          if (!localId) {
+            localId = String(-Math.floor(Date.now() / 1000));
+            localStorage.setItem('local_user_id', localId);
+          }
+          setUserId(parseInt(localId));
+        }
       } else {
-        setUserId(parseInt(localStorage.getItem('test_uid') || '1'));
+        // PWA or browser mode
+        let localId = localStorage.getItem('local_user_id');
+        if (!localId) {
+          localId = String(-Math.floor(Date.now() / 1000));
+          localStorage.setItem('local_user_id', localId);
+        }
+        setUserId(parseInt(localId));
       }
     } catch (e) {
-      setUserId(1);
+      setUserId(-1);
     }
   }, []);
 
