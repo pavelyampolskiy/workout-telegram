@@ -85,6 +85,8 @@ function StatusWidget({ userId }) {
 export default function HomeScreen() {
   const { navigate, userId, setActiveWorkout } = useApp();
   const [unfinished, setUnfinished] = useState(null);
+  const [showDismissConfirm, setShowDismissConfirm] = useState(false);
+  const [dismissing, setDismissing] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -163,11 +165,7 @@ export default function HomeScreen() {
               <span className="text-xl shrink-0 text-white/35">›</span>
             </button>
             <button
-              onClick={() => {
-                if (window.confirm('Delete this unfinished workout?')) {
-                  api.deleteWorkout(unfinished.id).then(() => setUnfinished(null)).catch(() => {});
-                }
-              }}
+              onClick={() => setShowDismissConfirm(true)}
               className="w-full text-center text-white/30 text-xs font-bebas tracking-wider py-2 mt-1"
             >
               Dismiss
@@ -198,6 +196,41 @@ export default function HomeScreen() {
           ))}
         </div>
       </div>
+
+      {/* Dismiss confirmation modal */}
+      {showDismissConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Dismiss workout?</h3>
+            <p className="text-sm text-white/40 mb-6 font-sans">This unfinished workout will be deleted.</p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => setShowDismissConfirm(false)}
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
+                style={CARD_BTN_STYLE}
+              >
+                Keep it
+              </button>
+              <button
+                onClick={() => {
+                  setDismissing(true);
+                  api.deleteWorkout(unfinished.id)
+                    .then(() => {
+                      setUnfinished(null);
+                      setShowDismissConfirm(false);
+                    })
+                    .catch(() => {})
+                    .finally(() => setDismissing(false));
+                }}
+                disabled={dismissing}
+                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50"
+              >
+                {dismissing ? 'Deleting…' : 'Delete workout'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
