@@ -137,7 +137,11 @@ export default function HomeScreen() {
           <button
             onClick={handleContinue}
             className="card-press w-full rounded-2xl p-4 mt-4 text-left flex items-center gap-4"
-            style={CARD_BTN_STYLE}
+            style={{
+              ...CARD_BTN_STYLE,
+              border: '1px solid rgba(255,255,255,0.35)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
+            }}
           >
             <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
