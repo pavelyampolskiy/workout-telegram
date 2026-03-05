@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useEffect, useCallback, Component } from 'react';
+import { useState, createContext, useContext, useEffect, useCallback, useRef, Component } from 'react';
 import { useSwipeBack } from './hooks/useSwipeBack';
 
 import HomeScreen from './screens/HomeScreen';
@@ -60,9 +60,27 @@ export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
   const [activeWorkout, setActiveWorkout] = useState(null);
+  const [direction, setDirection] = useState('none'); // 'forward', 'back', 'none'
+  const [isAnimating, setIsAnimating] = useState(false);
+  const prevStackLength = useRef(1);
 
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;
+
+  // Track navigation direction
+  useEffect(() => {
+    if (stack.length > prevStackLength.current) {
+      setDirection('forward');
+      setIsAnimating(true);
+    } else if (stack.length < prevStackLength.current) {
+      setDirection('back');
+      setIsAnimating(true);
+    }
+    prevStackLength.current = stack.length;
+    
+    const timer = setTimeout(() => setIsAnimating(false), 300);
+    return () => clearTimeout(timer);
+  }, [stack.length]);
 
   useEffect(() => {
     try {
@@ -132,10 +150,21 @@ export default function App() {
         setActiveWorkout,
       }}
     >
-      <div className="min-h-screen bg-black text-white max-w-lg mx-auto">
-        <ErrorBoundary key={current.screen}>
-          <Screen />
-        </ErrorBoundary>
+      <div className="min-h-screen bg-black text-white max-w-lg mx-auto overflow-hidden">
+        <div
+          key={current.screen}
+          className={`min-h-screen ${
+            isAnimating
+              ? direction === 'forward'
+                ? 'animate-slide-in-right'
+                : 'animate-slide-in-left'
+              : ''
+          }`}
+        >
+          <ErrorBoundary>
+            <Screen />
+          </ErrorBoundary>
+        </div>
       </div>
     </AppCtx.Provider>
   );
