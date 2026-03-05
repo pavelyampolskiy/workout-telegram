@@ -27,90 +27,94 @@ def db():
         conn.close()
 
 
+def _m1_base_schema(conn):
+    conn.execute("""CREATE TABLE IF NOT EXISTS workouts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        date TEXT NOT NULL,
+        type TEXT NOT NULL
+    )""")
+    conn.execute("""CREATE TABLE IF NOT EXISTS workout_exercises (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+        grp TEXT NOT NULL,
+        name TEXT NOT NULL,
+        target_sets INTEGER NOT NULL
+    )""")
+    conn.execute("""CREATE TABLE IF NOT EXISTS workout_sets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        workout_exercise_id INTEGER NOT NULL REFERENCES workout_exercises(id) ON DELETE CASCADE,
+        set_number INTEGER NOT NULL,
+        weight REAL NOT NULL,
+        reps INTEGER NOT NULL,
+        ts TEXT NOT NULL
+    )""")
+    conn.execute("""CREATE TABLE IF NOT EXISTS cardio_entries (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+        text TEXT NOT NULL
+    )""")
+    conn.execute("""CREATE TABLE IF NOT EXISTS workout_notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+        text TEXT NOT NULL
+    )""")
+
+
+def _m2_add_columns(conn):
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(workouts)").fetchall()}
+    for col, typ in [('created_at', 'TEXT'), ('finished_at', 'TEXT'), ('rating', 'INTEGER')]:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE workouts ADD COLUMN {col} {typ}")
+
+
+def _m3_indexes(conn):
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_workouts_user_id ON workouts(user_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_workouts_user_date ON workouts(user_id, date)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_workout_exercises_workout_id ON workout_exercises(workout_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_workout_exercises_name ON workout_exercises(name)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_workout_sets_exercise_id ON workout_sets(workout_exercise_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_cardio_entries_workout_id ON cardio_entries(workout_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_workout_notes_workout_id ON workout_notes(workout_id)")
+
+
+def _m4_backfill(conn):
+    conn.execute("""
+        UPDATE workouts SET created_at = (
+            SELECT MIN(ws.ts)
+            FROM workout_exercises we
+            JOIN workout_sets ws ON ws.workout_exercise_id = we.id
+            WHERE we.workout_id = workouts.id
+        ) WHERE created_at IS NULL
+    """)
+
+
+_MIGRATIONS = [_m1_base_schema, _m2_add_columns, _m3_indexes, _m4_backfill]
+
+
 def init_db():
-    with db() as conn:
-        # Check exact schema — drop all tables if workouts is missing required columns
-        info = conn.execute("PRAGMA table_info(workouts)").fetchall()
-        existing = {row[1] for row in info}
-        needed = {'id', 'user_id', 'date', 'type'}
-        if not needed.issubset(existing):
-            conn.execute("DROP TABLE IF EXISTS workout_notes")
-            conn.execute("DROP TABLE IF EXISTS cardio_entries")
-            conn.execute("DROP TABLE IF EXISTS workout_sets")
-            conn.execute("DROP TABLE IF EXISTS workout_exercises")
-            conn.execute("DROP TABLE IF EXISTS workouts")
-            conn.commit()
-        conn.executescript("""
-            CREATE TABLE IF NOT EXISTS workouts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER NOT NULL,
-                date TEXT NOT NULL,
-                type TEXT NOT NULL
-            );
-        """)
-        # Safe migration: add created_at if missing
-        cols = {row[1] for row in conn.execute("PRAGMA table_info(workouts)").fetchall()}
-        if 'created_at' not in cols:
-            conn.execute("ALTER TABLE workouts ADD COLUMN created_at TEXT")
-        if 'finished_at' not in cols:
-            conn.execute("ALTER TABLE workouts ADD COLUMN finished_at TEXT")
-        if 'rating' not in cols:
-            conn.execute("ALTER TABLE workouts ADD COLUMN rating INTEGER")
-        conn.executescript("""
-
-            CREATE TABLE IF NOT EXISTS workout_exercises (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
-                grp TEXT NOT NULL,
-                name TEXT NOT NULL,
-                target_sets INTEGER NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS workout_sets (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                workout_exercise_id INTEGER NOT NULL REFERENCES workout_exercises(id) ON DELETE CASCADE,
-                set_number INTEGER NOT NULL,
-                weight REAL NOT NULL,
-                reps INTEGER NOT NULL,
-                ts TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS cardio_entries (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
-                text TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS workout_notes (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
-                text TEXT NOT NULL
-            );
-
-            CREATE INDEX IF NOT EXISTS idx_workouts_user_id
-                ON workouts(user_id);
-            CREATE INDEX IF NOT EXISTS idx_workouts_user_date
-                ON workouts(user_id, date);
-            CREATE INDEX IF NOT EXISTS idx_workout_exercises_workout_id
-                ON workout_exercises(workout_id);
-            CREATE INDEX IF NOT EXISTS idx_workout_exercises_name
-                ON workout_exercises(name);
-            CREATE INDEX IF NOT EXISTS idx_workout_sets_exercise_id
-                ON workout_sets(workout_exercise_id);
-            CREATE INDEX IF NOT EXISTS idx_cardio_entries_workout_id
-                ON cardio_entries(workout_id);
-            CREATE INDEX IF NOT EXISTS idx_workout_notes_workout_id
-                ON workout_notes(workout_id);
-        """)
-        # Backfill created_at for old records using earliest set timestamp
+    conn = get_connection()
+    try:
         conn.execute("""
-            UPDATE workouts SET created_at = (
-                SELECT MIN(ws.ts)
-                FROM workout_exercises we
-                JOIN workout_sets ws ON ws.workout_exercise_id = we.id
-                WHERE we.workout_id = workouts.id
-            ) WHERE created_at IS NULL
+            CREATE TABLE IF NOT EXISTS schema_migrations (
+                version INTEGER PRIMARY KEY
+            )
         """)
+        conn.commit()
+
+        applied = {r[0] for r in conn.execute("SELECT version FROM schema_migrations").fetchall()}
+
+        for version, migrate in enumerate(_MIGRATIONS, start=1):
+            if version in applied:
+                continue
+            migrate(conn)
+            conn.execute("INSERT INTO schema_migrations (version) VALUES (?)", (version,))
+            conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
 
 
 # ── Workouts ─────────────────────────────────────────────────────────────────
