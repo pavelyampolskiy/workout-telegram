@@ -8,20 +8,29 @@ const CARD = {
   style: { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' },
 };
 
+const GRADIENT_TEXT = {
+  background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text',
+};
+
+const BAR_GRADIENT = 'linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 100%)';
+
 function Bar({ label, value, max, mounted }) {
   const pct = max > 0 ? (value / max) * 100 : 0;
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-sm font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.87)' }}>{label}</span>
-        <span className="text-sm font-bebas tracking-wider" style={{ color: 'rgba(255,255,255,0.77)' }}>{value}</span>
+        <span className="text-sm font-bebas tracking-wider" style={GRADIENT_TEXT}>{value}</span>
       </div>
       <div className="h-2.5 rounded-lg" style={{ background: '#1F1F1F' }}>
         <div
           className="h-full rounded-lg"
           style={{
             width: mounted ? `${pct}%` : '0%',
-            background: '#DCDCDC',
+            background: BAR_GRADIENT,
             transition: 'width 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           }}
         />
@@ -94,11 +103,11 @@ export default function StatsScreen() {
         <div className={CARD.className} style={CARD.style}>
           <div className="flex">
             <div className="flex-1 text-center border-r border-white/[0.06] pr-4">
-              <div className="text-5xl font-bebas text-white leading-none">{total}</div>
+              <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
               <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
             </div>
             <div className="flex-1 text-center pl-4">
-              <div className="text-5xl font-bebas text-white leading-none">{avg}</div>
+              <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
               <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
             </div>
           </div>
@@ -118,7 +127,7 @@ export default function StatsScreen() {
       <div className="space-y-4">
         <div className={CARD.className} style={CARD.style}>
           <div className="text-center">
-            <div className="text-5xl font-bebas text-white leading-none">{total}</div>
+            <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
           </div>
         </div>
