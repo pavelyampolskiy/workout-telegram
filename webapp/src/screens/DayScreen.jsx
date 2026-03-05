@@ -165,24 +165,21 @@ export default function DayScreen() {
             )}
           </div>
 
-          {/* Rating slider */}
+          {/* Star rating */}
           <div className="mb-5">
             <p className="font-sans text-white/60 text-xs mb-3">How was your workout?</p>
-            <div className="flex justify-between font-bebas text-xs tracking-widest text-white/35 mb-2.5">
-              <span>Easy</span>
-              <span>Hard</span>
+            <div className="flex justify-center gap-3">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className="text-3xl transition-transform active:scale-110"
+                  style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
+                >
+                  ★
+                </button>
+              ))}
             </div>
-            <input
-              type="range"
-              min="1"
-              max="5"
-              value={rating}
-              onChange={e => setRating(Number(e.target.value))}
-              className="rating-slider"
-              style={{
-                background: `linear-gradient(to right, rgba(255,255,255,0.65) ${(rating - 1) / 4 * 100}%, rgba(255,255,255,0.1) ${(rating - 1) / 4 * 100}%)`,
-              }}
-            />
           </div>
 
           <p className="font-sans text-white/25 text-xs mb-2">Add a note (optional)</p>
