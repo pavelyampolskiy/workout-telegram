@@ -250,7 +250,7 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
+      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
@@ -261,7 +261,7 @@ export default function ExerciseScreen() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setWeight(w => String(Math.max(0, (parseFloat(w) || 0) - 2.5)))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               −
@@ -275,11 +275,11 @@ export default function ExerciseScreen() {
               value={weight}
               onChange={e => { setWeight(e.target.value); setInputError(''); }}
               placeholder="0"
-              className="flex-1 h-14 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-3xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
             <button
               onClick={() => setWeight(w => String((parseFloat(w) || 0) + 2.5))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               +
@@ -293,7 +293,7 @@ export default function ExerciseScreen() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setReps(r => String(Math.max(1, (parseInt(r) || 0) - 1)))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               −
@@ -307,11 +307,11 @@ export default function ExerciseScreen() {
               value={reps}
               onChange={e => { setReps(e.target.value); setInputError(''); }}
               placeholder="0"
-              className="flex-1 h-14 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-3xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
             <button
               onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               +
