@@ -55,6 +55,22 @@ def save_rating(workout_id: int, body: RatingBody):
     return {"ok": True}
 
 
+@app.get("/api/workouts/unfinished")
+def get_unfinished_workout(user_id: int):
+    """Get the most recent unfinished workout for a user."""
+    w = db_ops.get_unfinished_workout(user_id)
+    if not w:
+        return {"workout": None}
+    return {
+        "workout": {
+            "id": w["id"],
+            "type": w["type"],
+            "date": w["date"],
+            "created_at": w["created_at"],
+        }
+    }
+
+
 @app.delete("/api/workouts/{workout_id}")
 def delete_workout(workout_id: int):
     db_ops.delete_workout(workout_id)
@@ -104,22 +120,6 @@ def get_workout(workout_id: int):
         "prev_exercises": prev_exercises,
         "cardio": cardio["text"] if cardio else None,
         "note": note["text"] if note else None,
-    }
-
-
-@app.get("/api/workouts/unfinished")
-def get_unfinished_workout(user_id: int):
-    """Get the most recent unfinished workout for a user."""
-    w = db_ops.get_unfinished_workout(user_id)
-    if not w:
-        return {"workout": None}
-    return {
-        "workout": {
-            "id": w["id"],
-            "type": w["type"],
-            "date": w["date"],
-            "created_at": w["created_at"],
-        }
     }
 
 
