@@ -26,9 +26,32 @@ export default function ExerciseScreen() {
   const [saving, setSaving] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const [inputError, setInputError] = useState('');
+  const [restEndTime, setRestEndTime] = useState(null);
   const [restTimer, setRestTimer] = useState(null);
 
   const weightRef = useRef(null);
+
+  // Rest timer - uses endTime to survive app minimize
+  useEffect(() => {
+    if (restEndTime === null) {
+      setRestTimer(null);
+      return;
+    }
+    
+    const tick = () => {
+      const remaining = Math.max(0, Math.round((restEndTime - Date.now()) / 1000));
+      setRestTimer(remaining);
+      
+      if (remaining <= 0) {
+        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+        setRestEndTime(null);
+      }
+    };
+    
+    tick(); // Initial tick
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [restEndTime]);
 
   useEffect(() => {
     async function init() {
@@ -60,19 +83,7 @@ export default function ExerciseScreen() {
     init();
   }, []);
 
-  // Rest timer countdown
-  useEffect(() => {
-    if (restTimer === null || restTimer <= 0) {
-      if (restTimer === 0) {
-        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
-        setRestTimer(null);
-      }
-      return;
-    }
-    const t = setTimeout(() => setRestTimer(r => r - 1), 1000);
-    return () => clearTimeout(t);
-  }, [restTimer]);
-
+  
   const ex = program;
   const target = ex?.target_sets || 4;
 
@@ -91,7 +102,7 @@ export default function ExerciseScreen() {
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      setRestTimer(REST_DURATION);
+      setRestEndTime(Date.now() + REST_DURATION * 1000);
       setActiveWorkout(prev => prev ? {
         ...prev,
         exerciseMap: {
@@ -187,7 +198,7 @@ export default function ExerciseScreen() {
       {/* Rest timer */}
       {restTimer !== null && (
         <button
-          onClick={() => setRestTimer(null)}
+          onClick={() => setRestEndTime(null)}
           className="w-full rounded-2xl p-4 mb-4 text-center backdrop-blur-sm"
           style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
         >
@@ -243,9 +254,18 @@ export default function ExerciseScreen() {
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
-        <div className="flex gap-3 mb-3">
-          <div className="flex-1">
-            <label className="text-xs mb-1 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+        
+        {/* Weight input with +/- buttons */}
+        <div className="mb-4">
+          <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setWeight(w => String(Math.max(0, (parseFloat(w) || 0) - 2.5)))}
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              −
+            </button>
             <input
               ref={weightRef}
               type="number"
@@ -254,13 +274,30 @@ export default function ExerciseScreen() {
               min="0"
               value={weight}
               onChange={e => { setWeight(e.target.value); setInputError(''); }}
-              placeholder="140"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              placeholder="0"
+              className="flex-1 h-14 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-3xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
+            <button
+              onClick={() => setWeight(w => String((parseFloat(w) || 0) + 2.5))}
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              +
+            </button>
           </div>
-          <div className="flex items-end pb-0.5 text-white/30 text-xl font-bebas">×</div>
-          <div className="flex-1">
-            <label className="text-xs mb-1 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+        </div>
+
+        {/* Reps input with +/- buttons */}
+        <div className="mb-4">
+          <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setReps(r => String(Math.max(1, (parseInt(r) || 0) - 1)))}
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              −
+            </button>
             <input
               type="number"
               inputMode="numeric"
@@ -269,9 +306,16 @@ export default function ExerciseScreen() {
               max="100"
               value={reps}
               onChange={e => { setReps(e.target.value); setInputError(''); }}
-              placeholder="12"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              placeholder="0"
+              className="flex-1 h-14 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-3xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
+            <button
+              onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              +
+            </button>
           </div>
         </div>
 
