@@ -183,20 +183,20 @@ export default function ProgressScreen() {
           ) : (
             <div className="space-y-4">
               {t && (
-                <div className="bg-white/8 border border-white/8 rounded-2xl p-4 flex items-center gap-3">
+                <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
                   <span className={`text-2xl font-bebas tracking-wider ${t.color}`}>{t.text}</span>
                   <span className="text-white/40 text-sm font-sans">over {progress.length} sessions</span>
                 </div>
               )}
 
-              <div className="bg-white/8 border border-white/8 rounded-2xl p-4">
+              <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4">
                 <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
                   Max weight per session (kg)
                 </div>
                 <LineChart data={progress} />
               </div>
 
-              <div className="bg-white/8 border border-white/8 rounded-2xl p-4">
+              <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4">
                 <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-sans">
                   Sessions
                 </div>
