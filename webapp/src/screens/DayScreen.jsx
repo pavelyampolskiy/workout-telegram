@@ -12,12 +12,9 @@ export default function DayScreen() {
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showNote, setShowNote] = useState(false);
-  const [note, setNote] = useState('');
   const [rating, setRating] = useState(3);
   const [saving, setSaving] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
-  const [durationMin, setDurationMin] = useState(null);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [customExName, setCustomExName] = useState('');
   const [customExGroup, setCustomExGroup] = useState('CHEST');
@@ -68,23 +65,12 @@ export default function DayScreen() {
     navigate('exercise', { exIdx: idx, exDbId, workoutId, day, userId });
   };
 
-  const handleSave = () => {
-    const mins = activeWorkout?.startedAt
-      ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
-      : null;
-    setDurationMin(mins);
-    if (workoutId) api.finishWorkout(workoutId).catch(() => {});
-    setShowNote(true);
-  };
-
-  const handleFinish = async () => {
+  const handleSave = async () => {
     setSaving(true);
     try {
       if (workoutId) {
+        await api.finishWorkout(workoutId);
         await api.saveRating(workoutId, rating);
-      }
-      if (note.trim() && workoutId) {
-        await api.addNote(workoutId, note.trim());
       }
       resetTo('home');
     } catch (e) {
@@ -148,68 +134,6 @@ export default function DayScreen() {
 
   if (error) {
     return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
-  }
-
-  if (showNote) {
-    return (
-      <div className="min-h-screen relative">
-        <ScreenBg overlay="bg-black/70" fixed />
-        <div className="relative z-10 p-5">
-          <div className="pt-4 mb-2">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
-            <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
-            {durationMin !== null && durationMin > 0 && (
-              <p className="text-white/55 text-sm mt-1 font-bebas tracking-wider">{durationMin} min</p>
-            )}
-          </div>
-
-          {/* Rating slider */}
-          <div className="mb-5">
-            <p className="font-sans text-white/60 text-xs mb-3">How was your workout?</p>
-            <div className="flex justify-between font-bebas text-xs tracking-widest text-white/35 mb-2.5">
-              <span>Easy</span>
-              <span>Hard</span>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="5"
-              value={rating}
-              onChange={e => setRating(Number(e.target.value))}
-              className="rating-slider"
-              style={{
-                background: `linear-gradient(to right, rgba(255,255,255,0.65) ${(rating - 1) / 4 * 100}%, rgba(255,255,255,0.1) ${(rating - 1) / 4 * 100}%)`,
-              }}
-            />
-          </div>
-
-          <p className="font-sans text-white/25 text-xs mb-2">Add a note (optional)</p>
-          <textarea
-            value={note}
-            onChange={e => setNote(e.target.value)}
-            placeholder="E.g. Felt strong today…"
-            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
-            autoFocus
-          />
-          <button
-            onClick={handleFinish}
-            disabled={saving}
-            className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-            style={CARD_BTN_STYLE}
-          >
-            {saving ? 'Saving…' : 'Done'}
-          </button>
-          <button
-            onClick={() => resetTo('home')}
-            className="w-full mt-2 text-white/40 py-2 font-bebas tracking-wider text-sm"
-          >
-            Skip
-          </button>
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -346,8 +270,24 @@ export default function DayScreen() {
         </button>
       </div>
 
-      {/* Fixed bottom button */}
+      {/* Fixed bottom with rating and save button */}
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
+        {/* Star rating */}
+        <div className="mb-3 text-center">
+          <div className="text-xs font-bebas tracking-wider text-white/40 mb-2">How was your workout?</div>
+          <div className="flex justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                onClick={() => setRating(star)}
+                className="text-2xl transition-transform active:scale-110"
+                style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
+              >
+                ★
+              </button>
+            ))}
+          </div>
+        </div>
         <button
           onClick={handleSave}
           className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
