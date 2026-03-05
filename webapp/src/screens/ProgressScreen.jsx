@@ -51,11 +51,11 @@ function LineChart({ data }) {
       <path d={areaD} fill="url(#grad)" />
 
       {/* Line */}
-      <path d={pathD} fill="none" stroke="#D4C4A0" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+      <path d={pathD} fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
 
       {/* Dots */}
       {xs.map((x, i) => (
-        <circle key={i} cx={x} cy={ys[i]} r={3} fill="#E0D5C0" />
+        <circle key={i} cx={x} cy={ys[i]} r={3} fill="rgba(255,255,255,0.9)" />
       ))}
     </svg>
   );
@@ -124,7 +124,7 @@ export default function ProgressScreen() {
   const trend = () => {
     if (!progress || progress.length < 2) return null;
     const delta = progress[progress.length - 1].max_weight - progress[0].max_weight;
-    if (delta > 0) return { text: `↑ +${fmtW(delta)} kg`, color: 'text-[#D4C4A0]' };
+    if (delta > 0) return { text: `↑ +${fmtW(delta)} kg`, color: 'text-green-400' };
     if (delta < 0) return { text: `↓ ${fmtW(delta)} kg`, color: 'text-red-400' };
     return { text: '→ No change', color: 'text-white/40' };
   };

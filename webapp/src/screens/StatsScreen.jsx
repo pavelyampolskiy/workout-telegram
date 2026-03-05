@@ -21,7 +21,7 @@ function Bar({ label, value, max, mounted }) {
           className="h-full rounded-lg"
           style={{
             width: mounted ? `${pct}%` : '0%',
-            background: 'linear-gradient(90deg, #C0A870, #F0EBE2)',
+            background: '#DCDCDC',
             transition: 'width 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           }}
         />

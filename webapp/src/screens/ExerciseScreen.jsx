@@ -163,8 +163,8 @@ export default function ExerciseScreen() {
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-300"
-              style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #C0A870, #F0EBE2)' }}
+              className="h-full bg-white/60 rounded-full transition-all duration-300"
+              style={{ width: `${pct}%` }}
             />
           </div>
           <span className="font-bebas shrink-0 text-base tracking-wider">
@@ -276,7 +276,7 @@ export default function ExerciseScreen() {
           className="card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 border"
           style={
             weight && reps
-              ? { background: 'rgba(210,190,155,0.15)', borderColor: 'rgba(210,190,155,0.40)', color: '#E0D5C0' }
+              ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)', color: 'rgba(255,255,255,1)' }
               : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
           }
         >
