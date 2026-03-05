@@ -335,9 +335,9 @@ export default function DayScreen() {
         <button
           onClick={() => setShowAddExercise(true)}
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px dashed rgba(255,255,255,0.15)' }}
+          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
         >
-          <span className="w-7 h-7 rounded-full border border-dashed border-white/25 flex items-center justify-center text-white/40 text-lg shrink-0">
+          <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
             +
           </span>
           <div className="font-bebas tracking-wider text-base text-white/50">
