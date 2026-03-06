@@ -179,10 +179,6 @@ export default function HistoryScreen() {
           <div className="space-y-2">
             {items.map((w, idx) => {
               const isNewMonth = idx === 0 || getMonthKey(w.date) !== getMonthKey(items[idx - 1].date);
-              const summary = [
-                w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
-                w.total_volume > 0 && fmtVol(w.total_volume),
-              ].filter(Boolean).join(' • ');
 
               return (
                 <div key={w.id}>
@@ -211,10 +207,16 @@ export default function HistoryScreen() {
                               <span className="font-sans text-white/35 text-xs">{w.duration_min} min</span>
                             </>
                           )}
-                          {summary && (
+                          {w.total_sets > 0 && (
                             <>
                               <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-white/35 text-xs">{summary}</span>
+                              <span className="font-sans text-white/35 text-xs">{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                            </>
+                          )}
+                          {w.total_volume > 0 && (
+                            <>
+                              <span className="font-sans text-white/20 text-xs">•</span>
+                              <span className="font-sans text-white/35 text-xs">{fmtVol(w.total_volume)}</span>
                             </>
                           )}
                         </div>
