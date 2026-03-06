@@ -399,14 +399,16 @@ def get_smart_reminder(user_id: int):
     today_count = day_counts[today]
     is_workout_day = today_count >= threshold
     
-    # Check last workout date
-    hist = db_ops.get_history(user_id, 0, 1)
+    # Check last strength workout date (exclude cardio)
+    hist = db_ops.get_history(user_id, 0, 10)  # Get more to find strength workout
     last_workout_date = None
     days_since = None
-    if hist:
-        last_workout_date = hist[0]["date"]
-        last_date = date.fromisoformat(last_workout_date)
-        days_since = (date.today() - last_date).days
+    for w in hist:
+        if w["type"] in ("DAY_A", "DAY_B", "DAY_C"):
+            last_workout_date = w["date"]
+            last_date = date.fromisoformat(last_workout_date)
+            days_since = (date.today() - last_date).days
+            break
     
     # Generate reminder message
     reminder = None

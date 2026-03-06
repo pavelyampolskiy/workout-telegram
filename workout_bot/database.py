@@ -375,13 +375,13 @@ def get_total_volume(user_id: int) -> float:
 
 
 def get_workout_patterns(user_id: int, weeks: int = 8):
-    """Analyze which days of the week user typically trains"""
+    """Analyze which days of the week user typically trains (strength only, no cardio)"""
     since = date.today() - timedelta(weeks=weeks)
     with db() as conn:
         rows = conn.execute(
             """
             SELECT date FROM workouts 
-            WHERE user_id = ? AND date >= ?
+            WHERE user_id = ? AND date >= ? AND type IN ('DAY_A', 'DAY_B', 'DAY_C')
             ORDER BY date DESC
             """,
             (user_id, since.isoformat()),
