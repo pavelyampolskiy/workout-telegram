@@ -1,7 +1,10 @@
 # api.py
 import asyncio
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+import pathlib
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from datetime import date, timedelta
 from typing import Optional
@@ -10,6 +13,8 @@ import database as db_ops
 from program import PROGRAM
 
 app = FastAPI(title="Workout API")
+
+DIST_DIR = pathlib.Path(__file__).resolve().parent.parent / "webapp" / "dist"
 
 # Bot instance (set by bot.py on startup)
 _bot = None
@@ -440,3 +445,16 @@ def get_smart_reminder(user_id: int):
         "days_since_last": days_since,
         "common_days": [DAY_NAMES[d[0]] for d in common_days[:3]],
     }
+
+
+# ── Serve frontend SPA ────────────────────────────────────────────────────────
+
+if DIST_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=DIST_DIR / "assets"), name="static")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(request: Request, full_path: str):
+        file = DIST_DIR / full_path
+        if file.is_file():
+            return FileResponse(file)
+        return FileResponse(DIST_DIR / "index.html")
