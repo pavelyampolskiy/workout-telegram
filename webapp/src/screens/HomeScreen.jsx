@@ -94,7 +94,7 @@ function ProgressRing({ progress, size = 80, strokeWidth = 6 }) {
 
 function WeeklyGoalWidget({ userId }) {
   const [data, setData] = useState(undefined);
-  const WEEKLY_GOAL = 4; // Target workouts per week
+  const WEEKLY_GOAL = 3; // Target workouts per week
 
   useEffect(() => {
     Promise.all([
