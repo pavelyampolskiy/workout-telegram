@@ -4,6 +4,32 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { fmtW, DARK_CARD_STYLE } from '../shared';
 
+function RecoveryBanner({ recoveryData }) {
+  if (!recoveryData || recoveryData.modifier >= 1) return null;
+  
+  const reduction = Math.round((1 - recoveryData.modifier) * 100);
+  
+  return (
+    <div 
+      className="mb-4 rounded-xl p-3 flex items-center gap-3"
+      style={{
+        background: 'rgba(255, 180, 100, 0.1)',
+        border: '1px solid rgba(255, 180, 100, 0.2)',
+      }}
+    >
+      <div className="text-lg">⚡</div>
+      <div className="flex-1">
+        <div className="text-white/80 text-xs font-sans">
+          Recovery: <span className="font-medium">{recoveryData.score}%</span>
+        </div>
+        <div className="text-white/50 text-[10px] font-sans">
+          Consider {reduction}% lighter weights today
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const REST_DURATION = 90;
 
 function fmtTime(s) {
@@ -49,7 +75,7 @@ function playTimerSound() {
 }
 
 export default function ExerciseScreen() {
-  const { params, goBack, setActiveWorkout } = useApp();
+  const { params, goBack, setActiveWorkout, recoveryData } = useApp();
   const { exIdx, exDbId, workoutId, day, userId, customEx } = params;
 
   const [program, setProgram] = useState(null);
@@ -220,6 +246,9 @@ export default function ExerciseScreen() {
     <div className="min-h-screen relative pb-28 overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 px-5 pt-5 pb-28">
+
+      {/* Recovery banner */}
+      <RecoveryBanner recoveryData={recoveryData} />
 
       {/* Exercise header */}
       <div className="pt-2 mb-5">

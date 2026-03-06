@@ -342,7 +342,14 @@ export default function HomeScreen() {
           {ITEMS.map(item => (
             <button
               key={item.screen}
-              onClick={() => navigate(item.screen)}
+              onClick={() => {
+                // For new workout, go through recovery check first
+                if (item.screen === 'workout') {
+                  navigate('recovery-check');
+                } else {
+                  navigate(item.screen);
+                }
+              }}
               className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
               style={CARD_BTN_STYLE}
             >

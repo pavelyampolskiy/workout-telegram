@@ -11,6 +11,7 @@ import HistoryDetailScreen from './screens/HistoryDetailScreen';
 import StatsScreen from './screens/StatsScreen';
 import ProgressScreen from './screens/ProgressScreen';
 import AchievementsScreen from './screens/AchievementsScreen';
+import RecoveryCheckScreen from './screens/RecoveryCheckScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -26,6 +27,7 @@ const SCREENS = {
   stats: StatsScreen,
   progress: ProgressScreen,
   achievements: AchievementsScreen,
+  'recovery-check': RecoveryCheckScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen
@@ -62,6 +64,7 @@ export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
   const [activeWorkout, setActiveWorkout] = useState(null);
+  const [recoveryData, setRecoveryData] = useState(null); // { score, modifier, timestamp }
   const [direction, setDirection] = useState('none'); // 'forward', 'back', 'none'
   const [isAnimating, setIsAnimating] = useState(false);
   const prevStackLength = useRef(1);
@@ -166,6 +169,8 @@ export default function App() {
         params: current.params,
         activeWorkout,
         setActiveWorkout,
+        recoveryData,
+        setRecoveryData,
       }}
     >
       <div className="min-h-screen bg-black text-white max-w-lg mx-auto overflow-hidden">
