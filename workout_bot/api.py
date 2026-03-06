@@ -1,13 +1,25 @@
 # api.py
-from fastapi import FastAPI, HTTPException
+import asyncio
+from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from datetime import date, timedelta
+from typing import Optional
 
 import database as db_ops
 from program import PROGRAM
 
 app = FastAPI(title="Workout API")
+
+# Bot instance (set by bot.py on startup)
+_bot = None
+
+def set_bot_instance(bot):
+    global _bot
+    _bot = bot
+
+def get_bot():
+    return _bot
 
 app.add_middleware(
     CORSMiddleware,
@@ -298,3 +310,61 @@ def get_achievements(user_id: int):
             locked.append(item)
     
     return {"unlocked": unlocked, "locked": locked, "total_workouts": total, "total_volume": total_volume}
+
+
+# ── Rest Timer Notifications ─────────────────────────────────────────────────
+
+# Store pending notifications (in-memory, resets on restart)
+_pending_notifications = {}
+
+class RestTimerBody(BaseModel):
+    user_id: int
+    delay_seconds: int
+    exercise_name: Optional[str] = None
+
+async def send_rest_notification(user_id: int, exercise_name: Optional[str]):
+    """Background task to send notification after delay"""
+    bot = get_bot()
+    if not bot:
+        return
+    
+    try:
+        if exercise_name:
+            text = f"⏱ Rest timer finished!\n\nTime to continue with {exercise_name} 💪"
+        else:
+            text = "⏱ Rest timer finished!\n\nTime for your next set 💪"
+        
+        await bot.send_message(chat_id=user_id, text=text)
+    except Exception as e:
+        print(f"Failed to send notification to {user_id}: {e}")
+
+@app.post("/api/rest-timer/start")
+async def start_rest_timer(body: RestTimerBody, background_tasks: BackgroundTasks):
+    """Schedule a notification to be sent after delay_seconds"""
+    user_id = body.user_id
+    delay = body.delay_seconds
+    
+    # Cancel any existing timer for this user
+    if user_id in _pending_notifications:
+        task = _pending_notifications[user_id]
+        task.cancel()
+    
+    async def delayed_notification():
+        await asyncio.sleep(delay)
+        await send_rest_notification(user_id, body.exercise_name)
+        _pending_notifications.pop(user_id, None)
+    
+    # Create and store the task
+    task = asyncio.create_task(delayed_notification())
+    _pending_notifications[user_id] = task
+    
+    return {"status": "scheduled", "delay": delay}
+
+@app.post("/api/rest-timer/cancel")
+async def cancel_rest_timer(user_id: int):
+    """Cancel a pending notification"""
+    if user_id in _pending_notifications:
+        task = _pending_notifications.pop(user_id)
+        task.cancel()
+        return {"status": "cancelled"}
+    return {"status": "not_found"}

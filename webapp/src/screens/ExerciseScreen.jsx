@@ -75,8 +75,8 @@ function playTimerSound() {
 }
 
 export default function ExerciseScreen() {
-  const { params, goBack, setActiveWorkout, recoveryData } = useApp();
-  const { exIdx, exDbId, workoutId, day, userId, customEx } = params;
+  const { params, goBack, setActiveWorkout, recoveryData, userId } = useApp();
+  const { exIdx, exDbId, workoutId, day, customEx } = params;
 
   const [program, setProgram] = useState(null);
   const [sets, setSets] = useState([]);
@@ -175,6 +175,10 @@ export default function ExerciseScreen() {
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
       setRestEndTime(Date.now() + REST_DURATION * 1000);
+      // Schedule push notification via Telegram bot
+      if (userId > 0) {
+        api.startRestTimer(userId, REST_DURATION, ex?.name).catch(() => {});
+      }
       setActiveWorkout(prev => prev ? {
         ...prev,
         exerciseMap: {
@@ -220,7 +224,13 @@ export default function ExerciseScreen() {
     }
   };
 
-  const handleFinish = () => goBack();
+  const handleFinish = () => {
+    // Cancel pending notification when leaving
+    if (userId > 0 && restEndTime) {
+      api.cancelRestTimer(userId).catch(() => {});
+    }
+    goBack();
+  };
 
   if (loading) {
     return (

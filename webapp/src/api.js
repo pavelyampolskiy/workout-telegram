@@ -56,4 +56,9 @@ export const api = {
     req('GET', `/api/progress?user_id=${user_id}&exercise_name=${encodeURIComponent(exercise_name)}`),
   
   getAchievements: (user_id) => req('GET', `/api/achievements?user_id=${user_id}`),
+  
+  startRestTimer: (user_id, delay_seconds, exercise_name) => 
+    req('POST', '/api/rest-timer/start', { user_id, delay_seconds, exercise_name }),
+  cancelRestTimer: (user_id) => 
+    req('POST', `/api/rest-timer/cancel?user_id=${user_id}`),
 };
