@@ -92,7 +92,53 @@ function ProgressRing({ progress, size = 80, strokeWidth = 6 }) {
   );
 }
 
-function WeeklyGoalWidget({ userId }) {
+function MiniRecoveryRing({ score }) {
+  const size = 56;
+  const strokeWidth = 4;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const progress = score / 100;
+  const offset = circumference - (progress * circumference);
+  
+  // Color based on score
+  const getColor = () => {
+    if (score >= 85) return 'rgba(100, 255, 150, 0.8)';
+    if (score >= 70) return 'rgba(255, 255, 255, 0.8)';
+    if (score >= 50) return 'rgba(255, 200, 100, 0.8)';
+    return 'rgba(255, 100, 100, 0.8)';
+  };
+  
+  return (
+    <div className="relative">
+      <svg width={size} height={size} className="transform -rotate-90">
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth={strokeWidth}
+        />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={getColor()}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="font-bebas text-sm" style={{ color: getColor() }}>{score}%</span>
+      </div>
+    </div>
+  );
+}
+
+function WeeklyGoalWidget({ userId, recoveryScore }) {
   const [data, setData] = useState(undefined);
   const WEEKLY_GOAL = 3; // Target workouts per week
 
@@ -134,6 +180,7 @@ function WeeklyGoalWidget({ userId }) {
       }}
     >
       <div className="flex items-center gap-4">
+        {/* Weekly Goal Ring */}
         <div className="relative">
           <ProgressRing progress={progress} size={72} strokeWidth={5} />
           <div className="absolute inset-0 flex items-center justify-center">
@@ -149,6 +196,14 @@ function WeeklyGoalWidget({ userId }) {
             </div>
           </div>
         </div>
+        
+        {/* Mini Recovery Widget */}
+        {recoveryScore !== null && (
+          <div className="flex flex-col items-center">
+            <MiniRecoveryRing score={recoveryScore} />
+            <div className="font-bebas tracking-wider text-white/50 text-[10px] mt-1">Ready</div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -216,7 +271,7 @@ function StatusWidget({ userId }) {
 }
 
 export default function HomeScreen() {
-  const { navigate, userId, setActiveWorkout } = useApp();
+  const { navigate, userId, setActiveWorkout, recoveryData } = useApp();
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
@@ -275,7 +330,7 @@ export default function HomeScreen() {
         <StatusWidget userId={userId} />
 
         {/* Weekly goal widget */}
-        <WeeklyGoalWidget userId={userId} />
+        <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
 
         {/* Smart reminder */}
         <SmartReminderBanner userId={userId} />
