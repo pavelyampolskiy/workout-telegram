@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import { CARD_BTN_STYLE } from '../shared';
+import { HomeStatsSkeleton } from '../components/Skeleton';
 
 const WorkoutIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -63,7 +64,7 @@ function StatusWidget({ userId }) {
     }).catch(() => setStats(null));
   }, [userId]);
 
-  if (stats === undefined) return <div className="mt-4 h-9" />;
+  if (stats === undefined) return <HomeStatsSkeleton />;
   if (!stats) return null;
 
   const { lastDate, weekCount, total } = stats;

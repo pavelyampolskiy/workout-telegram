@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { StatsSkeleton } from '../components/Skeleton';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
@@ -99,7 +100,10 @@ export default function StatsScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
+        <div className="relative z-10 p-5">
+          <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
+          <StatsSkeleton />
+        </div>
       </div>
     );
   }

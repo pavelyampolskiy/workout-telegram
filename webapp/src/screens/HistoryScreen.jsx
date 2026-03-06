@@ -3,6 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE } from '../shared';
+import { HistorySkeleton } from '../components/Skeleton';
 
 const MONTHS_LONG = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -122,7 +123,17 @@ export default function HistoryScreen() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <ScreenBg />
+        <div className="relative z-10 p-5">
+          <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+            History
+          </h1>
+          <HistorySkeleton />
+        </div>
+      </div>
+    );
   }
   if (error) {
     return <div className="p-5 text-center text-white/40 pt-20">{error}</div>;
