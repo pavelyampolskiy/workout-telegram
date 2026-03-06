@@ -77,7 +77,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-3 flex items-center gap-4">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas tracking-wider text-white/55 text-sm">{p}</span>
+        <span key={i} className="font-sans font-medium tracking-wide text-white/50 text-xs">{p}</span>
       ))}
     </div>
   );

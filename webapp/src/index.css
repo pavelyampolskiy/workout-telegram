@@ -9,7 +9,7 @@
 
 body {
   margin: 0;
-  font-family: 'Bebas Neue', cursive;
+  font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   background-color: #0F0F10;
