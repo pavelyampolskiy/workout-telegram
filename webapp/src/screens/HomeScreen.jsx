@@ -55,6 +55,105 @@ function daysAgoLabel(dateStr) {
   return dateStr.split('-').slice(1).reverse().join('.');
 }
 
+function ProgressRing({ progress, size = 80, strokeWidth = 6 }) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress * circumference);
+  
+  return (
+    <svg width={size} height={size} className="transform -rotate-90">
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke="rgba(255,255,255,0.08)"
+        strokeWidth={strokeWidth}
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke="url(#ringGradient)"
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}
+      />
+      <defs>
+        <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+function WeeklyGoalWidget({ userId }) {
+  const [data, setData] = useState(undefined);
+  const WEEKLY_GOAL = 4; // Target workouts per week
+
+  useEffect(() => {
+    Promise.all([
+      api.getStats(userId, 7),
+      api.getFrequency(userId),
+    ]).then(([week, freq]) => {
+      setData({
+        weekCount: week.total ?? 0,
+        totalVolume: week.by_type ? Object.values(week.by_type).reduce((a, b) => a + b, 0) : 0,
+        total: freq.total ?? 0,
+      });
+    }).catch(() => setData(null));
+  }, [userId]);
+
+  if (data === undefined) {
+    return (
+      <div className="mt-5 rounded-2xl p-4" style={{
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.05)',
+      }}>
+        <HomeStatsSkeleton />
+      </div>
+    );
+  }
+  if (!data) return null;
+
+  const { weekCount, total } = data;
+  const progress = Math.min(weekCount / WEEKLY_GOAL, 1);
+
+  return (
+    <div 
+      className="mt-5 rounded-2xl p-4"
+      style={{
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+      }}
+    >
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <ProgressRing progress={progress} size={72} strokeWidth={5} />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="font-bebas text-xl text-white/90">{weekCount}</span>
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="font-bebas tracking-wider text-white/90 text-sm">Weekly Goal</div>
+          <div className="text-white/40 text-xs font-sans mt-0.5">{weekCount} of {WEEKLY_GOAL} workouts</div>
+          <div className="flex items-center gap-3 mt-2">
+            <div className="text-white/50 text-xs font-sans">
+              <span className="text-white/70 font-medium">{total}</span> total
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function StatusWidget({ userId }) {
   const [stats, setStats] = useState(undefined); // undefined = loading
 
@@ -149,6 +248,9 @@ export default function HomeScreen() {
 
         {/* Status widget */}
         <StatusWidget userId={userId} />
+
+        {/* Weekly goal widget */}
+        <WeeklyGoalWidget userId={userId} />
 
         {/* Continue workout banner */}
         {unfinished && (
