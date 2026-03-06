@@ -226,7 +226,7 @@ export default function HistoryDetailScreen() {
                   ) : (
                     <div className="flex items-center gap-2 flex-1">
                       <span className="text-white/70 font-sans text-sm flex-1">
-                        <span className="font-semibold">{fmtW(s.weight)}</span> kg × <span className="font-semibold">{s.reps}</span> reps
+                        {fmtW(s.weight)} kg × {s.reps} reps
                       </span>
                       {editMode && (
                         <div className="flex items-center gap-2">

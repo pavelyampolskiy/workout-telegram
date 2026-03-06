@@ -4,9 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Bebas Neue"', 'cursive'],
         bebas: ['"Bebas Neue"', 'cursive'],
-        inter: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },
