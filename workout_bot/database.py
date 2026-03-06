@@ -357,3 +357,18 @@ def stats_frequency(user_id: int, weeks: int = 4):
         ).fetchone()["cnt"]
     avg = round(total / weeks, 1)
     return total, avg
+
+
+def get_total_volume(user_id: int) -> float:
+    with db() as conn:
+        result = conn.execute(
+            """
+            SELECT COALESCE(SUM(ws.weight * ws.reps), 0) as total
+            FROM workout_sets ws
+            JOIN workout_exercises we ON ws.workout_exercise_id = we.id
+            JOIN workouts w ON we.workout_id = w.id
+            WHERE w.user_id = ?
+            """,
+            (user_id,),
+        ).fetchone()
+    return result["total"] if result else 0

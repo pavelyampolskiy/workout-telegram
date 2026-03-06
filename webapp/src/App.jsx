@@ -10,6 +10,7 @@ import HistoryScreen from './screens/HistoryScreen';
 import HistoryDetailScreen from './screens/HistoryDetailScreen';
 import StatsScreen from './screens/StatsScreen';
 import ProgressScreen from './screens/ProgressScreen';
+import AchievementsScreen from './screens/AchievementsScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -24,6 +25,7 @@ const SCREENS = {
   'history-detail': HistoryDetailScreen,
   stats: StatsScreen,
   progress: ProgressScreen,
+  achievements: AchievementsScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen

@@ -54,4 +54,6 @@ export const api = {
   getFrequency: (user_id) => req('GET', `/api/stats/frequency?user_id=${user_id}`),
   getProgress: (user_id, exercise_name) =>
     req('GET', `/api/progress?user_id=${user_id}&exercise_name=${encodeURIComponent(exercise_name)}`),
+  
+  getAchievements: (user_id) => req('GET', `/api/achievements?user_id=${user_id}`),
 };

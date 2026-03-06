@@ -249,3 +249,52 @@ def get_frequency(user_id: int, weeks: int = 4):
 def get_progress(user_id: int, exercise_name: str, limit: int = 8):
     rows = db_ops.get_exercise_progress(user_id, exercise_name, limit)
     return [{"date": r["date"], "max_weight": r["max_weight"]} for r in rows]
+
+
+# ── Achievements ─────────────────────────────────────────────────────────────
+
+ACHIEVEMENTS = [
+    {"id": "first_workout", "name": "First Step", "desc": "Complete your first workout", "icon": "🏋️", "threshold": 1},
+    {"id": "workouts_5", "name": "Getting Started", "desc": "Complete 5 workouts", "icon": "💪", "threshold": 5},
+    {"id": "workouts_10", "name": "Dedicated", "desc": "Complete 10 workouts", "icon": "🔥", "threshold": 10},
+    {"id": "workouts_25", "name": "Committed", "desc": "Complete 25 workouts", "icon": "⭐", "threshold": 25},
+    {"id": "workouts_50", "name": "Warrior", "desc": "Complete 50 workouts", "icon": "🏆", "threshold": 50},
+    {"id": "workouts_100", "name": "Legend", "desc": "Complete 100 workouts", "icon": "👑", "threshold": 100},
+    {"id": "volume_10k", "name": "10K Club", "desc": "Lift 10,000 kg total", "icon": "🎯", "threshold": 10000, "type": "volume"},
+    {"id": "volume_50k", "name": "50K Club", "desc": "Lift 50,000 kg total", "icon": "💎", "threshold": 50000, "type": "volume"},
+    {"id": "volume_100k", "name": "100K Club", "desc": "Lift 100,000 kg total", "icon": "🚀", "threshold": 100000, "type": "volume"},
+    {"id": "streak_3", "name": "On Fire", "desc": "3 workouts this week", "icon": "🔥", "threshold": 3, "type": "weekly"},
+    {"id": "streak_5", "name": "Beast Mode", "desc": "5 workouts this week", "icon": "🦁", "threshold": 5, "type": "weekly"},
+]
+
+@app.get("/api/achievements")
+def get_achievements(user_id: int):
+    total, _ = db_ops.stats_frequency(user_id, 52)
+    total_volume = db_ops.get_total_volume(user_id)
+    week_stats = db_ops.stats_period(user_id, date.today() - timedelta(days=7))
+    week_count = week_stats[0] if week_stats else 0
+    
+    unlocked = []
+    locked = []
+    
+    for ach in ACHIEVEMENTS:
+        ach_type = ach.get("type", "workouts")
+        threshold = ach["threshold"]
+        
+        if ach_type == "volume":
+            earned = total_volume >= threshold
+            progress = min(total_volume / threshold, 1.0)
+        elif ach_type == "weekly":
+            earned = week_count >= threshold
+            progress = min(week_count / threshold, 1.0)
+        else:
+            earned = total >= threshold
+            progress = min(total / threshold, 1.0)
+        
+        item = {**ach, "earned": earned, "progress": round(progress, 2)}
+        if earned:
+            unlocked.append(item)
+        else:
+            locked.append(item)
+    
+    return {"unlocked": unlocked, "locked": locked, "total_workouts": total, "total_volume": total_volume}

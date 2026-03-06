@@ -23,10 +23,18 @@ const StatsIcon = () => (
   </svg>
 );
 
+const TrophyIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+    <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
+  </svg>
+);
+
 const ITEMS = [
   { screen: 'workout', icon: <WorkoutIcon />, title: 'New Workout', primary: true },
   { screen: 'history', icon: <HistoryIcon />, title: 'History' },
   { screen: 'stats',   icon: <StatsIcon />,   title: 'Statistics' },
+  { screen: 'achievements', icon: <TrophyIcon />, title: 'Achievements' },
 ];
 
 const PRIMARY_CARD_STYLE = {
