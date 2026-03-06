@@ -366,78 +366,80 @@ export default function HomeScreen() {
         <div className="flex-1" />
 
         {/* Navigation widgets */}
-        <div className="pb-14 space-y-3">
+        <div className="pb-6 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => navigate('recovery-check')}
-            className="card-press w-full rounded-2xl p-5 text-left"
+            className="card-press w-full rounded-xl p-4 text-left"
             style={{
               ...CARD_BTN_STYLE,
               background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
             }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }}>
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }}>
                 <WorkoutIcon />
               </span>
-              <span className="text-2xl text-white/30">›</span>
+              <div className="flex-1">
+                <div className="font-bebas tracking-wider text-xl text-white/95">New Workout</div>
+                <div className="text-white/40 text-[10px] font-sans">Start your training session</div>
+              </div>
+              <span className="text-xl text-white/30">›</span>
             </div>
-            <div className="font-bebas tracking-wider text-2xl text-white/95">New Workout</div>
-            <div className="text-white/40 text-xs font-sans mt-1">Start your training session</div>
           </button>
 
           {/* 2x2 Grid */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             {/* History */}
             <button
               onClick={() => navigate('history')}
-              className="card-press rounded-2xl p-4 text-left aspect-square flex flex-col"
+              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center mb-auto" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
                 <HistoryIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-lg mt-2">History</div>
+              <div className="font-bebas tracking-wider text-white/80 text-sm">History</div>
             </button>
 
             {/* Statistics */}
             <button
               onClick={() => navigate('stats')}
-              className="card-press rounded-2xl p-4 text-left aspect-square flex flex-col"
+              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center mb-auto" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
                 <StatsIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-lg mt-2">Statistics</div>
+              <div className="font-bebas tracking-wider text-white/80 text-sm">Statistics</div>
             </button>
 
             {/* Achievements */}
             <button
               onClick={() => navigate('achievements')}
-              className="card-press rounded-2xl p-4 text-left aspect-square flex flex-col"
+              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center mb-auto" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
                 <TrophyIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-lg mt-2">Achievements</div>
+              <div className="font-bebas tracking-wider text-white/80 text-sm">Achievements</div>
             </button>
 
             {/* Cardio */}
             <button
               onClick={() => navigate('workout', { cardioOnly: true })}
-              className="card-press rounded-2xl p-4 text-left aspect-square flex flex-col"
+              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center mb-auto" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                   <circle cx="12" cy="12" r="10"/>
                   <path d="M12 6v6l4 2"/>
                 </svg>
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-lg mt-2">Cardio</div>
+              <div className="font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
             </button>
           </div>
         </div>
