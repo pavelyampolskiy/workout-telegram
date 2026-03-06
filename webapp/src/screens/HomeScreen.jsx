@@ -154,6 +154,31 @@ function WeeklyGoalWidget({ userId }) {
   );
 }
 
+function SmartReminderBanner({ userId }) {
+  const [reminder, setReminder] = useState(null);
+
+  useEffect(() => {
+    api.getSmartReminder(userId)
+      .then(data => setReminder(data.reminder))
+      .catch(() => {});
+  }, [userId]);
+
+  if (!reminder) return null;
+
+  return (
+    <div 
+      className="mt-4 rounded-xl p-3 flex items-center gap-3"
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
+        border: '1px solid rgba(255,255,255,0.08)',
+      }}
+    >
+      <div className="text-lg">🎯</div>
+      <div className="text-white/70 text-xs font-sans flex-1">{reminder}</div>
+    </div>
+  );
+}
+
 function StatusWidget({ userId }) {
   const [stats, setStats] = useState(undefined); // undefined = loading
 
@@ -251,6 +276,9 @@ export default function HomeScreen() {
 
         {/* Weekly goal widget */}
         <WeeklyGoalWidget userId={userId} />
+
+        {/* Smart reminder */}
+        <SmartReminderBanner userId={userId} />
 
         {/* Continue workout banner */}
         {unfinished && (

@@ -372,3 +372,29 @@ def get_total_volume(user_id: int) -> float:
             (user_id,),
         ).fetchone()
     return result["total"] if result else 0
+
+
+def get_workout_patterns(user_id: int, weeks: int = 8):
+    """Analyze which days of the week user typically trains"""
+    since = date.today() - timedelta(weeks=weeks)
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT date FROM workouts 
+            WHERE user_id = ? AND date >= ?
+            ORDER BY date DESC
+            """,
+            (user_id, since.isoformat()),
+        ).fetchall()
+    
+    # Count workouts per day of week (0=Monday, 6=Sunday)
+    day_counts = [0] * 7
+    for row in rows:
+        d = date.fromisoformat(row["date"])
+        day_counts[d.weekday()] += 1
+    
+    return {
+        "day_counts": day_counts,
+        "total": len(rows),
+        "weeks_analyzed": weeks,
+    }

@@ -61,4 +61,6 @@ export const api = {
     req('POST', '/api/rest-timer/start', { user_id, delay_seconds, exercise_name }),
   cancelRestTimer: (user_id) => 
     req('POST', `/api/rest-timer/cancel?user_id=${user_id}`),
+  
+  getSmartReminder: (user_id) => req('GET', `/api/smart-reminder?user_id=${user_id}`),
 };

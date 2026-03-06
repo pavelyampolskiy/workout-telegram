@@ -368,3 +368,73 @@ async def cancel_rest_timer(user_id: int):
         task.cancel()
         return {"status": "cancelled"}
     return {"status": "not_found"}
+
+
+# ── Smart Reminders ──────────────────────────────────────────────────────────
+
+DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+@app.get("/api/smart-reminder")
+def get_smart_reminder(user_id: int):
+    """Get a smart reminder based on user's workout patterns"""
+    patterns = db_ops.get_workout_patterns(user_id, weeks=8)
+    day_counts = patterns["day_counts"]
+    total = patterns["total"]
+    
+    # Need at least 4 workouts to detect patterns
+    if total < 4:
+        return {"reminder": None, "reason": "not_enough_data"}
+    
+    today = date.today().weekday()  # 0=Monday
+    
+    # Find user's most common workout days
+    threshold = total / 8  # Average per day over 8 weeks
+    common_days = [(i, count) for i, count in enumerate(day_counts) if count >= threshold]
+    common_days.sort(key=lambda x: x[1], reverse=True)
+    
+    if not common_days:
+        return {"reminder": None, "reason": "no_pattern"}
+    
+    # Check if today is a common workout day
+    today_count = day_counts[today]
+    is_workout_day = today_count >= threshold
+    
+    # Check last workout date
+    hist = db_ops.get_history(user_id, 0, 1)
+    last_workout_date = None
+    days_since = None
+    if hist:
+        last_workout_date = hist[0]["date"]
+        last_date = date.fromisoformat(last_workout_date)
+        days_since = (date.today() - last_date).days
+    
+    # Generate reminder message
+    reminder = None
+    
+    if is_workout_day and (days_since is None or days_since >= 1):
+        # Today is a typical workout day
+        day_name = DAY_NAMES[today]
+        reminder = f"You usually train on {day_name}s. Ready to go? 💪"
+    elif days_since and days_since >= 3:
+        # Haven't trained in a while
+        next_common = None
+        for i in range(1, 8):
+            check_day = (today + i) % 7
+            if day_counts[check_day] >= threshold:
+                next_common = check_day
+                break
+        
+        if next_common is not None:
+            if next_common == (today + 1) % 7:
+                reminder = f"Tomorrow is your usual {DAY_NAMES[next_common]} workout!"
+            else:
+                reminder = f"Your next typical workout day is {DAY_NAMES[next_common]}."
+        else:
+            reminder = f"It's been {days_since} days since your last workout."
+    
+    return {
+        "reminder": reminder,
+        "is_workout_day": is_workout_day,
+        "days_since_last": days_since,
+        "common_days": [DAY_NAMES[d[0]] for d in common_days[:3]],
+    }
