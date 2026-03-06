@@ -190,11 +190,6 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
         <div className="flex-1">
           <div className="font-bebas tracking-wider text-white/90 text-sm">Weekly Goal</div>
           <div className="text-white/40 text-xs font-sans mt-0.5">{weekCount} of {WEEKLY_GOAL} workouts</div>
-          <div className="flex items-center gap-3 mt-2">
-            <div className="text-white/50 text-xs font-sans">
-              <span className="text-white/70 font-medium">{total}</span> total
-            </div>
-          </div>
         </div>
         
         {/* Mini Recovery Widget */}
