@@ -43,10 +43,10 @@ function getRecoveryScore(answers) {
 }
 
 function getRecommendation(score) {
-  if (score >= 85) return { text: 'Full power! Go for PRs today.', modifier: 1.0, color: 'rgba(100, 255, 100, 0.8)' };
+  if (score >= 85) return { text: 'Full power! Go for PRs today.', modifier: 1.0, color: 'rgba(255, 255, 255, 0.9)' };
   if (score >= 70) return { text: 'Good to go. Train as planned.', modifier: 1.0, color: 'rgba(255, 255, 255, 0.8)' };
-  if (score >= 50) return { text: 'Consider lighter weights today.', modifier: 0.9, color: 'rgba(255, 200, 100, 0.8)' };
-  return { text: 'Rest day recommended. If training, reduce weights by 20%.', modifier: 0.8, color: 'rgba(255, 100, 100, 0.8)' };
+  if (score >= 50) return { text: 'Consider lighter weights today.', modifier: 0.9, color: 'rgba(255, 255, 255, 0.6)' };
+  return { text: 'Rest day recommended. If training, reduce weights by 20%.', modifier: 0.8, color: 'rgba(255, 255, 255, 0.45)' };
 }
 
 export default function RecoveryCheckScreen() {

@@ -14,11 +14,13 @@ function RecoveryBanner({ recoveryData }) {
     <div 
       className="mb-4 rounded-xl p-3 flex items-center gap-3"
       style={{
-        background: 'rgba(255, 180, 100, 0.1)',
-        border: '1px solid rgba(255, 180, 100, 0.2)',
+        background: 'rgba(255, 255, 255, 0.06)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
       }}
     >
-      <div className="text-lg">⚡</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/60 shrink-0">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
       <div className="flex-1">
         <div className="text-white/80 text-xs font-sans">
           Recovery: <span className="font-medium">{recoveryData.score}%</span>

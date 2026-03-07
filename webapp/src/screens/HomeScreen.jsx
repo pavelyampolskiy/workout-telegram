@@ -101,12 +101,12 @@ function MiniRecoveryRing({ score }) {
   const progress = score / 100;
   const offset = circumference - (progress * circumference);
   
-  // Color based on score
+  // Monochrome: brighter = better score
   const getColor = () => {
-    if (score >= 85) return 'rgba(100, 255, 150, 0.8)';
-    if (score >= 70) return 'rgba(255, 255, 255, 0.8)';
-    if (score >= 50) return 'rgba(255, 200, 100, 0.8)';
-    return 'rgba(255, 100, 100, 0.8)';
+    if (score >= 85) return 'rgba(255, 255, 255, 0.9)';
+    if (score >= 70) return 'rgba(255, 255, 255, 0.75)';
+    if (score >= 50) return 'rgba(255, 255, 255, 0.55)';
+    return 'rgba(255, 255, 255, 0.4)';
   };
   
   return (
