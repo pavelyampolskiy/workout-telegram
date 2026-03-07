@@ -69,30 +69,12 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
     <div className="flex flex-col items-center">
       <div className="relative">
         <svg width={RING_SIZE} height={RING_SIZE} className="transform -rotate-90">
-          <circle
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={radius}
-            fill="none"
-            stroke="rgba(255,255,255,0.08)"
-            strokeWidth={RING_STROKE}
-          />
-          <circle
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={radius}
-            fill="none"
-            stroke={`url(#${id})`}
-            strokeWidth={RING_STROKE}
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}
-          />
+          <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
+          <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke={`url(#${id})`} strokeWidth={RING_STROKE} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}/>
           <defs>
             <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
-              <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+              <stop offset="0%" stopColor="rgba(255,255,255,0.9)"/>
+              <stop offset="100%" stopColor="rgba(255,255,255,0.4)"/>
             </linearGradient>
           </defs>
         </svg>
@@ -101,10 +83,8 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
         </div>
       </div>
       <div className="mt-2 text-center">
-        <div className="font-bebas tracking-wider text-white/90 text-xs">{label}</div>
-        {sublabel && (
-          <div className="text-white/40 text-[10px] font-sans mt-0.5">{sublabel}</div>
-        )}
+        <div className="font-bebas tracking-wider text-white/55 text-[10px] uppercase">{label}</div>
+        <div className="text-white/90 text-xs font-bebas tracking-wider mt-0.5">{sublabel ?? '—'}</div>
       </div>
     </div>
   );
@@ -192,7 +172,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
       }}
     >
-      <div className="flex items-center justify-around gap-4">
+      <div className="flex items-center justify-around gap-2">
         <StatRing
           progress={progress}
           value={weekCount}
@@ -205,11 +185,12 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
             progress={recoveryScore / 100}
             value={`${recoveryScore}%`}
             label="Ready"
+            sublabel="Recovery score"
             gradientId="ringReady"
           />
         )}
         {lastAchievement && (
-          <div className="flex flex-col items-center gap-1.5">
+          <div className="flex flex-col items-center">
             <div
               className="w-[60px] h-[60px] rounded-xl flex items-center justify-center"
               style={{
@@ -220,9 +201,9 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
             >
               {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
             </div>
-            <div className="text-center">
-              <div className="font-bebas tracking-wider text-white/90 text-xs leading-tight">{lastAchievement.name}</div>
-              <div className="text-white/35 text-[10px] font-sans mt-0.5">Latest</div>
+            <div className="mt-2 text-center">
+              <div className="font-bebas tracking-wider text-white/55 text-[10px] uppercase">Last Achievement</div>
+              <div className="text-white/90 text-xs font-bebas tracking-wider mt-0.5">{lastAchievement.name}</div>
             </div>
           </div>
         )}
