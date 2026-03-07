@@ -446,7 +446,7 @@ export default function ExerciseScreen() {
               Saving…
             </span>
           ) : justSaved ? (
-            <span className="inline-flex items-center justify-center gap-2 text-green-400">
+            <span className="inline-flex items-center justify-center gap-2 text-white/90">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
                 <path d="M20 6L9 17l-5-5"/>
               </svg>
