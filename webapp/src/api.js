@@ -52,6 +52,7 @@ export const api = {
   finishWorkout: (id) => req('PATCH', `/api/workouts/${id}/finish`),
   saveRating: (workout_id, rating) => req('PATCH', `/api/workouts/${workout_id}/rating`, { rating }),
   addNote: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/note`, { text }),
+  updateNote: (workout_id, text) => req('PUT', `/api/workouts/${workout_id}/note`, { text }),
 
   getStats: (user_id, days) => req('GET', `/api/stats?user_id=${user_id}&days=${days}`),
   getFrequency: (user_id) => req('GET', `/api/stats/frequency?user_id=${user_id}`),

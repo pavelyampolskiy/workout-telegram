@@ -261,6 +261,12 @@ def add_note(workout_id: int, body: TextBody):
     return {"id": nid}
 
 
+@app.put("/api/workouts/{workout_id}/note")
+def update_note(workout_id: int, body: TextBody):
+    db_ops.update_workout_note(workout_id, body.text)
+    return {"ok": True}
+
+
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/stats")

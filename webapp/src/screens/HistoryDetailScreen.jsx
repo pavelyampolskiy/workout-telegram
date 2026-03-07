@@ -28,6 +28,7 @@ export default function HistoryDetailScreen() {
   const [customExName, setCustomExName] = useState('');
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [addingEx, setAddingEx] = useState(false);
+  const [editNote, setEditNote] = useState('');
   const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
   useEffect(() => {
@@ -199,7 +200,16 @@ export default function HistoryDetailScreen() {
             </div>
             {workout.type !== 'CARDIO' && (
               <button
-                onClick={() => setEditMode(!editMode)}
+                onClick={() => {
+                  if (!editMode) {
+                    setEditNote(workout.note || '');
+                  } else if (editNote !== (workout.note || '')) {
+                    api.updateNote(workoutId, editNote.trim()).then(() => {
+                      setWorkout(prev => ({ ...prev, note: editNote.trim() || null }));
+                    }).catch(e => showToast(e.message));
+                  }
+                  setEditMode(!editMode);
+                }}
                 className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
               >
                 {editMode ? 'Done' : 'Edit'}
@@ -327,10 +337,19 @@ export default function HistoryDetailScreen() {
         )}
 
         {/* Note */}
-        {workout.note && (
+        {(workout.note || editMode) && (
           <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
             <div className="font-sans text-white/40 text-sm mb-1">Note</div>
-            <p className="text-white/70 text-sm">{workout.note}</p>
+            {editMode ? (
+              <textarea
+                value={editNote}
+                onChange={e => setEditNote(e.target.value)}
+                placeholder="Add a note…"
+                className="w-full appearance-none bg-black/30 border border-white/10 rounded-xl p-3 text-white/80 placeholder-white/25 resize-none h-20 outline-none text-sm font-sans focus:border-white/20"
+              />
+            ) : (
+              <p className="text-white/70 text-sm font-sans">{workout.note}</p>
+            )}
           </div>
         )}
       </div>

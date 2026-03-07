@@ -383,6 +383,23 @@ def get_workout_note(workout_id: int):
         ).fetchone()
 
 
+def update_workout_note(workout_id: int, text: str):
+    with db() as conn:
+        existing = conn.execute(
+            "SELECT id FROM workout_notes WHERE workout_id=?", (workout_id,)
+        ).fetchone()
+        if existing:
+            conn.execute(
+                "UPDATE workout_notes SET text=? WHERE workout_id=?",
+                (text, workout_id),
+            )
+        else:
+            conn.execute(
+                "INSERT INTO workout_notes (workout_id, text) VALUES (?,?)",
+                (workout_id, text),
+            )
+
+
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 def stats_period(user_id: int, since: date):
