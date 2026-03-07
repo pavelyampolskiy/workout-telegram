@@ -95,7 +95,55 @@ def init_db():
                 workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
                 text TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS custom_days (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                key TEXT NOT NULL,
+                label TEXT NOT NULL,
+                sort_order INTEGER NOT NULL DEFAULT 0,
+                UNIQUE(user_id, key)
+            );
         """)
+
+
+# ── Custom Days ──────────────────────────────────────────────────────────────
+
+def get_custom_days(user_id: int):
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT id, key, label, sort_order FROM custom_days WHERE user_id=? ORDER BY sort_order",
+            (user_id,),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def create_custom_day(user_id: int, key: str, label: str, sort_order: int) -> int:
+    with db() as conn:
+        cur = conn.execute(
+            "INSERT INTO custom_days (user_id, key, label, sort_order) VALUES (?,?,?,?)",
+            (user_id, key, label, sort_order),
+        )
+    return cur.lastrowid
+
+
+def rename_custom_day(day_id: int, label: str):
+    with db() as conn:
+        conn.execute("UPDATE custom_days SET label=? WHERE id=?", (label, day_id))
+
+
+def delete_custom_day(day_id: int):
+    with db() as conn:
+        conn.execute("DELETE FROM custom_days WHERE id=?", (day_id,))
+
+
+def count_finished_workouts_for_day(user_id: int, day_key: str) -> int:
+    with db() as conn:
+        row = conn.execute(
+            "SELECT COUNT(*) as cnt FROM workouts WHERE user_id=? AND type=? AND finished_at IS NOT NULL",
+            (user_id, day_key),
+        ).fetchone()
+    return row["cnt"] if row else 0
 
 
 # ── Workouts ─────────────────────────────────────────────────────────────────

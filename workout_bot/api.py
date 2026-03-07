@@ -41,6 +41,64 @@ def get_program():
     return PROGRAM
 
 
+# ── Custom Days ───────────────────────────────────────────────────────────────
+
+DEFAULT_DAYS = [
+    {"key": "DAY_A", "label": "Day A"},
+    {"key": "DAY_B", "label": "Day B"},
+    {"key": "DAY_C", "label": "Day C"},
+]
+
+
+def _seed_default_days(user_id: int):
+    """Insert default days for a user who has none yet."""
+    for i, d in enumerate(DEFAULT_DAYS):
+        db_ops.create_custom_day(user_id, d["key"], d["label"], i)
+
+
+@app.get("/api/days")
+def get_days(user_id: int):
+    days = db_ops.get_custom_days(user_id)
+    if not days:
+        _seed_default_days(user_id)
+        days = db_ops.get_custom_days(user_id)
+    return days
+
+
+class DayCreate(BaseModel):
+    user_id: int
+    label: str
+
+
+@app.post("/api/days")
+def create_day(body: DayCreate):
+    existing = db_ops.get_custom_days(body.user_id)
+    sort_order = max((d["sort_order"] for d in existing), default=-1) + 1
+    seq = sort_order + 1
+    key = f"CUSTOM_{seq}"
+    while any(d["key"] == key for d in existing):
+        seq += 1
+        key = f"CUSTOM_{seq}"
+    day_id = db_ops.create_custom_day(body.user_id, key, body.label, sort_order)
+    return {"id": day_id, "key": key, "label": body.label, "sort_order": sort_order}
+
+
+class DayRename(BaseModel):
+    label: str
+
+
+@app.put("/api/days/{day_id}")
+def rename_day(day_id: int, body: DayRename):
+    db_ops.rename_custom_day(day_id, body.label)
+    return {"ok": True}
+
+
+@app.delete("/api/days/{day_id}")
+def delete_day(day_id: int):
+    db_ops.delete_custom_day(day_id)
+    return {"ok": True}
+
+
 # ── Workouts ──────────────────────────────────────────────────────────────────
 
 class WorkoutBody(BaseModel):

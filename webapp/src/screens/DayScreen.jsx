@@ -37,7 +37,7 @@ export default function DayScreen() {
     async function init() {
       try {
         const prog = await api.getProgram();
-        const dayProgram = prog[day];
+        const dayProgram = prog[day] || [];
         setProgram(dayProgram);
 
         if (!activeWorkout || activeWorkout.day !== day) {

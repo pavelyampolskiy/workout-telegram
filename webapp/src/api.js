@@ -27,6 +27,11 @@ async function req(method, path, body) {
 export const api = {
   getProgram: () => req('GET', '/api/program'),
 
+  getDays: (user_id) => req('GET', `/api/days?user_id=${user_id}`),
+  createDay: (user_id, label) => req('POST', '/api/days', { user_id, label }),
+  renameDay: (day_id, label) => req('PUT', `/api/days/${day_id}`, { label }),
+  deleteDay: (day_id) => req('DELETE', `/api/days/${day_id}`),
+
   createWorkout: (user_id, type) => req('POST', '/api/workouts', { user_id, type }),
   deleteWorkout: (id) => req('DELETE', `/api/workouts/${id}`),
   getWorkout: (id) => req('GET', `/api/workouts/${id}`),
