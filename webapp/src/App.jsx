@@ -188,7 +188,7 @@ export default function App() {
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div
           key={current.screen}
-          className={`min-h-screen ${
+          className={`min-h-screen bg-black ${
             isAnimating
               ? direction === 'forward'
                 ? 'animate-slide-in-right'
