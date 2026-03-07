@@ -110,20 +110,61 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
   );
 }
 
+const ACHIEVEMENT_CATEGORY_ICONS = {
+  volume: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+      <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
+    </svg>
+  ),
+  workouts: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <path d="M2 17l3-7 5 4 2-10 2 10 5-4 3 7H2z"/>
+      <path d="M2 17h20v4H2z"/>
+    </svg>
+  ),
+  weekly: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </svg>
+  ),
+  cardio: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+    </svg>
+  ),
+  early: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <path d="M12 2v2M4.93 4.93l1.41 1.41M2 12h2M4.93 19.07l1.41-1.41M12 22v-2M19.07 19.07l-1.41-1.41M22 12h-2M19.07 4.93l-1.41 1.41"/>
+      <path d="M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+      <path d="M3 20h18"/>
+    </svg>
+  ),
+  late: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+    </svg>
+  ),
+};
+
 function WeeklyGoalWidget({ userId, recoveryScore }) {
   const [data, setData] = useState(undefined);
-  const WEEKLY_GOAL = 3; // Target workouts per week
+  const [lastAchievement, setLastAchievement] = useState(null);
+  const WEEKLY_GOAL = 3;
 
   useEffect(() => {
     Promise.all([
       api.getStats(userId, 7),
       api.getFrequency(userId),
-    ]).then(([week, freq]) => {
+      api.getAchievements(userId),
+    ]).then(([week, freq, ach]) => {
       setData({
         weekCount: week.total ?? 0,
-        totalVolume: week.by_type ? Object.values(week.by_type).reduce((a, b) => a + b, 0) : 0,
         total: freq.total ?? 0,
       });
+      if (ach.unlocked?.length > 0) {
+        setLastAchievement(ach.unlocked[ach.unlocked.length - 1]);
+      }
     }).catch(() => setData(null));
   }, [userId]);
 
@@ -139,7 +180,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
   }
   if (!data) return null;
 
-  const { weekCount, total } = data;
+  const { weekCount } = data;
   const progress = Math.min(weekCount / WEEKLY_GOAL, 1);
 
   return (
@@ -166,6 +207,24 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
             label="Ready"
             gradientId="ringReady"
           />
+        )}
+        {lastAchievement && (
+          <div className="flex flex-col items-center gap-1.5">
+            <div
+              className="w-[60px] h-[60px] rounded-xl flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.85)',
+              }}
+            >
+              {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
+            </div>
+            <div className="text-center">
+              <div className="font-bebas tracking-wider text-white/90 text-xs leading-tight">{lastAchievement.name}</div>
+              <div className="text-white/35 text-[10px] font-sans mt-0.5">Latest</div>
+            </div>
+          </div>
         )}
       </div>
     </div>
