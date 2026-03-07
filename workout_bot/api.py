@@ -299,7 +299,7 @@ ACHIEVEMENTS = [
     {"id": "volume_100k", "name": "100K Club", "desc": "Lift 100,000 kg total", "icon": "rocket", "threshold": 100000, "type": "volume"},
     {"id": "volume_250k", "name": "Quarter Ton", "desc": "Lift 250,000 kg total", "icon": "trophy", "threshold": 250000, "type": "volume"},
     {"id": "volume_500k", "name": "Half Million", "desc": "Lift 500,000 kg total", "icon": "star", "threshold": 500000, "type": "volume"},
-    {"id": "streak_5", "name": "Beast Mode", "desc": "5 workouts this week", "icon": "bolt", "threshold": 5, "type": "weekly"},
+    {"id": "streak_6", "name": "Beast Mode", "desc": "6 workouts this week", "icon": "bolt", "threshold": 6, "type": "weekly"},
     {"id": "cardio_50", "name": "Cardio Fan", "desc": "Complete 50 cardio sessions", "icon": "zap", "threshold": 50, "type": "cardio"},
 ]
 
