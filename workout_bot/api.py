@@ -293,7 +293,6 @@ def get_progress(user_id: int, exercise_name: str, limit: int = 8):
 # ── Achievements ─────────────────────────────────────────────────────────────
 
 ACHIEVEMENTS = [
-    {"id": "workouts_10", "name": "Dedicated", "desc": "Complete 10 workouts", "icon": "flame", "threshold": 10},
     {"id": "workouts_25", "name": "Committed", "desc": "Complete 25 workouts", "icon": "star", "threshold": 25},
     {"id": "workouts_50", "name": "Warrior", "desc": "Complete 50 workouts", "icon": "trophy", "threshold": 50},
     {"id": "workouts_100", "name": "Legend", "desc": "Complete 100 workouts", "icon": "crown", "threshold": 100},
