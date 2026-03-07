@@ -331,8 +331,8 @@ export default function HistoryDetailScreen() {
 
       {/* Add Exercise modal */}
       {showAddExercise && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
             <div className="mb-4">
               <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Muscle Group</label>
