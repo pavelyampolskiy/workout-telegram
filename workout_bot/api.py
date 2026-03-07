@@ -293,7 +293,10 @@ def get_progress(user_id: int, exercise_name: str, limit: int = 8):
 # ── Achievements ─────────────────────────────────────────────────────────────
 
 ACHIEVEMENTS = [
+    {"id": "workouts_25", "name": "Rookie", "desc": "Complete 25 workouts", "icon": "crown", "threshold": 25},
+    {"id": "workouts_50", "name": "Regular", "desc": "Complete 50 workouts", "icon": "crown", "threshold": 50},
     {"id": "workouts_100", "name": "Legend", "desc": "Complete 100 workouts", "icon": "crown", "threshold": 100},
+    {"id": "workouts_250", "name": "Elite", "desc": "Complete 250 workouts", "icon": "crown", "threshold": 250},
     {"id": "volume_10k", "name": "10K Club", "desc": "Lift 10,000 kg total", "icon": "trophy", "threshold": 10000, "type": "volume"},
     {"id": "volume_50k", "name": "50K Club", "desc": "Lift 50,000 kg total", "icon": "trophy", "threshold": 50000, "type": "volume"},
     {"id": "volume_100k", "name": "100K Club", "desc": "Lift 100,000 kg total", "icon": "trophy", "threshold": 100000, "type": "volume"},
