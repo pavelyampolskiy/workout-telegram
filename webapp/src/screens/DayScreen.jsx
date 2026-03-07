@@ -34,12 +34,30 @@ export default function DayScreen() {
     async function init() {
       try {
         const prog = await api.getProgram();
-        setProgram(prog[day]);
+        const dayProgram = prog[day];
+        setProgram(dayProgram);
 
-        // Create workout if not already active (or different day)
         if (!activeWorkout || activeWorkout.day !== day) {
           const { id } = await api.createWorkout(userId, day);
           setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
+        } else if (activeWorkout && Object.keys(activeWorkout.exerciseMap || {}).length === 0) {
+          // Resuming a workout — load existing exercises from backend
+          const data = await api.getWorkout(activeWorkout.id);
+          if (data.exercises?.length > 0) {
+            const restoredMap = {};
+            const restoredCustom = [];
+            data.exercises.forEach(ex => {
+              const progIdx = dayProgram?.findIndex(p => p.name === ex.name && p.group === ex.grp);
+              if (progIdx >= 0) {
+                restoredMap[progIdx] = { dbId: ex.id, setsCount: ex.sets?.length || 0 };
+              } else {
+                restoredMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: ex.sets?.length || 0 };
+                restoredCustom.push({ id: ex.id, group: ex.grp, name: ex.name, target_sets: ex.target_sets, isCustom: true });
+              }
+            });
+            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
+            if (restoredCustom.length > 0) setCustomExercises(restoredCustom);
+          }
         }
       } catch (e) {
         setError(e.message);
