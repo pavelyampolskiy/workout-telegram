@@ -424,6 +424,15 @@ def stats_frequency(user_id: int, weeks: int = 4):
     return total, avg
 
 
+def get_cardio_count(user_id: int) -> int:
+    with db() as conn:
+        result = conn.execute(
+            "SELECT COUNT(*) as cnt FROM workouts WHERE user_id=? AND type='CARDIO' AND finished_at IS NOT NULL",
+            (user_id,),
+        ).fetchone()
+    return result["cnt"] if result else 0
+
+
 def get_total_volume(user_id: int) -> float:
     with db() as conn:
         result = conn.execute(
