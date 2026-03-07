@@ -170,6 +170,12 @@ def create_exercise(workout_id: int, body: ExerciseBody):
     return {"id": eid}
 
 
+@app.delete("/api/exercises/{ex_id}")
+def delete_exercise(ex_id: int):
+    db_ops.delete_exercise(ex_id)
+    return {"ok": True}
+
+
 @app.get("/api/exercises/{ex_id}/last")
 def get_last_exercise(ex_id: int, user_id: int, exclude_wid: int):
     ex = db_ops.get_exercise(ex_id)

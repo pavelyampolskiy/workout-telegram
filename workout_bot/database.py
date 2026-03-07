@@ -210,6 +210,11 @@ def get_exercise(ex_id: int):
         return conn.execute("SELECT * FROM workout_exercises WHERE id=?", (ex_id,)).fetchone()
 
 
+def delete_exercise(ex_id: int):
+    with db() as conn:
+        conn.execute("DELETE FROM workout_exercises WHERE id=?", (ex_id,))
+
+
 # ── Sets ──────────────────────────────────────────────────────────────────────
 
 def add_set(ex_id: int, set_number: int, weight: float, reps: int) -> int:

@@ -21,6 +21,11 @@ export default function HistoryDetailScreen() {
   const [editMode, setEditMode] = useState(false);
   const [editingSet, setEditingSet] = useState(null); // { exId, setId, weight, reps }
   const [saving, setSaving] = useState(false);
+  const [showAddExercise, setShowAddExercise] = useState(false);
+  const [customExName, setCustomExName] = useState('');
+  const [customExGroup, setCustomExGroup] = useState('CHEST');
+  const [addingEx, setAddingEx] = useState(false);
+  const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
   useEffect(() => {
     api.getWorkout(workoutId)
@@ -82,22 +87,41 @@ export default function HistoryDetailScreen() {
     setSaving(true);
     try {
       await api.deleteSet(setId);
-      setWorkout(prev => ({
-        ...prev,
-        exercises: prev.exercises.map(ex => 
-          ex.id === exId 
-            ? {
-                ...ex,
-                sets: ex.sets.filter(s => s.id !== setId),
-                volume: ex.sets.filter(s => s.id !== setId).reduce((sum, s) => sum + s.weight * s.reps, 0),
-              }
-            : ex
-        ),
-      }));
+      setWorkout(prev => {
+        const updated = prev.exercises.map(ex => {
+          if (ex.id !== exId) return ex;
+          const remaining = ex.sets.filter(s => s.id !== setId);
+          return { ...ex, sets: remaining, volume: remaining.reduce((sum, s) => sum + s.weight * s.reps, 0) };
+        });
+        const empty = updated.find(ex => ex.id === exId && ex.sets.length === 0);
+        if (empty) {
+          api.deleteExercise(exId).catch(() => {});
+          return { ...prev, exercises: updated.filter(ex => ex.id !== exId) };
+        }
+        return { ...prev, exercises: updated };
+      });
     } catch (e) {
       setError(e.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleAddExercise = async () => {
+    if (!customExName.trim()) return;
+    setAddingEx(true);
+    try {
+      const { id } = await api.createExercise(workoutId, customExGroup, customExName.trim(), 4);
+      setWorkout(prev => ({
+        ...prev,
+        exercises: [...(prev.exercises || []), { id, grp: customExGroup, name: customExName.trim(), target_sets: 4, sets: [], volume: 0 }],
+      }));
+      setCustomExName('');
+      setShowAddExercise(false);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setAddingEx(false);
     }
   };
 
@@ -257,6 +281,18 @@ export default function HistoryDetailScreen() {
           );
         })}
 
+        {/* Add Exercise (edit mode) */}
+        {editMode && (
+          <button
+            onClick={() => setShowAddExercise(true)}
+            className="card-press w-full rounded-2xl p-4 mb-3 flex items-center gap-3 transition-colors"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
+          >
+            <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">+</span>
+            <div className="font-bebas tracking-wider text-base text-white/50">Add Exercise</div>
+          </button>
+        )}
+
         {/* Note */}
         {workout.note && (
           <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
@@ -265,6 +301,60 @@ export default function HistoryDetailScreen() {
           </div>
         )}
       </div>
+
+      {/* Add Exercise modal */}
+      {showAddExercise && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
+            <div className="mb-4">
+              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Muscle Group</label>
+              <div className="flex flex-wrap gap-2">
+                {MUSCLE_GROUPS.map(grp => (
+                  <button
+                    key={grp}
+                    onClick={() => setCustomExGroup(grp)}
+                    className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
+                      customExGroup === grp
+                        ? 'bg-white/20 text-white border border-white/30'
+                        : 'bg-white/5 text-white/50 border border-white/10'
+                    }`}
+                  >
+                    {grp}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mb-5">
+              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Exercise Name</label>
+              <input
+                type="text"
+                value={customExName}
+                onChange={e => setCustomExName(e.target.value)}
+                placeholder="e.g. Dumbbell Curls"
+                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
+                autoFocus
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={handleAddExercise}
+                disabled={!customExName.trim() || addingEx}
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40"
+                style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
+              >
+                {addingEx ? 'Adding…' : 'Add Exercise'}
+              </button>
+              <button
+                onClick={() => { setShowAddExercise(false); setCustomExName(''); }}
+                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete */}
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
