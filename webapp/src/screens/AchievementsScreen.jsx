@@ -137,7 +137,9 @@ function Badge({ achievement, locked = false }) {
           )}
         </div>
         {earned && (
-          <div className="text-green-400/80 text-lg">✓</div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
         )}
       </div>
     </div>
