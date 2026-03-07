@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Oswald', 'sans-serif'],
-        bebas: ['Oswald', 'sans-serif'],
+        sans: ['"Bebas Neue"', 'cursive'],
+        bebas: ['"Bebas Neue"', 'cursive'],
       },
     },
   },
