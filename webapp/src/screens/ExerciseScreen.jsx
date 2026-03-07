@@ -78,7 +78,7 @@ function playTimerSound() {
 }
 
 export default function ExerciseScreen() {
-  const { params, goBack, setActiveWorkout, recoveryData, userId } = useApp();
+  const { params, goBack, setActiveWorkout, recoveryData, userId, showToast } = useApp();
   const { exIdx, exDbId, workoutId, day, customEx } = params;
 
   const [program, setProgram] = useState(null);
@@ -151,6 +151,7 @@ export default function ExerciseScreen() {
         }
       } catch (e) {
         setError(e.message);
+        showToast(e.message);
       } finally {
         setLoading(false);
       }
@@ -202,7 +203,7 @@ export default function ExerciseScreen() {
       }
       weightRef.current?.focus();
     } catch (e) {
-      setInputError(e.message);
+      showToast(e.message);
     } finally {
       setSaving(false);
     }
@@ -223,7 +224,7 @@ export default function ExerciseScreen() {
         },
       } : prev);
     } catch (e) {
-      setInputError(e.message);
+      showToast(e.message);
     }
   };
 
@@ -247,7 +248,13 @@ export default function ExerciseScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={DARK_CARD_STYLE}>Back</button>
+            <button onClick={() => { setError(null); setLoading(true); window.location.reload(); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={DARK_CARD_STYLE}>Retry</button>
+          </div>
+        </div>
       </div>
     );
   }

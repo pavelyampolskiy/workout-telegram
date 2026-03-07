@@ -7,7 +7,7 @@ import { ExerciseNameInput } from '../components/ExerciseNameInput';
 import { CARD_BTN_STYLE } from '../shared';
 
 export default function DayScreen() {
-  const { params, userId, navigate, resetTo, activeWorkout, setActiveWorkout } = useApp();
+  const { params, userId, navigate, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
   const { day } = params;
   const dayLabel = day.replace('DAY_', 'Day ');
 
@@ -25,6 +25,7 @@ export default function DayScreen() {
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [customExercises, setCustomExercises] = useState([]);
   const [addingEx, setAddingEx] = useState(false);
+  const [retryTrigger, setRetryTrigger] = useState(0);
 
   const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
@@ -63,12 +64,13 @@ export default function DayScreen() {
         }
       } catch (e) {
         setError(e.message);
+        showToast(e.message);
       } finally {
         setLoading(false);
       }
     }
     init();
-  }, []);
+  }, [retryTrigger]);
 
   const handleExerciseTap = async (idx) => {
     if (!workoutId) return;
@@ -109,7 +111,7 @@ export default function DayScreen() {
       resetTo('home');
     } catch (e) {
       setSaving(false);
-      setError(e.message);
+      showToast(e.message);
     }
   };
 
@@ -140,7 +142,7 @@ export default function DayScreen() {
       setCustomExName('');
       setShowAddExercise(false);
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
     } finally {
       setAddingEx(false);
     }
@@ -167,7 +169,18 @@ export default function DayScreen() {
   }
 
   if (error) {
-    return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <ScreenBg overlay="bg-black/65" />
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
+            <button onClick={() => { setError(null); setLoading(true); setRetryTrigger(t => t + 1); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (showNote) {

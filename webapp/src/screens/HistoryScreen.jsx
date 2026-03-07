@@ -46,7 +46,7 @@ const FILTERS = [
 ];
 
 export default function HistoryScreen() {
-  const { userId, navigate } = useApp();
+  const { userId, navigate, showToast } = useApp();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -74,6 +74,7 @@ export default function HistoryScreen() {
       setOffset(off + data.items.length);
     } catch (e) {
       setError(e.message);
+      showToast(e.message);
     }
   };
 
@@ -116,6 +117,7 @@ export default function HistoryScreen() {
       setOffset(0);
     } catch (e) {
       setError(e.message);
+      showToast(e.message);
     } finally {
       setDeleting(false);
       setShowDeleteConfirm(false);
@@ -136,7 +138,17 @@ export default function HistoryScreen() {
     );
   }
   if (error) {
-    return <div className="p-5 text-center text-white/40 pt-20">{error}</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <ScreenBg />
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={() => { setError(null); setLoading(true); load(0).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

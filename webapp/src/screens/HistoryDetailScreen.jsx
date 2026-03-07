@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { formatDate, fmtW, DARK_CARD_STYLE } from '../shared';
+import { formatDate, fmtW, DARK_CARD_STYLE, CARD_BTN_STYLE } from '../shared';
 
 function dayLabel(type) {
   if (type === 'CARDIO') return 'Cardio';
@@ -12,7 +12,7 @@ function dayLabel(type) {
 }
 
 export default function HistoryDetailScreen() {
-  const { params, goBack } = useApp();
+  const { params, goBack, showToast } = useApp();
   const { workoutId } = params;
 
   const [workout, setWorkout] = useState(null);
@@ -33,7 +33,7 @@ export default function HistoryDetailScreen() {
   useEffect(() => {
     api.getWorkout(workoutId)
       .then(setWorkout)
-      .catch(e => setError(e.message))
+      .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -43,7 +43,7 @@ export default function HistoryDetailScreen() {
       await api.deleteWorkout(workoutId);
       goBack();
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
       setDeleting(false);
     }
   };
@@ -80,7 +80,7 @@ export default function HistoryDetailScreen() {
       }));
       setEditingSet(null);
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
     } finally {
       setSaving(false);
     }
@@ -105,7 +105,7 @@ export default function HistoryDetailScreen() {
         return { ...prev, exercises: updated };
       });
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
     } finally {
       setSaving(false);
       setDeletingSetId(null);
@@ -124,7 +124,7 @@ export default function HistoryDetailScreen() {
       setCustomExName('');
       setShowAddExercise(false);
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
     } finally {
       setAddingEx(false);
     }
@@ -142,7 +142,13 @@ export default function HistoryDetailScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg overlay="bg-black/65" />
-        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
+            <button onClick={() => { setError(null); setLoading(true); api.getWorkout(workoutId).then(setWorkout).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -176,7 +182,7 @@ export default function HistoryDetailScreen() {
                               await api.saveRating(workoutId, star);
                               setWorkout(prev => ({ ...prev, rating: star }));
                             } catch (e) {
-                              setError(e.message);
+                              showToast(e.message);
                             } finally {
                               setSaving(false);
                             }

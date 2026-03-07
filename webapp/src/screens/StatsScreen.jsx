@@ -3,6 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { StatsSkeleton } from '../components/Skeleton';
+import { CARD_BTN_STYLE } from '../shared';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
@@ -41,7 +42,7 @@ function Bar({ label, value, max, mounted }) {
 }
 
 export default function StatsScreen() {
-  const { userId, navigate } = useApp();
+  const { userId, navigate, showToast } = useApp();
   const [tab, setTab] = useState('week');
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -68,6 +69,7 @@ export default function StatsScreen() {
         setData({ week, month, freq });
       } catch (e) {
         setError(e.message);
+        showToast(e.message);
       } finally {
         setLoading(false);
       }
@@ -111,7 +113,10 @@ export default function StatsScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <button onClick={() => { setError(null); setLoading(true); Promise.all([api.getStats(userId, 7), api.getStats(userId, 30), api.getFrequency(userId)]).then(([week, month, freq]) => setData({ week, month, freq })).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+        </div>
       </div>
     );
   }

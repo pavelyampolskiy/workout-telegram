@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { formatDate as fmtDate, fmtW } from '../shared';
+import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE } from '../shared';
 
 function LineChart({ data }) {
   if (!data || data.length < 2) return null;
@@ -62,7 +62,7 @@ function LineChart({ data }) {
 }
 
 export default function ProgressScreen() {
-  const { userId } = useApp();
+  const { userId, goBack, showToast } = useApp();
   const [program, setProgram] = useState(null);
   const [selected, setSelected] = useState(null);
   const [progress, setProgress] = useState(null);
@@ -86,7 +86,7 @@ export default function ProgressScreen() {
         }
         setProgram(list);
       })
-      .catch(e => setError(e.message))
+      .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
   }, []);
 
@@ -98,7 +98,7 @@ export default function ProgressScreen() {
       const data = await api.getProgress(userId, ex.name);
       setProgress(data);
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
     } finally {
       setLoadingProg(false);
     }
@@ -116,7 +116,13 @@ export default function ProgressScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
+            <button onClick={() => { setError(null); setLoading(true); api.getProgram().then(p => { const seen = new Set(); const list = []; for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) { for (const ex of p[day]) { if (!seen.has(ex.name)) { seen.add(ex.name); list.push(ex); } } } setProgram(list); }).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
+        </div>
       </div>
     );
   }

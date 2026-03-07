@@ -3,6 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Skeleton, SkeletonCard } from '../components/Skeleton';
+import { CARD_BTN_STYLE } from '../shared';
 
 const ICONS = {
   step: (
@@ -147,7 +148,7 @@ function Badge({ achievement, locked = false }) {
 }
 
 export default function AchievementsScreen() {
-  const { userId } = useApp();
+  const { userId, goBack, showToast } = useApp();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -155,7 +156,7 @@ export default function AchievementsScreen() {
   useEffect(() => {
     api.getAchievements(userId)
       .then(setData)
-      .catch(e => setError(e.message))
+      .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
   }, [userId]);
 
@@ -177,8 +178,12 @@ export default function AchievementsScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">
-          {error}
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
+            <button onClick={() => { setError(null); setLoading(true); api.getAchievements(userId).then(setData).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
         </div>
       </div>
     );

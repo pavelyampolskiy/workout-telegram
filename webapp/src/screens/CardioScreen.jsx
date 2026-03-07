@@ -6,7 +6,7 @@ import { Spinner } from '../components/Spinner';
 import { CARD_BTN_STYLE } from '../shared';
 
 export default function CardioScreen() {
-  const { userId, resetTo } = useApp();
+  const { userId, resetTo, goBack, showToast } = useApp();
   const [workoutId, setWorkoutId] = useState(null);
   const [text, setText] = useState('');
   const [saving, setSaving] = useState(false);
@@ -15,7 +15,7 @@ export default function CardioScreen() {
   useEffect(() => {
     api.createWorkout(userId, 'CARDIO')
       .then(({ id }) => setWorkoutId(id))
-      .catch(e => setError(e.message));
+      .catch(e => { setError(e.message); showToast(e.message); });
   }, []);
 
   const handleSave = async () => {
@@ -25,13 +25,24 @@ export default function CardioScreen() {
       await api.addCardio(workoutId, text.trim());
       resetTo('home');
     } catch (e) {
-      setError(e.message);
+      showToast(e.message);
       setSaving(false);
     }
   };
 
   if (error) {
-    return <div className="p-5 text-center text-red-400 pt-20">{error}</div>;
+    return (
+      <div className="min-h-screen relative">
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
+            <button onClick={() => { setError(null); api.createWorkout(userId, 'CARDIO').then(({ id }) => setWorkoutId(id)).catch(e => { setError(e.message); showToast(e.message); }); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
