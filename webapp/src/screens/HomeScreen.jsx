@@ -191,7 +191,11 @@ function SmartReminderBanner({ userId }) {
         border: '1px solid rgba(255,255,255,0.08)',
       }}
     >
-      <div className="text-lg">🎯</div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/60 shrink-0">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="6"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
       <div className="text-white/70 text-xs font-sans flex-1">{reminder}</div>
     </div>
   );
