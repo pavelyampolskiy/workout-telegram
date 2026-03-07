@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { Spinner } from '../components/Spinner';
 import { fmtW, DARK_CARD_STYLE } from '../shared';
 
 function RecoveryBanner({ recoveryData }) {
@@ -439,7 +440,14 @@ export default function ExerciseScreen() {
               : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
           }
         >
-          {saving ? 'Saving…' : 'Save Set'}
+          {saving ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <Spinner size={20} />
+              Saving…
+            </span>
+          ) : (
+            'Save Set'
+          )}
         </button>
       </div>
 

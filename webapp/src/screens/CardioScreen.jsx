@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { Spinner } from '../components/Spinner';
 import { CARD_BTN_STYLE } from '../shared';
 
 export default function CardioScreen() {
@@ -62,7 +63,14 @@ export default function CardioScreen() {
           className="card-press w-full mt-4 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
           style={CARD_BTN_STYLE}
         >
-          {saving ? 'Saving…' : 'Save Cardio'}
+          {saving ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <Spinner size={20} />
+              Saving…
+            </span>
+          ) : (
+            'Save Cardio'
+          )}
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { Spinner } from '../components/Spinner';
 import { formatDate, fmtW, DARK_CARD_STYLE } from '../shared';
 
 function dayLabel(type) {
@@ -21,6 +22,7 @@ export default function HistoryDetailScreen() {
   const [editMode, setEditMode] = useState(false);
   const [editingSet, setEditingSet] = useState(null); // { exId, setId, weight, reps }
   const [saving, setSaving] = useState(false);
+  const [deletingSetId, setDeletingSetId] = useState(null);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [customExName, setCustomExName] = useState('');
   const [customExGroup, setCustomExGroup] = useState('CHEST');
@@ -84,6 +86,7 @@ export default function HistoryDetailScreen() {
   };
 
   const handleDeleteSet = async (exId, setId) => {
+    setDeletingSetId(setId);
     setSaving(true);
     try {
       await api.deleteSet(setId);
@@ -104,6 +107,7 @@ export default function HistoryDetailScreen() {
       setError(e.message);
     } finally {
       setSaving(false);
+      setDeletingSetId(null);
     }
   };
 
@@ -254,9 +258,9 @@ export default function HistoryDetailScreen() {
                       <button
                         onClick={handleSaveSet}
                         disabled={saving}
-                        className="text-green-400 text-sm font-bebas tracking-wider px-2"
+                        className="text-green-400 text-sm font-bebas tracking-wider px-2 flex items-center gap-1"
                       >
-                        {saving ? '...' : '✓'}
+                        {saving ? <Spinner size={14} /> : '✓'}
                       </button>
                       <button
                         onClick={() => setEditingSet(null)}
@@ -281,9 +285,9 @@ export default function HistoryDetailScreen() {
                           <button
                             onClick={() => handleDeleteSet(ex.id, s.id)}
                             disabled={saving}
-                            className="text-red-400/60 text-xs px-2 py-1"
+                            className="text-red-400/60 text-xs px-2 py-1 flex items-center"
                           >
-                            ✕
+                            {deletingSetId === s.id ? <Spinner size={12} /> : '✕'}
                           </button>
                         </div>
                       )}
@@ -358,10 +362,17 @@ export default function HistoryDetailScreen() {
               <button
                 onClick={handleAddExercise}
                 disabled={!customExName.trim() || addingEx}
-                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40"
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40 flex items-center justify-center gap-2"
                 style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)' }}
               >
-                {addingEx ? 'Adding…' : 'Add Exercise'}
+                {addingEx ? (
+                  <>
+                    <Spinner size={18} />
+                    Adding…
+                  </>
+                ) : (
+                  'Add Exercise'
+                )}
               </button>
               <button
                 onClick={() => { setShowAddExercise(false); setCustomExName(''); }}
@@ -388,9 +399,16 @@ export default function HistoryDetailScreen() {
             <button
               onClick={handleDelete}
               disabled={deleting}
-              className="w-full text-white/40 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors"
+              className="w-full text-white/40 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors flex items-center justify-center gap-2"
             >
-              {deleting ? 'Deleting…' : 'Yes, delete'}
+              {deleting ? (
+                <>
+                  <Spinner size={16} />
+                  Deleting…
+                </>
+              ) : (
+                'Yes, delete'
+              )}
             </button>
           </div>
         ) : (

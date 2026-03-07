@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { Spinner } from '../components/Spinner';
 import { CARD_BTN_STYLE } from '../shared';
 
 export default function DayScreen() {
@@ -214,7 +215,14 @@ export default function DayScreen() {
             className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
             style={CARD_BTN_STYLE}
           >
-            {saving ? 'Saving…' : 'Done'}
+            {saving ? (
+              <span className="inline-flex items-center justify-center gap-2">
+                <Spinner size={20} />
+                Saving…
+              </span>
+            ) : (
+              'Done'
+            )}
           </button>
           <button
             onClick={() => resetTo('home')}
@@ -443,7 +451,14 @@ export default function DayScreen() {
                 className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40"
                 style={CARD_BTN_STYLE}
               >
-                {addingEx ? 'Adding…' : 'Add Exercise'}
+                {addingEx ? (
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Spinner size={18} />
+                    Adding…
+                  </span>
+                ) : (
+                  'Add Exercise'
+                )}
               </button>
               <button
                 onClick={() => { setShowAddExercise(false); setCustomExName(''); }}

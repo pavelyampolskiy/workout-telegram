@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import { CARD_BTN_STYLE } from '../shared';
+import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 
 const WorkoutIcon = () => (
@@ -402,9 +403,16 @@ export default function HomeScreen() {
                         .finally(() => setDismissing(false));
                     }}
                     disabled={dismissing}
-                    className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50"
+                    className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    {dismissing ? 'Deleting…' : 'Delete workout'}
+                    {dismissing ? (
+                      <>
+                        <Spinner size={16} />
+                        Deleting…
+                      </>
+                    ) : (
+                      'Delete workout'
+                    )}
                   </button>
                 </div>
               </div>
