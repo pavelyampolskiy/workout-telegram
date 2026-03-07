@@ -296,12 +296,38 @@ export default function ExerciseScreen() {
       {restTimer !== null && (
         <button
           onClick={() => setRestEndTime(null)}
-          className="w-full rounded-2xl p-4 mb-4 text-center backdrop-blur-sm"
+          className="w-full rounded-2xl p-6 mb-4 text-center backdrop-blur-sm flex flex-col items-center"
           style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
         >
-          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-0.5">REST</div>
-          <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
-          <div className="text-xs font-bebas text-white/25 mt-1.5">tap to skip</div>
+          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-3">REST</div>
+          <div className="relative">
+            <svg width={120} height={120} className="transform -rotate-90">
+              <circle
+                cx={60}
+                cy={60}
+                r={52}
+                fill="none"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth={6}
+              />
+              <circle
+                cx={60}
+                cy={60}
+                r={52}
+                fill="none"
+                stroke="rgba(255,255,255,0.6)"
+                strokeWidth={6}
+                strokeLinecap="round"
+                strokeDasharray={326.7}
+                strokeDashoffset={326.7 - (1 - restTimer / REST_DURATION) * 326.7}
+                style={{ transition: 'stroke-dashoffset 1s linear' }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-4xl font-bebas text-white leading-none">{fmtTime(restTimer)}</span>
+            </div>
+          </div>
+          <div className="text-xs font-bebas text-white/25 mt-3">tap to skip</div>
         </button>
       )}
 
