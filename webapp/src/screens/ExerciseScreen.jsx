@@ -280,7 +280,7 @@ export default function ExerciseScreen() {
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-white/60 rounded-full transition-all duration-300"
+              className="h-full bg-white/60 rounded-full transition-[width] duration-300 ease-out"
               style={{ width: `${pct}%` }}
             />
           </div>

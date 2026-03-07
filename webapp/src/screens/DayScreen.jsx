@@ -274,7 +274,7 @@ export default function DayScreen() {
                 {done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
-                      className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
+                      className={`h-full rounded-full transition-[width] duration-300 ease-out ${complete ? 'bg-white/80' : 'bg-white/60'}`}
                       style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
                     />
                   </div>
@@ -329,7 +329,7 @@ export default function DayScreen() {
                 {done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
-                      className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
+                      className={`h-full rounded-full transition-[width] duration-300 ease-out ${complete ? 'bg-white/80' : 'bg-white/60'}`}
                       style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
                     />
                   </div>
