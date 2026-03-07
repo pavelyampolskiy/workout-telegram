@@ -129,7 +129,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   if (data === undefined) {
     return (
-      <div className="mt-5 rounded-2xl p-4" style={{
+      <div className="rounded-2xl p-4" style={{
         background: 'rgba(255,255,255,0.03)',
         border: '1px solid rgba(255,255,255,0.05)',
       }}>
@@ -144,7 +144,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   return (
     <div 
-      className="mt-5 rounded-2xl p-4"
+      className="rounded-2xl p-4"
       style={{
         background: 'rgba(255,255,255,0.03)',
         border: '1px solid rgba(255,255,255,0.05)',
@@ -185,7 +185,7 @@ function SmartReminderBanner({ userId }) {
 
   return (
     <div 
-      className="mt-4 rounded-xl p-3 flex items-center gap-3"
+      className="rounded-xl p-3 flex items-center gap-3"
       style={{
         background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
         border: '1px solid rgba(255,255,255,0.08)',
@@ -292,15 +292,17 @@ export default function HomeScreen() {
         {/* Status widget */}
         <StatusWidget userId={userId} />
 
-        {/* Weekly goal widget */}
-        <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+        {/* Content with consistent spacing */}
+        <div className="flex-1 flex flex-col gap-4 mt-4">
+          {/* Weekly goal widget */}
+          <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
 
-        {/* Smart reminder */}
-        <SmartReminderBanner userId={userId} />
+          {/* Smart reminder */}
+          <SmartReminderBanner userId={userId} />
 
-        {/* Continue workout banner */}
-        {unfinished && (
-          <div className="mt-4 relative">
+          {/* Continue workout banner */}
+          {unfinished && (
+            <div className="relative">
             {!showDismissConfirm ? (
               <>
                 <button
@@ -387,11 +389,8 @@ export default function HomeScreen() {
           </div>
         )}
 
-        {/* Push cards to bottom */}
-        <div className="flex-1" />
-
-        {/* Navigation widgets */}
-        <div className="pb-6 space-y-2">
+          {/* Navigation widgets */}
+          <div className="mt-auto pt-2 pb-6 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => navigate('recovery-check')}
@@ -467,6 +466,7 @@ export default function HomeScreen() {
               <div className="font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
             </button>
           </div>
+        </div>
         </div>
       </div>
 
