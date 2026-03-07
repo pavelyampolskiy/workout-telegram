@@ -13,8 +13,16 @@ export default function CardioScreen() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    api.createWorkout(userId, 'CARDIO')
-      .then(({ id }) => setWorkoutId(id))
+    api.getUnfinishedWorkout(userId)
+      .then(data => {
+        if (data.workout && data.workout.type === 'CARDIO') {
+          setWorkoutId(data.workout.id);
+          return api.getWorkout(data.workout.id).then(w => {
+            if (w.cardio) setText(w.cardio);
+          });
+        }
+        return api.createWorkout(userId, 'CARDIO').then(({ id }) => setWorkoutId(id));
+      })
       .catch(e => { setError(e.message); showToast(e.message); });
   }, []);
 
