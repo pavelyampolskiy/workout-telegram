@@ -294,11 +294,11 @@ def get_progress(user_id: int, exercise_name: str, limit: int = 8):
 
 ACHIEVEMENTS = [
     {"id": "workouts_100", "name": "Legend", "desc": "Complete 100 workouts", "icon": "crown", "threshold": 100},
-    {"id": "volume_10k", "name": "10K Club", "desc": "Lift 10,000 kg total", "icon": "target", "threshold": 10000, "type": "volume"},
-    {"id": "volume_50k", "name": "50K Club", "desc": "Lift 50,000 kg total", "icon": "diamond", "threshold": 50000, "type": "volume"},
-    {"id": "volume_100k", "name": "100K Club", "desc": "Lift 100,000 kg total", "icon": "rocket", "threshold": 100000, "type": "volume"},
+    {"id": "volume_10k", "name": "10K Club", "desc": "Lift 10,000 kg total", "icon": "trophy", "threshold": 10000, "type": "volume"},
+    {"id": "volume_50k", "name": "50K Club", "desc": "Lift 50,000 kg total", "icon": "trophy", "threshold": 50000, "type": "volume"},
+    {"id": "volume_100k", "name": "100K Club", "desc": "Lift 100,000 kg total", "icon": "trophy", "threshold": 100000, "type": "volume"},
     {"id": "volume_250k", "name": "Quarter Ton", "desc": "Lift 250,000 kg total", "icon": "trophy", "threshold": 250000, "type": "volume"},
-    {"id": "volume_500k", "name": "Half Million", "desc": "Lift 500,000 kg total", "icon": "star", "threshold": 500000, "type": "volume"},
+    {"id": "volume_500k", "name": "Half Million", "desc": "Lift 500,000 kg total", "icon": "trophy", "threshold": 500000, "type": "volume"},
     {"id": "streak_6", "name": "Beast Mode", "desc": "6 workouts this week", "icon": "bolt", "threshold": 6, "type": "weekly"},
     {"id": "cardio_50", "name": "Cardio Fan", "desc": "Complete 50 cardio sessions", "icon": "zap", "threshold": 50, "type": "cardio"},
 ]
