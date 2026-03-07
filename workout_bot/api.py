@@ -293,8 +293,6 @@ def get_progress(user_id: int, exercise_name: str, limit: int = 8):
 # ── Achievements ─────────────────────────────────────────────────────────────
 
 ACHIEVEMENTS = [
-    {"id": "first_workout", "name": "First Step", "desc": "Complete your first workout", "icon": "step", "threshold": 1},
-    {"id": "workouts_5", "name": "Getting Started", "desc": "Complete 5 workouts", "icon": "dumbbell", "threshold": 5},
     {"id": "workouts_10", "name": "Dedicated", "desc": "Complete 10 workouts", "icon": "flame", "threshold": 10},
     {"id": "workouts_25", "name": "Committed", "desc": "Complete 25 workouts", "icon": "star", "threshold": 25},
     {"id": "workouts_50", "name": "Warrior", "desc": "Complete 50 workouts", "icon": "trophy", "threshold": 50},
@@ -302,7 +300,6 @@ ACHIEVEMENTS = [
     {"id": "volume_10k", "name": "10K Club", "desc": "Lift 10,000 kg total", "icon": "target", "threshold": 10000, "type": "volume"},
     {"id": "volume_50k", "name": "50K Club", "desc": "Lift 50,000 kg total", "icon": "diamond", "threshold": 50000, "type": "volume"},
     {"id": "volume_100k", "name": "100K Club", "desc": "Lift 100,000 kg total", "icon": "rocket", "threshold": 100000, "type": "volume"},
-    {"id": "streak_3", "name": "On Fire", "desc": "3 workouts this week", "icon": "zap", "threshold": 3, "type": "weekly"},
     {"id": "streak_5", "name": "Beast Mode", "desc": "5 workouts this week", "icon": "bolt", "threshold": 5, "type": "weekly"},
 ]
 
