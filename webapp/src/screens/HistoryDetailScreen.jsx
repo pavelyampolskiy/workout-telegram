@@ -154,17 +154,35 @@ export default function HistoryDetailScreen() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
-              {workout.rating && (
+              {(workout.rating || editMode) && (
                 <div className="flex items-center gap-0.5 mt-1">
-                  {[1, 2, 3, 4, 5].map(star => (
-                    <span 
-                      key={star} 
-                      className="text-lg"
-                      style={{ color: star <= workout.rating ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.15)' }}
-                    >
-                      ★
-                    </span>
-                  ))}
+                  {[1, 2, 3, 4, 5].map(star => {
+                    const rating = workout.rating || 0;
+                    const filled = star <= rating;
+                    const el = (
+                      <span
+                        key={star}
+                        className={`text-lg ${editMode ? 'cursor-pointer active:scale-110 transition-transform' : ''}`}
+                        style={{ color: filled ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.15)' }}
+                        {...(editMode && {
+                          onClick: async () => {
+                            setSaving(true);
+                            try {
+                              await api.saveRating(workoutId, star);
+                              setWorkout(prev => ({ ...prev, rating: star }));
+                            } catch (e) {
+                              setError(e.message);
+                            } finally {
+                              setSaving(false);
+                            }
+                          },
+                        })}
+                      >
+                        ★
+                      </span>
+                    );
+                    return el;
+                  })}
                 </div>
               )}
             </div>
