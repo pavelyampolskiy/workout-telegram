@@ -227,7 +227,7 @@ export default function HistoryDetailScreen() {
                 <div className="text-xs text-white/30">{ex.grp}</div>
               </div>
               {diff !== null && diff !== 0 && (
-                <div className={`flex items-center gap-1 text-xs font-bebas tracking-wider ${diff > 0 ? 'text-green-400/80' : 'text-red-400/80'}`}>
+                <div className="flex items-center gap-1 text-xs font-bebas tracking-wider text-white/70">
                   <span>{diff > 0 ? '↑' : '↓'}</span>
                   <span>{diffPct != null ? `${Math.abs(diffPct)}%` : ''}</span>
                 </div>
