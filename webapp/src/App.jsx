@@ -123,6 +123,10 @@ export default function App() {
     setStack(prev => [...prev, { screen, params }]);
   }, []);
 
+  const replace = useCallback((screen, params = {}) => {
+    setStack(prev => [...prev.slice(0, -1), { screen, params }]);
+  }, []);
+
   const goBack = useCallback(() => {
     setStack(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
   }, []);
@@ -164,6 +168,7 @@ export default function App() {
       value={{
         userId,
         navigate,
+        replace,
         goBack,
         resetTo,
         params: current.params,

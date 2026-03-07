@@ -50,7 +50,7 @@ function getRecommendation(score) {
 }
 
 export default function RecoveryCheckScreen() {
-  const { navigate, setRecoveryData } = useApp();
+  const { navigate, replace, setRecoveryData } = useApp();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [showResult, setShowResult] = useState(false);
@@ -72,12 +72,12 @@ export default function RecoveryCheckScreen() {
     const score = getRecoveryScore(answers);
     const rec = getRecommendation(score);
     setRecoveryData({ score, modifier: rec.modifier, timestamp: Date.now() });
-    navigate('workout');
+    replace('workout');
   };
 
   const handleSkip = () => {
     setRecoveryData(null);
-    navigate('workout');
+    replace('workout');
   };
 
   if (showResult) {
