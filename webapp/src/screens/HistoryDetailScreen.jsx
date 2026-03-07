@@ -258,7 +258,7 @@ export default function HistoryDetailScreen() {
                       <button
                         onClick={handleSaveSet}
                         disabled={saving}
-                        className="text-green-400 text-sm font-bebas tracking-wider px-2 flex items-center gap-1"
+                        className="text-white/90 text-sm font-bebas tracking-wider px-2 flex items-center gap-1"
                       >
                         {saving ? <Spinner size={14} /> : (
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
