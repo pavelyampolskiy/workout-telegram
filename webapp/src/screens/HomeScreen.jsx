@@ -56,84 +56,55 @@ function daysAgoLabel(dateStr) {
   return dateStr.split('-').slice(1).reverse().join('.');
 }
 
-function ProgressRing({ progress, size = 80, strokeWidth = 6 }) {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (progress * circumference);
-  
-  return (
-    <svg width={size} height={size} className="transform -rotate-90">
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke="rgba(255,255,255,0.08)"
-        strokeWidth={strokeWidth}
-      />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke="url(#ringGradient)"
-        strokeWidth={strokeWidth}
-        strokeLinecap="round"
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}
-      />
-      <defs>
-        <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
-          <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
+const RING_SIZE = 60;
+const RING_STROKE = 5;
 
-function MiniRecoveryRing({ score }) {
-  const size = 56;
-  const strokeWidth = 4;
-  const radius = (size - strokeWidth) / 2;
+function StatRing({ progress, value, label, sublabel, gradientId }) {
+  const radius = (RING_SIZE - RING_STROKE) / 2;
   const circumference = radius * 2 * Math.PI;
-  const progress = score / 100;
   const offset = circumference - (progress * circumference);
-  
-  // Monochrome: brighter = better score
-  const getColor = () => {
-    if (score >= 85) return 'rgba(255, 255, 255, 0.9)';
-    if (score >= 70) return 'rgba(255, 255, 255, 0.75)';
-    if (score >= 50) return 'rgba(255, 255, 255, 0.55)';
-    return 'rgba(255, 255, 255, 0.4)';
-  };
-  
+  const id = gradientId || 'ringGrad';
+
   return (
-    <div className="relative">
-      <svg width={size} height={size} className="transform -rotate-90">
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke="rgba(255,255,255,0.08)"
-          strokeWidth={strokeWidth}
-        />
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="none"
-          stroke={getColor()}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-        />
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-bebas text-sm" style={{ color: getColor() }}>{score}%</span>
+    <div className="flex flex-col items-center">
+      <div className="relative">
+        <svg width={RING_SIZE} height={RING_SIZE} className="transform -rotate-90">
+          <circle
+            cx={RING_SIZE / 2}
+            cy={RING_SIZE / 2}
+            r={radius}
+            fill="none"
+            stroke="rgba(255,255,255,0.08)"
+            strokeWidth={RING_STROKE}
+          />
+          <circle
+            cx={RING_SIZE / 2}
+            cy={RING_SIZE / 2}
+            r={radius}
+            fill="none"
+            stroke={`url(#${id})`}
+            strokeWidth={RING_STROKE}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}
+          />
+          <defs>
+            <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="font-bebas text-lg text-white/90">{value}</span>
+        </div>
+      </div>
+      <div className="mt-2 text-center">
+        <div className="font-bebas tracking-wider text-white/90 text-xs">{label}</div>
+        {sublabel && (
+          <div className="text-white/40 text-[10px] font-sans mt-0.5">{sublabel}</div>
+        )}
       </div>
     </div>
   );
@@ -180,25 +151,21 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
         boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
       }}
     >
-      <div className="flex items-center gap-4">
-        {/* Weekly Goal Ring */}
-        <div className="relative">
-          <ProgressRing progress={progress} size={72} strokeWidth={5} />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-bebas text-xl text-white/90">{weekCount}</span>
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="font-bebas tracking-wider text-white/90 text-sm">Weekly Goal</div>
-          <div className="text-white/40 text-xs font-sans mt-0.5">{weekCount} of {WEEKLY_GOAL} workouts</div>
-        </div>
-        
-        {/* Mini Recovery Widget */}
+      <div className="flex items-center justify-around gap-4">
+        <StatRing
+          progress={progress}
+          value={weekCount}
+          label="Weekly Goal"
+          sublabel={`${weekCount} of ${WEEKLY_GOAL} workouts`}
+          gradientId="ringWeekly"
+        />
         {recoveryScore !== null && (
-          <div className="flex flex-col items-center">
-            <MiniRecoveryRing score={recoveryScore} />
-            <div className="font-bebas tracking-wider text-white/50 text-[10px] mt-1">Ready</div>
-          </div>
+          <StatRing
+            progress={recoveryScore / 100}
+            value={`${recoveryScore}%`}
+            label="Ready"
+            gradientId="ringReady"
+          />
         )}
       </div>
     </div>
