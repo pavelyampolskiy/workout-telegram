@@ -457,7 +457,7 @@ export default function HomeScreen() {
 
             {/* Cardio */}
             <button
-              onClick={() => navigate('workout', { cardioOnly: true })}
+              onClick={() => navigate('cardio')}
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
