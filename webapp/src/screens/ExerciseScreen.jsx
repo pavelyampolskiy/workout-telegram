@@ -394,6 +394,9 @@ export default function ExerciseScreen() {
               +
             </button>
           </div>
+          <div className="text-[10px] text-white/35 font-sans mt-1.5">
+            Use BAR for bar only, BW for bodyweight
+          </div>
         </div>
 
         {/* Reps input with +/- buttons */}
