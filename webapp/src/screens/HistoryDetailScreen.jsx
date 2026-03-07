@@ -3,6 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
+import { ExerciseNameInput } from '../components/ExerciseNameInput';
 import { formatDate, fmtW, DARK_CARD_STYLE } from '../shared';
 
 function dayLabel(type) {
@@ -353,10 +354,11 @@ export default function HistoryDetailScreen() {
             </div>
             <div className="mb-5">
               <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Exercise Name</label>
-              <input
-                type="text"
+              <ExerciseNameInput
                 value={customExName}
-                onChange={e => setCustomExName(e.target.value)}
+                onChange={setCustomExName}
+                onSelectSuggestion={(item) => { setCustomExName(item.name); setCustomExGroup(item.grp); }}
+                userId={workout?.user_id}
                 placeholder="e.g. Dumbbell Curls"
                 className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
                 autoFocus

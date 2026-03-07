@@ -37,6 +37,8 @@ export const api = {
 
   createExercise: (workout_id, grp, name, target_sets) =>
     req('POST', `/api/workouts/${workout_id}/exercises`, { grp, name, target_sets }),
+  searchExercises: (user_id, q = '', limit = 20) =>
+    req('GET', `/api/exercises/search?user_id=${user_id}&limit=${limit}${q ? `&q=${encodeURIComponent(q)}` : ''}`),
   deleteExercise: (ex_id) => req('DELETE', `/api/exercises/${ex_id}`),
   getLastExercise: (ex_id, user_id, exclude_wid) =>
     req('GET', `/api/exercises/${ex_id}/last?user_id=${user_id}&exclude_wid=${exclude_wid}`),

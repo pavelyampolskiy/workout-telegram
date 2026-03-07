@@ -176,6 +176,13 @@ def delete_exercise(ex_id: int):
     return {"ok": True}
 
 
+@app.get("/api/exercises/search")
+def search_exercises(user_id: int, q: str = None, limit: int = 20):
+    """Get exercise names from user's history for autocomplete."""
+    items = db_ops.get_exercise_names_for_user(user_id, query=q or "", limit=limit)
+    return {"exercises": items}
+
+
 @app.get("/api/exercises/{ex_id}/last")
 def get_last_exercise(ex_id: int, user_id: int, exclude_wid: int):
     ex = db_ops.get_exercise(ex_id)

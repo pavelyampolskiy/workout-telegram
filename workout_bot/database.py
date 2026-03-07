@@ -215,6 +215,37 @@ def delete_exercise(ex_id: int):
         conn.execute("DELETE FROM workout_exercises WHERE id=?", (ex_id,))
 
 
+def get_exercise_names_for_user(user_id: int, query: str = None, limit: int = 20):
+    """Get distinct (name, grp) from user's workout history, optionally filtered by query."""
+    with db() as conn:
+        if query and query.strip():
+            q = f"%{query.strip().lower()}%"
+            rows = conn.execute(
+                """
+                SELECT DISTINCT we.name, we.grp
+                FROM workout_exercises we
+                JOIN workouts w ON w.id = we.workout_id
+                WHERE w.user_id = ? AND LOWER(we.name) LIKE ?
+                ORDER BY we.name
+                LIMIT ?
+                """,
+                (user_id, q, limit),
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                """
+                SELECT DISTINCT we.name, we.grp
+                FROM workout_exercises we
+                JOIN workouts w ON w.id = we.workout_id
+                WHERE w.user_id = ?
+                ORDER BY we.name
+                LIMIT ?
+                """,
+                (user_id, limit),
+            ).fetchall()
+    return [{"name": r["name"], "grp": r["grp"]} for r in rows]
+
+
 # ── Sets ──────────────────────────────────────────────────────────────────────
 
 def add_set(ex_id: int, set_number: int, weight: float, reps: int) -> int:
