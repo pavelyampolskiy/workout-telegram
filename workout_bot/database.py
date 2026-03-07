@@ -215,6 +215,18 @@ def delete_exercise(ex_id: int):
         conn.execute("DELETE FROM workout_exercises WHERE id=?", (ex_id,))
 
 
+def delete_empty_exercises(workout_id: int):
+    """Remove exercises that have zero sets for a given workout."""
+    with db() as conn:
+        conn.execute(
+            """DELETE FROM workout_exercises
+               WHERE workout_id=? AND id NOT IN (
+                   SELECT DISTINCT workout_exercise_id FROM workout_sets
+               )""",
+            (workout_id,),
+        )
+
+
 def get_exercise_names_for_user(user_id: int, query: str = None, limit: int = 20):
     """Get distinct (name, grp) from user's workout history, optionally filtered by query."""
     with db() as conn:

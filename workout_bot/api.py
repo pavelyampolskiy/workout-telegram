@@ -56,6 +56,7 @@ def create_workout(body: WorkoutBody):
 
 @app.patch("/api/workouts/{workout_id}/finish")
 def finish_workout(workout_id: int):
+    db_ops.delete_empty_exercises(workout_id)
     db_ops.finish_workout(workout_id)
     return {"ok": True}
 
@@ -103,6 +104,8 @@ def get_workout(workout_id: int):
     exercises = []
     for ex in exs:
         sets = db_ops.get_sets_for_exercise(ex["id"])
+        if not sets:
+            continue
         volume = sum(s["weight"] * s["reps"] for s in sets)
         exercises.append({
             "id": ex["id"],
