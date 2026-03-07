@@ -303,6 +303,7 @@ ACHIEVEMENTS = [
     {"id": "volume_250k", "name": "Quarter Ton", "desc": "Lift 250,000 kg total", "icon": "trophy", "threshold": 250000, "type": "volume"},
     {"id": "volume_500k", "name": "Half Million", "desc": "Lift 500,000 kg total", "icon": "trophy", "threshold": 500000, "type": "volume"},
     {"id": "streak_6", "name": "Beast Mode", "desc": "6 workouts this week", "icon": "bolt", "threshold": 6, "type": "weekly"},
+    {"id": "cardio_25", "name": "Cardio Starter", "desc": "Complete 25 cardio sessions", "icon": "zap", "threshold": 25, "type": "cardio"},
     {"id": "cardio_50", "name": "Cardio Fan", "desc": "Complete 50 cardio sessions", "icon": "zap", "threshold": 50, "type": "cardio"},
     {"id": "cardio_100", "name": "Marathon Mind", "desc": "Complete 100 cardio sessions", "icon": "zap", "threshold": 100, "type": "cardio"},
     {"id": "volume_1m", "name": "Millionaire", "desc": "Lift 1,000,000 kg total", "icon": "trophy", "threshold": 1000000, "type": "volume"},
