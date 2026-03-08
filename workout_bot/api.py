@@ -137,10 +137,18 @@ def get_unfinished_workout(user_id: int):
     w = db_ops.get_unfinished_workout(user_id)
     if not w:
         return {"workout": None}
+    wtype = w["type"]
+    label = wtype.replace("DAY_", "Day ")
+    days = db_ops.get_custom_days(user_id)
+    for d in days:
+        if d["key"] == wtype:
+            label = d["label"]
+            break
     return {
         "workout": {
             "id": w["id"],
-            "type": w["type"],
+            "type": wtype,
+            "label": label,
             "date": w["date"],
             "created_at": w["created_at"],
         }

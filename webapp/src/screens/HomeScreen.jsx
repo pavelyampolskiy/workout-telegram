@@ -289,7 +289,7 @@ export default function HomeScreen() {
       startedAt: unfinished.created_at ? new Date(unfinished.created_at).getTime() : Date.now(),
       exerciseMap: {},
     });
-    navigate('day', { day: unfinished.type });
+    navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
   };
 
   return (
@@ -363,7 +363,7 @@ export default function HomeScreen() {
                         backgroundClip: 'text',
                       }}
                     >Continue Workout</div>
-                    <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                    <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
                   </div>
                   <span className="text-xl shrink-0 text-white/35">›</span>
                 </button>

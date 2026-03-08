@@ -8,8 +8,8 @@ import { CARD_BTN_STYLE } from '../shared';
 
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
-  const { day } = params;
-  const dayLabel = day.replace('DAY_', 'Day ');
+  const { day, dayLabel: paramLabel } = params;
+  const dayLabel = paramLabel || day.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom Workout');
 
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);

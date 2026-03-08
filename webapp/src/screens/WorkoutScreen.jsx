@@ -170,7 +170,7 @@ export default function WorkoutScreen() {
                     key={day.id}
                     day={day}
                     editMode={editMode}
-                    onPress={() => navigate('day', { day: day.key })}
+                    onPress={() => navigate('day', { day: day.key, dayLabel: day.label })}
                     onRename={(d) => { setRenamingDay(d); setRenameLabel(d.label); }}
                     onDelete={(d) => setDeletingDay(d)}
                   />
