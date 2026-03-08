@@ -365,6 +365,7 @@ ACHIEVEMENTS = [
     {"id": "cardio_50", "name": "Cardio Fan", "desc": "Complete 50 cardio sessions", "icon": "zap", "threshold": 50, "type": "cardio"},
     {"id": "cardio_100", "name": "Marathon Mind", "desc": "Complete 100 cardio sessions", "icon": "zap", "threshold": 100, "type": "cardio"},
     {"id": "volume_1m", "name": "Millionaire", "desc": "Lift 1,000,000 kg total", "icon": "trophy", "threshold": 1000000, "type": "volume"},
+    {"id": "streak_52w", "name": "365 Club", "desc": "Train every week for a year", "icon": "bolt", "threshold": 52, "type": "weekly_streak"},
 ]
 
 @app.get("/api/achievements")
@@ -374,6 +375,7 @@ def get_achievements(user_id: int):
     week_stats = db_ops.stats_period(user_id, date.today() - timedelta(days=7))
     week_count = week_stats[0] if week_stats else 0
     cardio_count = db_ops.get_cardio_count(user_id)
+    weekly_streak = db_ops.get_weekly_streak(user_id)
     
     unlocked = []
     locked = []
@@ -391,6 +393,9 @@ def get_achievements(user_id: int):
         elif ach_type == "cardio":
             earned = cardio_count >= threshold
             progress = min(cardio_count / threshold, 1.0)
+        elif ach_type == "weekly_streak":
+            earned = weekly_streak["max"] >= threshold
+            progress = min(weekly_streak["max"] / threshold, 1.0)
         else:
             earned = total >= threshold
             progress = min(total / threshold, 1.0)

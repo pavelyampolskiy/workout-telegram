@@ -522,6 +522,54 @@ def get_total_volume(user_id: int) -> float:
     return result["total"] if result else 0
 
 
+def get_weekly_streak(user_id: int) -> dict:
+    """Return current and max consecutive-week training streaks."""
+    with db() as conn:
+        rows = conn.execute(
+            """SELECT DISTINCT date FROM workouts
+               WHERE user_id=? AND finished_at IS NOT NULL
+               ORDER BY date""",
+            (user_id,),
+        ).fetchall()
+
+    if not rows:
+        return {"current": 0, "max": 0}
+
+    weeks_set: set[tuple[int, int]] = set()
+    for row in rows:
+        d = date.fromisoformat(row["date"])
+        iso = d.isocalendar()
+        weeks_set.add((iso[0], iso[1]))
+
+    sorted_weeks = sorted(weeks_set)
+
+    max_streak = 1
+    cur_streak = 1
+    for i in range(1, len(sorted_weeks)):
+        prev_y, prev_w = sorted_weeks[i - 1]
+        cur_y, cur_w = sorted_weeks[i]
+
+        prev_date = date.fromisocalendar(prev_y, prev_w, 1)
+        cur_date = date.fromisocalendar(cur_y, cur_w, 1)
+
+        if (cur_date - prev_date).days == 7:
+            cur_streak += 1
+        else:
+            cur_streak = 1
+        max_streak = max(max_streak, cur_streak)
+
+    # Check if current streak is still active (includes this or last week)
+    today = date.today()
+    this_iso = (today.isocalendar()[0], today.isocalendar()[1])
+    last_week = today - timedelta(days=7)
+    last_iso = (last_week.isocalendar()[0], last_week.isocalendar()[1])
+
+    if sorted_weeks[-1] not in (this_iso, last_iso):
+        cur_streak = 0
+
+    return {"current": cur_streak, "max": max_streak}
+
+
 def get_workout_patterns(user_id: int, weeks: int = 8):
     """Analyze which days of the week user typically trains (strength only, no cardio)"""
     since = date.today() - timedelta(weeks=weeks)
