@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE } from '../shared';
+import { HistorySkeleton } from '../components/Skeleton';
 
 const MONTHS_LONG = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -45,7 +46,7 @@ const FILTERS = [
 ];
 
 export default function HistoryScreen() {
-  const { userId, navigate } = useApp();
+  const { userId, navigate, showToast } = useApp();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -56,6 +57,8 @@ export default function HistoryScreen() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const tabsRef = useRef(null);
 
   const PAGE = 10;
 
@@ -71,12 +74,27 @@ export default function HistoryScreen() {
       setOffset(off + data.items.length);
     } catch (e) {
       setError(e.message);
+      showToast(e.message);
     }
   };
 
   useEffect(() => {
     load(0).finally(() => setLoading(false));
   }, []);
+
+  // Update indicator position when filter changes
+  useEffect(() => {
+    if (!tabsRef.current) return;
+    const activeIndex = FILTERS.findIndex(f => f.value === activeFilter);
+    const tabs = tabsRef.current.querySelectorAll('button');
+    if (tabs[activeIndex]) {
+      const tab = tabs[activeIndex];
+      setIndicatorStyle({
+        left: tab.offsetLeft,
+        width: tab.offsetWidth,
+      });
+    }
+  }, [activeFilter, loading]);
 
   const handleFilter = (value) => {
     setActiveFilter(value);
@@ -99,6 +117,7 @@ export default function HistoryScreen() {
       setOffset(0);
     } catch (e) {
       setError(e.message);
+      showToast(e.message);
     } finally {
       setDeleting(false);
       setShowDeleteConfirm(false);
@@ -106,10 +125,30 @@ export default function HistoryScreen() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center h-screen text-white/40">Loading…</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <ScreenBg />
+        <div className="relative z-10 p-5">
+          <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+            History
+          </h1>
+          <HistorySkeleton />
+        </div>
+      </div>
+    );
   }
   if (error) {
-    return <div className="p-5 text-center text-white/40 pt-20">{error}</div>;
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        <ScreenBg />
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={() => { setError(null); setLoading(true); load(0).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -121,14 +160,25 @@ export default function HistoryScreen() {
         </h1>
 
         {/* Filter tabs */}
-        <div className="flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto">
+        <div 
+          ref={tabsRef}
+          className="relative flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto"
+        >
+          {/* Sliding indicator */}
+          <div
+            className="absolute top-1 bottom-1 rounded-xl bg-white/12 transition-all duration-300 ease-out"
+            style={{
+              left: indicatorStyle.left,
+              width: indicatorStyle.width,
+            }}
+          />
           {FILTERS.map(f => (
             <button
               key={f.label}
               onClick={() => handleFilter(f.value)}
-              className={`flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-all duration-200 ${
+              className={`relative z-10 flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors duration-200 ${
                 activeFilter === f.value
-                  ? 'bg-white/12 text-white/92'
+                  ? 'text-white/92'
                   : 'text-white/35 active:text-white/60'
               }`}
             >
@@ -152,10 +202,6 @@ export default function HistoryScreen() {
           <div className="space-y-2">
             {items.map((w, idx) => {
               const isNewMonth = idx === 0 || getMonthKey(w.date) !== getMonthKey(items[idx - 1].date);
-              const summary = [
-                w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
-                w.total_volume > 0 && fmtVol(w.total_volume),
-              ].filter(Boolean).join(' • ');
 
               return (
                 <div key={w.id}>
@@ -184,10 +230,16 @@ export default function HistoryScreen() {
                               <span className="font-sans text-white/35 text-xs">{w.duration_min} min</span>
                             </>
                           )}
-                          {summary && (
+                          {w.total_sets > 0 && (
                             <>
                               <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-white/35 text-xs">{summary}</span>
+                              <span className="font-sans text-white/35 text-xs">{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                            </>
+                          )}
+                          {w.total_volume > 0 && (
+                            <>
+                              <span className="font-sans text-white/20 text-xs">•</span>
+                              <span className="font-sans text-white/35 text-xs">{fmtVol(w.total_volume)}</span>
                             </>
                           )}
                         </div>
@@ -228,8 +280,8 @@ export default function HistoryScreen() {
 
       {/* Delete confirmation modal */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Delete all history?</h3>
             <p className="text-sm text-white/40 mb-6 font-sans">All workouts will be permanently removed.</p>
             <div className="flex flex-col gap-2">

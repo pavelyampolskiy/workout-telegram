@@ -2,17 +2,85 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { Spinner } from '../components/Spinner';
 import { fmtW, DARK_CARD_STYLE } from '../shared';
+
+function RecoveryBanner({ recoveryData }) {
+  if (!recoveryData || recoveryData.modifier >= 1) return null;
+
+  const reduction = Math.round((1 - recoveryData.modifier) * 100);
+
+  return (
+    <div
+      className="mb-4 rounded-xl p-3 flex items-center gap-3"
+      style={{
+        background: 'rgba(255, 255, 255, 0.06)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+      }}
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/60 shrink-0">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+      <div className="flex-1">
+        <div className="text-white/80 text-xs font-sans">
+          Recovery: <span className="font-medium">{recoveryData.score}%</span>
+        </div>
+        <div className="text-white/50 text-[10px] font-sans">
+          Consider {reduction}% lighter weights today
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const REST_DURATION = 90;
 
 function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
+// Play a beep sound using Web Audio API
+function playTimerSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    
+    oscillator.frequency.value = 880; // A5 note
+    oscillator.type = 'sine';
+    gain.gain.value = 0.3;
+    
+    oscillator.start();
+    
+    // Fade out
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    oscillator.stop(ctx.currentTime + 0.5);
+    
+    // Second beep after short pause
+    setTimeout(() => {
+      try {
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.frequency.value = 1100; // Higher pitch
+        osc2.type = 'sine';
+        gain2.gain.value = 0.3;
+        osc2.start();
+        gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+        osc2.stop(ctx.currentTime + 0.5);
+      } catch (_) {}
+    }, 200);
+  } catch (_) {}
+}
+
 export default function ExerciseScreen() {
-  const { params, goBack, setActiveWorkout } = useApp();
-  // exKey is used for custom exercises (e.g. "c0"), exIdx for program exercises
-  const { exIdx, exKey: exKeyParam, exDbId, workoutId, day, customEx } = params;
-  const exMapKey = exKeyParam ?? exIdx;
+  const { params, goBack, setActiveWorkout, recoveryData, userId, showToast } = useApp();
+  const { exIdx, exDbId, workoutId, day, customEx } = params;
+  const exMapKey = exIdx;
 
   const [program, setProgram] = useState(null);
   const [sets, setSets] = useState([]);
@@ -26,17 +94,47 @@ export default function ExerciseScreen() {
   const [saving, setSaving] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const [inputError, setInputError] = useState('');
+  const [restEndTime, setRestEndTime] = useState(null);
   const [restTimer, setRestTimer] = useState(null);
-  const [restDuration, setRestDuration] = useState(() =>
-    parseInt(localStorage.getItem('restDuration') || '90')
-  );
   const [showPR, setShowPR] = useState(false);
 
   const weightRef = useRef(null);
 
+  // Rest timer - uses endTime to survive app minimize
+  useEffect(() => {
+    if (restEndTime === null) {
+      setRestTimer(null);
+      return;
+    }
+    
+    const tick = () => {
+      const remaining = Math.max(0, Math.round((restEndTime - Date.now()) / 1000));
+      setRestTimer(remaining);
+      
+      if (remaining <= 0) {
+        playTimerSound();
+        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+        setRestEndTime(null);
+      }
+    };
+    
+    tick(); // Initial tick
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [restEndTime]);
+
   useEffect(() => {
     async function init() {
       try {
+        // If it's a custom exercise, use the passed data
+        if (customEx) {
+          setProgram(customEx);
+          const setsData = await api.getSets(exDbId);
+          setSets(setsData);
+          setLoading(false);
+          return;
+        }
+
         const [prog, setsData, lastData] = await Promise.all([
           customEx ? Promise.resolve(null) : api.getProgram(),
           api.getSets(exDbId),
@@ -46,8 +144,16 @@ export default function ExerciseScreen() {
         setSets(setsData);
         setLastDate(lastData.date);
         setLastSets(lastData.sets);
+        
+        // Auto-fill from last workout's first set (if no sets done yet)
+        if (setsData.length === 0 && lastData.sets?.length > 0) {
+          const firstLastSet = lastData.sets[0];
+          setWeight(firstLastSet.weight === 0 ? 'BAR' : String(firstLastSet.weight));
+          setReps(String(firstLastSet.reps));
+        }
       } catch (e) {
         setError(e.message);
+        showToast(e.message);
       } finally {
         setLoading(false);
       }
@@ -55,26 +161,14 @@ export default function ExerciseScreen() {
     init();
   }, []);
 
-  // Rest timer countdown
-  useEffect(() => {
-    if (restTimer === null || restTimer <= 0) {
-      if (restTimer === 0) {
-        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
-        setRestTimer(null);
-      }
-      return;
-    }
-    const t = setTimeout(() => setRestTimer(r => r - 1), 1000);
-    return () => clearTimeout(t);
-  }, [restTimer]);
-
+  
   const ex = program;
   const target = ex?.target_sets || 4;
 
   const handleSaveSet = async () => {
-    const w = parseFloat(weight);
+    const w = (weight === 'BW' || weight === 'BAR') ? 0 : parseFloat(weight);
     const r = parseInt(reps);
-    if (!w || w <= 0) { setInputError('Enter weight'); return; }
+    if (weight !== 'BW' && weight !== 'BAR' && (isNaN(w) || w < 0)) { setInputError('Enter weight'); return; }
     if (!r || r <= 0 || r > 100) { setInputError('Enter reps (1–100)'); return; }
     setInputError('');
 
@@ -95,7 +189,11 @@ export default function ExerciseScreen() {
       }
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      setRestTimer(restDuration);
+      setRestEndTime(Date.now() + REST_DURATION * 1000);
+      // Schedule push notification via Telegram bot
+      if (userId > 0) {
+        api.startRestTimer(REST_DURATION, ex?.name).catch(() => {});
+      }
       setActiveWorkout(prev => prev ? {
         ...prev,
         exerciseMap: {
@@ -103,11 +201,20 @@ export default function ExerciseScreen() {
           [exMapKey]: { dbId: exDbId, setsCount: updated.length },
         },
       } : prev);
-      setWeight('');
-      setReps('');
+      // Auto-fill for next set: prefer last workout's corresponding set, fallback to just saved values
+      const nextSetIdx = updated.length; // 0-indexed, so this is the index of the NEXT set
+      if (lastSets && lastSets[nextSetIdx]) {
+        const nextLastSet = lastSets[nextSetIdx];
+        setWeight(nextLastSet.weight === 0 ? 'BAR' : String(nextLastSet.weight));
+        setReps(String(nextLastSet.reps));
+      } else {
+        // Fallback: keep the same weight/reps from the set we just saved
+        setWeight(w === 0 ? 'BAR' : String(w));
+        setReps(String(r));
+      }
       weightRef.current?.focus();
     } catch (e) {
-      setInputError(e.message);
+      showToast(e.message);
     } finally {
       setSaving(false);
     }
@@ -128,20 +235,17 @@ export default function ExerciseScreen() {
         },
       } : prev);
     } catch (e) {
-      setInputError(e.message);
+      showToast(e.message);
     }
   };
 
-  const adjustRestTimer = (delta) => {
-    setRestTimer(prev => {
-      const next = Math.max(10, prev + delta);
-      setRestDuration(next);
-      localStorage.setItem('restDuration', String(next));
-      return next;
-    });
+  const handleFinish = () => {
+    // Cancel pending notification when leaving
+    if (userId > 0 && restEndTime) {
+      api.cancelRestTimer().catch(() => {});
+    }
+    goBack();
   };
-
-  const handleFinish = () => goBack();
 
   if (loading) {
     return (
@@ -155,7 +259,13 @@ export default function ExerciseScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-red-400/80 font-bebas tracking-wider p-5 text-center">{error}</div>
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
+          <div className="flex gap-3">
+            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={DARK_CARD_STYLE}>Back</button>
+            <button onClick={() => { setError(null); setLoading(true); window.location.reload(); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={DARK_CARD_STYLE}>Retry</button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -167,6 +277,9 @@ export default function ExerciseScreen() {
     <div className="min-h-screen relative pb-28 overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 px-5 pt-5 pb-28">
+
+      {/* Recovery banner */}
+      <RecoveryBanner recoveryData={recoveryData} />
 
       {/* Exercise header */}
       <div className="pt-2 mb-5">
@@ -185,7 +298,7 @@ export default function ExerciseScreen() {
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-white/60 rounded-full transition-all duration-300"
+              className="h-full bg-white/60 rounded-full transition-[width] duration-300 ease-out"
               style={{ width: `${pct}%` }}
             />
           </div>
@@ -199,32 +312,41 @@ export default function ExerciseScreen() {
 
       {/* Rest timer */}
       {restTimer !== null && (
-        <div
-          className="w-full rounded-2xl p-4 mb-4 backdrop-blur-sm"
+        <button
+          onClick={() => setRestEndTime(null)}
+          className="w-full rounded-2xl p-6 mb-4 text-center backdrop-blur-sm flex flex-col items-center"
           style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
         >
-          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-2 text-center">REST</div>
-          <div className="flex items-center justify-between gap-3">
-            <button
-              onClick={() => adjustRestTimer(-30)}
-              className="w-12 h-12 rounded-xl font-bebas tracking-wider text-sm text-white/45 active:text-white/80 transition-colors"
-              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.08)' }}
-            >
-              −30
-            </button>
-            <button onClick={() => setRestTimer(null)} className="flex-1 text-center">
-              <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
-              <div className="text-xs font-bebas text-white/25 mt-1">tap to skip</div>
-            </button>
-            <button
-              onClick={() => adjustRestTimer(30)}
-              className="w-12 h-12 rounded-xl font-bebas tracking-wider text-sm text-white/45 active:text-white/80 transition-colors"
-              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.08)' }}
-            >
-              +30
-            </button>
+          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-3">REST</div>
+          <div className="relative">
+            <svg width={120} height={120} className="transform -rotate-90">
+              <circle
+                cx={60}
+                cy={60}
+                r={52}
+                fill="none"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth={6}
+              />
+              <circle
+                cx={60}
+                cy={60}
+                r={52}
+                fill="none"
+                stroke="rgba(255,255,255,0.6)"
+                strokeWidth={6}
+                strokeLinecap="round"
+                strokeDasharray={326.7}
+                strokeDashoffset={326.7 - (1 - restTimer / REST_DURATION) * 326.7}
+                style={{ transition: 'stroke-dashoffset 1s linear' }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-4xl font-bebas text-white leading-none">{fmtTime(restTimer)}</span>
+            </div>
           </div>
-        </div>
+          <div className="text-xs font-bebas text-white/25 mt-3">tap to skip</div>
+        </button>
       )}
 
       {/* Last performance */}
@@ -282,28 +404,69 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
+      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
-        <div className="flex gap-3 mb-3">
-          <div className="flex-1">
-            <label className="text-xs mb-1 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+        
+        {/* Weight input with +/- buttons */}
+        <div className="mb-4">
+          <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (weight === 'BW') return;
+                if (weight === '' || weight === '0' || weight === 'BAR') { setWeight('BW'); return; }
+                const w = parseFloat(weight) || 0;
+                if (w <= 1.25) { setWeight('BAR'); return; }
+                if (w <= 2.5) { setWeight('1.25'); return; }
+                setWeight(String(w - 2.5));
+              }}
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              −
+            </button>
             <input
               ref={weightRef}
-              type="number"
+              type="text"
               inputMode="decimal"
-              step="0.5"
-              min="0"
               value={weight}
               onChange={e => { setWeight(e.target.value); setInputError(''); }}
-              placeholder="140"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              placeholder="0"
+              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
+            <button
+              onClick={() => {
+                if (weight === 'BW') { setWeight('BAR'); return; }
+                if (weight === 'BAR') { setWeight('1.25'); return; }
+                const w = parseFloat(weight) || 0;
+                if (w < 1.25) { setWeight('1.25'); return; }
+                if (w < 2.5) { setWeight('2.5'); return; }
+                setWeight(String(w + 2.5));
+              }}
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              +
+            </button>
           </div>
-          <div className="flex items-end pb-0.5 text-white/30 text-xl font-bebas">×</div>
-          <div className="flex-1">
-            <label className="text-xs mb-1 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+          <div className="text-[10px] text-white/35 font-sans mt-1.5">
+            Use BAR for bar only, BW for bodyweight
+          </div>
+        </div>
+
+        {/* Reps input with +/- buttons */}
+        <div className="mb-4">
+          <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setReps(r => String(Math.max(1, (parseInt(r) || 0) - 1)))}
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              −
+            </button>
             <input
               type="number"
               inputMode="numeric"
@@ -312,9 +475,16 @@ export default function ExerciseScreen() {
               max="100"
               value={reps}
               onChange={e => { setReps(e.target.value); setInputError(''); }}
-              placeholder="12"
-              className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              placeholder="0"
+              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
             />
+            <button
+              onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            >
+              +
+            </button>
           </div>
         </div>
 
@@ -332,7 +502,21 @@ export default function ExerciseScreen() {
               : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
           }
         >
-          {saving ? 'Saving…' : 'Save Set'}
+          {saving ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <Spinner size={20} />
+              Saving…
+            </span>
+          ) : justSaved ? (
+            <span className="inline-flex items-center justify-center gap-2 text-white/90">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              Saved
+            </span>
+          ) : (
+            'Save Set'
+          )}
         </button>
       </div>
 

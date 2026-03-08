@@ -130,3 +130,37 @@ input[type='number']::-webkit-outer-spin-button {
   background: white;
   box-shadow: 0 0 6px rgba(255,255,255,0.25), 0 1px 4px rgba(0,0,0,0.5);
 }
+
+/* ── Screen transitions (disabled — instant) ──────────── */
+.animate-slide-in-right {}
+.animate-slide-in-left {}
+
+/* ── Modal: fade + scale ───────────────────────────────── */
+@keyframes modal-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modal-content-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.modal-overlay {
+  animation: modal-overlay-in 250ms ease-out;
+}
+.modal-content {
+  animation: modal-content-in 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Toast: fade + slide down ───────────────────────────── */
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.toast {
+  animation: toast-in 220ms ease-out;
+}
+
+/* ── Body text: Georgia (serif) — clearly distinct from Bebas, no external loading ── */
+.font-sans {
+  font-family: Georgia, 'Times New Roman', serif !important;
+}

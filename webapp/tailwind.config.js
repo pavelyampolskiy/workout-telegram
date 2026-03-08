@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Bebas Neue"', 'cursive'],
+        sans: ['Georgia', '"Times New Roman"', 'serif'],
         bebas: ['"Bebas Neue"', 'cursive'],
       },
     },

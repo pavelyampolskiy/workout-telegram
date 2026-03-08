@@ -1,4 +1,6 @@
-import { useState, createContext, useContext, useEffect, useCallback, Component } from 'react';
+import { useState, createContext, useContext, useEffect, useCallback, useRef, Component } from 'react';
+import { useSwipeBack } from './hooks/useSwipeBack';
+import { Toast } from './components/Toast';
 
 import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
@@ -9,6 +11,8 @@ import HistoryScreen from './screens/HistoryScreen';
 import HistoryDetailScreen from './screens/HistoryDetailScreen';
 import StatsScreen from './screens/StatsScreen';
 import ProgressScreen from './screens/ProgressScreen';
+import AchievementsScreen from './screens/AchievementsScreen';
+import RecoveryCheckScreen from './screens/RecoveryCheckScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -23,6 +27,8 @@ const SCREENS = {
   'history-detail': HistoryDetailScreen,
   stats: StatsScreen,
   progress: ProgressScreen,
+  achievements: AchievementsScreen,
+  'recovery-check': RecoveryCheckScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen
@@ -64,6 +70,14 @@ export default function App() {
       return s ? JSON.parse(s) : null;
     } catch { return null; }
   });
+  const [recoveryData, setRecoveryData] = useState(null); // { score, modifier, timestamp }
+  const [direction, setDirection] = useState('none'); // 'forward', 'back', 'none'
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [toast, setToast] = useState(null);
+  const prevStackLength = useRef(1);
+
+  const showToast = useCallback((msg) => setToast(msg), []);
+  const dismissToast = useCallback(() => setToast(null), []);
 
   useEffect(() => {
     if (activeWorkout) {
@@ -76,6 +90,21 @@ export default function App() {
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;
 
+  // Track navigation direction
+  useEffect(() => {
+    if (stack.length > prevStackLength.current) {
+      setDirection('forward');
+      setIsAnimating(true);
+    } else if (stack.length < prevStackLength.current) {
+      setDirection('back');
+      setIsAnimating(true);
+    }
+    prevStackLength.current = stack.length;
+    
+    const timer = setTimeout(() => setIsAnimating(false), 300);
+    return () => clearTimeout(timer);
+  }, [stack.length]);
+
   useEffect(() => {
     try {
       const tg = window.Telegram?.WebApp;
@@ -83,17 +112,37 @@ export default function App() {
         tg.ready();
         try { tg.expand(); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
-        setUserId(uid ? Number(uid) : 0);
+        if (uid) {
+          setUserId(Number(uid));
+        } else {
+          // Generate unique negative ID for non-Telegram users
+          let localId = localStorage.getItem('local_user_id');
+          if (!localId) {
+            localId = String(-Math.floor(Date.now() / 1000));
+            localStorage.setItem('local_user_id', localId);
+          }
+          setUserId(parseInt(localId));
+        }
       } else {
-        setUserId(parseInt(localStorage.getItem('test_uid') || '1'));
+        // PWA or browser mode
+        let localId = localStorage.getItem('local_user_id');
+        if (!localId) {
+          localId = String(-Math.floor(Date.now() / 1000));
+          localStorage.setItem('local_user_id', localId);
+        }
+        setUserId(parseInt(localId));
       }
     } catch (e) {
-      setUserId(1);
+      setUserId(-1);
     }
   }, []);
 
   const navigate = useCallback((screen, params = {}) => {
     setStack(prev => [...prev, { screen, params }]);
+  }, []);
+
+  const replace = useCallback((screen, params = {}) => {
+    setStack(prev => [...prev.slice(0, -1), { screen, params }]);
   }, []);
 
   const goBack = useCallback(() => {
@@ -121,6 +170,9 @@ export default function App() {
     } catch (_) {}
   }, [stack.length, goBack]);
 
+  // Swipe-back gesture (swipe from left edge to go back)
+  useSwipeBack(goBack, stack.length > 1);
+
   if (userId === null) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center text-white/40 font-bebas tracking-wider">
@@ -134,17 +186,33 @@ export default function App() {
       value={{
         userId,
         navigate,
+        replace,
         goBack,
         resetTo,
         params: current.params,
         activeWorkout,
         setActiveWorkout,
+        recoveryData,
+        setRecoveryData,
+        showToast,
       }}
     >
-      <div className="min-h-screen bg-black text-white max-w-lg mx-auto">
-        <ErrorBoundary key={current.screen}>
-          <Screen />
-        </ErrorBoundary>
+      <div className="min-h-screen bg-black text-white max-w-lg mx-auto overflow-hidden">
+        <Toast message={toast} onClose={dismissToast} visible={!!toast} />
+        <div
+          key={current.screen}
+          className={`min-h-screen bg-black ${
+            isAnimating
+              ? direction === 'forward'
+                ? 'animate-slide-in-right'
+                : 'animate-slide-in-left'
+              : ''
+          }`}
+        >
+          <ErrorBoundary>
+            <Screen />
+          </ErrorBoundary>
+        </div>
       </div>
     </AppCtx.Provider>
   );
