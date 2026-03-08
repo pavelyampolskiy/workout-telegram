@@ -30,6 +30,7 @@ export default function ExerciseScreen() {
   const [restDuration, setRestDuration] = useState(() =>
     parseInt(localStorage.getItem('restDuration') || '90')
   );
+  const [showPR, setShowPR] = useState(false);
 
   const weightRef = useRef(null);
 
@@ -82,7 +83,16 @@ export default function ExerciseScreen() {
       const { id } = await api.addSet(exDbId, w, r);
       const updated = [...sets, { id, set_number: sets.length + 1, weight: w, reps: r }];
       setSets(updated);
-      window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+
+      // Check for personal record
+      const prevMax = Math.max(0, ...lastSets.map(s => s.weight), ...sets.map(s => s.weight));
+      if (w > prevMax) {
+        setShowPR(true);
+        setTimeout(() => setShowPR(false), 2700);
+        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+      } else {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      }
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
       setRestTimer(restDuration);
@@ -233,6 +243,19 @@ export default function ExerciseScreen() {
                 {fmtW(s.weight)}×{s.reps}
               </span>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* PR banner */}
+      {showPR && (
+        <div className="pr-banner w-full rounded-2xl px-4 py-3 mb-4 flex items-center gap-3"
+          style={{ background: 'linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,215,0,0.25)', boxShadow: '0 0 20px rgba(255,215,0,0.08)' }}
+        >
+          <span className="text-2xl leading-none">🏆</span>
+          <div>
+            <div className="font-bebas tracking-wider text-base" style={{ color: 'rgba(255,215,0,0.90)' }}>New Record!</div>
+            <div className="font-bebas tracking-wider text-xs text-white/35">Personal best weight</div>
           </div>
         </div>
       )}

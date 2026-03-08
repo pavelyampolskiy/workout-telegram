@@ -4,12 +4,21 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { CARD_BTN_STYLE } from '../shared';
 
+const CHIPS = ['Running', 'Cycling', 'Elliptical', 'Swimming', 'Walking', 'Jump rope', 'Rowing'];
+
 export default function CardioScreen() {
   const { userId, resetTo } = useApp();
   const [workoutId, setWorkoutId] = useState(null);
   const [text, setText] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+
+  const appendChip = (chip) => {
+    setText(prev => {
+      const base = prev.trimEnd();
+      return base ? `${base}, ${chip} ` : `${chip} `;
+    });
+  };
 
   useEffect(() => {
     api.createWorkout('CARDIO')
@@ -48,12 +57,25 @@ export default function CardioScreen() {
           <p className="font-sans text-white/25 text-xs mt-1">Describe your session</p>
         </div>
 
+        {/* Activity chips */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {CHIPS.map(chip => (
+            <button
+              key={chip}
+              onClick={() => appendChip(chip)}
+              className="px-3 py-1.5 rounded-xl font-bebas tracking-wider text-sm text-white/55 active:text-white/90 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.10)' }}
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
+
         <textarea
           value={text}
           onChange={e => setText(e.target.value)}
-          placeholder="E.g. Running 30 min, 5 km"
-          className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-36 outline-none text-sm font-sans focus:border-white/20"
-          autoFocus
+          placeholder="E.g. Running 30 min, 5 km, avg pace 6:00/km"
+          className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-32 outline-none text-sm font-sans focus:border-white/20"
         />
 
         <button
