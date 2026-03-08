@@ -82,8 +82,20 @@ function StatusWidget({ userId }) {
   );
 }
 
+const RESUME_CARD_STYLE = {
+  background: 'linear-gradient(180deg, rgba(255,255,255,0.11) 0%, transparent 100%) rgba(0,0,0,0.15)',
+  border: '1px solid rgba(255,255,255,0.28)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.35), 0 0 28px rgba(255,255,255,0.10)',
+};
+
+const ResumeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+    <polygon points="5 3 19 12 5 21 5 3"/>
+  </svg>
+);
+
 export default function HomeScreen() {
-  const { navigate, userId } = useApp();
+  const { navigate, userId, activeWorkout } = useApp();
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -112,6 +124,26 @@ export default function HomeScreen() {
 
         {/* Status widget */}
         <StatusWidget userId={userId} />
+
+        {/* Resume banner — shown when a workout was interrupted */}
+        {activeWorkout && (
+          <button
+            onClick={() => navigate('day', { day: activeWorkout.day })}
+            className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4 mt-4"
+            style={RESUME_CARD_STYLE}
+          >
+            <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white/82">
+              <ResumeIcon />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="font-bebas tracking-wider text-lg text-white/92">
+                Continue {activeWorkout.day.replace('DAY_', 'Day ')}
+              </div>
+              <div className="font-bebas tracking-wider text-xs text-white/40">Workout in progress</div>
+            </div>
+            <span className="text-xl shrink-0 text-white/35">›</span>
+          </button>
+        )}
 
         {/* Push cards to bottom */}
         <div className="flex-1" />

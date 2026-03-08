@@ -18,6 +18,12 @@ export default function DayScreen() {
   const [saving, setSaving] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [durationMin, setDurationMin] = useState(null);
+  const [customExercises, setCustomExercises] = useState(activeWorkout?.customExercises || []);
+  const [showAddExercise, setShowAddExercise] = useState(false);
+  const [newExName, setNewExName] = useState('');
+  const [newExSets, setNewExSets] = useState('3');
+  const [addingEx, setAddingEx] = useState(false);
+  const [addExError, setAddExError] = useState('');
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
@@ -84,6 +90,49 @@ export default function DayScreen() {
       setSaving(false);
       setError(e.message);
     }
+  };
+
+  const handleAddExercise = async () => {
+    const name = newExName.trim();
+    if (!name) { setAddExError('Enter exercise name'); return; }
+    const targetSets = Math.max(1, parseInt(newExSets) || 3);
+    setAddingEx(true);
+    setAddExError('');
+    try {
+      const exKey = `c${customExercises.length}`;
+      const { id: dbId } = await api.createExercise(workoutId, 'Custom', name, targetSets);
+      const newEx = { name, group: 'Custom', target_sets: targetSets, dbId };
+      const updated = [...customExercises, newEx];
+      setCustomExercises(updated);
+      setActiveWorkout(prev => ({
+        ...prev,
+        customExercises: updated,
+        exerciseMap: { ...prev?.exerciseMap, [exKey]: { dbId, setsCount: 0 } },
+      }));
+      setShowAddExercise(false);
+      setNewExName('');
+      setNewExSets('3');
+    } catch (e) {
+      setAddExError(e.message);
+    } finally {
+      setAddingEx(false);
+    }
+  };
+
+  const handleCustomExerciseTap = async (idx) => {
+    const exKey = `c${idx}`;
+    const ex = customExercises[idx];
+    if (!workoutId) return;
+    let exDbId = exerciseMap[exKey]?.dbId ?? ex.dbId;
+    if (!exDbId) {
+      const { id } = await api.createExercise(workoutId, ex.group, ex.name, ex.target_sets);
+      exDbId = id;
+      setActiveWorkout(prev => ({
+        ...prev,
+        exerciseMap: { ...prev?.exerciseMap, [exKey]: { dbId: id, setsCount: 0 } },
+      }));
+    }
+    navigate('exercise', { exKey, exDbId, workoutId, day, customEx: ex });
   };
 
   const handleCancel = async () => {
@@ -234,6 +283,69 @@ export default function DayScreen() {
             </button>
           );
         })}
+
+        {/* Custom exercises */}
+        {customExercises.map((ex, idx) => {
+          const exKey = `c${idx}`;
+          const info = exerciseMap[exKey];
+          const done = info?.setsCount || 0;
+          const total = ex.target_sets;
+          const complete = done >= total;
+          return (
+            <button
+              key={exKey}
+              onClick={() => handleCustomExerciseTap(idx)}
+              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
+            >
+              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+                +
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-white' : 'text-white/80'}`}>
+                  {ex.name}
+                </div>
+                <div className="text-white/30 text-xs mt-1">Custom</div>
+                {done > 0 && (
+                  <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
+                    <div
+                      className={`h-full rounded-full transition-all ${complete ? 'bg-white/80' : 'bg-white/60'}`}
+                      style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="shrink-0 flex flex-col items-end gap-1">
+                {done > 0 && (
+                  <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
+                    {done}/{total}
+                  </span>
+                )}
+                {!done && (
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
+                    <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
+                  </div>
+                )}
+                {complete ? (
+                  <span className="text-white/70 text-lg">✓</span>
+                ) : (
+                  <span className="text-white/20 text-lg">›</span>
+                )}
+              </div>
+            </button>
+          );
+        })}
+
+        {/* Add Exercise button */}
+        <button
+          onClick={() => setShowAddExercise(true)}
+          className="w-full rounded-2xl p-4 text-left flex items-center gap-3 active:opacity-70 transition-opacity"
+          style={{ border: '1px dashed rgba(255,255,255,0.15)' }}
+        >
+          <span className="w-7 h-7 rounded-full border border-dashed border-white/20 flex items-center justify-center text-white/30 text-lg leading-none shrink-0">+</span>
+          <span className="font-bebas tracking-wider text-sm text-white/30">Add Exercise</span>
+        </button>
       </div>
 
       {/* Fixed bottom button */}
@@ -246,6 +358,46 @@ export default function DayScreen() {
           Save Workout
         </button>
       </div>
+
+      {/* Add Exercise modal */}
+      {showAddExercise && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70" onClick={() => setShowAddExercise(false)}>
+          <div className="w-full max-w-lg bg-black/95 border border-white/10 rounded-t-2xl p-5 pb-8" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
+            <div className="mb-3">
+              <label className="text-xs font-bebas text-white/45 mb-1 block">Exercise name</label>
+              <input
+                autoFocus
+                value={newExName}
+                onChange={e => { setNewExName(e.target.value); setAddExError(''); }}
+                placeholder="E.g. Cable Fly"
+                className="w-full bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/20 outline-none font-bebas tracking-wider text-lg focus:border-white/22"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="text-xs font-bebas text-white/45 mb-1 block">Target sets</label>
+              <input
+                type="number"
+                inputMode="numeric"
+                min="1"
+                max="20"
+                value={newExSets}
+                onChange={e => setNewExSets(e.target.value)}
+                className="w-24 bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white outline-none font-bebas tracking-wider text-lg text-center focus:border-white/22"
+              />
+            </div>
+            {addExError && <div className="text-xs font-bebas text-red-400/80 mb-3">{addExError}</div>}
+            <button
+              onClick={handleAddExercise}
+              disabled={addingEx || !newExName.trim()}
+              className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl disabled:opacity-40"
+              style={CARD_BTN_STYLE}
+            >
+              {addingEx ? 'Adding…' : 'Add'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Cancel confirmation modal */}
       {showCancelConfirm && (

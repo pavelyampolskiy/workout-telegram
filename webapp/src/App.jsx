@@ -58,7 +58,20 @@ class ErrorBoundary extends Component {
 export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
-  const [activeWorkout, setActiveWorkout] = useState(null);
+  const [activeWorkout, setActiveWorkout] = useState(() => {
+    try {
+      const s = localStorage.getItem('activeWorkout');
+      return s ? JSON.parse(s) : null;
+    } catch { return null; }
+  });
+
+  useEffect(() => {
+    if (activeWorkout) {
+      localStorage.setItem('activeWorkout', JSON.stringify(activeWorkout));
+    } else {
+      localStorage.removeItem('activeWorkout');
+    }
+  }, [activeWorkout]);
 
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;

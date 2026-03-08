@@ -4,15 +4,15 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { fmtW, DARK_CARD_STYLE } from '../shared';
 
-const REST_DURATION = 90;
-
 function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
 export default function ExerciseScreen() {
   const { params, goBack, setActiveWorkout } = useApp();
-  const { exIdx, exDbId, workoutId, day, userId } = params;
+  // exKey is used for custom exercises (e.g. "c0"), exIdx for program exercises
+  const { exIdx, exKey: exKeyParam, exDbId, workoutId, day, customEx } = params;
+  const exMapKey = exKeyParam ?? exIdx;
 
   const [program, setProgram] = useState(null);
   const [sets, setSets] = useState([]);
@@ -27,6 +27,9 @@ export default function ExerciseScreen() {
   const [justSaved, setJustSaved] = useState(false);
   const [inputError, setInputError] = useState('');
   const [restTimer, setRestTimer] = useState(null);
+  const [restDuration, setRestDuration] = useState(() =>
+    parseInt(localStorage.getItem('restDuration') || '90')
+  );
 
   const weightRef = useRef(null);
 
@@ -34,11 +37,11 @@ export default function ExerciseScreen() {
     async function init() {
       try {
         const [prog, setsData, lastData] = await Promise.all([
-          api.getProgram(),
+          customEx ? Promise.resolve(null) : api.getProgram(),
           api.getSets(exDbId),
           api.getLastExercise(exDbId, workoutId),
         ]);
-        setProgram(prog[day][exIdx]);
+        setProgram(customEx ?? prog[day][exIdx]);
         setSets(setsData);
         setLastDate(lastData.date);
         setLastSets(lastData.sets);
@@ -82,12 +85,12 @@ export default function ExerciseScreen() {
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      setRestTimer(REST_DURATION);
+      setRestTimer(restDuration);
       setActiveWorkout(prev => prev ? {
         ...prev,
         exerciseMap: {
           ...prev.exerciseMap,
-          [exIdx]: { dbId: exDbId, setsCount: updated.length },
+          [exMapKey]: { dbId: exDbId, setsCount: updated.length },
         },
       } : prev);
       setWeight('');
@@ -111,12 +114,21 @@ export default function ExerciseScreen() {
         ...prev,
         exerciseMap: {
           ...prev.exerciseMap,
-          [exIdx]: { dbId: exDbId, setsCount: updated.length },
+          [exMapKey]: { dbId: exDbId, setsCount: updated.length },
         },
       } : prev);
     } catch (e) {
       setInputError(e.message);
     }
+  };
+
+  const adjustRestTimer = (delta) => {
+    setRestTimer(prev => {
+      const next = Math.max(10, prev + delta);
+      setRestDuration(next);
+      localStorage.setItem('restDuration', String(next));
+      return next;
+    });
   };
 
   const handleFinish = () => goBack();
@@ -177,15 +189,32 @@ export default function ExerciseScreen() {
 
       {/* Rest timer */}
       {restTimer !== null && (
-        <button
-          onClick={() => setRestTimer(null)}
-          className="w-full rounded-2xl p-4 mb-4 text-center backdrop-blur-sm"
+        <div
+          className="w-full rounded-2xl p-4 mb-4 backdrop-blur-sm"
           style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
         >
-          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-0.5">REST</div>
-          <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
-          <div className="text-xs font-bebas text-white/25 mt-1.5">tap to skip</div>
-        </button>
+          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-2 text-center">REST</div>
+          <div className="flex items-center justify-between gap-3">
+            <button
+              onClick={() => adjustRestTimer(-30)}
+              className="w-12 h-12 rounded-xl font-bebas tracking-wider text-sm text-white/45 active:text-white/80 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              −30
+            </button>
+            <button onClick={() => setRestTimer(null)} className="flex-1 text-center">
+              <div className="text-5xl font-bebas text-white leading-none">{fmtTime(restTimer)}</div>
+              <div className="text-xs font-bebas text-white/25 mt-1">tap to skip</div>
+            </button>
+            <button
+              onClick={() => adjustRestTimer(30)}
+              className="w-12 h-12 rounded-xl font-bebas tracking-wider text-sm text-white/45 active:text-white/80 transition-colors"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              +30
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Last performance */}
