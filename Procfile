@@ -1,1 +1,1 @@
-web: python workout_bot/bot.py
+web: cd workout_bot && python bot.py
