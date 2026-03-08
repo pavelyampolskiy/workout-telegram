@@ -115,7 +115,7 @@ const ACHIEVEMENT_CATEGORY_ICONS = {
   ),
   weekly_streak: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      <path d="M12 22c-4.97 0-9-2.69-9-6 0-3.5 2.64-6.33 4-8 .35 2.65 2.8 4.5 4 4 1.2-.5.7-3.7.7-3.7S15 10.5 15 14c0 1.5-.5 2.8-1.5 3.5 1-.3 2.5-1.6 3-3 .5 1 1.5 2.5 1.5 4.5 0 3-4.03 3-6 3z"/>
     </svg>
   ),
 };
