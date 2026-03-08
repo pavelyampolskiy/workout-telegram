@@ -5,7 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { CARD_BTN_STYLE } from '../shared';
 
-const CHIPS = ['Running', 'Cycling', 'Elliptical', 'Swimming', 'Walking', 'Jump rope', 'Rowing'];
+const CHIPS = ['Бег', 'Велосипед', 'Эллипсоид', 'Плавание', 'Ходьба', 'Скакалка', 'Гребля'];
 
 function fmtTimer(s) {
   const m = Math.floor(s / 60);
@@ -180,7 +180,7 @@ export default function CardioScreen() {
         <textarea
           value={text}
           onChange={e => setText(e.target.value)}
-          placeholder="E.g. Running 30 min, 5 km, avg pace 6:00/km"
+          placeholder="Напр.: Бег 30 мин, 5 км, темп 6:00/км"
           className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-32 outline-none text-sm font-sans focus:border-white/20"
         />
 
