@@ -99,8 +99,7 @@ const ACHIEVEMENT_CATEGORY_ICONS = {
   ),
   workouts: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <path d="M2 17l3-7 5 4 2-10 2 10 5-4 3 7H2z"/>
-      <path d="M2 17h20v4H2z"/>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
     </svg>
   ),
   weekly: (
