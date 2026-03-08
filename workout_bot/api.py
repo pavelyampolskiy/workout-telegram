@@ -295,3 +295,13 @@ def get_progress(exercise_name: str, limit: int = Query(8, ge=1, le=50),
                  user_id: int = Depends(get_current_user)):
     rows = db_ops.get_exercise_progress(user_id, exercise_name, limit)
     return [{"date": r["date"], "max_weight": r["max_weight"]} for r in rows]
+
+
+# ── Serve React frontend (must be last) ───────────────────────────────────────
+
+import os
+from fastapi.staticfiles import StaticFiles
+
+_dist = os.path.join(os.path.dirname(__file__), '..', 'webapp', 'dist')
+if os.path.exists(_dist):
+    app.mount('/', StaticFiles(directory=_dist, html=True), name='spa')
