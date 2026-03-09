@@ -57,6 +57,9 @@ export default function CardioScreen() {
   const autosaveRef = useRef(null);
   const workoutIdRef = useRef(null);
   const formDataRef = useRef({ activity, distance, unit, pace, heartRate, notes });
+  const pendingStartRef = useRef(false);
+
+  const [countdown, setCountdown] = useState(null); // null | 'READY' | 3 | 2 | 1 | 'GO'
 
   // Keep refs in sync
   useEffect(() => { workoutIdRef.current = workoutId; }, [workoutId]);
@@ -125,14 +128,38 @@ export default function CardioScreen() {
     }, 1500);
   }, [activity, distance, unit, pace, heartRate, notes, started]);
 
+  // Countdown sequence: READY (1s) → 3 → 2 → 1 → GO (0.75s) → null → start session
+  useEffect(() => {
+    if (countdown === null) {
+      if (pendingStartRef.current) {
+        pendingStartRef.current = false;
+        setRunningFrom(Date.now());
+        setStarted(true);
+      }
+      return;
+    }
+    if (countdown === 'READY') {
+      const t = setTimeout(() => setCountdown(3), 1000);
+      return () => clearTimeout(t);
+    }
+    if (countdown === 'GO') {
+      try { window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success'); } catch (_) {}
+      const t = setTimeout(() => setCountdown(null), 750);
+      return () => clearTimeout(t);
+    }
+    try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('heavy'); } catch (_) {}
+    const t = setTimeout(() => setCountdown(prev => prev === 1 ? 'GO' : prev - 1), 1000);
+    return () => clearTimeout(t);
+  }, [countdown]);
+
   const handleStart = async () => {
     try {
       const { id } = await api.createWorkout('CARDIO');
       setWorkoutId(id);
       setPausedElapsed(0);
-      setRunningFrom(Date.now());
-      setStarted(true);
       setPaused(false);
+      pendingStartRef.current = true;
+      setCountdown('READY');
     } catch (e) {
       showToast(e.message);
     }
@@ -188,6 +215,47 @@ export default function CardioScreen() {
       <div className="min-h-screen relative">
         <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
+      </div>
+    );
+  }
+
+  // Countdown overlay
+  if (countdown !== null) {
+    const isReady = countdown === 'READY';
+    const isGo = countdown === 'GO';
+    return (
+      <div className="min-h-screen relative overflow-hidden" style={{ background: '#060606' }}>
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/88" fixed />
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none">
+          {isReady ? (
+            <>
+              <p className="cd-ready font-bebas tracking-widest text-white/30 text-sm mb-3 uppercase">
+                Cardio
+              </p>
+              <div
+                key="ready-text"
+                className="cd-ready font-bebas text-white"
+                style={{ fontSize: '22vw', lineHeight: 1, letterSpacing: '0.06em' }}
+              >
+                Ready?
+              </div>
+            </>
+          ) : (
+            <div
+              key={String(countdown)}
+              className={isGo ? 'cd-go' : 'cd-num'}
+              style={{
+                fontFamily: "'Bebas Neue', cursive",
+                fontSize: isGo ? '30vw' : '52vw',
+                lineHeight: 1,
+                color: 'white',
+                letterSpacing: isGo ? '0.08em' : '-0.02em',
+              }}
+            >
+              {isGo ? 'GO!' : countdown}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
