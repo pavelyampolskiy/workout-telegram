@@ -369,15 +369,20 @@ export default function ExerciseScreen() {
         </div>
       )}
 
-      {/* PR banner */}
+      {/* PR banner — floating at top so it's always visible */}
       {showPR && (
-        <div className="pr-banner w-full rounded-2xl px-4 py-3 mb-4 flex items-center gap-3"
-          style={{ background: 'linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(255,255,255,0.06) 100%)', border: '1px solid rgba(255,215,0,0.25)', boxShadow: '0 0 20px rgba(255,215,0,0.08)' }}
+        <div
+          className="pr-banner fixed top-4 left-4 right-4 max-w-lg mx-auto z-50 rounded-2xl px-4 py-3 flex items-center gap-3"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20,15,0,0.95) 0%, rgba(30,20,0,0.95) 100%)',
+            border: '1px solid rgba(255,215,0,0.40)',
+            boxShadow: '0 0 32px rgba(255,215,0,0.18), 0 4px 24px rgba(0,0,0,0.6)',
+          }}
         >
           <span className="text-2xl leading-none">🏆</span>
-          <div>
-            <div className="font-bebas tracking-wider text-base" style={{ color: 'rgba(255,215,0,0.90)' }}>New Record!</div>
-            <div className="font-bebas tracking-wider text-xs text-white/35">Personal best weight</div>
+          <div className="flex-1">
+            <div className="font-bebas tracking-wider text-base" style={{ color: 'rgba(255,215,0,0.95)' }}>Новый рекорд!</div>
+            <div className="font-bebas tracking-wider text-xs text-white/40">Лучший вес в этом упражнении</div>
           </div>
         </div>
       )}
