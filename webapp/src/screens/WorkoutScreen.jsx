@@ -68,7 +68,7 @@ function DayCard({ day, onPress, editMode, onRename, onDelete }) {
 }
 
 export default function WorkoutScreen() {
-  const { navigate, userId, showToast } = useApp();
+  const { navigate, userId, showToast, activeWorkout, setActiveWorkout } = useApp();
   const [days, setDays] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -78,6 +78,7 @@ export default function WorkoutScreen() {
   const [renameLabel, setRenameLabel] = useState('');
   const [deletingDay, setDeletingDay] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [conflictDay, setConflictDay] = useState(null); // day user is trying to start when another is active
   const inputRef = useRef(null);
   const renameRef = useRef(null);
 
@@ -141,6 +142,34 @@ export default function WorkoutScreen() {
     }
   };
 
+  const handleDayPress = (day) => {
+    if (activeWorkout && activeWorkout.day !== day.key) {
+      setConflictDay({ key: day.key, label: day.label });
+    } else {
+      navigate('day', { day: day.key, dayLabel: day.label });
+    }
+  };
+
+  const handleCancelAndStart = async () => {
+    setBusy(true);
+    try {
+      await api.deleteWorkout(activeWorkout.id);
+      setActiveWorkout(null);
+      navigate('day', { day: conflictDay.key, dayLabel: conflictDay.label });
+      setConflictDay(null);
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleContinueWorkout = () => {
+    const activeDay = days?.find(d => d.key === activeWorkout?.day);
+    navigate('day', { day: activeWorkout.day, dayLabel: activeDay?.label || activeWorkout.day });
+    setConflictDay(null);
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg overlay="bg-black/60" />
@@ -170,7 +199,7 @@ export default function WorkoutScreen() {
                     key={day.id}
                     day={day}
                     editMode={editMode}
-                    onPress={() => navigate('day', { day: day.key, dayLabel: day.label })}
+                    onPress={() => handleDayPress(day)}
                     onRename={(d) => { setRenamingDay(d); setRenameLabel(d.label); }}
                     onDelete={(d) => setDeletingDay(d)}
                   />
@@ -285,6 +314,41 @@ export default function WorkoutScreen() {
                     >
                       {busy ? <Spinner size={14} /> : 'Delete'}
                     </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Conflict modal: already have an active workout */}
+              {conflictDay && activeWorkout && (
+                <div className="fixed inset-0 z-50 flex items-end justify-center p-4 pb-8" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+                  <div className="w-full max-w-sm rounded-2xl p-5" style={{
+                    background: 'rgba(18,18,20,0.97)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.6)',
+                  }}>
+                    <h3 className="font-bebas text-xl tracking-wider text-white/90 mb-1">Workout Already Active</h3>
+                    <p className="text-sm text-white/50 mb-1 font-sans">
+                      You already started <span className="text-white/80">{days?.find(d => d.key === activeWorkout.day)?.label || activeWorkout.day}</span>.
+                    </p>
+                    <p className="text-sm text-white/40 mb-5 font-sans">
+                      To start <span className="text-white/70">{conflictDay.label}</span> you need to cancel the current workout first.
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={handleContinueWorkout}
+                        className="w-full card-press rounded-xl py-3 font-bebas tracking-wider text-sm text-white/90"
+                        style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+                      >
+                        Continue {days?.find(d => d.key === activeWorkout.day)?.label || activeWorkout.day}
+                      </button>
+                      <button
+                        onClick={handleCancelAndStart}
+                        disabled={busy}
+                        className="w-full rounded-xl py-3 font-bebas tracking-wider text-sm text-red-400/80 active:text-red-400 disabled:opacity-50 flex items-center justify-center gap-2"
+                      >
+                        {busy ? <Spinner size={14} /> : `Cancel & Start ${conflictDay.label}`}
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
