@@ -8,6 +8,7 @@ import { CARD_BTN_STYLE } from '../shared';
 const ACTIVITIES = ['Running', 'Cycling', 'Elliptical', 'Swimming', 'Walking', 'Jump Rope', 'Rowing'];
 
 function fmtTimer(s) {
+  if (!isFinite(s) || s < 0) s = 0;
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);
   const sec = s % 60;
@@ -82,10 +83,12 @@ export default function CardioScreen() {
       .then(data => {
         if (data.workout && data.workout.type === 'CARDIO') {
           setWorkoutId(data.workout.id);
-          const created = data.workout.created_at
-            ? new Date(data.workout.created_at.replace(' ', 'T') + 'Z').getTime()
-            : Date.now();
-          const initElapsed = Math.floor((Date.now() - created) / 1000);
+          const normalized = data.workout.created_at
+            ? data.workout.created_at.replace(' ', 'T').replace(/(\.\d+)?$/, 'Z')
+            : null;
+          const createdMs = normalized ? new Date(normalized).getTime() : NaN;
+          const created = isNaN(createdMs) ? Date.now() : createdMs;
+          const initElapsed = Math.max(0, Math.floor((Date.now() - created) / 1000));
           setPausedElapsed(initElapsed);
           setRunningFrom(Date.now());
           setStarted(true);
