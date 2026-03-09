@@ -54,7 +54,6 @@ export default function HistoryScreen() {
   const [filterLoading, setFilterLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [activeFilter, setActiveFilter] = useState(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
@@ -108,21 +107,6 @@ export default function HistoryScreen() {
     setLoadingMore(false);
   };
 
-  const handleDeleteAll = async () => {
-    setDeleting(true);
-    try {
-      await api.deleteAllHistory();
-      setItems([]);
-      setHasMore(false);
-      setOffset(0);
-    } catch (e) {
-      setError(e.message);
-      showToast(e.message);
-    } finally {
-      setDeleting(false);
-      setShowDeleteConfirm(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -265,44 +249,7 @@ export default function HistoryScreen() {
           </div>
         )}
 
-        {/* Delete all — only when there's something to delete */}
-        {items.length > 0 && (
-          <div className="mt-10 mb-6 flex justify-center">
-            <button
-              onClick={() => setShowDeleteConfirm(true)}
-              className="font-sans text-white/25 text-xs active:text-white/50 transition-colors"
-            >
-              Delete all history
-            </button>
-          </div>
-        )}
       </div>
-
-      {/* Delete confirmation modal */}
-      {showDeleteConfirm && (
-        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
-            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Delete all history?</h3>
-            <p className="text-sm text-white/40 mb-6 font-sans">All workouts will be permanently removed.</p>
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
-                style={CARD_BTN_STYLE}
-              >
-                Keep history
-              </button>
-              <button
-                onClick={handleDeleteAll}
-                disabled={deleting}
-                className="w-full text-white/45 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors"
-              >
-                {deleting ? 'Deleting…' : 'Delete all'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
