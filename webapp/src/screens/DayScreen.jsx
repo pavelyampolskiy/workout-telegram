@@ -64,6 +64,10 @@ export default function DayScreen() {
           setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
           isNewWorkout.current = true;
         } else {
+          // Patch missing startedAt for workouts created before this feature
+          if (!activeWorkout.startedAt) {
+            setActiveWorkout(prev => ({ ...prev, startedAt: Date.now() }));
+          }
           // Verify workout still exists in DB (guards against stale localStorage)
           let workoutData = null;
           try {
