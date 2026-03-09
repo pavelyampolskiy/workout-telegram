@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -27,6 +27,7 @@ export default function DayScreen() {
   const [addingEx, setAddingEx] = useState(false);
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [countdown, setCountdown] = useState(null); // null | 3 | 2 | 1 | 'GO'
+  const isNewWorkout = useRef(false);
 
   const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
@@ -44,6 +45,7 @@ export default function DayScreen() {
         if (!activeWorkout || activeWorkout.day !== day) {
           const { id } = await api.createWorkout(day);
           setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
+          isNewWorkout.current = true;
         } else {
           // Verify workout still exists in DB (guards against stale localStorage)
           let workoutData = null;
@@ -84,9 +86,9 @@ export default function DayScreen() {
     init();
   }, [retryTrigger]);
 
-  // Start countdown when loading finishes — show READY first
+  // Start countdown only for a brand-new workout, not when returning from an exercise
   useEffect(() => {
-    if (!loading && !error) setCountdown('READY');
+    if (!loading && !error && isNewWorkout.current) setCountdown('READY');
   }, [loading, error]);
 
   // Sequence: READY (1s) → 3 → 2 → 1 → GO (0.75s) → null
