@@ -27,7 +27,24 @@ export default function DayScreen() {
   const [addingEx, setAddingEx] = useState(false);
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [countdown, setCountdown] = useState(null); // null | 3 | 2 | 1 | 'GO'
+  const [elapsed, setElapsed] = useState(0);
   const isNewWorkout = useRef(false);
+
+  useEffect(() => {
+    if (!activeWorkout?.startedAt) return;
+    const update = () => setElapsed(Math.floor((Date.now() - activeWorkout.startedAt) / 1000));
+    update();
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
+  }, [activeWorkout?.startedAt]);
+
+  const formatElapsed = (secs) => {
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+    if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
 
   const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
@@ -338,6 +355,7 @@ export default function DayScreen() {
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
         <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
+        <span className="font-bebas text-white/45 tracking-wider text-xl tabular-nums">{formatElapsed(elapsed)}</span>
         <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors">
           Cancel
         </button>
