@@ -421,7 +421,7 @@ def update_note(workout_id: int, body: TextBody, user_id: int = Depends(get_curr
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/stats")
-def get_stats(days: int = Query(7, ge=1, le=365), user_id: int = Depends(get_current_user)):
+def get_stats(days: int = Query(7, ge=0, le=365), user_id: int = Depends(get_current_user)):
     since = date.today() - timedelta(days=days)
     total, by_type = db_ops.stats_period(user_id, since)
     return {"total": total, "by_type": by_type}
