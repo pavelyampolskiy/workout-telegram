@@ -153,12 +153,12 @@ export default function WorkoutScreen() {
   const handleCancelAndStart = async () => {
     setBusy(true);
     try {
-      await api.deleteWorkout(activeWorkout.id);
+      if (activeWorkout?.id) {
+        await api.deleteWorkout(activeWorkout.id).catch(() => {});
+      }
       setActiveWorkout(null);
       navigate('day', { day: conflictDay.key, dayLabel: conflictDay.label });
       setConflictDay(null);
-    } catch (e) {
-      showToast(e.message);
     } finally {
       setBusy(false);
     }
