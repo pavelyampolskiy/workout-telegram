@@ -84,7 +84,7 @@ export default function CardioScreen() {
         if (data.workout && data.workout.type === 'CARDIO') {
           setWorkoutId(data.workout.id);
           const normalized = data.workout.created_at
-            ? data.workout.created_at.replace(' ', 'T').replace(/(\.\d+)?$/, 'Z')
+            ? data.workout.created_at.replace(' ', 'T')
             : null;
           const createdMs = normalized ? new Date(normalized).getTime() : NaN;
           const created = isNaN(createdMs) ? Date.now() : createdMs;
