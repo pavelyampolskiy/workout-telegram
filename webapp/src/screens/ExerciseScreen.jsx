@@ -166,7 +166,7 @@ export default function ExerciseScreen() {
   const target = ex?.target_sets || 4;
 
   const handleSaveSet = async () => {
-    const w = (weight === 'BW' || weight === 'BAR') ? 0 : parseFloat(weight);
+    const w = (weight === 'BW' || weight === 'BAR') ? 0 : parseFloat(weight.replace(',', '.'));
     const r = parseInt(reps);
     if (weight !== 'BW' && weight !== 'BAR' && (isNaN(w) || w < 0)) { setInputError('Enter weight'); return; }
     if (!r || r <= 0 || r > 100) { setInputError('Enter reps (1–100)'); return; }
