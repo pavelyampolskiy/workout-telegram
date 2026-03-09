@@ -33,7 +33,7 @@ function RecoveryBanner({ recoveryData }) {
   );
 }
 
-const REST_DURATION = 90;
+const REST_PRESETS = [60, 90, 120, 180];
 
 function fmtTime(s) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -94,6 +94,9 @@ export default function ExerciseScreen() {
   const [saving, setSaving] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const [inputError, setInputError] = useState('');
+  const [restDuration, setRestDuration] = useState(
+    () => parseInt(localStorage.getItem('restDuration') || '90')
+  );
   const [restEndTime, setRestEndTime] = useState(null);
   const [restTimer, setRestTimer] = useState(null);
   const [showPR, setShowPR] = useState(false);
@@ -189,10 +192,10 @@ export default function ExerciseScreen() {
       }
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      setRestEndTime(Date.now() + REST_DURATION * 1000);
+      setRestEndTime(Date.now() + restDuration * 1000);
       // Schedule push notification via Telegram bot
       if (userId > 0) {
-        api.startRestTimer(REST_DURATION, ex?.name).catch(() => {});
+        api.startRestTimer(restDuration, ex?.name).catch(() => {});
       }
       setActiveWorkout(prev => prev ? {
         ...prev,
@@ -237,6 +240,11 @@ export default function ExerciseScreen() {
     } catch (e) {
       showToast(e.message);
     }
+  };
+
+  const handleRestDurationChange = (val) => {
+    setRestDuration(val);
+    localStorage.setItem('restDuration', String(val));
   };
 
   const handleFinish = () => {
@@ -337,7 +345,7 @@ export default function ExerciseScreen() {
                 strokeWidth={6}
                 strokeLinecap="round"
                 strokeDasharray={326.7}
-                strokeDashoffset={326.7 - (1 - restTimer / REST_DURATION) * 326.7}
+                strokeDashoffset={326.7 - (1 - restTimer / restDuration) * 326.7}
                 style={{ transition: 'stroke-dashoffset 1s linear' }}
               />
             </svg>
@@ -518,6 +526,26 @@ export default function ExerciseScreen() {
             'Save Set'
           )}
         </button>
+
+        {/* Rest duration picker */}
+        <div className="mt-3 flex items-center gap-2">
+          <span className="text-[10px] text-white/35 font-bebas uppercase tracking-wider shrink-0">Rest</span>
+          <div className="flex gap-1.5">
+            {REST_PRESETS.map(s => (
+              <button
+                key={s}
+                onClick={() => handleRestDurationChange(s)}
+                className="px-2.5 py-1 rounded-lg text-xs font-bebas tracking-wider transition-colors"
+                style={restDuration === s
+                  ? { background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.30)', color: 'rgba(255,255,255,0.9)' }
+                  : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.35)' }
+                }
+              >
+                {s < 60 ? `${s}s` : s % 60 === 0 ? `${s / 60}m` : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Action buttons */}
