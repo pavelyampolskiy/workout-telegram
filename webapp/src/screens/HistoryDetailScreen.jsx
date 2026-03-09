@@ -29,7 +29,9 @@ export default function HistoryDetailScreen() {
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [addingEx, setAddingEx] = useState(false);
   const [editNote, setEditNote] = useState('');
+  const [editCardio, setEditCardio] = useState(null);
   const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
+  const ACTIVITIES = ['Running', 'Cycling', 'Elliptical', 'Swimming', 'Walking', 'Jump Rope', 'Rowing'];
 
   useEffect(() => {
     api.getWorkout(workoutId)
@@ -198,28 +200,128 @@ export default function HistoryDetailScreen() {
                 </div>
               )}
             </div>
-            {workout.type !== 'CARDIO' && (
-              <button
-                onClick={() => {
-                  if (!editMode) {
-                    setEditNote(workout.note || '');
+            <button
+              onClick={() => {
+                if (!editMode) {
+                  setEditNote(workout.note || '');
+                  if (workout.type === 'CARDIO') {
+                    let parsed = {};
+                    try { parsed = JSON.parse(workout.cardio || '{}'); } catch { parsed = { notes: workout.cardio }; }
+                    setEditCardio({
+                      activity: parsed.activity || '',
+                      distance: parsed.distance || '',
+                      unit: parsed.unit || 'km',
+                      pace: parsed.pace || '',
+                      heartRate: parsed.heartRate || '',
+                      notes: parsed.notes || '',
+                    });
+                  }
+                } else {
+                  if (workout.type === 'CARDIO' && editCardio) {
+                    const text = JSON.stringify(editCardio);
+                    if (text !== workout.cardio) {
+                      api.updateCardio(workoutId, text).then(() => {
+                        setWorkout(prev => ({ ...prev, cardio: text }));
+                      }).catch(e => showToast(e.message));
+                    }
+                    setEditCardio(null);
                   } else if (editNote !== (workout.note || '')) {
                     api.updateNote(workoutId, editNote.trim()).then(() => {
                       setWorkout(prev => ({ ...prev, note: editNote.trim() || null }));
                     }).catch(e => showToast(e.message));
                   }
-                  setEditMode(!editMode);
-                }}
-                className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
-              >
-                {editMode ? 'Done' : 'Edit'}
-              </button>
-            )}
+                }
+                setEditMode(!editMode);
+              }}
+              className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
+            >
+              {editMode ? 'Done' : 'Edit'}
+            </button>
           </div>
         </div>
 
         {/* Cardio */}
-        {workout.type === 'CARDIO' && workout.cardio && (() => {
+        {workout.type === 'CARDIO' && (editMode && editCardio ? (
+          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
+            {/* Activity chips */}
+            <div className="mb-4">
+              <div className="text-white/35 text-xs font-bebas tracking-wider mb-2">ACTIVITY</div>
+              <div className="flex flex-wrap gap-2">
+                {ACTIVITIES.map(act => (
+                  <button
+                    key={act}
+                    onClick={() => setEditCardio(prev => ({ ...prev, activity: prev.activity === act ? '' : act }))}
+                    className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
+                      editCardio.activity === act
+                        ? 'bg-white/20 text-white border border-white/30'
+                        : 'bg-white/5 text-white/50 border border-white/10'
+                    }`}
+                  >
+                    {act}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Distance + unit */}
+            <div className="mb-3">
+              <div className="text-white/35 text-xs font-bebas tracking-wider mb-1">DISTANCE</div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  value={editCardio.distance}
+                  onChange={e => setEditCardio(prev => ({ ...prev, distance: e.target.value }))}
+                  placeholder="0.0"
+                  className="w-24 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-white/30"
+                />
+                <div className="flex rounded-lg overflow-hidden border border-white/15">
+                  {['km', 'mi'].map(u => (
+                    <button
+                      key={u}
+                      onClick={() => setEditCardio(prev => ({ ...prev, unit: u }))}
+                      className={`px-3 py-2 font-bebas tracking-wider text-sm transition-colors ${
+                        editCardio.unit === u ? 'bg-white/20 text-white' : 'text-white/40'
+                      }`}
+                    >
+                      {u}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* Pace */}
+            <div className="mb-3">
+              <div className="text-white/35 text-xs font-bebas tracking-wider mb-1">PACE (min/{editCardio.unit})</div>
+              <input
+                type="text"
+                value={editCardio.pace}
+                onChange={e => setEditCardio(prev => ({ ...prev, pace: e.target.value }))}
+                placeholder="e.g. 5:30"
+                className="w-28 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-white/30"
+              />
+            </div>
+            {/* Heart rate */}
+            <div className="mb-3">
+              <div className="text-white/35 text-xs font-bebas tracking-wider mb-1">HEART RATE (bpm)</div>
+              <input
+                type="number"
+                value={editCardio.heartRate}
+                onChange={e => setEditCardio(prev => ({ ...prev, heartRate: e.target.value }))}
+                placeholder="e.g. 145"
+                className="w-24 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-white/30"
+              />
+            </div>
+            {/* Notes */}
+            <div>
+              <div className="text-white/35 text-xs font-bebas tracking-wider mb-1">NOTES</div>
+              <textarea
+                value={editCardio.notes}
+                onChange={e => setEditCardio(prev => ({ ...prev, notes: e.target.value }))}
+                placeholder="How did it feel?"
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm outline-none focus:border-white/30 resize-none h-16"
+              />
+            </div>
+          </div>
+        ) : workout.cardio && (() => {
           let data = {};
           try { data = JSON.parse(workout.cardio); } catch { data = { notes: workout.cardio }; }
           const stats = [
@@ -256,7 +358,7 @@ export default function HistoryDetailScreen() {
               )}
             </div>
           );
-        })()}
+        })())}
 
         {/* Exercises */}
         {workout.exercises?.map(ex => {
