@@ -281,7 +281,7 @@ const ResumeIcon = () => (
 );
 
 export default function HomeScreen() {
-  const { navigate, userId, setActiveWorkout, recoveryData } = useApp();
+  const { navigate, userId, setActiveWorkout, recoveryData, activeWorkout } = useApp();
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
@@ -289,12 +289,13 @@ export default function HomeScreen() {
   const [pendingNav, setPendingNav] = useState(null);
   const [discarding, setDiscarding] = useState(false);
 
+  // Re-fetch when returning to HomeScreen (activeWorkout becomes null after cancel/save)
   useEffect(() => {
     if (!userId) return;
     api.getUnfinishedWorkout()
       .then(data => setUnfinished(data.workout))
       .catch(() => {});
-  }, [userId]);
+  }, [userId, activeWorkout]);
 
   const guardedNavigate = (screen) => {
     if (unfinished) {
@@ -443,12 +444,12 @@ export default function HomeScreen() {
                     onClick={() => {
                       setDismissing(true);
                       api.deleteWorkout(unfinished.id)
-                        .then(() => {
+                        .catch(() => {})
+                        .finally(() => {
                           setUnfinished(null);
                           setShowDismissConfirm(false);
-                        })
-                        .catch(() => {})
-                        .finally(() => setDismissing(false));
+                          setDismissing(false);
+                        });
                     }}
                     disabled={dismissing}
                     className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
