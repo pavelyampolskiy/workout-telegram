@@ -164,3 +164,31 @@ input[type='number']::-webkit-outer-spin-button {
 .font-sans {
   font-family: Georgia, 'Times New Roman', serif !important;
 }
+
+/* ── Workout countdown ──────────────────────────────────── */
+@keyframes cd-num {
+  0%   { opacity: 0; transform: scale(1.55); }
+  18%  { opacity: 1; transform: scale(1); }
+  72%  { opacity: 1; transform: scale(0.93); }
+  100% { opacity: 0; transform: scale(0.72); }
+}
+.cd-num {
+  animation: cd-num 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+@keyframes cd-go {
+  0%   { opacity: 0; transform: scale(0.45); letter-spacing: 0.25em; }
+  28%  { opacity: 1; transform: scale(1.08); }
+  52%  { transform: scale(1); }
+  78%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+.cd-go {
+  animation: cd-go 0.75s ease-out forwards;
+}
+@keyframes cd-ready {
+  0%   { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.cd-ready {
+  animation: cd-ready 0.35s ease-out forwards;
+}
