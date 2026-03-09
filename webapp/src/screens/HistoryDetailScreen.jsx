@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { formatDate, fmtW, DARK_CARD_STYLE, CARD_BTN_STYLE } from '../shared';
+import { formatDate, fmtW, DARK_CARD_STYLE, CARD_BTN_STYLE, ACCENT_BTN_STYLE } from '../shared';
 
 function dayLabel(type) {
   if (type === 'CARDIO') return 'Cardio';
@@ -233,7 +233,11 @@ export default function HistoryDetailScreen() {
                 }
                 setEditMode(!editMode);
               }}
-              className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
+              className="font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors"
+              style={editMode
+                ? { background: 'rgba(59,130,246,0.20)', border: '1px solid rgba(59,130,246,0.40)', color: 'rgba(147,197,253,0.95)' }
+                : { color: 'rgba(255,255,255,0.50)' }
+              }
             >
               {editMode ? 'Done' : 'Edit'}
             </button>
@@ -251,11 +255,11 @@ export default function HistoryDetailScreen() {
                   <button
                     key={act}
                     onClick={() => setEditCardio(prev => ({ ...prev, activity: prev.activity === act ? '' : act }))}
-                    className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
-                      editCardio.activity === act
-                        ? 'bg-white/20 text-white border border-white/30'
-                        : 'bg-white/5 text-white/50 border border-white/10'
-                    }`}
+                    className="px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors"
+                    style={editCardio.activity === act
+                      ? { background: 'rgba(59,130,246,0.18)', border: '1px solid rgba(59,130,246,0.50)', color: 'rgba(147,197,253,0.95)' }
+                      : { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.50)' }
+                    }
                   >
                     {act}
                   </button>

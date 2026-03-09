@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, ACCENT_BTN_STYLE } from '../shared';
 
 const ACTIVITIES = ['Running', 'Cycling', 'Elliptical', 'Swimming', 'Walking', 'Jump Rope', 'Rowing'];
 
@@ -242,18 +242,27 @@ export default function CardioScreen() {
         {/* Timer — centered, large */}
         <div className="flex flex-col items-center mb-8">
           <div
-            className="font-bebas tracking-wider text-white/90 tabular-nums"
-            style={{ fontSize: 'clamp(56px, 18vw, 80px)', lineHeight: 1 }}
+            className="font-bebas tracking-wider tabular-nums"
+            style={{
+              fontSize: 'clamp(56px, 18vw, 80px)',
+              lineHeight: 1,
+              color: paused ? 'rgba(255,255,255,0.45)' : 'rgba(59,130,246,0.90)',
+              transition: 'color 0.3s',
+            }}
           >
             {fmtTimer(elapsed)}
           </div>
           <button
             onClick={handlePause}
             className="mt-4 flex items-center gap-2 px-5 py-2 rounded-xl font-bebas tracking-wider text-sm transition-colors"
-            style={{
-              background: paused ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.07)',
+            style={paused ? {
+              background: 'rgba(59,130,246,0.18)',
+              border: '1px solid rgba(59,130,246,0.45)',
+              color: 'rgba(147,197,253,0.90)',
+            } : {
+              background: 'rgba(255,255,255,0.07)',
               border: '1px solid rgba(255,255,255,0.12)',
-              color: paused ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.50)',
+              color: 'rgba(255,255,255,0.50)',
             }}
           >
             {paused ? (
@@ -289,7 +298,7 @@ export default function CardioScreen() {
                 className="px-3 py-1.5 rounded-xl font-bebas tracking-wider text-sm transition-colors"
                 style={
                   activity === a
-                    ? { background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.35)', color: 'rgba(255,255,255,0.92)' }
+                    ? { background: 'rgba(59,130,246,0.18)', border: '1px solid rgba(59,130,246,0.50)', color: 'rgba(147,197,253,0.95)' }
                     : { background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.50)' }
                 }
               >
@@ -363,8 +372,8 @@ export default function CardioScreen() {
         <button
           onClick={handleSave}
           disabled={saving || !workoutId}
-          className="card-press w-full disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={CARD_BTN_STYLE}
+          className="card-press w-full disabled:opacity-40 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{ ...ACCENT_BTN_STYLE, color: 'rgba(147,197,253,0.95)' }}
         >
           {saving ? (
             <span className="inline-flex items-center justify-center gap-2">

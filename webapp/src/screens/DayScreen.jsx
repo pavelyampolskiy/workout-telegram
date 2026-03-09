@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, ACCENT_BTN_STYLE } from '../shared';
 
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
@@ -226,8 +226,8 @@ export default function DayScreen() {
           <button
             onClick={handleFinish}
             disabled={saving}
-            className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-            style={CARD_BTN_STYLE}
+            className="card-press w-full mt-3 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+            style={{ ...ACCENT_BTN_STYLE, color: 'rgba(147,197,253,0.95)' }}
           >
             {saving ? (
               <span className="inline-flex items-center justify-center gap-2">
@@ -391,8 +391,8 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
-          className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={CARD_BTN_STYLE}
+          className="card-press w-full font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{ ...ACCENT_BTN_STYLE, color: 'rgba(147,197,253,0.95)' }}
         >
           Save Workout
         </button>
