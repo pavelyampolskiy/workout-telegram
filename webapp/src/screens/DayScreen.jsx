@@ -43,23 +43,34 @@ export default function DayScreen() {
         if (!activeWorkout || activeWorkout.day !== day) {
           const { id } = await api.createWorkout(day);
           setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
-        } else if (activeWorkout && Object.keys(activeWorkout.exerciseMap || {}).length === 0) {
-          // Resuming a workout — load existing exercises from backend
-          const data = await api.getWorkout(activeWorkout.id);
-          if (data.exercises?.length > 0) {
-            const restoredMap = {};
-            const restoredCustom = [];
-            data.exercises.forEach(ex => {
-              const progIdx = dayProgram?.findIndex(p => p.name === ex.name && p.group === ex.grp);
-              if (progIdx >= 0) {
-                restoredMap[progIdx] = { dbId: ex.id, setsCount: ex.sets?.length || 0 };
-              } else {
-                restoredMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: ex.sets?.length || 0 };
-                restoredCustom.push({ id: ex.id, group: ex.grp, name: ex.name, target_sets: ex.target_sets, isCustom: true });
-              }
-            });
-            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
-            if (restoredCustom.length > 0) setCustomExercises(restoredCustom);
+        } else {
+          // Verify workout still exists in DB (guards against stale localStorage)
+          let workoutData = null;
+          try {
+            workoutData = await api.getWorkout(activeWorkout.id);
+          } catch (_) {
+            // Workout was deleted — start fresh
+            const { id } = await api.createWorkout(day);
+            setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
+            workoutData = null;
+          }
+          // Restore exerciseMap from backend if we don't have it locally
+          if (workoutData && Object.keys(activeWorkout.exerciseMap || {}).length === 0) {
+            if (workoutData.exercises?.length > 0) {
+              const restoredMap = {};
+              const restoredCustom = [];
+              workoutData.exercises.forEach(ex => {
+                const progIdx = dayProgram?.findIndex(p => p.name === ex.name && p.group === ex.grp);
+                if (progIdx >= 0) {
+                  restoredMap[progIdx] = { dbId: ex.id, setsCount: ex.sets?.length || 0 };
+                } else {
+                  restoredMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: ex.sets?.length || 0 };
+                  restoredCustom.push({ id: ex.id, group: ex.grp, name: ex.name, target_sets: ex.target_sets, isCustom: true });
+                }
+              });
+              setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
+              if (restoredCustom.length > 0) setCustomExercises(restoredCustom);
+            }
           }
         }
       } catch (e) {
@@ -79,12 +90,17 @@ export default function DayScreen() {
     // Create exercise in DB if not yet created
     let exDbId = exerciseMap[idx]?.dbId;
     if (!exDbId) {
-      const { id } = await api.createExercise(workoutId, ex.group, ex.name, ex.target_sets);
-      exDbId = id;
-      setActiveWorkout(prev => ({
-        ...prev,
-        exerciseMap: { ...prev.exerciseMap, [idx]: { dbId: id, setsCount: 0 } },
-      }));
+      try {
+        const { id } = await api.createExercise(workoutId, ex.group, ex.name, ex.target_sets);
+        exDbId = id;
+        setActiveWorkout(prev => ({
+          ...prev,
+          exerciseMap: { ...prev.exerciseMap, [idx]: { dbId: id, setsCount: 0 } },
+        }));
+      } catch (e) {
+        showToast(e.message);
+        return;
+      }
     }
 
     navigate('exercise', { exIdx: idx, exDbId, workoutId, day, userId });
