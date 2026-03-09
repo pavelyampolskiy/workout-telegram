@@ -64,6 +64,7 @@ export const api = {
   deleteSet: (set_id) => req('DELETE', `/api/sets/${set_id}`),
 
   addCardio: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/cardio`, { text }),
+  updateCardio: (workout_id, text) => req('PUT', `/api/workouts/${workout_id}/cardio`, { text }),
   finishWorkout: (id) => req('PATCH', `/api/workouts/${id}/finish`),
   saveRating: (workout_id, rating) => req('PATCH', `/api/workouts/${workout_id}/rating`, { rating }),
   addNote: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/note`, { text }),

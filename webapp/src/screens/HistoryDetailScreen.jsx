@@ -219,12 +219,44 @@ export default function HistoryDetailScreen() {
         </div>
 
         {/* Cardio */}
-        {workout.type === 'CARDIO' && workout.cardio && (
-          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
-            <div className="font-sans text-white/40 text-sm mb-1">Cardio</div>
-            <p className="text-white/80 text-sm">{workout.cardio}</p>
-          </div>
-        )}
+        {workout.type === 'CARDIO' && workout.cardio && (() => {
+          let data = {};
+          try { data = JSON.parse(workout.cardio); } catch { data = { notes: workout.cardio }; }
+          const stats = [
+            data.distance && { label: 'DISTANCE', value: `${data.distance} ${data.unit || 'km'}` },
+            data.pace && { label: `PACE`, value: `${data.pace} min/${data.unit || 'km'}` },
+            data.heartRate && { label: 'HEART RATE', value: `${data.heartRate} bpm` },
+          ].filter(Boolean);
+          return (
+            <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
+              {data.activity && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg mb-3"
+                  style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.14)' }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 text-white/60">
+                    <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
+                  </svg>
+                  <span className="font-bebas tracking-wider text-sm text-white/80">{data.activity}</span>
+                </div>
+              )}
+              {stats.length > 0 && (
+                <div className="flex flex-wrap gap-x-5 gap-y-2 mb-3">
+                  {stats.map(s => (
+                    <div key={s.label}>
+                      <div className="text-white/35 text-xs font-bebas tracking-wider">{s.label}</div>
+                      <div className="text-white/80 text-sm font-sans">{s.value}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {data.notes && (
+                <p className="text-white/60 text-sm font-sans leading-relaxed">{data.notes}</p>
+              )}
+              {!data.activity && !stats.length && !data.notes && (
+                <p className="text-white/60 text-sm font-sans">{workout.cardio}</p>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Exercises */}
         {workout.exercises?.map(ex => {
