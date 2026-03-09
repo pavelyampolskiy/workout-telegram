@@ -54,7 +54,6 @@ export default function CardioScreen() {
   const [notes, setNotes] = useState('');
 
   const intervalRef = useRef(null);
-  const hasSavedRef = useRef(false);
   const autosaveRef = useRef(null);
   const workoutIdRef = useRef(null);
   const formDataRef = useRef({ activity, distance, unit, pace, heartRate, notes });
@@ -101,7 +100,6 @@ export default function CardioScreen() {
               if (parsed.pace) setPace(parsed.pace);
               if (parsed.heartRate) setHeartRate(parsed.heartRate);
               if (parsed.notes) setNotes(parsed.notes);
-              hasSavedRef.current = true;
             }
           });
         }
@@ -122,12 +120,7 @@ export default function CardioScreen() {
       if (!hasAny) return;
       const encoded = encodeCardioData(data);
       try {
-        if (!hasSavedRef.current) {
-          await api.addCardio(wid, encoded);
-          hasSavedRef.current = true;
-        } else {
-          await api.updateCardio(wid, encoded);
-        }
+        await api.addCardio(wid, encoded);
       } catch { /* silent */ }
     }, 1500);
   }, [activity, distance, unit, pace, heartRate, notes, started]);
@@ -162,12 +155,7 @@ export default function CardioScreen() {
     clearTimeout(autosaveRef.current);
     try {
       const encoded = encodeCardioData({ activity, distance, unit, pace, heartRate, notes });
-      if (!hasSavedRef.current) {
-        await api.addCardio(workoutId, encoded);
-        hasSavedRef.current = true;
-      } else {
-        await api.updateCardio(workoutId, encoded);
-      }
+      await api.addCardio(workoutId, encoded);
       await api.finishWorkout(workoutId);
       resetTo('home');
     } catch (e) {

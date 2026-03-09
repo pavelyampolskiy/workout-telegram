@@ -435,6 +435,15 @@ def get_set(set_id: int):
 
 def add_cardio(workout_id: int, text: str) -> int:
     with db() as conn:
+        existing = conn.execute(
+            "SELECT id FROM cardio_entries WHERE workout_id=?", (workout_id,)
+        ).fetchone()
+        if existing:
+            conn.execute(
+                "UPDATE cardio_entries SET text=? WHERE workout_id=?",
+                (text, workout_id),
+            )
+            return existing["id"]
         cur = conn.execute(
             "INSERT INTO cardio_entries (workout_id, text) VALUES (?,?)",
             (workout_id, text),
