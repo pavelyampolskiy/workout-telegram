@@ -5,7 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { CARD_BTN_STYLE } from '../shared';
 
-const CHIPS = ['Бег', 'Велосипед', 'Эллипсоид', 'Плавание', 'Ходьба', 'Скакалка', 'Гребля'];
+const CHIPS = ['Бег', 'Велосипед', 'Elliptical', 'Плавание', 'Ходьба', 'Скакалка', 'Гребля'];
 
 function fmtTimer(s) {
   const m = Math.floor(s / 60);
