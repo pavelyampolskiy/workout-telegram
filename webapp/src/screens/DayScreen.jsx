@@ -119,6 +119,7 @@ export default function DayScreen() {
     if (workoutId) {
       api.deleteWorkout(workoutId).catch(() => {});
     }
+    setActiveWorkout(null);
     resetTo('home');
   };
 
