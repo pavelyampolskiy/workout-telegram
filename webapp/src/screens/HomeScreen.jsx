@@ -295,6 +295,10 @@ export default function HomeScreen() {
 
   const handleContinue = () => {
     if (!unfinished) return;
+    if (unfinished.type === 'CARDIO') {
+      navigate('cardio');
+      return;
+    }
     setActiveWorkout({
       id: unfinished.id,
       day: unfinished.type,
