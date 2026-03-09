@@ -285,6 +285,9 @@ export default function HomeScreen() {
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
+  const [showActiveWarning, setShowActiveWarning] = useState(false);
+  const [pendingNav, setPendingNav] = useState(null);
+  const [discarding, setDiscarding] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -292,6 +295,31 @@ export default function HomeScreen() {
       .then(data => setUnfinished(data.workout))
       .catch(() => {});
   }, [userId]);
+
+  const guardedNavigate = (screen) => {
+    if (unfinished) {
+      // Cardio → existing cardio: just restore, no warning needed
+      if (screen === 'cardio' && unfinished.type === 'CARDIO') {
+        navigate('cardio');
+        return;
+      }
+      setPendingNav(screen);
+      setShowActiveWarning(true);
+    } else {
+      navigate(screen);
+    }
+  };
+
+  const handleDiscardAndNavigate = async () => {
+    setDiscarding(true);
+    try {
+      await api.deleteWorkout(unfinished.id);
+      setUnfinished(null);
+    } catch { /* best-effort */ }
+    setShowActiveWarning(false);
+    setDiscarding(false);
+    navigate(pendingNav);
+  };
 
   const handleContinue = () => {
     if (!unfinished) return;
@@ -444,7 +472,7 @@ export default function HomeScreen() {
           <div className="mt-auto pt-2 pb-6 space-y-2">
           {/* Big card - New Workout */}
           <button
-            onClick={() => navigate('recovery-check')}
+            onClick={() => guardedNavigate('recovery-check')}
             className="card-press w-full rounded-xl p-4 text-left"
             style={{
               ...CARD_BTN_STYLE,
@@ -504,7 +532,7 @@ export default function HomeScreen() {
 
             {/* Cardio */}
             <button
-              onClick={() => navigate('cardio')}
+              onClick={() => guardedNavigate('cardio')}
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
@@ -520,6 +548,39 @@ export default function HomeScreen() {
         </div>
       </div>
 
+      {/* Active workout warning modal */}
+      {showActiveWarning && unfinished && (
+        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Active Workout</h3>
+            <p className="text-sm text-white/40 mb-6 font-sans">
+              You have an unfinished {unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'workout'}. Starting a new one will discard it.
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => { setShowActiveWarning(false); handleContinue(); }}
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
+                style={CARD_BTN_STYLE}
+              >
+                Continue {unfinished.label || 'Workout'}
+              </button>
+              <button
+                onClick={handleDiscardAndNavigate}
+                disabled={discarding}
+                className="w-full text-white/45 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors"
+              >
+                {discarding ? 'Discarding…' : 'Discard and start new'}
+              </button>
+              <button
+                onClick={() => setShowActiveWarning(false)}
+                className="w-full text-white/25 active:text-white/50 py-2 font-bebas tracking-wider text-xs transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
