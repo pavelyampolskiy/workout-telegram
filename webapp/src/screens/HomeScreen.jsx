@@ -126,7 +126,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   useEffect(() => {
     Promise.all([
-      api.getStats(7),
+      api.getStats((new Date().getDay() + 6) % 7),
       api.getFrequency(),
       api.getAchievements(),
     ]).then(([week, freq, ach]) => {

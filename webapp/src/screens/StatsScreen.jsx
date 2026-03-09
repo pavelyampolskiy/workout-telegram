@@ -62,7 +62,7 @@ export default function StatsScreen() {
     async function load() {
       try {
         const [week, month, freq] = await Promise.all([
-          api.getStats(7),
+          api.getStats((new Date().getDay() + 6) % 7),
           api.getStats(30),
           api.getFrequency(),
         ]);
