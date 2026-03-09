@@ -244,26 +244,19 @@ export default function DayScreen() {
               </div>
             </>
           ) : (
-            <>
-              {!isGo && (
-                <p className="font-bebas tracking-widest text-white/25 text-xs mb-2 uppercase">
-                  Ready?
-                </p>
-              )}
-              <div
-                key={String(countdown)}
-                className={isGo ? 'cd-go' : 'cd-num'}
-                style={{
-                  fontFamily: "'Bebas Neue', cursive",
-                  fontSize: isGo ? '30vw' : '52vw',
-                  lineHeight: 1,
-                  color: 'white',
-                  letterSpacing: isGo ? '0.08em' : '-0.02em',
-                }}
-              >
-                {countdown}
-              </div>
-            </>
+            <div
+              key={String(countdown)}
+              className={isGo ? 'cd-go' : 'cd-num'}
+              style={{
+                fontFamily: "'Bebas Neue', cursive",
+                fontSize: isGo ? '30vw' : '52vw',
+                lineHeight: 1,
+                color: 'white',
+                letterSpacing: isGo ? '0.08em' : '-0.02em',
+              }}
+            >
+              {isGo ? 'GO!' : countdown}
+            </div>
           )}
         </div>
       </div>
