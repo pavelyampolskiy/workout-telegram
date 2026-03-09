@@ -1,10 +1,10 @@
 providers = ["node"]
 
 [phases.setup]
-nixPkgs = ["nodejs_20", "python3", "python3Packages.pip"]
+nixPkgs = ["nodejs_20", "python3"]
 
 [phases.build]
 cmds = [
-  "python3 -m pip install -r requirements.txt",
+  "python3 -m pip install --break-system-packages -r requirements.txt",
   "cd webapp && npm ci && npm run build",
 ]
