@@ -359,7 +359,7 @@ export default function CardioScreen() {
       </div>
 
       {/* Save — fixed bottom */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-8">
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-8 z-20">
         <button
           onClick={handleSave}
           disabled={saving || !workoutId}
