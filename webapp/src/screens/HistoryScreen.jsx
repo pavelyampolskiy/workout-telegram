@@ -166,12 +166,10 @@ export default function HistoryScreen() {
         >
           {/* Sliding indicator */}
           <div
-            className="absolute top-1 bottom-1 rounded-xl transition-all duration-300 ease-out"
+            className="absolute top-1 bottom-1 rounded-xl bg-white/12 transition-all duration-300 ease-out"
             style={{
               left: indicatorStyle.left,
               width: indicatorStyle.width,
-              background: 'rgba(59,130,246,0.22)',
-              border: '1px solid rgba(59,130,246,0.35)',
             }}
           />
           {FILTERS.map(f => (
@@ -180,7 +178,7 @@ export default function HistoryScreen() {
               onClick={() => handleFilter(f.value)}
               className={`relative z-10 flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors duration-200 ${
                 activeFilter === f.value
-                  ? 'text-blue-300'
+                  ? 'text-white/92'
                   : 'text-white/35 active:text-white/60'
               }`}
             >
