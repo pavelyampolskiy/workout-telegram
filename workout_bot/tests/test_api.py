@@ -131,7 +131,9 @@ def test_create_exercise(client):
 
 def test_workout_includes_exercises(client):
     wid = client.post("/api/workouts", json={"user_id": 1, "type": "DAY_A"}).json()["id"]
-    client.post(f"/api/workouts/{wid}/exercises", json={"grp": "LEGS", "name": "Squat", "target_sets": 4})
+    eid = client.post(f"/api/workouts/{wid}/exercises", json={"grp": "LEGS", "name": "Squat", "target_sets": 4}).json()["id"]
+    # API only returns exercises that have at least one set
+    client.post(f"/api/exercises/{eid}/sets", json={"weight": 100.0, "reps": 10})
     data = client.get(f"/api/workouts/{wid}").json()
     assert len(data["exercises"]) == 1
     assert data["exercises"][0]["name"] == "Squat"
