@@ -180,7 +180,7 @@ export default function CardioScreen() {
         <textarea
           value={text}
           onChange={e => setText(e.target.value)}
-          placeholder="Напр.: Бег 30 мин, 5 км, темп 6:00/км"
+          placeholder="E.g. Running 30 min, 5 km, pace 6:00/km"
           className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-32 outline-none text-sm font-sans focus:border-white/20"
         />
 
