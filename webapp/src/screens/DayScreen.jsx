@@ -84,14 +84,18 @@ export default function DayScreen() {
     init();
   }, [retryTrigger]);
 
-  // Start countdown when loading finishes
+  // Start countdown when loading finishes — show READY first
   useEffect(() => {
-    if (!loading && !error) setCountdown(3);
+    if (!loading && !error) setCountdown('READY');
   }, [loading, error]);
 
-  // Tick each second: 3 → 2 → 1 → 'GO' → null
+  // Sequence: READY (1s) → 3 → 2 → 1 → GO (0.75s) → null
   useEffect(() => {
     if (countdown === null) return;
+    if (countdown === 'READY') {
+      const t = setTimeout(() => setCountdown(3), 1000);
+      return () => clearTimeout(t);
+    }
     if (countdown === 'GO') {
       try { window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success'); } catch (_) {}
       const t = setTimeout(() => setCountdown(null), 750);
@@ -220,33 +224,46 @@ export default function DayScreen() {
   }
 
   if (countdown !== null) {
+    const isReady = countdown === 'READY';
     const isGo = countdown === 'GO';
     return (
       <div className="min-h-screen relative overflow-hidden" style={{ background: '#060606' }}>
         <ScreenBg overlay="bg-black/88" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none">
-          {!isGo && (
-            <p className="cd-ready font-bebas tracking-widest text-white/40 text-sm mb-1 uppercase">
-              Ready?
-            </p>
-          )}
-          <div
-            key={String(countdown)}
-            className={isGo ? 'cd-go' : 'cd-num'}
-            style={{
-              fontFamily: "'Bebas Neue', cursive",
-              fontSize: isGo ? '30vw' : '52vw',
-              lineHeight: 1,
-              color: 'white',
-              letterSpacing: isGo ? '0.08em' : '-0.02em',
-            }}
-          >
-            {countdown}
-          </div>
-          {!isGo && (
-            <p className="font-bebas tracking-wider text-white/20 text-xs mt-3 uppercase">
-              {dayLabel}
-            </p>
+          {isReady ? (
+            <>
+              <p className="cd-ready font-bebas tracking-widest text-white/30 text-sm mb-3 uppercase">
+                {dayLabel}
+              </p>
+              <div
+                key="ready-text"
+                className="cd-ready font-bebas text-white"
+                style={{ fontSize: '22vw', lineHeight: 1, letterSpacing: '0.06em' }}
+              >
+                Ready?
+              </div>
+            </>
+          ) : (
+            <>
+              {!isGo && (
+                <p className="font-bebas tracking-widest text-white/25 text-xs mb-2 uppercase">
+                  Ready?
+                </p>
+              )}
+              <div
+                key={String(countdown)}
+                className={isGo ? 'cd-go' : 'cd-num'}
+                style={{
+                  fontFamily: "'Bebas Neue', cursive",
+                  fontSize: isGo ? '30vw' : '52vw',
+                  lineHeight: 1,
+                  color: 'white',
+                  letterSpacing: isGo ? '0.08em' : '-0.02em',
+                }}
+              >
+                {countdown}
+              </div>
+            </>
           )}
         </div>
       </div>
