@@ -126,12 +126,14 @@ export default function App() {
         const applyInsets = () => {
           const saTop = tg.safeAreaInsets?.top ?? 0;
           const csaTop = tg.contentSafeAreaInsets?.top ?? 0;
-          const top = Math.max(saTop, csaTop);
-          if (top > 0) document.documentElement.style.setProperty('--tg-safe-top', `${top}px`);
+          const apiTop = Math.max(saTop, csaTop);
+          // Fallback to 44px (Telegram close button height) when API returns 0
+          const top = apiTop > 0 ? apiTop : 44;
+          document.documentElement.style.setProperty('--tg-safe-top', `${top}px`);
         };
         applyInsets();
-        setTimeout(applyInsets, 100);
-        setTimeout(applyInsets, 400);
+        setTimeout(applyInsets, 300);
+        setTimeout(applyInsets, 1000);
         try { tg.onEvent('safeAreaChanged', applyInsets); } catch (_) {}
         try { tg.onEvent('contentSafeAreaChanged', applyInsets); } catch (_) {}
         try { tg.onEvent('viewportChanged', applyInsets); } catch (_) {}
