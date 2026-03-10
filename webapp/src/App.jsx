@@ -122,6 +122,14 @@ export default function App() {
       if (tg) {
         tg.ready();
         try { tg.expand(); } catch (_) {}
+
+        const applyInsets = () => {
+          const top = tg.safeAreaInsets?.top ?? tg.contentSafeAreaInsets?.top ?? 0;
+          document.documentElement.style.setProperty('--tg-safe-top', `${top}px`);
+        };
+        applyInsets();
+        try { tg.onEvent('safeAreaChanged', applyInsets); } catch (_) {}
+        try { tg.onEvent('contentSafeAreaChanged', applyInsets); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
         if (uid) {
           setUserId(Number(uid));
