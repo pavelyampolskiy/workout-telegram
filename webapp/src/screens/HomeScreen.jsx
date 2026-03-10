@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import { CARD_BTN_STYLE, AURA_TEXT } from '../shared';
@@ -296,18 +296,64 @@ export default function HomeScreen() {
   const [pendingNav, setPendingNav] = useState(null);
   const [discarding, setDiscarding] = useState(false);
   const [sheen, setSheen] = useState({ pos: 50, angle: 90 });
+  const sheenAnimRef = useRef(null);
+  const gyroActiveRef = useRef(false);
 
   // Metal shimmer: phone tilt → sheen position shifts
   useEffect(() => {
     const handler = (e) => {
-      const gamma = Math.max(-45, Math.min(45, e.gamma || 0));   // left/right
-      const beta  = Math.max(10,  Math.min(80, e.beta  || 45));  // front/back
-      const pos   = 50 + (gamma / 45) * 28;          // 22%…78%
-      const angle = 90 - ((beta - 45) / 35) * 12;    // 78°…102°
+      if (e.gamma == null && e.beta == null) return;
+      gyroActiveRef.current = true;
+      if (sheenAnimRef.current) {
+        cancelAnimationFrame(sheenAnimRef.current);
+        sheenAnimRef.current = null;
+      }
+      const gamma = Math.max(-45, Math.min(45, e.gamma || 0));
+      const beta  = Math.max(10,  Math.min(80, e.beta  || 45));
+      const pos   = 50 + (gamma / 45) * 28;
+      const angle = 90 - ((beta - 45) / 35) * 12;
       setSheen({ pos, angle });
     };
-    window.addEventListener('deviceorientation', handler, true);
-    return () => window.removeEventListener('deviceorientation', handler, true);
+
+    const startAutoSheen = () => {
+      if (gyroActiveRef.current) return;
+      let t = 0;
+      const tick = () => {
+        t += 0.008;
+        const pos   = 50 + Math.sin(t) * 28;
+        const angle = 90 + Math.sin(t * 0.7) * 10;
+        setSheen({ pos, angle });
+        sheenAnimRef.current = requestAnimationFrame(tick);
+      };
+      sheenAnimRef.current = requestAnimationFrame(tick);
+    };
+
+    const tryRequestPermission = async () => {
+      if (typeof DeviceOrientationEvent !== 'undefined' &&
+          typeof DeviceOrientationEvent.requestPermission === 'function') {
+        try {
+          const result = await DeviceOrientationEvent.requestPermission();
+          if (result === 'granted') {
+            window.addEventListener('deviceorientation', handler, true);
+            setTimeout(() => { if (!gyroActiveRef.current) startAutoSheen(); }, 500);
+          } else {
+            startAutoSheen();
+          }
+        } catch {
+          startAutoSheen();
+        }
+      } else {
+        window.addEventListener('deviceorientation', handler, true);
+        setTimeout(() => { if (!gyroActiveRef.current) startAutoSheen(); }, 500);
+      }
+    };
+
+    tryRequestPermission();
+
+    return () => {
+      window.removeEventListener('deviceorientation', handler, true);
+      if (sheenAnimRef.current) cancelAnimationFrame(sheenAnimRef.current);
+    };
   }, []);
 
   // Re-fetch when returning to HomeScreen (activeWorkout becomes null after cancel/save)
