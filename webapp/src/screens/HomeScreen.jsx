@@ -59,11 +59,16 @@ function daysAgoLabel(dateStr) {
 const RING_SIZE = 60;
 const RING_STROKE = 5;
 
-function StatRing({ progress, value, label, sublabel, gradientId }) {
+function StatRing({ progress, value, label, sublabel, gradientId, sheenAngle = 135 }) {
   const radius = (RING_SIZE - RING_STROKE) / 2;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress * circumference);
   const id = gradientId || 'ringGrad';
+  const rad = (sheenAngle * Math.PI) / 180;
+  const gx1 = `${50 - 50 * Math.sin(rad)}%`;
+  const gy1 = `${50 + 50 * Math.cos(rad)}%`;
+  const gx2 = `${50 + 50 * Math.sin(rad)}%`;
+  const gy2 = `${50 - 50 * Math.cos(rad)}%`;
 
   return (
     <div className="flex flex-col items-center">
@@ -72,7 +77,7 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
           <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
           <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke={`url(#${id})`} strokeWidth={RING_STROKE} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}/>
           <defs>
-            <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id={id} x1={gx1} y1={gy1} x2={gx2} y2={gy2}>
               <stop offset="0%" stopColor="rgba(234,234,234,0.92)"/>
               <stop offset="100%" stopColor="rgba(197,160,89,0.62)"/>
             </linearGradient>
@@ -119,7 +124,7 @@ const ACHIEVEMENT_CATEGORY_ICONS = {
   ),
 };
 
-function WeeklyGoalWidget({ userId, recoveryScore }) {
+function WeeklyGoalWidget({ userId, recoveryScore, sheenAngle }) {
   const [data, setData] = useState(undefined);
   const [lastAchievement, setLastAchievement] = useState(null);
   const WEEKLY_GOAL = 3;
@@ -171,6 +176,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
           label="Weekly Goal"
           sublabel={`${weekCount} of ${WEEKLY_GOAL} workouts`}
           gradientId="ringWeekly"
+          sheenAngle={sheenAngle}
         />
         {recoveryScore !== null && (
           <StatRing
@@ -179,6 +185,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
             label="Ready"
             sublabel="Recovery score"
             gradientId="ringReady"
+            sheenAngle={sheenAngle}
           />
         )}
         {lastAchievement && (
@@ -375,10 +382,11 @@ export default function HomeScreen() {
             <div style={{
               fontSize: '18vw',
               letterSpacing: '0.36em',
-              background: 'linear-gradient(180deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%)',
+              background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              transition: 'background 0.15s ease-out',
             }}>Ready?</div>
           </div>
         </div>
@@ -389,7 +397,7 @@ export default function HomeScreen() {
         {/* Content with consistent spacing */}
         <div className="flex-1 flex flex-col gap-4 mt-4">
           {/* Weekly goal widget */}
-          <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+          <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} sheenAngle={sheen.angle} />
 
           {/* Smart reminder */}
           <SmartReminderBanner userId={userId} />
@@ -501,7 +509,13 @@ export default function HomeScreen() {
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <div className="font-bebas tracking-wider text-xl" style={AURA_TEXT}>New Workout</div>
+                <div className="font-bebas tracking-wider text-xl" style={{
+                  background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.60) 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  transition: 'background 0.15s ease-out',
+                }}>New Workout</div>
                 <div className="text-white/40 text-[10px] font-sans">Start your training session</div>
               </div>
               <span className="text-xl text-white/30">›</span>
