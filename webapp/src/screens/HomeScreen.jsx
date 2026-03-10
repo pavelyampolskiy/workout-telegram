@@ -361,7 +361,7 @@ export default function HomeScreen() {
             <div style={{
               fontSize: '18vw',
               letterSpacing: '0.36em',
-              background: 'linear-gradient(180deg, #F2D0C8 0%, #C46A5A 100%)',
+              background: 'linear-gradient(180deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -482,7 +482,7 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: '#C46A5A' }}>
+              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(197,160,89,0.65)' }}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
