@@ -124,12 +124,17 @@ export default function App() {
         try { tg.expand(); } catch (_) {}
 
         const applyInsets = () => {
-          const top = tg.safeAreaInsets?.top ?? tg.contentSafeAreaInsets?.top ?? 0;
-          document.documentElement.style.setProperty('--tg-safe-top', `${top}px`);
+          const saTop = tg.safeAreaInsets?.top ?? 0;
+          const csaTop = tg.contentSafeAreaInsets?.top ?? 0;
+          const top = Math.max(saTop, csaTop);
+          if (top > 0) document.documentElement.style.setProperty('--tg-safe-top', `${top}px`);
         };
         applyInsets();
+        setTimeout(applyInsets, 100);
+        setTimeout(applyInsets, 400);
         try { tg.onEvent('safeAreaChanged', applyInsets); } catch (_) {}
         try { tg.onEvent('contentSafeAreaChanged', applyInsets); } catch (_) {}
+        try { tg.onEvent('viewportChanged', applyInsets); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
         if (uid) {
           setUserId(Number(uid));
