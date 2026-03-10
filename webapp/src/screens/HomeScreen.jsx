@@ -357,7 +357,7 @@ export default function HomeScreen() {
         {/* Headline */}
         <div className="pt-2">
           <div className="font-bebas leading-none w-full">
-            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(215,193,148,0.72)' }}>Are you</div>
+            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
             <div style={{
               fontSize: '18vw',
               letterSpacing: '0.36em',
