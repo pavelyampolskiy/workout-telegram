@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, AURA_TEXT } from '../shared';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 
@@ -357,11 +357,11 @@ export default function HomeScreen() {
         {/* Headline */}
         <div className="pt-2">
           <div className="font-bebas leading-none w-full">
-            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
-            <div style={{ 
-              fontSize: '18vw', 
+            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(215,193,148,0.72)' }}>Are you</div>
+            <div style={{
+              fontSize: '18vw',
               letterSpacing: '0.36em',
-              background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%)',
+              background: 'linear-gradient(180deg, #EAEAEA 0%, #C5A059 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -482,11 +482,11 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }}>
+              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: '#C5A059' }}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <div className="font-bebas tracking-wider text-xl text-white/95">New Workout</div>
+                <div className="font-bebas tracking-wider text-xl" style={AURA_TEXT}>New Workout</div>
                 <div className="text-white/40 text-[10px] font-sans">Start your training session</div>
               </div>
               <span className="text-xl text-white/30">›</span>
