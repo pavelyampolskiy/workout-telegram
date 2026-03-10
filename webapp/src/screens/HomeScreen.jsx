@@ -482,7 +482,7 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(197,160,89,0.65)' }}>
+              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
