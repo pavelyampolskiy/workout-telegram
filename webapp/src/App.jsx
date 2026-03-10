@@ -122,6 +122,8 @@ export default function App() {
       if (tg) {
         tg.ready();
         try { tg.expand(); } catch (_) {}
+        try { tg.setHeaderColor('#000000'); } catch (_) {}
+        try { tg.setBackgroundColor('#000000'); } catch (_) {}
 
         const applyInsets = () => {
           const saTop = tg.safeAreaInsets?.top ?? 0;
