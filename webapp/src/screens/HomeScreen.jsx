@@ -476,9 +476,9 @@ export default function HomeScreen() {
             onClick={() => guardedNavigate('recovery-check')}
             className="card-press w-full rounded-xl p-4 text-left"
             style={{
-              background: 'linear-gradient(90deg, rgba(140,105,45,0.92) 0%, rgba(210,165,75,0.96) 28%, rgba(238,234,218,1.0) 58%, rgba(200,158,65,0.95) 80%, rgba(140,105,45,0.90) 100%)',
-              boxShadow: '0 2px 20px rgba(197,160,89,0.25), inset 0 1px 0 rgba(255,255,255,0.35)',
-              border: '1px solid rgba(255,255,255,0.10)',
+              background: 'linear-gradient(90deg, rgba(110,82,30,0.22) 0%, rgba(197,155,65,0.26) 30%, rgba(245,240,228,0.30) 55%, rgba(197,155,65,0.24) 80%, rgba(110,82,30,0.20) 100%)',
+              boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+              border: '1px solid rgba(197,160,89,0.18)',
             }}
           >
             <div className="flex items-center gap-3">
