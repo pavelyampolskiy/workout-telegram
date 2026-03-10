@@ -439,19 +439,17 @@ export default function HomeScreen() {
       {/* Content: title top, cards bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">
         {/* Headline */}
-        <div style={{ paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}>
-          <div className="font-bebas leading-none w-full">
-            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
-            <div style={{
-              fontSize: '18vw',
-              letterSpacing: '0.36em',
-              background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              transition: 'background 0.15s ease-out',
-            }}>Ready?</div>
-          </div>
+        <div className="font-bebas leading-none w-full">
+          <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
+          <div style={{
+            fontSize: '18vw',
+            letterSpacing: '0.36em',
+            background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%)`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            transition: 'background 0.15s ease-out',
+          }}>Ready?</div>
         </div>
 
         {/* Status widget */}

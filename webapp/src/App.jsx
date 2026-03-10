@@ -238,6 +238,7 @@ export default function App() {
                 : 'animate-slide-in-left'
               : ''
           }`}
+          style={{ paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
         >
           <ErrorBoundary>
             <Screen />
