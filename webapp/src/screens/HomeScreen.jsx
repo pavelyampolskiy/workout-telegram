@@ -72,9 +72,9 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
           <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
           <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke={`url(#${id})`} strokeWidth={RING_STROKE} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}/>
           <defs>
-            <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.9)"/>
-              <stop offset="100%" stopColor="rgba(255,255,255,0.4)"/>
+            <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(234,234,234,0.92)"/>
+              <stop offset="100%" stopColor="rgba(197,160,89,0.62)"/>
             </linearGradient>
           </defs>
         </svg>
