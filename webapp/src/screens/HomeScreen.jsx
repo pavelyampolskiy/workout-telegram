@@ -288,6 +288,20 @@ export default function HomeScreen() {
   const [showActiveWarning, setShowActiveWarning] = useState(false);
   const [pendingNav, setPendingNav] = useState(null);
   const [discarding, setDiscarding] = useState(false);
+  const [sheen, setSheen] = useState({ pos: 50, angle: 90 });
+
+  // Metal shimmer: phone tilt → sheen position shifts
+  useEffect(() => {
+    const handler = (e) => {
+      const gamma = Math.max(-45, Math.min(45, e.gamma || 0));   // left/right
+      const beta  = Math.max(10,  Math.min(80, e.beta  || 45));  // front/back
+      const pos   = 50 + (gamma / 45) * 28;          // 22%…78%
+      const angle = 90 - ((beta - 45) / 35) * 12;    // 78°…102°
+      setSheen({ pos, angle });
+    };
+    window.addEventListener('deviceorientation', handler, true);
+    return () => window.removeEventListener('deviceorientation', handler, true);
+  }, []);
 
   // Re-fetch when returning to HomeScreen (activeWorkout becomes null after cancel/save)
   useEffect(() => {
@@ -476,9 +490,10 @@ export default function HomeScreen() {
             onClick={() => guardedNavigate('recovery-check')}
             className="card-press w-full rounded-xl p-4 text-left"
             style={{
-              background: 'linear-gradient(90deg, rgba(110,82,30,0.22) 0%, rgba(197,155,65,0.26) 30%, rgba(245,240,228,0.30) 55%, rgba(197,155,65,0.24) 80%, rgba(110,82,30,0.20) 100%)',
+              background: `linear-gradient(${sheen.angle}deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) ${sheen.pos - 24}%, rgba(250,248,244,0.26) ${sheen.pos}%, rgba(220,210,190,0.10) ${sheen.pos + 20}%, rgba(255,255,255,0.04) 100%)`,
               boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
-              border: '1px solid rgba(197,160,89,0.18)',
+              border: '1px solid rgba(255,255,255,0.09)',
+              transition: 'background 0.15s ease-out',
             }}
           >
             <div className="flex items-center gap-3">
