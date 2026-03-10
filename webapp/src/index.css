@@ -35,6 +35,14 @@ input[type='number']::-webkit-outer-spin-button {
     opacity: 0.82;
   }
 
+  /* ── Nav button: gold text flash on press ────────────── */
+  .aura-nav-btn:active .nav-label {
+    background: linear-gradient(135deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   /* ── Input focus ──────────────────────────────────────── */
   input, textarea {
     transition: border-color 180ms ease-out, box-shadow 180ms ease-out;

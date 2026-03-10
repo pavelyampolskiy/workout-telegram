@@ -34,10 +34,9 @@ export const AURA_BAR = 'linear-gradient(90deg, rgba(197,160,89,0.70) 0%, rgba(2
 
 /** Glass card button — main action card style used throughout the app */
 export const CARD_BTN_STYLE = {
-  background: 'linear-gradient(180deg, rgba(255,255,255,0.065) 0%, rgba(0,0,0,0) 100%) padding-box, linear-gradient(135deg, rgba(234,234,234,0.20) 0%, rgba(197,160,89,0.12) 50%, rgba(234,234,234,0.08) 100%) border-box',
-  backgroundColor: 'rgba(0,0,0,0.10)',
-  border: '1px solid transparent',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 0 18px rgba(255,255,255,0.05)',
+  background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%) rgba(0,0,0,0.10)',
+  border: '1px solid rgba(255,255,255,0.05)',
+  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)',
 };
 
 /** Dark glass panel — data cards in exercise and history detail screens */

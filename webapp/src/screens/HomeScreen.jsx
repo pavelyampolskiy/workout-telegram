@@ -498,43 +498,43 @@ export default function HomeScreen() {
             {/* History */}
             <button
               onClick={() => navigate('history')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="aura-nav-btn card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
               <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
                 <HistoryIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">History</div>
+              <div className="nav-label font-bebas tracking-wider text-white/80 text-sm">History</div>
             </button>
 
             {/* Statistics */}
             <button
               onClick={() => navigate('stats')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="aura-nav-btn card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
               <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
                 <StatsIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">Statistics</div>
+              <div className="nav-label font-bebas tracking-wider text-white/80 text-sm">Statistics</div>
             </button>
 
             {/* Achievements */}
             <button
               onClick={() => navigate('achievements')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="aura-nav-btn card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
               <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
                 <TrophyIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">Achievements</div>
+              <div className="nav-label font-bebas tracking-wider text-white/80 text-sm">Achievements</div>
             </button>
 
             {/* Cardio */}
             <button
               onClick={() => guardedNavigate('cardio')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="aura-nav-btn card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
               <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
@@ -542,7 +542,7 @@ export default function HomeScreen() {
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
                 </svg>
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
+              <div className="nav-label font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
             </button>
           </div>
         </div>
