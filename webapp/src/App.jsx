@@ -106,6 +106,17 @@ export default function App() {
   }, [stack.length]);
 
   useEffect(() => {
+    const onTouch = (e) => {
+      const el = e.target.closest('button, [role="button"], .card-press');
+      if (el) {
+        try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
+      }
+    };
+    document.addEventListener('touchstart', onTouch, { passive: true });
+    return () => document.removeEventListener('touchstart', onTouch);
+  }, []);
+
+  useEffect(() => {
     try {
       const tg = window.Telegram?.WebApp;
       if (tg) {
