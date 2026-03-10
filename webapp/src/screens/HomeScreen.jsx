@@ -409,30 +409,30 @@ export default function HomeScreen() {
               <>
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
+                  className="card-press w-full rounded-xl p-4 text-left"
                   style={{
-                    ...CARD_BTN_STYLE,
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
+                    background: `linear-gradient(${sheen.angle}deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) ${sheen.pos - 24}%, rgba(250,248,244,0.26) ${sheen.pos}%, rgba(220,210,190,0.10) ${sheen.pos + 20}%, rgba(255,255,255,0.04) 100%)`,
+                    boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+                    border: '1px solid rgba(255,255,255,0.09)',
+                    transition: 'background 0.15s ease-out',
                   }}
                 >
-                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                      <polygon points="5 3 19 12 5 21 5 3"/>
-                    </svg>
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div 
-                      className="font-bebas tracking-wider text-lg"
-                      style={{
-                        background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)',
+                  <div className="flex items-center gap-3">
+                    <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }}>
+                      <ResumeIcon />
+                    </span>
+                    <div className="flex-1">
+                      <div className="font-bebas tracking-wider text-xl" style={{
+                        background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.60) 100%)`,
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         backgroundClip: 'text',
-                      }}
-                    >Continue Workout</div>
-                    <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                        transition: 'background 0.15s ease-out',
+                      }}>Continue Workout</div>
+                      <div className="text-white/40 text-[10px] font-sans">{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                    </div>
+                    <span className="text-xl text-white/30">›</span>
                   </div>
-                  <span className="text-xl shrink-0 text-white/35">›</span>
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
@@ -498,9 +498,15 @@ export default function HomeScreen() {
             onClick={() => guardedNavigate('recovery-check')}
             className="card-press w-full rounded-xl p-4 text-left"
             style={{
-              background: `linear-gradient(${sheen.angle}deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) ${sheen.pos - 24}%, rgba(250,248,244,0.26) ${sheen.pos}%, rgba(220,210,190,0.10) ${sheen.pos + 20}%, rgba(255,255,255,0.04) 100%)`,
-              boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
-              border: '1px solid rgba(255,255,255,0.09)',
+              ...(!unfinished ? {
+                background: `linear-gradient(${sheen.angle}deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) ${sheen.pos - 24}%, rgba(250,248,244,0.26) ${sheen.pos}%, rgba(220,210,190,0.10) ${sheen.pos + 20}%, rgba(255,255,255,0.04) 100%)`,
+                boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+                border: '1px solid rgba(255,255,255,0.09)',
+              } : {
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                opacity: 0.45,
+              }),
               transition: 'background 0.15s ease-out',
             }}
           >
@@ -509,13 +515,15 @@ export default function HomeScreen() {
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <div className="font-bebas tracking-wider text-xl" style={{
-                  background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.60) 100%)`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  transition: 'background 0.15s ease-out',
-                }}>New Workout</div>
+                <div className="font-bebas tracking-wider text-xl" style={
+                  !unfinished ? {
+                    background: `linear-gradient(${sheen.angle}deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.60) 100%)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    transition: 'background 0.15s ease-out',
+                  } : { color: 'rgba(255,255,255,0.6)' }
+                }>New Workout</div>
                 <div className="text-white/40 text-[10px] font-sans">Start your training session</div>
               </div>
               <span className="text-xl text-white/30">›</span>
