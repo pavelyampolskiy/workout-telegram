@@ -439,7 +439,7 @@ export default function HomeScreen() {
       {/* Content: title top, cards bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">
         {/* Headline */}
-        <div style={{ paddingTop: 'max(var(--tg-safe-top, 0px), env(safe-area-inset-top, 8px))' }}>
+        <div style={{ paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}>
           <div className="font-bebas leading-none w-full">
             <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
             <div style={{
