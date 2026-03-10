@@ -298,10 +298,11 @@ export default function HomeScreen() {
   const [sheen, setSheen] = useState({ pos: 50, angle: 90 });
   const sheenAnimRef = useRef(null);
   const gyroActiveRef = useRef(false);
+  const gyroSetupRef = useRef(false);
 
   // Metal shimmer: phone tilt → sheen position shifts
   useEffect(() => {
-    const handler = (e) => {
+    const orientationHandler = (e) => {
       if (e.gamma == null && e.beta == null) return;
       gyroActiveRef.current = true;
       if (sheenAnimRef.current) {
@@ -310,32 +311,35 @@ export default function HomeScreen() {
       }
       const gamma = Math.max(-45, Math.min(45, e.gamma || 0));
       const beta  = Math.max(10,  Math.min(80, e.beta  || 45));
-      const pos   = 50 + (gamma / 45) * 28;
-      const angle = 90 - ((beta - 45) / 35) * 12;
-      setSheen({ pos, angle });
+      setSheen({
+        pos:   50 + (gamma / 45) * 28,
+        angle: 90 - ((beta - 45) / 35) * 12,
+      });
     };
 
     const startAutoSheen = () => {
-      if (gyroActiveRef.current) return;
+      if (gyroActiveRef.current || sheenAnimRef.current) return;
       let t = 0;
       const tick = () => {
         t += 0.008;
-        const pos   = 50 + Math.sin(t) * 28;
-        const angle = 90 + Math.sin(t * 0.7) * 10;
-        setSheen({ pos, angle });
+        setSheen({ pos: 50 + Math.sin(t) * 28, angle: 90 + Math.sin(t * 0.7) * 10 });
         sheenAnimRef.current = requestAnimationFrame(tick);
       };
       sheenAnimRef.current = requestAnimationFrame(tick);
     };
 
-    const tryRequestPermission = async () => {
+    const setupGyro = async () => {
+      if (gyroSetupRef.current) return;
+      gyroSetupRef.current = true;
+
       if (typeof DeviceOrientationEvent !== 'undefined' &&
           typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ — must be called from a user gesture
         try {
           const result = await DeviceOrientationEvent.requestPermission();
           if (result === 'granted') {
-            window.addEventListener('deviceorientation', handler, true);
-            setTimeout(() => { if (!gyroActiveRef.current) startAutoSheen(); }, 500);
+            window.addEventListener('deviceorientation', orientationHandler, true);
+            setTimeout(() => { if (!gyroActiveRef.current) startAutoSheen(); }, 600);
           } else {
             startAutoSheen();
           }
@@ -343,15 +347,28 @@ export default function HomeScreen() {
           startAutoSheen();
         }
       } else {
-        window.addEventListener('deviceorientation', handler, true);
-        setTimeout(() => { if (!gyroActiveRef.current) startAutoSheen(); }, 500);
+        // Android / non-iOS — no permission needed
+        window.addEventListener('deviceorientation', orientationHandler, true);
+        setTimeout(() => { if (!gyroActiveRef.current) startAutoSheen(); }, 600);
       }
     };
 
-    tryRequestPermission();
+    // Trigger on first user tap (satisfies iOS gesture requirement)
+    const onFirstTouch = () => {
+      document.removeEventListener('touchstart', onFirstTouch, true);
+      setupGyro();
+    };
+    document.addEventListener('touchstart', onFirstTouch, true);
+
+    // On desktop / no touch — just start auto-sheen immediately
+    const desktopTimer = setTimeout(() => {
+      if (!gyroSetupRef.current) startAutoSheen();
+    }, 800);
 
     return () => {
-      window.removeEventListener('deviceorientation', handler, true);
+      document.removeEventListener('touchstart', onFirstTouch, true);
+      clearTimeout(desktopTimer);
+      window.removeEventListener('deviceorientation', orientationHandler, true);
       if (sheenAnimRef.current) cancelAnimationFrame(sheenAnimRef.current);
     };
   }, []);
