@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE, AURA_TEXT } from '../shared';
+import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 const MONTHS_LONG = [
@@ -198,41 +198,37 @@ export default function HistoryScreen() {
 
                   <button
                     onClick={() => navigate('history-detail', { workoutId: w.id })}
-                    className="card-press w-full rounded-2xl text-left relative overflow-hidden"
+                    className="card-press w-full rounded-2xl p-4 text-left"
                     style={CARD_BTN_STYLE}
                   >
-                    {/* Aura accent bar */}
-                    <div className="absolute left-0 top-0 bottom-0 w-[3px]" style={{ background: 'linear-gradient(180deg, #EAEAEA 0%, #C5A059 100%)' }} />
-                    <div className="p-4 pl-[18px]">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <div className="font-bebas text-white/92 leading-none text-base tracking-wider">
-                            {fmtLabel(w.type)}
-                          </div>
-                          <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
-                            <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
-                            {w.duration_min > 0 && (
-                              <>
-                                <span className="font-sans text-white/20 text-xs">•</span>
-                                <span className="font-sans text-white/35 text-xs">{w.duration_min} min</span>
-                              </>
-                            )}
-                            {w.total_sets > 0 && (
-                              <>
-                                <span className="font-sans text-white/20 text-xs">•</span>
-                                <span className="font-sans text-white/35 text-xs">{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
-                              </>
-                            )}
-                            {w.total_volume > 0 && (
-                              <>
-                                <span className="font-sans text-white/20 text-xs">•</span>
-                                <span className="font-sans text-xs font-medium" style={AURA_TEXT}>{fmtVol(w.total_volume)}</span>
-                              </>
-                            )}
-                          </div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="font-bebas text-white/92 leading-none text-base tracking-wider">
+                          {fmtLabel(w.type)}
                         </div>
-                        <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
+                        <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
+                          <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
+                          {w.duration_min > 0 && (
+                            <>
+                              <span className="font-sans text-white/20 text-xs">•</span>
+                              <span className="font-sans text-white/35 text-xs">{w.duration_min} min</span>
+                            </>
+                          )}
+                          {w.total_sets > 0 && (
+                            <>
+                              <span className="font-sans text-white/20 text-xs">•</span>
+                              <span className="font-sans text-white/35 text-xs">{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                            </>
+                          )}
+                          {w.total_volume > 0 && (
+                            <>
+                              <span className="font-sans text-white/20 text-xs">•</span>
+                              <span className="font-sans text-white/35 text-xs">{fmtVol(w.total_volume)}</span>
+                            </>
+                          )}
+                        </div>
                       </div>
+                      <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
                     </div>
                   </button>
                 </div>

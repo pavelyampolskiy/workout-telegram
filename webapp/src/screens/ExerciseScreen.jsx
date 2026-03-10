@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
-import { fmtW, DARK_CARD_STYLE, AURA_TEXT } from '../shared';
+import { fmtW, DARK_CARD_STYLE } from '../shared';
 
 function RecoveryBanner({ recoveryData }) {
   if (!recoveryData || recoveryData.modifier >= 1) return null;
@@ -412,15 +412,7 @@ export default function ExerciseScreen() {
       )}
 
       {/* Input */}
-      <div
-        className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`}
-        style={{
-          background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%) padding-box, linear-gradient(135deg, rgba(234,234,234,0.22) 0%, rgba(197,160,89,0.28) 50%, rgba(234,234,234,0.12) 100%) border-box',
-          backgroundColor: 'rgba(0,0,0,0.65)',
-          border: '1px solid transparent',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.5)',
-        }}
-      >
+      <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
         <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
           Set {done + 1}
         </div>
@@ -514,7 +506,7 @@ export default function ExerciseScreen() {
           className="card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 border"
           style={
             weight && reps
-              ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)' }
+              ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)', color: 'rgba(255,255,255,1)' }
               : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
           }
         >
@@ -531,7 +523,7 @@ export default function ExerciseScreen() {
               Saved
             </span>
           ) : (
-            <span style={weight && reps ? AURA_TEXT : undefined}>Save Set</span>
+            'Save Set'
           )}
         </button>
 

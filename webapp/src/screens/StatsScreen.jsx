@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { StatsSkeleton } from '../components/Skeleton';
-import { CARD_BTN_STYLE, AURA_TEXT, AURA_BAR } from '../shared';
+import { CARD_BTN_STYLE } from '../shared';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
@@ -17,7 +17,7 @@ const GRADIENT_TEXT = {
   backgroundClip: 'text',
 };
 
-const BAR_GRADIENT = AURA_BAR;
+const BAR_GRADIENT = 'linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 100%)';
 
 function Bar({ label, value, max, mounted }) {
   const pct = max > 0 ? (value / max) * 100 : 0;
