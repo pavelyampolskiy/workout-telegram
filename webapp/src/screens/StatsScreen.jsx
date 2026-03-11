@@ -144,7 +144,7 @@ export default function StatsScreen() {
       const maxV = Math.max(a, b, c, cardio, 1);
       return (
         <div className="space-y-3">
-          <div className="text-[10px] uppercase tracking-widest font-bebas text-white/40">{label}</div>
+          <div className="text-base uppercase tracking-widest font-bebas text-white/60">{label}</div>
           <div className={CARD.className} style={CARD.style}>
             <div className="flex items-baseline gap-2 mb-4">
               <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
