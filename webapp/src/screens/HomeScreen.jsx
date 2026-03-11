@@ -547,8 +547,9 @@ export default function HomeScreen() {
         )}
         </div>
 
+        <div className="flex-[3]" />
         {/* Navigation widgets */}
-        <div className="mt-auto pt-4 space-y-2">
+        <div className="pt-4 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => guardedNavigate('recovery-check')}
@@ -639,6 +640,7 @@ export default function HomeScreen() {
             </button>
           </div>
         </div>
+        <div className="flex-[2]" />
       </div>
 
       {/* Active workout warning modal */}
