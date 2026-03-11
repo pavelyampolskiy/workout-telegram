@@ -230,18 +230,18 @@ export default function App() {
         showToast,
       }}
     >
-      <div className="min-h-screen bg-black text-white max-w-lg mx-auto overflow-hidden">
+      <div className="bg-black text-white max-w-lg mx-auto overflow-hidden" style={{ minHeight: 'var(--tg-vh, 100vh)' }}>
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div
           key={current.screen}
-          className={`min-h-screen bg-black ${
+          className={`bg-black ${
             isAnimating
               ? direction === 'forward'
                 ? 'animate-slide-in-right'
                 : 'animate-slide-in-left'
               : ''
           }`}
-          style={{ paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
+          style={{ minHeight: 'var(--tg-vh, 100vh)', paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
         >
           <ErrorBoundary>
             <Screen />
