@@ -263,9 +263,9 @@ export default function CardioScreen() {
   // Pre-start screen
   if (!started) {
     return (
-      <div className="h-screen relative overflow-hidden">
+      <div className="relative overflow-hidden" style={{ height: 'var(--tg-vh, 100vh)' }}>
         <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
-        <div className="relative z-10 flex flex-col items-center justify-center h-screen p-5">
+        <div className="relative z-10 flex flex-col items-center justify-center p-5" style={{ height: 'var(--tg-vh, 100vh)' }}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-white/60 mb-4">
             <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
           </svg>

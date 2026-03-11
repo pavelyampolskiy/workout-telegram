@@ -92,7 +92,7 @@ export default function RecoveryCheckScreen() {
             Recovery Score
           </h1>
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center" style={{ minHeight: '60vh' }}>
+        <div className="relative z-10 flex flex-col items-center justify-center" style={{ minHeight: 'calc(var(--tg-vh, 100vh) - 120px)' }}>
           <div
             className="text-7xl font-bebas mb-2"
             style={{ color: rec.color }}
