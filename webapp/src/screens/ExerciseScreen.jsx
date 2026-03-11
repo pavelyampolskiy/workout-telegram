@@ -282,9 +282,9 @@ export default function ExerciseScreen() {
   const pct = Math.min((done / target) * 100, 100);
 
   return (
-    <div className="screen-root pb-28">
+    <div className="screen-root">
       <ScreenBg fixed />
-      <div className="relative z-10 px-5 pt-5 pb-28">
+      <div className="relative z-10 h-full overflow-y-auto overscroll-none px-5 pt-5 pb-28">
 
       {/* Recovery banner */}
       <RecoveryBanner recoveryData={recoveryData} />

@@ -291,7 +291,7 @@ export default function DayScreen() {
     return (
       <div className="screen-root">
         <ScreenBg fixed overlay="bg-black/65" />
-        <div className="relative z-10 p-5">
+        <div className="relative z-10 h-full overflow-y-auto overscroll-none p-5">
           <div className="mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
               <path d="M20 6L9 17l-5-5"/>
@@ -370,9 +370,9 @@ export default function DayScreen() {
   }
 
   return (
-    <div className="screen-root pb-32">
+    <div className="screen-root">
       <ScreenBg fixed overlay="bg-black/65" />
-      <div className="relative z-10">
+      <div className="relative z-10 h-full overflow-y-auto overscroll-none pb-32">
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
         <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
