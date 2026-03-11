@@ -85,14 +85,14 @@ export default function RecoveryCheckScreen() {
     const rec = getRecommendation(score);
 
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="fixed inset-0 overflow-hidden">
         <ScreenBg />
         <div className="relative z-10 p-5">
           <h1 className="font-bebas text-white/85 pt-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
             Recovery Score
           </h1>
         </div>
-        <div className="relative z-10 flex flex-col items-center justify-center" style={{ minHeight: 'calc(var(--tg-vh, 100vh) - 120px)' }}>
+        <div className="relative z-10 flex flex-col items-center justify-center" style={{ height: 'calc(100% - 60px)' }}>
           <div
             className="text-7xl font-bebas mb-2"
             style={{ color: rec.color }}
@@ -142,7 +142,7 @@ export default function RecoveryCheckScreen() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5 pb-24">
         <h1 className="font-bebas text-white/85 pt-2 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
