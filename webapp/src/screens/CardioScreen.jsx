@@ -325,41 +325,29 @@ export default function CardioScreen() {
           </div>
           <button
             onClick={handlePause}
-            className="card-press mt-4 flex items-center gap-2 px-5 py-2 rounded-xl font-bebas tracking-wider text-sm"
+            className="mt-4 flex items-center gap-2 px-5 py-2 rounded-xl font-bebas tracking-wider text-sm transition-colors"
             style={{
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) 26%, rgba(250,248,244,0.22) 50%, rgba(220,210,190,0.10) 74%, rgba(255,255,255,0.04) 100%)',
-              boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
-              border: '1px solid rgba(255,255,255,0.09)',
+              background: paused ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.07)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              color: paused ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.50)',
             }}
           >
-            <span style={{
-              background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}>
-              {paused ? (
-                <>
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5" style={{ WebkitTextFillColor: 'initial', filter: 'none' }}>
-                    <polygon points="5,3 19,12 5,21" fill="url(#pg)" />
-                    <defs><linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="rgba(234,234,234,0.90)"/><stop offset="100%" stopColor="rgba(197,160,89,0.70)"/></linearGradient></defs>
-                  </svg>
-                  RESUME
-                </>
-              ) : (
-                <>
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
-                    <rect x="6" y="4" width="4" height="16" rx="1" fill="url(#pg2)" />
-                    <rect x="14" y="4" width="4" height="16" rx="1" fill="url(#pg2)" />
-                    <defs><linearGradient id="pg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="rgba(234,234,234,0.90)"/><stop offset="100%" stopColor="rgba(197,160,89,0.70)"/></linearGradient></defs>
-                  </svg>
-                  PAUSE
-                </>
-              )}
-            </span>
+            {paused ? (
+              <>
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                  <polygon points="5,3 19,12 5,21"/>
+                </svg>
+                RESUME
+              </>
+            ) : (
+              <>
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                  <rect x="6" y="4" width="4" height="16" rx="1"/>
+                  <rect x="14" y="4" width="4" height="16" rx="1"/>
+                </svg>
+                PAUSE
+              </>
+            )}
           </button>
           {paused && (
             <div className="mt-2 text-white/30 text-xs font-bebas tracking-wider">PAUSED</div>
