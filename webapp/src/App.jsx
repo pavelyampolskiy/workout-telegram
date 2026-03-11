@@ -188,14 +188,21 @@ export default function App() {
     setActiveWorkout(null);
   }, []);
 
-  // Always hide Telegram native back button — use custom in-app back buttons instead
+  // Show/hide Telegram native back button to preserve viewport height on inner screens
   useEffect(() => {
     try {
       const tg = window.Telegram?.WebApp;
       if (!tg?.BackButton) return;
-      tg.BackButton.hide();
+      if (stack.length > 1) {
+        tg.BackButton.show();
+      } else {
+        tg.BackButton.hide();
+      }
+      const handler = () => goBack();
+      tg.BackButton.onClick(handler);
+      return () => { try { tg.BackButton.offClick(handler); } catch (_) {} };
     } catch (_) {}
-  }, [stack.length]);
+  }, [stack.length, goBack]);
 
   // Swipe-back gesture (swipe from left edge to go back)
   useSwipeBack(goBack, stack.length > 1);
