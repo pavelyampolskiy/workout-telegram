@@ -234,8 +234,16 @@ export default function CardioScreen() {
               </p>
               <div
                 key="ready-text"
-                className="cd-ready font-bebas text-white"
-                style={{ fontSize: '22vw', lineHeight: 1, letterSpacing: '0.06em' }}
+                className="cd-ready font-bebas"
+                style={{
+                  fontSize: '22vw',
+                  lineHeight: 1,
+                  letterSpacing: '0.06em',
+                  background: 'linear-gradient(135deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
               >
                 Ready?
               </div>
