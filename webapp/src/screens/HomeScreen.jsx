@@ -190,14 +190,8 @@ function WeeklyGoalWidget({ userId, recoveryScore, sheenAngle }) {
         )}
         {lastAchievement && (
           <div className="flex flex-col items-center">
-            <div className="relative" style={{ width: RING_SIZE, height: RING_SIZE }}>
-              <svg width={RING_SIZE} height={RING_SIZE}>
-                <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
-                <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth={RING_STROKE} strokeLinecap="round"/>
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center" style={{ color: 'rgba(255,255,255,0.85)' }}>
-                {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
-              </div>
+            <div className="flex items-center justify-center rounded-full" style={{ width: RING_SIZE, height: RING_SIZE, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.85)' }}>
+              {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
             </div>
             <div className="mt-2 text-center">
               <div className="font-bebas tracking-wider text-white/55 text-[10px] uppercase">Last Achievement</div>
