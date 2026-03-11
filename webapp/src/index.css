@@ -26,7 +26,8 @@ html, body {
 
 #root {
   background-color: #0F0F10;
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden;
 }
 
 input[type='number']::-webkit-inner-spin-button,
