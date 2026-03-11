@@ -310,7 +310,12 @@ export default function DayScreen() {
                   key={star}
                   onClick={() => setRating(star)}
                   className="text-3xl transition-transform active:scale-110"
-                  style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
+                  style={star <= rating ? {
+                    background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.80) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  } : { color: 'rgba(255,255,255,0.20)' }}
                 >
                   ★
                 </button>
@@ -329,16 +334,28 @@ export default function DayScreen() {
           <button
             onClick={handleFinish}
             disabled={saving}
-            className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-            style={CARD_BTN_STYLE}
+            className="card-press w-full mt-3 font-bebas tracking-wider text-lg py-4 rounded-2xl"
+            style={{
+              ...CARD_BTN_STYLE,
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) 26%, rgba(250,248,244,0.22) 50%, rgba(220,210,190,0.10) 74%, rgba(255,255,255,0.04) 100%)',
+              boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+              border: '1px solid rgba(255,255,255,0.09)',
+            }}
           >
             {saving ? (
-              <span className="inline-flex items-center justify-center gap-2">
+              <span className="inline-flex items-center justify-center gap-2 text-white/70">
                 <Spinner size={20} />
                 Saving…
               </span>
             ) : (
-              'Done'
+              <span style={{
+                background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
+                Done
+              </span>
             )}
           </button>
           <button
