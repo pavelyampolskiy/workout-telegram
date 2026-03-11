@@ -553,7 +553,7 @@ export default function HomeScreen() {
         )}
 
           {/* Navigation widgets */}
-          <div className="pt-2 space-y-2">
+          <div className="mt-4 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => guardedNavigate('recovery-check')}
