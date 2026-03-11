@@ -211,23 +211,23 @@ export default function HistoryScreen() {
                           {fmtLabel(w.type)}
                         </div>
                         <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
-                          <span className="font-sans text-xs" style={{ background: 'linear-gradient(135deg, rgba(234,234,234,0.70) 0%, rgba(197,160,89,0.55) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{formatDate(w.date)}</span>
+                          <span className="font-sans text-white/40 text-xs">{formatDate(w.date)}</span>
                           {w.duration_min > 0 && (
                             <>
                               <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-xs" style={{ background: 'linear-gradient(135deg, rgba(234,234,234,0.70) 0%, rgba(197,160,89,0.55) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{w.duration_min} min</span>
+                              <span className="font-sans text-white/40 text-xs">{w.duration_min} min</span>
                             </>
                           )}
                           {w.total_sets > 0 && (
                             <>
                               <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-xs" style={{ background: 'linear-gradient(135deg, rgba(234,234,234,0.70) 0%, rgba(197,160,89,0.55) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                              <span className="font-sans text-white/40 text-xs">{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
                             </>
                           )}
                           {w.total_volume > 0 && (
                             <>
                               <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-xs" style={{ background: 'linear-gradient(135deg, rgba(234,234,234,0.70) 0%, rgba(197,160,89,0.55) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{fmtVol(w.total_volume)}</span>
+                              <span className="font-sans text-white/40 text-xs">{fmtVol(w.total_volume)}</span>
                             </>
                           )}
                         </div>
