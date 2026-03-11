@@ -135,7 +135,7 @@ export default function HistoryDetailScreen() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
@@ -143,7 +143,7 @@ export default function HistoryDetailScreen() {
   }
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
@@ -158,7 +158,7 @@ export default function HistoryDetailScreen() {
   if (!workout) return null;
 
   return (
-    <div className="min-h-screen relative overflow-hidden pb-28">
+    <div className="screen-root pb-28">
       <ScreenBg overlay="bg-black/65" />
 
       <div className="relative z-10 p-5">

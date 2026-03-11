@@ -225,7 +225,7 @@ export default function DayScreen() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Setting up workout…</div>
       </div>
@@ -234,7 +234,7 @@ export default function DayScreen() {
 
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
@@ -251,7 +251,7 @@ export default function DayScreen() {
     const isReady = countdown === 'READY';
     const isGo = countdown === 'GO';
     return (
-      <div className="min-h-screen relative overflow-hidden" style={{ background: '#060606' }}>
+      <div className="screen-root" style={{ background: '#060606' }}>
         <ScreenBg overlay="bg-black/88" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none">
           {isReady ? (
@@ -289,7 +289,7 @@ export default function DayScreen() {
 
   if (showNote) {
     return (
-      <div className="overflow-y-auto overflow-x-hidden relative" style={{ minHeight: 'var(--tg-vh, 100vh)' }}>
+      <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
         <div className="relative z-10 p-5">
           <div className="mb-2">
@@ -370,7 +370,7 @@ export default function DayScreen() {
   }
 
   return (
-    <div className="min-h-screen relative pb-32 overflow-hidden">
+    <div className="screen-root pb-32">
       <ScreenBg overlay="bg-black/65" />
       <div className="relative z-10">
       {/* Header */}

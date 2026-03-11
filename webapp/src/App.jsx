@@ -234,14 +234,14 @@ export default function App() {
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div
           key={current.screen}
-          className={`bg-black overflow-y-auto ${
+          className={`bg-black overflow-hidden ${
             isAnimating
               ? direction === 'forward'
                 ? 'animate-slide-in-right'
                 : 'animate-slide-in-left'
               : ''
           }`}
-          style={{ height: 'var(--tg-vh, 100vh)', overscrollBehavior: 'none', paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
+          style={{ height: 'var(--tg-vh, 100vh)', paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
         >
           <ErrorBoundary>
             <Screen />

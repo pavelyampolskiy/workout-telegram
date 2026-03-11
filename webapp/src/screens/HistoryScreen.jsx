@@ -110,7 +110,7 @@ export default function HistoryScreen() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="screen-root">
         <ScreenBg />
         <div className="relative z-10 p-5">
           <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
@@ -123,7 +123,7 @@ export default function HistoryScreen() {
   }
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
+      <div className="screen-root">
         <ScreenBg />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
@@ -136,7 +136,7 @@ export default function HistoryScreen() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="screen-root">
       <ScreenBg />
       <div className="relative z-10 p-5">
         <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5">

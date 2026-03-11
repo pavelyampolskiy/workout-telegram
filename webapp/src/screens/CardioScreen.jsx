@@ -224,7 +224,7 @@ export default function CardioScreen() {
     const isReady = countdown === 'READY';
     const isGo = countdown === 'GO';
     return (
-      <div className="min-h-screen relative overflow-hidden" style={{ background: '#060606' }}>
+      <div className="screen-root" style={{ background: '#060606' }}>
         <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/88" fixed />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none">
           {isReady ? (

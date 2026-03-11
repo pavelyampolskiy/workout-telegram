@@ -178,6 +178,16 @@ input[type='number']::-webkit-outer-spin-button {
   box-shadow: 0 0 6px rgba(255,255,255,0.25), 0 1px 4px rgba(0,0,0,0.5);
 }
 
+/* ── Screen root scroll container ───────────────────────── */
+.screen-root {
+  height: var(--tg-vh, 100vh);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
 /* ── Screen transitions (disabled — instant) ──────────── */
 .animate-slide-in-right {}
 .animate-slide-in-left {}
