@@ -547,7 +547,7 @@ export default function HomeScreen() {
         )}
         </div>
 
-        <div className="flex-[3]" />
+        <div className="flex-[2]" />
         {/* Navigation widgets */}
         <div className="pt-4 space-y-2">
           {/* Big card - New Workout */}
@@ -640,7 +640,7 @@ export default function HomeScreen() {
             </button>
           </div>
         </div>
-        <div className="flex-[2]" />
+        <div className="flex-[3]" />
       </div>
 
       {/* Active workout warning modal */}
