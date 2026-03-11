@@ -87,6 +87,24 @@ export default function App() {
     }
   }, [activeWorkout]);
 
+  // Prevent iOS WKWebView rubber-band scroll on non-scrollable areas
+  useEffect(() => {
+    const handler = (e) => {
+      let el = e.target;
+      while (el && el !== document.documentElement) {
+        const style = window.getComputedStyle(el);
+        const oy = style.overflowY;
+        if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight) {
+          return;
+        }
+        el = el.parentElement;
+      }
+      e.preventDefault();
+    };
+    document.addEventListener('touchmove', handler, { passive: false });
+    return () => document.removeEventListener('touchmove', handler);
+  }, []);
+
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;
 
