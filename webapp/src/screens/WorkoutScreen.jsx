@@ -43,7 +43,12 @@ function DayCard({ day, onPress, editMode, onRename, onDelete }) {
           <DayIcon />
         </span>
         <div className="min-w-0 flex-1">
-          <div className="font-bebas tracking-wider text-lg text-white/65">{day.label}</div>
+          <div className="font-bebas tracking-wider text-lg" style={{
+            background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>{day.label}</div>
         </div>
         {!editMode && <span className="ml-auto text-white/35 text-xl shrink-0">›</span>}
       </button>
@@ -370,7 +375,12 @@ export default function WorkoutScreen() {
                       <CardioIcon />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className="font-bebas tracking-wider text-lg text-white/65">Cardio</div>
+                      <div className="font-bebas tracking-wider text-lg" style={{
+                        background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}>Cardio</div>
                     </div>
                     <span className="ml-auto text-white/35 text-xl shrink-0">›</span>
                   </button>
