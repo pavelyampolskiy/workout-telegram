@@ -520,10 +520,22 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
         <button
           onClick={handleSave}
-          className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={CARD_BTN_STYLE}
+          className="card-press w-full font-bebas tracking-wider text-lg py-4 rounded-2xl"
+          style={{
+            ...CARD_BTN_STYLE,
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) 26%, rgba(250,248,244,0.22) 50%, rgba(220,210,190,0.10) 74%, rgba(255,255,255,0.04) 100%)',
+            boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+            border: '1px solid rgba(255,255,255,0.09)',
+          }}
         >
-          Save Workout
+          <span style={{
+            background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            Save Workout
+          </span>
         </button>
       </div>
 
