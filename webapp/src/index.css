@@ -14,13 +14,14 @@ input, textarea {
   user-select: text;
 }
 
-body {
+html, body {
   margin: 0;
   font-family: 'Bebas Neue', cursive;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow: hidden;
   overscroll-behavior: none;
   background-color: #0F0F10;
+  height: 100%;
 }
 
 #root {
