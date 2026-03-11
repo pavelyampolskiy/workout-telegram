@@ -226,7 +226,7 @@ export default function DayScreen() {
   if (loading) {
     return (
       <div className="screen-root">
-        <ScreenBg overlay="bg-black/65" />
+        <ScreenBg fixed overlay="bg-black/65" />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Setting up workout…</div>
       </div>
     );
@@ -235,7 +235,7 @@ export default function DayScreen() {
   if (error) {
     return (
       <div className="screen-root">
-        <ScreenBg overlay="bg-black/65" />
+        <ScreenBg fixed overlay="bg-black/65" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
           <div className="flex gap-3">
@@ -252,7 +252,7 @@ export default function DayScreen() {
     const isGo = countdown === 'GO';
     return (
       <div className="screen-root" style={{ background: '#060606' }}>
-        <ScreenBg overlay="bg-black/88" />
+        <ScreenBg fixed overlay="bg-black/88" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none">
           {isReady ? (
             <>
@@ -290,7 +290,7 @@ export default function DayScreen() {
   if (showNote) {
     return (
       <div className="screen-root">
-        <ScreenBg overlay="bg-black/65" />
+        <ScreenBg fixed overlay="bg-black/65" />
         <div className="relative z-10 p-5">
           <div className="mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
@@ -371,7 +371,7 @@ export default function DayScreen() {
 
   return (
     <div className="screen-root pb-32">
-      <ScreenBg overlay="bg-black/65" />
+      <ScreenBg fixed overlay="bg-black/65" />
       <div className="relative z-10">
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
