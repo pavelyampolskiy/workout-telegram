@@ -87,57 +87,55 @@ export default function RecoveryCheckScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 p-5 flex flex-col h-screen">
-          <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <div className="relative z-10 p-5">
+          <h1 className="font-bebas text-white/85 pt-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
             Recovery Score
           </h1>
-
-          <div className="flex-1 flex flex-col items-center justify-center -mt-20">
-            <div 
-              className="text-7xl font-bebas mb-2"
-              style={{ color: rec.color }}
-            >
-              {score}%
-            </div>
-            <div className="text-white/50 text-sm font-sans text-center max-w-xs">
-              {rec.text}
-            </div>
-            {rec.modifier < 1 && (
-              <div className="mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10">
-                <span className="text-white/70 text-xs font-sans">
-                  Suggested weight adjustment: <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
-                </span>
-              </div>
-            )}
+        </div>
+        <div className="relative z-10 flex flex-col items-center justify-center" style={{ minHeight: '60vh' }}>
+          <div
+            className="text-7xl font-bebas mb-2"
+            style={{ color: rec.color }}
+          >
+            {score}%
           </div>
-
-          <div className="space-y-3 mt-auto pb-6">
-            <button
-              onClick={handleContinue}
-              className="card-press w-full rounded-2xl p-4 text-center font-bebas tracking-wider"
-              style={{
-                ...CARD_BTN_STYLE,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) 26%, rgba(250,248,244,0.22) 50%, rgba(220,210,190,0.10) 74%, rgba(255,255,255,0.04) 100%)',
-                boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
-                border: '1px solid rgba(255,255,255,0.09)',
-              }}
-            >
-              <span style={{
-                background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>
-                Start Workout
+          <div className="text-white/50 text-sm font-sans text-center max-w-xs">
+            {rec.text}
+          </div>
+          {rec.modifier < 1 && (
+            <div className="mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-white/70 text-xs font-sans">
+                Suggested weight adjustment: <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
               </span>
-            </button>
-            <button
-              onClick={() => navigate('home')}
-              className="w-full text-white/40 text-sm font-sans py-2"
-            >
-              Back to Home
-            </button>
-          </div>
+            </div>
+          )}
+        </div>
+        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto z-10 p-5 space-y-3">
+          <button
+            onClick={handleContinue}
+            className="card-press w-full rounded-2xl p-4 text-center font-bebas tracking-wider"
+            style={{
+              ...CARD_BTN_STYLE,
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) 26%, rgba(250,248,244,0.22) 50%, rgba(220,210,190,0.10) 74%, rgba(255,255,255,0.04) 100%)',
+              boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+              border: '1px solid rgba(255,255,255,0.09)',
+            }}
+          >
+            <span style={{
+              background: 'linear-gradient(135deg, rgba(234,234,234,0.90) 0%, rgba(197,160,89,0.70) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              Start Workout
+            </span>
+          </button>
+          <button
+            onClick={() => navigate('home')}
+            className="w-full text-white/40 text-sm font-sans py-2 text-center"
+          >
+            Back to Home
+          </button>
         </div>
       </div>
     );
@@ -146,7 +144,7 @@ export default function RecoveryCheckScreen() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
-      <div className="relative z-10 p-5 flex flex-col h-screen">
+      <div className="relative z-10 p-5 pb-24">
         <h1 className="font-bebas text-white/85 pt-2 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           Recovery Check
         </h1>
@@ -157,7 +155,7 @@ export default function RecoveryCheckScreen() {
         {/* Progress */}
         <div className="flex gap-1.5 mb-8">
           {QUESTIONS.map((_, i) => (
-            <div 
+            <div
               key={i}
               className="flex-1 h-1 rounded-full transition-all duration-300"
               style={{
@@ -188,16 +186,16 @@ export default function RecoveryCheckScreen() {
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Skip */}
-        <div className="mt-auto pt-6 pb-4">
-          <button
-            onClick={handleSkip}
-            className="w-full text-white/30 text-xs font-sans py-2"
-          >
-            Skip recovery check
-          </button>
-        </div>
+      {/* Skip — fixed bottom */}
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto z-10 p-5">
+        <button
+          onClick={handleSkip}
+          className="w-full text-white/30 text-xs font-sans py-2 text-center"
+        >
+          Skip recovery check
+        </button>
       </div>
     </div>
   );
