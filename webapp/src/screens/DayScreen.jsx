@@ -289,8 +289,9 @@ export default function DayScreen() {
 
   if (showNote) {
     return (
-      <div className="overflow-y-auto" style={{ background: '#0F0F10', minHeight: 'var(--tg-vh, 100vh)' }}>
-        <div className="p-5">
+      <div className="overflow-y-auto relative" style={{ minHeight: 'var(--tg-vh, 100vh)' }}>
+        <ScreenBg overlay="bg-black/65" />
+        <div className="relative z-10 p-5">
           <div className="pt-4 mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
               <path d="M20 6L9 17l-5-5"/>
