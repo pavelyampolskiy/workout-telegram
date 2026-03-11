@@ -450,7 +450,7 @@ export default function HomeScreen() {
         <StatusWidget userId={userId} />
 
         {/* Content */}
-        <div className="flex flex-col gap-3 mt-1 flex-1">
+        <div className="flex flex-col gap-3 mt-1">
           {/* Weekly goal widget */}
           <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} sheenAngle={sheen.angle} />
 
@@ -545,9 +545,10 @@ export default function HomeScreen() {
             )}
           </div>
         )}
+        </div>
 
-          {/* Navigation widgets */}
-          <div className="mt-auto pt-4 space-y-2">
+        {/* Navigation widgets */}
+        <div className="mt-auto pt-4 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => guardedNavigate('recovery-check')}
@@ -637,7 +638,6 @@ export default function HomeScreen() {
               <div className="nav-label font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
             </button>
           </div>
-        </div>
         </div>
       </div>
 
