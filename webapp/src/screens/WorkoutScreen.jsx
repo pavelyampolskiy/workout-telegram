@@ -176,7 +176,7 @@ export default function WorkoutScreen() {
   };
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden" style={{ paddingTop: 'var(--app-top)' }}>
       <ScreenBg overlay="bg-black/60" />
       <div className="relative z-10 flex flex-col p-5 h-full overflow-y-auto">
         <div className="flex items-center justify-between pt-2 mb-2">

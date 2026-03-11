@@ -85,7 +85,7 @@ export default function RecoveryCheckScreen() {
     const rec = getRecommendation(score);
 
     return (
-      <div className="fixed inset-0 overflow-hidden">
+      <div className="fixed inset-0 overflow-hidden" style={{ paddingTop: 'var(--app-top)' }}>
         <ScreenBg />
         <div className="relative z-10 p-5">
           <h1 className="font-bebas text-white/85 pt-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
@@ -142,7 +142,7 @@ export default function RecoveryCheckScreen() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden" style={{ paddingTop: 'var(--app-top)' }}>
       <ScreenBg />
       <div className="relative z-10 p-5 pb-24">
         <h1 className="font-bebas text-white/85 pt-2 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
