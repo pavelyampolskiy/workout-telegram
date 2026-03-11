@@ -46,7 +46,7 @@ const FILTERS = [
 ];
 
 export default function HistoryScreen() {
-  const { userId, navigate, showToast } = useApp();
+  const { userId, navigate, goBack, showToast } = useApp();
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -139,7 +139,11 @@ export default function HistoryScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5">
+          <span className="text-white/35 text-base leading-none">‹</span>
+          <span className="font-bebas tracking-wider text-white/35 text-sm">Back</span>
+        </button>
+        <h1 className="font-bebas text-white/85 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           History
         </h1>
 

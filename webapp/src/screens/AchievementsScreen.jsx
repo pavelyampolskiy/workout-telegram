@@ -165,7 +165,11 @@ export default function AchievementsScreen() {
     <div className="min-h-screen relative overflow-hidden pb-10">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-bebas text-white/85 pt-2 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5">
+          <span className="text-white/35 text-base leading-none">‹</span>
+          <span className="font-bebas tracking-wider text-white/35 text-sm">Back</span>
+        </button>
+        <h1 className="font-bebas text-white/85 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           Achievements
         </h1>
         <div className="text-white/40 text-sm font-sans mb-5">

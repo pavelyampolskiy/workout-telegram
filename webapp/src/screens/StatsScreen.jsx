@@ -42,7 +42,7 @@ function Bar({ label, value, max, mounted }) {
 }
 
 export default function StatsScreen() {
-  const { userId, navigate, showToast } = useApp();
+  const { userId, navigate, goBack, showToast } = useApp();
   const [tab, setTab] = useState('week');
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -176,7 +176,11 @@ export default function StatsScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
+        <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5">
+          <span className="text-white/35 text-base leading-none">‹</span>
+          <span className="font-bebas tracking-wider text-white/35 text-sm">Back</span>
+        </button>
+        <h1 className="text-xl font-bebas tracking-wider mb-5 text-white/85">Statistics</h1>
 
         {/* Tabs */}
         <div 

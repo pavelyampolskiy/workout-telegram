@@ -163,7 +163,11 @@ export default function HistoryDetailScreen() {
 
       <div className="relative z-10 p-5">
         {/* Header */}
-        <div className="pt-2 mb-5">
+        <div className="mb-5">
+        <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5">
+          <span className="text-white/35 text-base leading-none">‹</span>
+          <span className="font-bebas tracking-wider text-white/35 text-sm">Back</span>
+        </button>
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
