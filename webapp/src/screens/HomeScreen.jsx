@@ -422,7 +422,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="relative overflow-hidden" style={{ height: 'var(--tg-vh, 100vh)' }}>
       {/* Blurred background */}
       <div
         className="absolute inset-0 scale-110"

@@ -133,11 +133,10 @@ export default function App() {
         const applyInsets = () => {
           const saTop = tg.safeAreaInsets?.top ?? 0;
           const csaTop = tg.contentSafeAreaInsets?.top ?? 0;
-          // saTop  = status bar overlap (non-zero when WebView starts behind status bar)
-          // csaTop = Telegram close button overlay height
-          // Must be SUMMED: "ABRIR" from chat list needs status bar + close button (~47+44=~91px)
           document.documentElement.style.setProperty('--tg-sa-top', `${saTop}px`);
           document.documentElement.style.setProperty('--tg-csa-top', csaTop > 0 ? `${csaTop}px` : '44px');
+          const vh = tg.viewportStableHeight || window.innerHeight;
+          document.documentElement.style.setProperty('--tg-vh', `${vh}px`);
         };
         applyInsets();
         setTimeout(applyInsets, 300);
