@@ -42,6 +42,35 @@ input[type='number']::-webkit-outer-spin-button {
     opacity: 0.82;
   }
 
+  /* ── Gold shimmer flash on any button press ─────────── */
+  @keyframes btn-gold-flash {
+    0%   { opacity: 0; }
+    18%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .btn-flash {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-flash::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0.03) 0%,
+      rgba(220,210,190,0.15) 28%,
+      rgba(250,248,244,0.28) 50%,
+      rgba(220,210,190,0.13) 72%,
+      rgba(255,255,255,0.03) 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    animation: btn-gold-flash 340ms ease-out forwards;
+    z-index: 10;
+  }
+
   /* ── Nav button: gold text flash on press ────────────── */
   .aura-nav-btn:active .nav-label {
     background: linear-gradient(135deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.62) 100%);

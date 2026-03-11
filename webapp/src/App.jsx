@@ -110,6 +110,10 @@ export default function App() {
       const el = e.target.closest('button, [role="button"], .card-press');
       if (el) {
         try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light'); } catch (_) {}
+        el.classList.remove('btn-flash');
+        void el.offsetWidth; // reflow to restart animation if pressed again quickly
+        el.classList.add('btn-flash');
+        setTimeout(() => el.classList.remove('btn-flash'), 380);
       }
     };
     document.addEventListener('touchstart', onTouch, { passive: true });
