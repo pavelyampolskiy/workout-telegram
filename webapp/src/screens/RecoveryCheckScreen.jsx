@@ -87,7 +87,7 @@ export default function RecoveryCheckScreen() {
     return (
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
-        <div className="relative z-10 p-5 flex flex-col min-h-screen">
+        <div className="relative z-10 p-5 flex flex-col h-screen">
           <h1 className="font-bebas text-white/85 pt-2 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
             Recovery Score
           </h1>
@@ -146,7 +146,7 @@ export default function RecoveryCheckScreen() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
-      <div className="relative z-10 p-5 flex flex-col min-h-screen">
+      <div className="relative z-10 p-5 flex flex-col h-screen">
         <h1 className="font-bebas text-white/85 pt-2 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           Recovery Check
         </h1>

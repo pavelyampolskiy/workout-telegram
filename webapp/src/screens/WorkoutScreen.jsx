@@ -178,7 +178,7 @@ export default function WorkoutScreen() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg overlay="bg-black/60" />
-      <div className="relative z-10 flex flex-col min-h-screen p-5">
+      <div className="relative z-10 flex flex-col h-screen p-5 overflow-y-auto">
         <div className="flex items-center justify-between pt-2 mb-2">
           <h1 className="text-xl font-bebas tracking-wider">New Workout</h1>
           {days && days.length > 0 && (
