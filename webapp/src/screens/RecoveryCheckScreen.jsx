@@ -110,7 +110,7 @@ export default function RecoveryCheckScreen() {
             </div>
           )}
         </div>
-        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto z-10 p-5 space-y-3">
+        <div className="relative z-10 flex-shrink-0 p-5 space-y-3" style={{ paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))' }}>
           <button
             onClick={handleContinue}
             className="card-press w-full rounded-2xl p-4 text-center font-bebas tracking-wider"
