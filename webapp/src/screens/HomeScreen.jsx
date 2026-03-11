@@ -416,7 +416,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <div className="relative overflow-hidden" style={{ height: 'var(--tg-vh, 100vh)' }}>
+    <div className="relative overflow-hidden h-full">
       {/* Blurred background */}
       <div
         className="absolute inset-0 scale-110"
@@ -431,7 +431,7 @@ export default function HomeScreen() {
       <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
 
       {/* Content: title top, cards bottom */}
-      <div className="relative z-10 p-5 pb-8 flex flex-col" style={{ minHeight: 'var(--tg-vh)' }}>
+      <div className="relative z-10 p-5 pb-8 flex flex-col h-full">
         {/* Headline */}
         <div className="font-bebas leading-none w-full mb-2">
           <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
