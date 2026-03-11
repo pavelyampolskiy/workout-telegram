@@ -158,6 +158,7 @@ export default function DayScreen() {
       : null;
     setDurationMin(mins);
     if (workoutId) api.finishWorkout(workoutId).catch(() => {});
+    if (document.activeElement) document.activeElement.blur();
     setShowNote(true);
   };
 
