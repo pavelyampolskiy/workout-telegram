@@ -437,7 +437,7 @@ export default function HomeScreen() {
       <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
 
       {/* Content: title top, cards bottom */}
-      <div className="relative z-10 p-5 pb-8">
+      <div className="relative z-10 p-5 pb-8 flex flex-col" style={{ minHeight: 'var(--tg-vh)' }}>
         {/* Headline */}
         <div className="font-bebas leading-none w-full mb-2">
           <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
@@ -553,7 +553,7 @@ export default function HomeScreen() {
         )}
 
           {/* Navigation widgets */}
-          <div className="mt-4 space-y-2">
+          <div className="mt-auto pt-4 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => guardedNavigate('recovery-check')}
