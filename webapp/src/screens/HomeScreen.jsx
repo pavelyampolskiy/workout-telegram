@@ -644,6 +644,7 @@ export default function HomeScreen() {
             </button>
           </div>
         </div>
+        </div>
       </div>
 
       {/* Active workout warning modal */}
