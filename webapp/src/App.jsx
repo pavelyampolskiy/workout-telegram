@@ -241,7 +241,7 @@ export default function App() {
                 : 'animate-slide-in-left'
               : ''
           }`}
-          style={{ height: 'var(--tg-vh, 100vh)', paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
+          style={{ height: 'var(--tg-vh, 100vh)', overscrollBehavior: 'none', paddingTop: 'calc(max(var(--tg-sa-top, 0px), env(safe-area-inset-top, 0px)) + var(--tg-csa-top, 0px))' }}
         >
           <ErrorBoundary>
             <Screen />
