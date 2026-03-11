@@ -422,7 +422,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <div className="h-screen relative overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden">
       {/* Blurred background */}
       <div
         className="absolute inset-0 scale-110"
