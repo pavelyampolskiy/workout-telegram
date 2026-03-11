@@ -400,8 +400,12 @@ export default function DayScreen() {
                 {done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
-                      className={`h-full rounded-full transition-[width] duration-300 ease-out ${complete ? 'bg-white/80' : 'bg-white/60'}`}
-                      style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
+                      className="h-full rounded-full transition-[width] duration-300 ease-out"
+                      style={{
+                        width: `${Math.min((done / total) * 100, 100)}%`,
+                        background: 'linear-gradient(90deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)',
+                        opacity: complete ? 1 : 0.75,
+                      }}
                     />
                   </div>
                 )}
@@ -455,8 +459,12 @@ export default function DayScreen() {
                 {done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
-                      className={`h-full rounded-full transition-[width] duration-300 ease-out ${complete ? 'bg-white/80' : 'bg-white/60'}`}
-                      style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
+                      className="h-full rounded-full transition-[width] duration-300 ease-out"
+                      style={{
+                        width: `${Math.min((done / total) * 100, 100)}%`,
+                        background: 'linear-gradient(90deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)',
+                        opacity: complete ? 1 : 0.75,
+                      }}
                     />
                   </div>
                 )}

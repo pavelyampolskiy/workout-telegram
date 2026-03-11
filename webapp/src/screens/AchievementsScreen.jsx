@@ -99,7 +99,7 @@ function Badge({ achievement, locked = false }) {
                   className="h-full rounded-full transition-all duration-500"
                   style={{
                     width: `${progress * 100}%`,
-                    background: 'linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%)',
+                    background: 'linear-gradient(90deg, rgba(234,234,234,0.85) 0%, rgba(197,160,89,0.60) 100%)',
                   }}
                 />
               </div>

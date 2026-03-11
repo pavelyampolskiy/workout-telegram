@@ -149,7 +149,9 @@ export default function RecoveryCheckScreen() {
               key={i}
               className="flex-1 h-1 rounded-full transition-all duration-300"
               style={{
-                background: i <= step ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)',
+                background: i <= step
+                  ? 'linear-gradient(90deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)'
+                  : 'rgba(255,255,255,0.1)',
               }}
             />
           ))}
