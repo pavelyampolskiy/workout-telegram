@@ -191,9 +191,7 @@ export default function WorkoutScreen() {
           )}
         </div>
 
-        <div className="flex-1" />
-
-        <div className="pb-20">
+        <div className="flex-1 flex flex-col justify-end pb-8">
           {loading ? (
             <div className="flex justify-center py-8"><Spinner /></div>
           ) : (
