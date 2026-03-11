@@ -422,7 +422,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <div className="relative overflow-hidden" style={{ height: 'var(--tg-vh, 100vh)' }}>
+    <div className="relative overflow-hidden" style={{ minHeight: 'var(--tg-vh, 100vh)' }}>
       {/* Blurred background */}
       <div
         className="absolute inset-0 scale-110"
@@ -437,9 +437,9 @@ export default function HomeScreen() {
       <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
 
       {/* Content: title top, cards bottom */}
-      <div className="relative z-10 flex flex-col h-full p-5">
+      <div className="relative z-10 p-5 pb-8">
         {/* Headline */}
-        <div className="font-bebas leading-none w-full">
+        <div className="font-bebas leading-none w-full mb-2">
           <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
           <div style={{
             fontSize: '18vw',
@@ -455,8 +455,8 @@ export default function HomeScreen() {
         {/* Status widget */}
         <StatusWidget userId={userId} />
 
-        {/* Content with consistent spacing */}
-        <div className="flex-1 flex flex-col gap-3 mt-3">
+        {/* Content */}
+        <div className="flex flex-col gap-3 mt-1">
           {/* Weekly goal widget */}
           <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} sheenAngle={sheen.angle} />
 
@@ -553,7 +553,7 @@ export default function HomeScreen() {
         )}
 
           {/* Navigation widgets */}
-          <div className="mt-auto pt-2 pb-3 space-y-2">
+          <div className="pt-2 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => guardedNavigate('recovery-check')}
@@ -643,7 +643,6 @@ export default function HomeScreen() {
               <div className="nav-label font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
             </button>
           </div>
-        </div>
         </div>
       </div>
 
