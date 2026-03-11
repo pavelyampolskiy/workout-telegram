@@ -63,34 +63,34 @@ function Badge({ achievement, locked = false }) {
   const IconComponent = CATEGORY_ICONS[type] || CATEGORY_ICONS.workouts;
   
   return (
-    <div 
+    <div
       className={`rounded-2xl p-4 ${locked ? 'opacity-50' : ''}`}
-      style={{
-        background: earned 
-          ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)'
-          : 'rgba(255,255,255,0.03)',
-        border: earned 
-          ? '1px solid rgba(255,255,255,0.15)'
-          : '1px solid rgba(255,255,255,0.05)',
-        boxShadow: earned 
-          ? 'inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,0.05)'
-          : 'none',
+      style={earned ? {
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(220,210,190,0.12) 26%, rgba(250,248,244,0.22) 50%, rgba(220,210,190,0.10) 74%, rgba(255,255,255,0.04) 100%)',
+        border: '1px solid rgba(255,255,255,0.09)',
+        boxShadow: '0 2px 20px rgba(197,160,89,0.10), inset 0 1px 0 rgba(255,255,255,0.18)',
+      } : {
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.05)',
       }}
     >
       <div className="flex items-center gap-4">
-        <div 
+        <div
           className="w-12 h-12 rounded-xl flex items-center justify-center"
           style={{
-            background: earned 
-              ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)'
-              : 'rgba(255,255,255,0.05)',
+            background: earned ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)',
             color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
           }}
         >
           {IconComponent}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-bebas tracking-wider text-base text-white/90">{name}</div>
+          <div className="font-bebas tracking-wider text-base" style={earned ? {
+            background: 'linear-gradient(135deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          } : { color: 'rgba(255,255,255,0.9)' }}>{name}</div>
           <div className="text-xs text-white/40 font-sans">{desc}</div>
           {!earned && progress > 0 && (
             <div className="mt-2">
@@ -108,7 +108,7 @@ function Badge({ achievement, locked = false }) {
           )}
         </div>
         {earned && (
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+          <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 shrink-0" style={{ stroke: 'rgba(197,160,89,0.80)' }}>
             <path d="M20 6L9 17l-5-5"/>
           </svg>
         )}
