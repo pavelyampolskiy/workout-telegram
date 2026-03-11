@@ -422,7 +422,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="h-screen relative overflow-hidden">
       {/* Blurred background */}
       <div
         className="absolute inset-0 scale-110"
@@ -437,7 +437,7 @@ export default function HomeScreen() {
       <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
 
       {/* Content: title top, cards bottom */}
-      <div className="relative z-10 flex flex-col min-h-screen p-5">
+      <div className="relative z-10 flex flex-col h-full p-5">
         {/* Headline */}
         <div className="font-bebas leading-none w-full">
           <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
@@ -456,7 +456,7 @@ export default function HomeScreen() {
         <StatusWidget userId={userId} />
 
         {/* Content with consistent spacing */}
-        <div className="flex-1 flex flex-col gap-4 mt-4">
+        <div className="flex-1 flex flex-col gap-3 mt-3">
           {/* Weekly goal widget */}
           <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} sheenAngle={sheen.angle} />
 
@@ -553,7 +553,7 @@ export default function HomeScreen() {
         )}
 
           {/* Navigation widgets */}
-          <div className="mt-auto pt-2 pb-6 space-y-2">
+          <div className="mt-auto pt-2 pb-3 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => guardedNavigate('recovery-check')}
