@@ -17,7 +17,7 @@ const GRADIENT_TEXT = {
   backgroundClip: 'text',
 };
 
-const BAR_GRADIENT = 'linear-gradient(90deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)';
+const BAR_GRADIENT = 'linear-gradient(90deg, rgba(234,234,234,0.50) 0%, rgba(197,160,89,0.40) 100%)';
 
 function Bar({ label, value, max, mounted }) {
   const pct = max > 0 ? (value / max) * 100 : 0;

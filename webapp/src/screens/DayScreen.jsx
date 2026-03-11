@@ -395,7 +395,7 @@ export default function DayScreen() {
                       className="h-full rounded-full transition-[width] duration-300 ease-out"
                       style={{
                         width: `${Math.min((done / total) * 100, 100)}%`,
-                        background: 'linear-gradient(90deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)',
+                        background: 'linear-gradient(90deg, rgba(234,234,234,0.50) 0%, rgba(197,160,89,0.40) 100%)',
                         opacity: complete ? 1 : 0.75,
                       }}
                     />
@@ -454,7 +454,7 @@ export default function DayScreen() {
                       className="h-full rounded-full transition-[width] duration-300 ease-out"
                       style={{
                         width: `${Math.min((done / total) * 100, 100)}%`,
-                        background: 'linear-gradient(90deg, rgba(234,234,234,0.92) 0%, rgba(197,160,89,0.70) 100%)',
+                        background: 'linear-gradient(90deg, rgba(234,234,234,0.50) 0%, rgba(197,160,89,0.40) 100%)',
                         opacity: complete ? 1 : 0.75,
                       }}
                     />
