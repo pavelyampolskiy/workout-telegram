@@ -450,7 +450,7 @@ export default function HomeScreen() {
         <StatusWidget userId={userId} />
 
         {/* Content */}
-        <div className="flex flex-col gap-3 mt-1">
+        <div className="flex flex-col gap-3 mt-1 flex-1">
           {/* Weekly goal widget */}
           <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} sheenAngle={sheen.angle} />
 
