@@ -4,6 +4,15 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { CARD_BTN_STYLE } from '../shared';
 import { Spinner } from '../components/Spinner';
+import { ConfirmModal } from '../components/ConfirmModal';
+
+function formatActiveDayLabel(dayKey, days) {
+  if (!dayKey) return 'Workout';
+  const d = days?.find(x => x.key === dayKey);
+  if (d) return d.label;
+  if (dayKey === 'CARDIO') return 'Cardio';
+  return dayKey.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom');
+}
 
 const DayIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -68,7 +77,7 @@ function DayCard({ day, onPress, editMode, onRename, onDelete }) {
 }
 
 export default function WorkoutScreen() {
-  const { navigate, userId, showToast } = useApp();
+  const { navigate, userId, showToast, activeWorkout, setActiveWorkout } = useApp();
   const [days, setDays] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -78,8 +87,58 @@ export default function WorkoutScreen() {
   const [renameLabel, setRenameLabel] = useState('');
   const [deletingDay, setDeletingDay] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [activeWorkoutModal, setActiveWorkoutModal] = useState(null); // { screen, params }
+  const [switchingWorkout, setSwitchingWorkout] = useState(false);
   const inputRef = useRef(null);
   const renameRef = useRef(null);
+
+  const handleDayOrCardioPress = (targetScreen, targetParams) => {
+    if (!activeWorkout) {
+      if (targetScreen === 'day') navigate('day', targetParams);
+      else navigate('cardio');
+      return;
+    }
+    const currentDay = activeWorkout.day;
+    if (targetScreen === 'day' && targetParams?.day === currentDay) {
+      navigate('day', targetParams);
+      return;
+    }
+    if (targetScreen === 'cardio' && currentDay === 'CARDIO') {
+      navigate('cardio');
+      return;
+    }
+    setActiveWorkoutModal({ screen: targetScreen, params: targetParams || {} });
+  };
+
+  const handleContinueCurrent = () => {
+    if (!activeWorkout) return;
+    const label = formatActiveDayLabel(activeWorkout.day, days);
+    if (activeWorkout.day === 'CARDIO') {
+      navigate('cardio');
+    } else {
+      navigate('day', { day: activeWorkout.day, dayLabel: label });
+    }
+    setActiveWorkoutModal(null);
+  };
+
+  const handleStartNew = async () => {
+    if (!activeWorkout || !activeWorkoutModal) return;
+    setSwitchingWorkout(true);
+    try {
+      await api.deleteWorkout(activeWorkout.id);
+      setActiveWorkout(null);
+      setActiveWorkoutModal(null);
+      if (activeWorkoutModal.screen === 'day') {
+        navigate('day', activeWorkoutModal.params);
+      } else {
+        navigate('cardio');
+      }
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setSwitchingWorkout(false);
+    }
+  };
 
   useEffect(() => {
     api.getDays(userId)
@@ -170,7 +229,7 @@ export default function WorkoutScreen() {
                     key={day.id}
                     day={day}
                     editMode={editMode}
-                    onPress={() => navigate('day', { day: day.key, dayLabel: day.label })}
+                    onPress={() => handleDayOrCardioPress('day', { day: day.key, dayLabel: day.label })}
                     onRename={(d) => { setRenamingDay(d); setRenameLabel(d.label); }}
                     onDelete={(d) => setDeletingDay(d)}
                   />
@@ -298,7 +357,7 @@ export default function WorkoutScreen() {
                     <div className="flex-1 h-px bg-white/8" />
                   </div>
                   <button
-                    onClick={() => navigate('cardio')}
+                    onClick={() => handleDayOrCardioPress('cardio')}
                     className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
                     style={CARD_BTN_STYLE}
                   >
@@ -312,6 +371,17 @@ export default function WorkoutScreen() {
                   </button>
                 </>
               )}
+
+              <ConfirmModal
+                visible={!!activeWorkoutModal}
+                title="Active workout"
+                description={`You have an active workout (${activeWorkout ? formatActiveDayLabel(activeWorkout.day, days) : ''}). Continue it or start a new one?`}
+                primaryLabel="Continue current"
+                primaryOnClick={handleContinueCurrent}
+                secondaryLabel="Start new"
+                secondaryOnClick={handleStartNew}
+                secondaryLoading={switchingWorkout}
+              />
             </>
           )}
           </div>
