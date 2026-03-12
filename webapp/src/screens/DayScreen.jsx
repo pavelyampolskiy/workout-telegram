@@ -247,7 +247,7 @@ export default function DayScreen() {
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
       <div className="relative z-10 flex flex-col flex-1 min-h-0">
       {/* Header */}
-      <div className="flex items-center justify-between p-5 safe-top pt-10 flex-shrink-0">
+      <div className="flex items-center justify-between p-5 safe-top-lg flex-shrink-0">
         <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
         <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors">
           Cancel
