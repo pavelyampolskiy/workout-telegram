@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useEffect, useCallback, Component } from 'react';
+import { useState, createContext, useContext, useEffect, useCallback, useRef, Component } from 'react';
 import { useSwipeBack } from './hooks/useSwipeBack';
 import { Toast } from './components/Toast';
 
@@ -80,13 +80,16 @@ export default function App() {
       if (tg) {
         tg.ready();
         const doExpand = () => { try { tg.expand(); } catch (_) {} };
+        const doFullscreen = () => {
+          if (typeof tg.requestFullscreen === 'function') {
+            try { tg.requestFullscreen(); } catch (_) {}
+          }
+        };
         doExpand();
-        if (typeof tg.requestFullscreen === 'function') {
-          try { tg.requestFullscreen(); } catch (_) {}
-        }
+        doFullscreen();
         try { tg.setHeaderColor('#000000'); } catch (_) {}
         try { tg.setBackgroundColor('#000000'); } catch (_) {}
-        try { tg.onEvent('viewportChanged', doExpand); } catch (_) {}
+        try { tg.onEvent('viewportChanged', () => { doExpand(); doFullscreen(); }); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
         if (uid) {
           setUserId(Number(uid));
@@ -111,6 +114,22 @@ export default function App() {
     } catch (e) {
       setUserId(-1);
     }
+  }, []);
+
+  // Request fullscreen on first tap so background is full-screen on all screens (Home, Cardio, etc.)
+  const fullscreenRequested = useRef(false);
+  const requestFullscreenOnTap = useCallback(() => {
+    if (fullscreenRequested.current) return;
+    fullscreenRequested.current = true;
+    try {
+      const tg = window.Telegram?.WebApp;
+      if (tg) {
+        try { tg.expand(); } catch (_) {}
+        if (typeof tg.requestFullscreen === 'function') {
+          try { tg.requestFullscreen(); } catch (_) {}
+        }
+      }
+    } catch (_) {}
   }, []);
 
   const navigate = useCallback((screen, params = {}) => {
@@ -173,7 +192,7 @@ export default function App() {
         showToast,
       }}
     >
-      <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative">
+      <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative" onClick={requestFullscreenOnTap}>
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div key={current.screen} className="min-h-screen relative">
           <ErrorBoundary>
