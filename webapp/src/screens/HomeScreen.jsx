@@ -296,11 +296,10 @@ export default function HomeScreen() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
-      {/* Top gradient — absorbs Telegram header */}
-      <div className="fixed inset-x-0 top-0 h-32 bg-black/90" style={{ zIndex: 0 }} />
-      <div className="fixed inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" style={{ zIndex: 0 }} />
+      {/* Top gradient — absorbs Telegram header, keeps photo visible */}
+      <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/70 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
-      <div className="fixed inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" style={{ zIndex: 0 }} />
+      <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent" style={{ zIndex: 0 }} />
 
       {/* Content: title top, cards bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">
