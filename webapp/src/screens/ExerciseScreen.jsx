@@ -257,9 +257,9 @@ export default function ExerciseScreen() {
   const pct = Math.min((done / target) * 100, 100);
 
   return (
-    <div className="min-h-screen relative pb-28 overflow-hidden">
+    <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
       <ScreenBg image="/gym-bg.jpg" />
-      <div className="relative z-10 px-5 pt-5 pb-28">
+      <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-5 pb-28 overflow-y-auto">
 
       {/* Recovery banner */}
       <RecoveryBanner recoveryData={recoveryData} />
@@ -493,7 +493,7 @@ export default function ExerciseScreen() {
       </div>
 
       {/* Action buttons */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom">
         <div className="flex gap-2">
           <button
             onClick={handleDeleteLast}

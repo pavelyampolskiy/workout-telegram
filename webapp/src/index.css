@@ -25,6 +25,14 @@ body {
   min-height: 100vh;
 }
 
+/* ── Safe area: Telegram header + notch ─────────────────── */
+.safe-top {
+  padding-top: max(env(safe-area-inset-top, 0px), 80px);
+}
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   opacity: 1;

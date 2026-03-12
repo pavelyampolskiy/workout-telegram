@@ -243,11 +243,11 @@ export default function DayScreen() {
   }
 
   return (
-    <div className="min-h-screen relative pb-32 overflow-hidden">
+    <div className="min-h-screen relative flex flex-col overflow-hidden pb-32">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col flex-1 min-h-0">
       {/* Header */}
-      <div className="flex items-center justify-between p-5 pt-6">
+      <div className="flex items-center justify-between p-5 safe-top pt-6 flex-shrink-0">
         <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
         <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors">
           Cancel
@@ -255,7 +255,7 @@ export default function DayScreen() {
       </div>
 
       {/* Exercise list */}
-      <div className="px-4 space-y-2">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 space-y-2 pb-4">
         {program?.map((ex, idx) => {
           const info = exerciseMap[idx];
           const done = info?.setsCount || 0;
@@ -381,7 +381,7 @@ export default function DayScreen() {
       </div>
 
       {/* Fixed bottom button */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom">
         <button
           onClick={handleSave}
           className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"

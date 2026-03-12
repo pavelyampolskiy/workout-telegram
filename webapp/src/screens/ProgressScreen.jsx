@@ -129,9 +129,9 @@ export default function ProgressScreen() {
   const t = trend();
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
-      <div className="relative z-10 p-5">
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Progress</h1>
 
         {/* Exercise selector */}

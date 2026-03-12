@@ -148,10 +148,10 @@ export default function HistoryDetailScreen() {
   if (!workout) return null;
 
   return (
-    <div className="min-h-screen relative overflow-hidden pb-28">
+    <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
       <ScreenBg image="/history-bg.jpg" overlay="bg-black/65" />
 
-      <div className="relative z-10 p-5">
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         {/* Header */}
         <div className="pt-2 mb-5">
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
@@ -409,7 +409,7 @@ export default function HistoryDetailScreen() {
       )}
 
       {/* Delete */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6">
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom">
         {confirming ? (
           <div className="flex flex-col gap-2">
             <button
