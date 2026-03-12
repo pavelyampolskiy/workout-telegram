@@ -5,7 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
-import { fmtW, fmtTime, DARK_CARD_STYLE } from '../shared';
+import { fmtW, fmtTime, DARK_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
 function RecoveryBanner({ recoveryData }) {
   if (!recoveryData || recoveryData.modifier >= 1) return null;
@@ -20,14 +20,14 @@ function RecoveryBanner({ recoveryData }) {
         border: '1px solid rgba(255, 255, 255, 0.12)',
       }}
     >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/60 shrink-0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${TEXT_TERTIARY} shrink-0`}>
         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
       </svg>
       <div className="flex-1">
-        <div className="text-white/80 text-xs font-sans">
+        <div className={`${TEXT_SECONDARY} text-xs font-sans`}>
           Recovery: <span className="font-medium">{recoveryData.score}%</span>
         </div>
-        <div className="text-white/50 text-[10px] font-sans">
+        <div className={`${TEXT_TERTIARY} text-[10px] font-sans`}>
           Consider {reduction}% lighter weights today
         </div>
       </div>
@@ -267,18 +267,18 @@ export default function ExerciseScreen() {
       {/* Exercise header */}
       <div className="pt-2 mb-5">
         <button onClick={handleFinish} className="flex items-center gap-1 mb-3 -ml-0.5">
-          <span className="text-white/35 text-base leading-none">‹</span>
-          <span className="font-bebas tracking-wider text-white/35 text-sm">
+          <span className={`${TEXT_MUTED} text-base leading-none`}>‹</span>
+          <span className={`font-bebas tracking-wider ${TEXT_MUTED} text-sm`}>
             {day?.startsWith?.('CUSTOM') ? 'Custom' : (day || 'Workout').replace('DAY_', 'Day ')}
           </span>
         </button>
         <div className="flex items-center gap-2 mb-1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className={`w-4 h-4 ${TEXT_MUTED} shrink-0`}>
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
           </svg>
-          <span className="text-xs font-bebas text-white/40 uppercase tracking-wide">{ex?.group}</span>
+          <span className={`text-xs font-bebas uppercase tracking-wide ${TEXT_MUTED}`}>{ex?.group}</span>
         </div>
-        <h1 className="text-xl font-bebas tracking-wider text-white leading-tight">{ex?.name}</h1>
+        <h1 className={`text-xl font-bebas tracking-wider leading-tight ${TEXT_PRIMARY}`}>{ex?.name}</h1>
 
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -288,9 +288,9 @@ export default function ExerciseScreen() {
             />
           </div>
           <span className="font-bebas shrink-0 text-base tracking-wider">
-            <span key={done} className="text-white counter-pop">{done}</span>
-            <span className="text-white">/{target}</span>
-            <span className="text-white/60"> sets</span>
+            <span key={done} className={`${TEXT_PRIMARY} counter-pop`}>{done}</span>
+            <span className={TEXT_PRIMARY}>/{target}</span>
+            <span className={TEXT_TERTIARY}> sets</span>
           </span>
         </div>
       </div>
@@ -302,7 +302,7 @@ export default function ExerciseScreen() {
           className="w-full rounded-2xl p-6 mb-4 text-center backdrop-blur-sm flex flex-col items-center"
           style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
         >
-          <div className="text-[10px] font-bebas tracking-widest text-white/40 mb-3">REST</div>
+          <div className={`text-[10px] font-bebas tracking-widest mb-3 ${TEXT_MUTED}`}>REST</div>
           <div className="relative">
             <svg width={120} height={120} className="transform -rotate-90">
               <circle
@@ -330,14 +330,14 @@ export default function ExerciseScreen() {
               <span className="text-4xl font-bebas text-white leading-none">{fmtTime(restTimer)}</span>
             </div>
           </div>
-          <div className="text-xs font-bebas text-white/25 mt-3">tap to skip</div>
+          <div className={`text-xs font-bebas mt-3 ${TEXT_FADED}`}>tap to skip</div>
         </button>
       )}
 
       {/* Last performance */}
       {lastDate && lastSets.length > 0 && (
         <div className="mb-5">
-          <div className="flex items-center gap-1 text-xs text-white/35 mb-2 font-bebas">
+          <div className={`flex items-center gap-1 text-xs mb-2 font-bebas ${TEXT_MUTED}`}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3 shrink-0">
               <circle cx="12" cy="12" r="9"/>
               <path d="M12 7v5l3.5 3.5"/>
@@ -346,7 +346,7 @@ export default function ExerciseScreen() {
           </div>
           <div className="flex flex-wrap gap-2">
             {lastSets.map((s, i) => (
-              <span key={i} className="text-sm text-white/60 font-bebas">
+              <span key={i} className={`text-sm font-bebas ${TEXT_TERTIARY}`}>
                 {fmtW(s.weight)}×{s.reps}
               </span>
             ))}
@@ -357,16 +357,16 @@ export default function ExerciseScreen() {
       {/* Recorded sets */}
       {sets.length > 0 && (
         <div className="rounded-2xl p-4 mb-4 backdrop-blur-sm" style={DARK_CARD_STYLE}>
-          <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-bebas">
+          <div className={`text-xs mb-3 uppercase tracking-widest font-bebas ${TEXT_MUTED}`}>
             Recorded sets
           </div>
           <div className="space-y-2">
             {sets.map((s, i) => (
               <div key={s.id} className={`flex items-center gap-3 ${i === sets.length - 1 ? 'row-in' : ''}`}>
-                <span className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+                <span className={`w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs font-bebas tracking-wider shrink-0 ${TEXT_MUTED}`}>
                   {i + 1}
                 </span>
-                <span className="text-white/80 font-bebas text-sm">
+                <span className={`font-bebas text-sm ${TEXT_SECONDARY}`}>
                   {fmtW(s.weight)} kg × {s.reps} reps
                 </span>
               </div>
@@ -377,13 +377,13 @@ export default function ExerciseScreen() {
 
       {/* Input */}
       <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
-        <div className="text-xs mb-3 uppercase tracking-wider font-bebas" style={{ color: 'rgba(255,255,255,0.65)' }}>
+        <div className={`text-xs mb-3 uppercase tracking-wider font-bebas ${TEXT_TERTIARY}`}>
           Set {done + 1}
         </div>
         
         {/* Weight input with +/- buttons */}
         <div className="mb-4">
-          <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Weight (kg)</label>
+          <label className={`text-xs mb-2 block font-bebas ${TEXT_MUTED}`}>Weight (kg)</label>
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
@@ -394,7 +394,7 @@ export default function ExerciseScreen() {
                 if (w <= 2.5) { setWeight('1.25'); return; }
                 setWeight(String(w - 2.5));
               }}
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               −
@@ -417,24 +417,24 @@ export default function ExerciseScreen() {
                 if (w < 2.5) { setWeight('2.5'); return; }
                 setWeight(String(w + 2.5));
               }}
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               +
             </button>
           </div>
-          <div className="text-[10px] text-white/35 font-sans mt-1.5">
+          <div className={`text-[10px] font-sans mt-1.5 ${TEXT_MUTED}`}>
             Use BAR for bar only, BW for bodyweight
           </div>
         </div>
 
         {/* Reps input with +/- buttons */}
         <div className="mb-4">
-          <label className="text-xs mb-2 block font-bebas" style={{ color: 'rgba(255,255,255,0.57)' }}>Reps</label>
+          <label className={`text-xs mb-2 block font-bebas ${TEXT_MUTED}`}>Reps</label>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setReps(r => String(Math.max(1, (parseInt(r) || 0) - 1)))}
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               −
@@ -452,7 +452,7 @@ export default function ExerciseScreen() {
             />
             <button
               onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas text-white/70 active:text-white active:bg-white/15 transition-colors shrink-0"
+              className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
               style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
             >
               +
@@ -471,7 +471,7 @@ export default function ExerciseScreen() {
           style={
             weight && reps
               ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)', color: 'rgba(255,255,255,1)' }
-              : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.25)' }
+              : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.4)' }
           }
         >
           {saving ? (
@@ -480,7 +480,7 @@ export default function ExerciseScreen() {
               Saving…
             </span>
           ) : justSaved ? (
-            <span className="inline-flex items-center justify-center gap-2 text-white/90">
+            <span className={`inline-flex items-center justify-center gap-2 ${TEXT_PRIMARY}`}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
                 <path d="M20 6L9 17l-5-5"/>
               </svg>
@@ -498,7 +498,7 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="flex-1 bg-white/6 active:bg-white/12 border border-white/8 disabled:opacity-20 text-white/40 active:text-white/70 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5"
+            className={`flex-1 bg-white/6 active:bg-white/12 border border-white/8 disabled:opacity-20 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5 ${TEXT_MUTED} active:text-white/80`}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
@@ -507,7 +507,7 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="card-press flex-1 border text-white/92 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center"
+            className={`card-press flex-1 border font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center ${TEXT_PRIMARY}`}
             style={{ background: 'rgba(255,255,255,0.14)', borderColor: 'rgba(255,255,255,0.22)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}
           >
             Finish Exercise

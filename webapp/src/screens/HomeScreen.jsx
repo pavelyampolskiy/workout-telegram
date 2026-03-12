@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED, ACCENT_COLOR } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
@@ -84,12 +84,12 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
           </defs>
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-bebas text-lg text-white/90">{value}</span>
+          <span className={`font-bebas text-lg ${TEXT_PRIMARY}`}>{value}</span>
         </div>
       </div>
       <div className="mt-2 text-center">
-        <div className="font-bebas tracking-wider text-white/55 text-[10px] uppercase">{label}</div>
-        <div className="text-white/90 text-xs font-bebas tracking-wider mt-0.5">{sublabel ?? '—'}</div>
+        <div className={`font-bebas tracking-wider text-[10px] uppercase ${TEXT_TERTIARY}`}>{label}</div>
+        <div className={`text-xs font-bebas tracking-wider mt-0.5 ${TEXT_SECONDARY}`}>{sublabel ?? '—'}</div>
       </div>
     </div>
   );
@@ -164,13 +164,13 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
                 <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
                 <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(201,169,110,0.5)" strokeWidth={RING_STROKE} strokeLinecap="round"/>
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#C9A96E' }}>
+              <div className="absolute inset-0 flex items-center justify-center" style={{ color: ACCENT_COLOR }}>
                 {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
               </div>
             </div>
             <div className="mt-2 text-center">
-              <div className="font-bebas tracking-wider text-white/55 text-[10px] uppercase">Last Achievement</div>
-              <div className="text-white/90 text-xs font-bebas tracking-wider mt-0.5">{lastAchievement.name}</div>
+              <div className={`font-bebas tracking-wider text-[10px] uppercase ${TEXT_TERTIARY}`}>Last Achievement</div>
+              <div className={`text-xs font-bebas tracking-wider mt-0.5 ${TEXT_SECONDARY}`}>{lastAchievement.name}</div>
             </div>
           </div>
         )}
@@ -198,12 +198,12 @@ function SmartReminderBanner({ userId }) {
         border: '1px solid rgba(255,255,255,0.08)',
       }}
     >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/60 shrink-0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${TEXT_TERTIARY} shrink-0`}>
         <circle cx="12" cy="12" r="10"/>
         <circle cx="12" cy="12" r="6"/>
         <circle cx="12" cy="12" r="2"/>
       </svg>
-      <div className="text-white/70 text-xs font-sans flex-1">{reminder}</div>
+      <div className={`${TEXT_SECONDARY} text-xs font-sans flex-1`}>{reminder}</div>
     </div>
   );
 }
@@ -238,7 +238,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-3 flex items-center gap-4">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas tracking-wider text-white/55 text-sm">{p}</span>
+        <span key={i} className={`font-bebas tracking-wider text-sm ${TEXT_TERTIARY}`}>{p}</span>
       ))}
     </div>
   );
@@ -283,7 +283,7 @@ export default function HomeScreen() {
           {/* Headline */}
           <div className="pt-2 shrink-0">
             <div className="font-bebas leading-none w-full">
-              <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
+              <div className={TEXT_TERTIARY} style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
               <div style={{ 
                 fontSize: '18vw', 
                 letterSpacing: '0.36em',
@@ -318,7 +318,7 @@ export default function HomeScreen() {
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
                   }}
                 >
-                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: '#C9A96E' }}>
+                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: ACCENT_COLOR }}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
                       <polygon points="5 3 19 12 5 21 5 3"/>
                     </svg>
@@ -333,13 +333,13 @@ export default function HomeScreen() {
                         backgroundClip: 'text',
                       }}
                     >Continue Workout</div>
-                    <div className="text-xs text-white/40 font-bebas tracking-wider">{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                    <div className={`text-xs font-bebas tracking-wider ${TEXT_MUTED}`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
                   </div>
-                  <span className="text-xl shrink-0 text-white/35">›</span>
+                  <span className={`text-xl shrink-0 ${TEXT_MUTED}`}>›</span>
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
-                  className="w-full text-center text-white/30 text-xs font-bebas tracking-wider py-2 mt-1"
+                  className={`w-full text-center text-xs font-bebas tracking-wider py-2 mt-1 ${TEXT_FADED}`}
                 >
                   Dismiss
                 </button>
@@ -355,12 +355,12 @@ export default function HomeScreen() {
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4)',
                 }}
               >
-                <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Dismiss workout?</h3>
-                <p className="text-sm text-white/40 mb-5 font-sans">This unfinished workout will be deleted.</p>
+                <h3 className={`font-bebas text-lg tracking-wider mb-1 ${TEXT_PRIMARY}`}>Dismiss workout?</h3>
+                <p className={`text-sm mb-5 font-sans ${TEXT_MUTED}`}>This unfinished workout will be deleted.</p>
                 <div className="flex flex-col gap-2">
                   <button
                     onClick={() => setShowDismissConfirm(false)}
-                    className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
+                    className={`card-press w-full font-bebas tracking-wider text-base py-3 rounded-xl ${TEXT_PRIMARY}`}
                     style={CARD_BTN_STYLE}
                   >
                     Keep it
@@ -377,7 +377,7 @@ export default function HomeScreen() {
                         .finally(() => setDismissing(false));
                     }}
                     disabled={dismissing}
-                    className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    className={`w-full py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2 ${TEXT_TERTIARY} active:text-white/80`}
                   >
                     {dismissing ? (
                       <>
@@ -410,14 +410,14 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(201,169,110,0.2)', color: '#C9A96E' }}>
+              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(201,169,110,0.2)', color: ACCENT_COLOR }}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <div className="font-bebas tracking-wider text-xl text-white/95">New Workout</div>
-                <div className="text-white/40 text-[10px] font-sans">Start your training session</div>
+                <div className={`font-bebas tracking-wider text-xl ${TEXT_PRIMARY}`}>New Workout</div>
+                <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>Start your training session</div>
               </div>
-              <span className="text-xl text-white/30">›</span>
+              <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
           </button>
 
@@ -429,10 +429,10 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: ACCENT_COLOR }}>
                 <HistoryIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">History</div>
+              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>History</div>
             </button>
 
             {/* Statistics */}
@@ -441,10 +441,10 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: ACCENT_COLOR }}>
                 <StatsIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">Statistics</div>
+              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Statistics</div>
             </button>
 
             {/* Achievements */}
@@ -453,10 +453,10 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: ACCENT_COLOR }}>
                 <TrophyIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">Achievements</div>
+              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Achievements</div>
             </button>
 
             {/* Cardio */}
@@ -465,12 +465,12 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: ACCENT_COLOR }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
                 </svg>
               </span>
-              <div className="font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
+              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Cardio</div>
             </button>
           </div>
         </div>

@@ -30,3 +30,18 @@ export const SECONDARY_CARD_STYLE = {
 
 /** Page heading — list screens (History, Achievements) */
 export const PAGE_HEADING_STYLE = { fontSize: '6vw', letterSpacing: '0.1em' };
+
+// ─── Unified font colors (HomeScreen, ExerciseScreen) ────────────────────────────
+
+/** Primary — headings, main content */
+export const TEXT_PRIMARY = 'text-white';
+/** Secondary — body text */
+export const TEXT_SECONDARY = 'text-white/80';
+/** Tertiary — labels, captions */
+export const TEXT_TERTIARY = 'text-white/55';
+/** Muted — hints, placeholders */
+export const TEXT_MUTED = 'text-white/40';
+/** Faded — very faint (placeholders, tap to skip) */
+export const TEXT_FADED = 'text-white/30';
+/** Accent — icons, highlights */
+export const ACCENT_COLOR = '#C9A96E';
