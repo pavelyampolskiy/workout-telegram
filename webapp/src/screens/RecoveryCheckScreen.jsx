@@ -134,7 +134,7 @@ export default function RecoveryCheckScreen() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" />
-      <div className="relative z-10 p-5 flex flex-col min-h-screen">
+      <div className="relative z-10 p-5 safe-top flex flex-col min-h-screen">
         <h1 className="font-bebas text-white/85 pt-6 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           Recovery Check
         </h1>
