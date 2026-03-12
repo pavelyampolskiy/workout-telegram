@@ -1,16 +1,17 @@
 import { createPortal } from 'react-dom';
 
 // Extend beyond viewport to cover status bar, notch, and Telegram header area.
-// Use env(safe-area-inset-*) so background bleeds into safe areas on iOS.
-const INSET_TOP = 'env(safe-area-inset-top, 0px)';
+// Use 80px minimum so we always extend past the Telegram header (~56–64px) even when
+// safe-area-inset-top is 0 (Android, some WebViews). Add env() for devices with notch.
+const EXTEND_TOP = 'max(env(safe-area-inset-top, 0px), 80px)';
 const BG_BASE = {
   position: 'fixed',
-  top: `calc(-1 * ${INSET_TOP})`,
+  top: `calc(-1 * ${EXTEND_TOP})`,
   left: 0,
   right: 0,
   width: '100vw',
-  height: `calc(100dvh + ${INSET_TOP})`,
-  minHeight: `calc(100vh + 100px)`,
+  height: `calc(100dvh + ${EXTEND_TOP})`,
+  minHeight: `calc(100vh + 120px)`,
   zIndex: -1,
   pointerEvents: 'none',
 };
