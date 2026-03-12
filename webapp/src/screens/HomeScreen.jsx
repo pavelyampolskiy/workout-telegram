@@ -296,16 +296,16 @@ export default function HomeScreen() {
     <div className="min-h-screen relative overflow-hidden">
       {/* Blurred background */}
       <div
-        className="absolute inset-0 scale-110"
+        className="fixed inset-0 scale-110"
         style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }}
       />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/65" />
+      <div className="fixed inset-0 bg-black/65" />
       {/* Top gradient — absorbs Telegram header */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-black/90" />
-      <div className="absolute inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />
+      <div className="fixed inset-x-0 top-0 h-32 bg-black/90" />
+      <div className="fixed inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />
       {/* Bottom gradient — grounds the cards */}
-      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
+      <div className="fixed inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
 
       {/* Content: title top, cards bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">

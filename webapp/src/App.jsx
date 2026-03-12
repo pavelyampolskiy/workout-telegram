@@ -98,6 +98,8 @@ export default function App() {
       if (tg) {
         tg.ready();
         try { tg.expand(); } catch (_) {}
+        try { tg.setHeaderColor('#000000'); } catch (_) {}
+        try { tg.setBackgroundColor('#000000'); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
         if (uid) {
           setUserId(Number(uid));
