@@ -7,34 +7,6 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { fmtW, fmtTime, DARK_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
-function RecoveryBanner({ recoveryData }) {
-  if (!recoveryData || recoveryData.modifier >= 1) return null;
-  
-  const reduction = Math.round((1 - recoveryData.modifier) * 100);
-  
-  return (
-    <div 
-      className="mb-4 rounded-xl p-3 flex items-center gap-3"
-      style={{
-        background: 'rgba(255, 255, 255, 0.06)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-      }}
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${TEXT_TERTIARY} shrink-0`}>
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-      </svg>
-      <div className="flex-1">
-        <div className={`${TEXT_SECONDARY} text-xs font-sans`}>
-          Recovery: <span className="font-medium">{recoveryData.score}%</span>
-        </div>
-        <div className={`${TEXT_TERTIARY} text-[10px] font-sans`}>
-          Consider {reduction}% lighter weights today
-        </div>
-      </div>
-    </div>
-  );
-}
-
 const REST_DURATION = 90;
 
 // Play a beep sound using Web Audio API
@@ -76,7 +48,7 @@ function playTimerSound() {
 }
 
 export default function ExerciseScreen() {
-  const { params, goBack, setActiveWorkout, recoveryData, userId, showToast } = useApp();
+  const { params, goBack, setActiveWorkout, userId, showToast } = useApp();
   const { exIdx, exDbId, workoutId, day, customEx } = params;
 
   const [program, setProgram] = useState(null);
@@ -260,9 +232,6 @@ export default function ExerciseScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
       <ScreenBg image="/gym-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-8 pb-28 overflow-y-auto">
-
-      {/* Recovery banner */}
-      <RecoveryBanner recoveryData={recoveryData} />
 
       {/* Exercise header */}
       <div className="pt-6 mb-5">
