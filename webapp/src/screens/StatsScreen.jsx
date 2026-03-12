@@ -93,7 +93,7 @@ export default function StatsScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-          <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
+          <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Statistics</h1>
           <StatsSkeleton />
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function StatsScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
+        <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Statistics</h1>
 
         {/* Tabs */}
         <div className="mb-5">
