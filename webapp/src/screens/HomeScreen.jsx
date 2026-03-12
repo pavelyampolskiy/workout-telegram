@@ -275,8 +275,8 @@ export default function HomeScreen() {
 
       {/* Content: title top, nav flows below content to avoid huge center gap */}
       <div className="relative z-10 flex flex-col min-h-screen safe-top p-5 pb-0">
-        {/* Scrollable content area — nav inside so it sits right below widgets */}
-        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-y-auto overflow-x-hidden">
+        {/* Scrollable content area — New Workout in flow; 2x2 grid fixed at bottom */}
+        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-y-auto overflow-x-hidden pb-40">
           {/* Headline */}
           <div className="pt-2 shrink-0">
             <div className="font-bebas leading-none w-full">
@@ -377,9 +377,8 @@ export default function HomeScreen() {
         )}
           </div>
 
-          {/* Navigation block — in flow, right below content */}
-          <div className="pt-3 pb-4 space-y-2 safe-bottom shrink-0">
-          {/* Big card - New Workout */}
+          {/* New Workout — in flow */}
+          <div className="pt-3 shrink-0">
           <button
             onClick={() => navigate('recovery-check')}
             className="card-press w-full rounded-xl p-4 text-left"
@@ -400,8 +399,11 @@ export default function HomeScreen() {
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
           </button>
+          </div>
+        </div>
 
-          {/* 2x2 Grid */}
+        {/* Fixed bottom: 2x2 grid */}
+        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <div className="grid grid-cols-2 gap-2">
             {/* History */}
             <button
@@ -453,10 +455,8 @@ export default function HomeScreen() {
               <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Cardio</div>
             </button>
           </div>
-          </div>
         </div>
       </div>
-
     </div>
   );
 }
