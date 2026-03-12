@@ -65,7 +65,7 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress * circumference);
   const id = gradientId || 'ringGrad';
-  const isGold = gradientId === 'ringReady';
+  const isGold = gradientId === 'ringReady' || gradientId === 'ringWeekly';
   const gradientStops = isGold
     ? [<stop key="a" offset="0%" stopColor="#E8D5B7"/>, <stop key="b" offset="50%" stopColor="#C9A96E"/>, <stop key="c" offset="100%" stopColor="#D4A574"/>]
     : [<stop key="a" offset="0%" stopColor="rgba(255,255,255,0.9)"/>, <stop key="b" offset="100%" stopColor="rgba(255,255,255,0.4)"/>];
@@ -190,9 +190,9 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
             <div className="relative" style={{ width: RING_SIZE, height: RING_SIZE }}>
               <svg width={RING_SIZE} height={RING_SIZE}>
                 <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
-                <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth={RING_STROKE} strokeLinecap="round"/>
+                <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(201,169,110,0.5)" strokeWidth={RING_STROKE} strokeLinecap="round"/>
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center" style={{ color: 'rgba(255,255,255,0.85)' }}>
+              <div className="absolute inset-0 flex items-center justify-center" style={{ color: '#C9A96E' }}>
                 {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function HomeScreen() {
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
                   }}
                 >
-                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: '#C9A96E' }}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
                       <polygon points="5 3 19 12 5 21 5 3"/>
                     </svg>
@@ -434,7 +434,7 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)' }}>
+              <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'rgba(201,169,110,0.2)', color: '#C9A96E' }}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
@@ -453,7 +453,7 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
                 <HistoryIcon />
               </span>
               <div className="font-bebas tracking-wider text-white/80 text-sm">History</div>
@@ -465,7 +465,7 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
                 <StatsIcon />
               </span>
               <div className="font-bebas tracking-wider text-white/80 text-sm">Statistics</div>
@@ -477,7 +477,7 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
                 <TrophyIcon />
               </span>
               <div className="font-bebas tracking-wider text-white/80 text-sm">Achievements</div>
@@ -489,7 +489,7 @@ export default function HomeScreen() {
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)' }}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(201,169,110,0.15)', color: '#C9A96E' }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
                 </svg>
