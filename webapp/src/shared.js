@@ -5,16 +5,7 @@ export const MONTHS_ABBR = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
-/** "03 MAR 2026" from "2026-03-03" */
-export function formatDate(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  return `${day} ${MONTHS_ABBR[parseInt(month) - 1]} ${year}`;
-}
-
-/** Trims trailing .0: 60.0 → "60", 62.5 → "62.5" */
-export function fmtW(w) {
-  return w === Math.floor(w) ? String(Math.floor(w)) : String(w);
-}
+export { formatDate, fmtW, fmtTime, dayLabel, fmtWorkoutType, fmtVol } from './utils/format';
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
 

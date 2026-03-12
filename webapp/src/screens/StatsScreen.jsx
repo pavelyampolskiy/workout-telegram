@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { Tabs } from '../components/Tabs';
 import { StatsSkeleton } from '../components/Skeleton';
 import { CARD_BTN_STYLE } from '../shared';
 
@@ -48,10 +49,8 @@ export default function StatsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [barMounted, setBarMounted] = useState(false);
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
-  const tabsRef = useRef(null);
 
-  const TABS = [
+  const STATS_TABS = [
     { key: 'week', label: 'Week' },
     { key: 'month', label: 'Month' },
     { key: 'freq', label: 'Frequency' },
@@ -84,19 +83,10 @@ export default function StatsScreen() {
     return () => clearTimeout(t);
   }, [tab, loading]);
 
-  // Update indicator position when tab changes
-  useEffect(() => {
-    if (!tabsRef.current) return;
-    const activeIndex = TABS.findIndex(t => t.key === tab);
-    const tabs = tabsRef.current.querySelectorAll('button');
-    if (tabs[activeIndex]) {
-      const tabEl = tabs[activeIndex];
-      setIndicatorStyle({
-        left: tabEl.offsetLeft,
-        width: tabEl.offsetWidth,
-      });
-    }
-  }, [tab, loading]);
+  const handleTabSelect = (key) => {
+    if (key === 'progress') navigate('progress');
+    else setTab(key);
+  };
 
   if (loading) {
     return (
@@ -179,31 +169,8 @@ export default function StatsScreen() {
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 
         {/* Tabs */}
-        <div 
-          ref={tabsRef}
-          className="relative flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto"
-        >
-          {/* Sliding indicator */}
-          <div
-            className="absolute top-1 bottom-1 rounded-xl bg-white/12 transition-all duration-300 ease-out"
-            style={{
-              left: indicatorStyle.left,
-              width: indicatorStyle.width,
-            }}
-          />
-          {TABS.map(t => (
-            <button
-              key={t.key}
-              onClick={() => t.key === 'progress' ? navigate('progress') : setTab(t.key)}
-              className={`relative z-10 flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors duration-200 ${
-                tab === t.key
-                  ? 'text-white/92'
-                  : 'text-white/35 active:text-white/60'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+        <div className="mb-5">
+          <Tabs tabs={STATS_TABS} activeKey={tab} onSelect={handleTabSelect} />
         </div>
 
         {renderContent()}

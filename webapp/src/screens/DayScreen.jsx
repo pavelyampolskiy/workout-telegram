@@ -5,6 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
 import { CARD_BTN_STYLE } from '../shared';
+import { MUSCLE_GROUPS } from '../constants';
 
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
@@ -26,8 +27,6 @@ export default function DayScreen() {
   const [customExercises, setCustomExercises] = useState([]);
   const [addingEx, setAddingEx] = useState(false);
   const [retryTrigger, setRetryTrigger] = useState(0);
-
-  const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};

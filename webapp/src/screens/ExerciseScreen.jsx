@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
-import { fmtW, DARK_CARD_STYLE } from '../shared';
+import { fmtW, fmtTime, DARK_CARD_STYLE } from '../shared';
 
 function RecoveryBanner({ recoveryData }) {
   if (!recoveryData || recoveryData.modifier >= 1) return null;
@@ -34,10 +34,6 @@ function RecoveryBanner({ recoveryData }) {
 }
 
 const REST_DURATION = 90;
-
-function fmtTime(s) {
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-}
 
 // Play a beep sound using Web Audio API
 function playTimerSound() {

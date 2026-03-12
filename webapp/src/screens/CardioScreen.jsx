@@ -3,13 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
-import { CARD_BTN_STYLE } from '../shared';
-
-function fmtTimer(s) {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${m}:${String(sec).padStart(2, '0')}`;
-}
+import { fmtTime, CARD_BTN_STYLE } from '../shared';
 
 export default function CardioScreen() {
   const { userId, resetTo, goBack, showToast } = useApp();
@@ -148,7 +142,7 @@ export default function CardioScreen() {
               <h1 className="text-xl font-bebas tracking-wider">Cardio</h1>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bebas tracking-wider text-white/90">{fmtTimer(elapsed)}</div>
+              <div className="text-3xl font-bebas tracking-wider text-white/90">{fmtTime(elapsed)}</div>
               {durationMin > 0 && (
                 <div className="text-white/40 text-[10px] font-sans">{durationMin} min</div>
               )}

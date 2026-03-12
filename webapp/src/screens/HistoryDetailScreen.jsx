@@ -4,12 +4,8 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { formatDate, fmtW, DARK_CARD_STYLE, CARD_BTN_STYLE } from '../shared';
-
-function dayLabel(type) {
-  if (type === 'CARDIO') return 'Cardio';
-  return type.replace('DAY_', 'Day ');
-}
+import { formatDate, fmtW, fmtWorkoutType, DARK_CARD_STYLE, CARD_BTN_STYLE } from '../shared';
+import { MUSCLE_GROUPS } from '../constants';
 
 export default function HistoryDetailScreen() {
   const { params, goBack, showToast } = useApp();
@@ -29,8 +25,6 @@ export default function HistoryDetailScreen() {
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [addingEx, setAddingEx] = useState(false);
   const [editNote, setEditNote] = useState('');
-  const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
-
   useEffect(() => {
     if (!workoutId) return;
     api.getWorkout(workoutId)
@@ -166,7 +160,7 @@ export default function HistoryDetailScreen() {
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{dayLabel(workout.type)}</h1>
+              <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{fmtWorkoutType(workout.type)}</h1>
               {(workout.rating || editMode) && (
                 <div className="flex items-center gap-0.5 mt-1">
                   {[1, 2, 3, 4, 5].map(star => {

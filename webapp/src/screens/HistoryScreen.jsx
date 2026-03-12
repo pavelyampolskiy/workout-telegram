@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { MONTHS_ABBR, formatDate, CARD_BTN_STYLE } from '../shared';
+import { Tabs } from '../components/Tabs';
+import { formatDate, fmtWorkoutType, fmtVol, CARD_BTN_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 const MONTHS_LONG = [
@@ -27,22 +28,12 @@ function formatTime(isoStr) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 }
 
-function fmtLabel(type) {
-  if (type === 'CARDIO') return 'Cardio';
-  return type.replace('DAY_', 'Day ');
-}
-
-function fmtVol(v) {
-  if (!v) return null;
-  return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u202F') + ' kg';
-}
-
-const FILTERS = [
-  { label: 'All', value: null },
-  { label: 'Day A', value: 'DAY_A' },
-  { label: 'Day B', value: 'DAY_B' },
-  { label: 'Day C', value: 'DAY_C' },
-  { label: 'Cardio', value: 'CARDIO' },
+const FILTER_TABS = [
+  { key: 'all', label: 'All', apiValue: null },
+  { key: 'DAY_A', label: 'Day A', apiValue: 'DAY_A' },
+  { key: 'DAY_B', label: 'Day B', apiValue: 'DAY_B' },
+  { key: 'DAY_C', label: 'Day C', apiValue: 'DAY_C' },
+  { key: 'CARDIO', label: 'Cardio', apiValue: 'CARDIO' },
 ];
 
 export default function HistoryScreen() {
@@ -56,13 +47,12 @@ export default function HistoryScreen() {
   const [error, setError] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [activeFilter, setActiveFilter] = useState(null);
-  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
-  const tabsRef = useRef(null);
+  const [activeFilter, setActiveFilter] = useState('all');
 
   const PAGE = 10;
 
-  const load = async (off = 0, append = false, type = activeFilter) => {
+  const load = async (off = 0, append = false, filterKey = activeFilter) => {
+    const type = FILTER_TABS.find(f => f.key === filterKey)?.apiValue ?? null;
     try {
       const data = await api.getHistory(userId, off, PAGE, type);
       if (append) {
@@ -82,29 +72,15 @@ export default function HistoryScreen() {
     load(0).finally(() => setLoading(false));
   }, []);
 
-  // Update indicator position when filter changes
-  useEffect(() => {
-    if (!tabsRef.current) return;
-    const activeIndex = FILTERS.findIndex(f => f.value === activeFilter);
-    const tabs = tabsRef.current.querySelectorAll('button');
-    if (tabs[activeIndex]) {
-      const tab = tabs[activeIndex];
-      setIndicatorStyle({
-        left: tab.offsetLeft,
-        width: tab.offsetWidth,
-      });
-    }
-  }, [activeFilter, loading]);
-
-  const handleFilter = (value) => {
-    setActiveFilter(value);
+  const handleFilter = (key) => {
+    setActiveFilter(key);
     setFilterLoading(true);
-    load(0, false, value).finally(() => setFilterLoading(false));
+    load(0, false, key).finally(() => setFilterLoading(false));
   };
 
   const handleMore = async () => {
     setLoadingMore(true);
-    await load(offset, true, activeFilter);
+    await load(offset, true);
     setLoadingMore(false);
   };
 
@@ -160,31 +136,12 @@ export default function HistoryScreen() {
         </h1>
 
         {/* Filter tabs */}
-        <div 
-          ref={tabsRef}
-          className="relative flex gap-1 mb-5 bg-white/5 p-1 rounded-2xl overflow-x-auto"
-        >
-          {/* Sliding indicator */}
-          <div
-            className="absolute top-1 bottom-1 rounded-xl bg-white/12 transition-all duration-300 ease-out"
-            style={{
-              left: indicatorStyle.left,
-              width: indicatorStyle.width,
-            }}
+        <div className="mb-5">
+          <Tabs
+            tabs={FILTER_TABS.map(f => ({ key: f.key, label: f.label }))}
+            activeKey={activeFilter}
+            onSelect={handleFilter}
           />
-          {FILTERS.map(f => (
-            <button
-              key={f.label}
-              onClick={() => handleFilter(f.value)}
-              className={`relative z-10 flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors duration-200 ${
-                activeFilter === f.value
-                  ? 'text-white/92'
-                  : 'text-white/35 active:text-white/60'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
         </div>
 
         {filterLoading ? (
@@ -220,7 +177,7 @@ export default function HistoryScreen() {
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <div className="font-bebas text-white/92 leading-none text-base tracking-wider">
-                          {fmtLabel(w.type)}
+                          {fmtWorkoutType(w.type)}
                         </div>
                         <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
                           <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
