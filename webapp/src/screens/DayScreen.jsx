@@ -232,7 +232,7 @@ export default function DayScreen() {
           </button>
           <button
             onClick={() => resetTo('home')}
-            className="w-full mt-2 text-white/40 py-2 font-bebas tracking-wider text-sm"
+            className="w-full mt-1 text-white/40 py-1 font-bebas tracking-wider text-sm"
           >
             Skip
           </button>
