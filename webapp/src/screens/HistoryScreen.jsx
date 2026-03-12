@@ -76,7 +76,7 @@ export default function HistoryScreen() {
   if (loading) {
     return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/history-bg.jpg" />
+      <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
           <h1 className="font-bebas text-white/85 pt-6 mb-4" style={PAGE_HEADING_STYLE}>
             History
@@ -89,7 +89,7 @@ export default function HistoryScreen() {
   if (error) {
     return (
       <ErrorScreen
-        image="/history-bg.jpg"
+        image="/workout-bg.jpg"
         onRetry={() => { setError(null); setLoading(true); load(0).finally(() => setLoading(false)); }}
       />
     );
@@ -97,7 +97,7 @@ export default function HistoryScreen() {
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/history-bg.jpg" />
+      <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         <h1 className="font-bebas text-white/85 pt-6 mb-4" style={PAGE_HEADING_STYLE}>
           History
