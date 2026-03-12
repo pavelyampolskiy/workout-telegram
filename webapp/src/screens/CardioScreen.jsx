@@ -78,7 +78,7 @@ export default function CardioScreen() {
   if (error) {
     return (
       <div className="min-h-screen relative">
-        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
           <div className="flex gap-3">
@@ -92,7 +92,7 @@ export default function CardioScreen() {
   if (loading) {
     return (
       <div className="min-h-screen relative">
-        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
     );
@@ -102,7 +102,7 @@ export default function CardioScreen() {
   if (!started) {
     return (
       <div className="min-h-screen relative flex flex-col">
-        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center p-5">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-white/60 mb-4">
             <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
@@ -134,7 +134,7 @@ export default function CardioScreen() {
 
   return (
     <div className="min-h-screen relative">
-      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" fixed />
+      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
 
       <div className="relative z-10 p-5">
         <div className="pt-2 mb-6">

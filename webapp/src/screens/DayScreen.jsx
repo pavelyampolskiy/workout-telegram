@@ -186,7 +186,7 @@ export default function DayScreen() {
   if (showNote) {
     return (
       <div className="min-h-screen relative">
-        <ScreenBg overlay="bg-black/70" fixed />
+        <ScreenBg overlay="bg-black/70" />
         <div className="relative z-10 p-5">
           <div className="pt-4 mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">

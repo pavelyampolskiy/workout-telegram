@@ -472,32 +472,6 @@ def stats_frequency(user_id: int, weeks: int = 4):
     return total, avg
 
 
-def get_early_bird_count(user_id: int) -> int:
-    """Count finished workouts that started before 07:00."""
-    with db() as conn:
-        result = conn.execute(
-            """SELECT COUNT(*) as cnt FROM workouts
-               WHERE user_id=? AND finished_at IS NOT NULL
-               AND created_at IS NOT NULL
-               AND CAST(strftime('%H', created_at) AS INTEGER) < 7""",
-            (user_id,),
-        ).fetchone()
-    return result["cnt"] if result else 0
-
-
-def get_night_owl_count(user_id: int) -> int:
-    """Count finished workouts that started at or after 22:00."""
-    with db() as conn:
-        result = conn.execute(
-            """SELECT COUNT(*) as cnt FROM workouts
-               WHERE user_id=? AND finished_at IS NOT NULL
-               AND created_at IS NOT NULL
-               AND CAST(strftime('%H', created_at) AS INTEGER) >= 22""",
-            (user_id,),
-        ).fetchone()
-    return result["cnt"] if result else 0
-
-
 def get_cardio_count(user_id: int) -> int:
     with db() as conn:
         result = conn.execute(

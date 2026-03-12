@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useEffect, useCallback, useRef, Component } from 'react';
+import { useState, createContext, useContext, useEffect, useCallback, Component } from 'react';
 import { useSwipeBack } from './hooks/useSwipeBack';
 import { Toast } from './components/Toast';
 
@@ -66,31 +66,13 @@ export default function App() {
   const [userId, setUserId] = useState(null);
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [recoveryData, setRecoveryData] = useState(null); // { score, modifier, timestamp }
-  const [direction, setDirection] = useState('none'); // 'forward', 'back', 'none'
-  const [isAnimating, setIsAnimating] = useState(false);
   const [toast, setToast] = useState(null);
-  const prevStackLength = useRef(1);
 
   const showToast = useCallback((msg) => setToast(msg), []);
   const dismissToast = useCallback(() => setToast(null), []);
 
   const current = stack[stack.length - 1];
   const Screen = SCREENS[current.screen] || HomeScreen;
-
-  // Track navigation direction
-  useEffect(() => {
-    if (stack.length > prevStackLength.current) {
-      setDirection('forward');
-      setIsAnimating(true);
-    } else if (stack.length < prevStackLength.current) {
-      setDirection('back');
-      setIsAnimating(true);
-    }
-    prevStackLength.current = stack.length;
-    
-    const timer = setTimeout(() => setIsAnimating(false), 300);
-    return () => clearTimeout(timer);
-  }, [stack.length]);
 
   useEffect(() => {
     try {
@@ -193,16 +175,7 @@ export default function App() {
     >
       <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative">
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
-        <div
-          key={current.screen}
-          className={`min-h-screen relative ${
-            isAnimating
-              ? direction === 'forward'
-                ? 'animate-slide-in-right'
-                : 'animate-slide-in-left'
-              : ''
-          }`}
-        >
+        <div key={current.screen} className="min-h-screen relative">
           <ErrorBoundary>
             <Screen />
           </ErrorBoundary>

@@ -46,22 +46,6 @@ input[type='number']::-webkit-outer-spin-button {
   }
 }
 
-/* ── Screen background: #0F0F10 + noise grain ─────────── */
-.screen-bg {
-  background-color: #0F0F10;
-}
-.screen-bg::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.0175;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
-}
-
 /* ── Save Set: card flash ─────────────────────────────── */
 @keyframes save-flash {
   0%   { background: rgba(0,0,0,0.65); }
@@ -122,10 +106,6 @@ input[type='number']::-webkit-outer-spin-button {
   background: white;
   box-shadow: 0 0 6px rgba(255,255,255,0.25), 0 1px 4px rgba(0,0,0,0.5);
 }
-
-/* ── Screen transitions (disabled — instant) ──────────── */
-.animate-slide-in-right {}
-.animate-slide-in-left {}
 
 /* ── Modal: fade + scale ───────────────────────────────── */
 @keyframes modal-overlay-in {
