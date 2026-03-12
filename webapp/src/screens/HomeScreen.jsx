@@ -65,6 +65,10 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress * circumference);
   const id = gradientId || 'ringGrad';
+  const isGold = gradientId === 'ringReady';
+  const gradientStops = isGold
+    ? [<stop key="a" offset="0%" stopColor="#E8D5B7"/>, <stop key="b" offset="50%" stopColor="#C9A96E"/>, <stop key="c" offset="100%" stopColor="#D4A574"/>]
+    : [<stop key="a" offset="0%" stopColor="rgba(255,255,255,0.9)"/>, <stop key="b" offset="100%" stopColor="rgba(255,255,255,0.4)"/>];
 
   return (
     <div className="flex flex-col items-center">
@@ -74,8 +78,7 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
           <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke={`url(#${id})`} strokeWidth={RING_STROKE} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}/>
           <defs>
             <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.9)"/>
-              <stop offset="100%" stopColor="rgba(255,255,255,0.4)"/>
+              {gradientStops}
             </linearGradient>
           </defs>
         </svg>
@@ -310,7 +313,7 @@ export default function HomeScreen() {
             <div style={{ 
               fontSize: '18vw', 
               letterSpacing: '0.36em',
-              background: 'linear-gradient(180deg, rgba(255,220,120,1) 0%, rgba(255,185,60,0.95) 100%)',
+              background: 'linear-gradient(180deg, #E8D5B7 0%, #C9A96E 25%, #D4A574 50%, #C2938A 75%, #B8A9A0 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
