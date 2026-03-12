@@ -153,7 +153,7 @@ export default function HistoryDetailScreen() {
 
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         {/* Header */}
-        <div className="pt-2 mb-5">
+        <div className="pt-6 mb-5">
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">

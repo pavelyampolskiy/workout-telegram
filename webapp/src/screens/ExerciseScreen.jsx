@@ -265,7 +265,7 @@ export default function ExerciseScreen() {
       <RecoveryBanner recoveryData={recoveryData} />
 
       {/* Exercise header */}
-      <div className="pt-2 mb-5">
+      <div className="pt-6 mb-5">
         <button onClick={handleFinish} className="flex items-center gap-1 mb-3 -ml-0.5">
           <span className={`${TEXT_MUTED} text-base leading-none`}>‹</span>
           <span className={`font-bebas tracking-wider ${TEXT_MUTED} text-sm`}>

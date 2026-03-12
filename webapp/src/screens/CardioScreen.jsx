@@ -118,7 +118,7 @@ export default function CardioScreen() {
       <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
 
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <div className="pt-2 mb-6">
+        <div className="pt-6 mb-6">
           <div className="flex items-center justify-between">
             <div>
               <div className="mb-2 text-white">
