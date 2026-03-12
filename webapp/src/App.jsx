@@ -99,6 +99,9 @@ export default function App() {
         tg.ready();
         const doExpand = () => { try { tg.expand(); } catch (_) {} };
         doExpand();
+        if (typeof tg.requestFullscreen === 'function') {
+          try { tg.requestFullscreen(); } catch (_) {}
+        }
         try { tg.setHeaderColor('#000000'); } catch (_) {}
         try { tg.setBackgroundColor('#000000'); } catch (_) {}
         try { tg.onEvent('viewportChanged', doExpand); } catch (_) {}
