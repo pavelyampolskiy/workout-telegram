@@ -305,9 +305,9 @@ export default function HomeScreen() {
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent" style={{ zIndex: 0 }} />
 
       {/* Content: title top, nav block fixed at bottom */}
-      <div className="relative z-10 flex flex-col min-h-screen p-5">
-        {/* Scrollable content area */}
-        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-auto">
+      <div className="relative z-10 flex flex-col min-h-screen p-5 pb-0">
+        {/* Scrollable content area — pb ensures content not hidden behind fixed nav */}
+        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-auto pb-64">
           {/* Headline */}
           <div className="pt-2 shrink-0">
             <div className="font-bebas leading-none w-full">
@@ -425,8 +425,8 @@ export default function HomeScreen() {
           </div>
         </div>
 
-        {/* Navigation block — fixed at bottom */}
-        <div className="shrink-0 pt-2 pb-5 space-y-2">
+        {/* Navigation block — fixed to bottom of viewport */}
+        <div className="fixed bottom-0 left-0 right-0 z-10 max-w-lg mx-auto px-5 pt-2 pb-6 space-y-2" style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom, 1.5rem))' }}>
           {/* Big card - New Workout */}
           <button
             onClick={() => navigate('recovery-check')}
