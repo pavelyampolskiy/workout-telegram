@@ -11,7 +11,7 @@ const BG_BASE = {
   width: '100vw',
   height: `calc(100dvh + ${EXTEND_TOP})`,
   minHeight: `calc(100vh + 120px)`,
-  zIndex: -1,
+  zIndex: 0,
   pointerEvents: 'none',
 };
 
