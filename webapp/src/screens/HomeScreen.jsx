@@ -281,7 +281,7 @@ export default function HomeScreen() {
           <div className="pt-2 shrink-0">
             <div className="font-bebas leading-none w-full">
               <div className={TEXT_TERTIARY} style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: '18vw', letterSpacing: '0.36em' }}>Ready?</div>
+              <div className={TEXT_PRIMARY} style={{ fontSize: '14vw', letterSpacing: '0.36em' }}>Ready?</div>
             </div>
           </div>
 
