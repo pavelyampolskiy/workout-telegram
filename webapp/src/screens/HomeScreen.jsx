@@ -300,22 +300,25 @@ export default function HomeScreen() {
               <>
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
+                  className="card-press w-full rounded-xl p-4 text-left"
                   style={{
                     ...CARD_BTN_STYLE,
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 25px rgba(255,255,255,0.12), 0 0 10px rgba(255,255,255,0.08)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
                   }}
                 >
-                  <span className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${TEXT_PRIMARY}`}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                      <polygon points="5 3 19 12 5 21 5 3"/>
-                    </svg>
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className={`font-bebas tracking-wider text-lg ${TEXT_PRIMARY}`}>Continue Workout</div>
-                    <div className={`text-xs font-bebas tracking-wider ${TEXT_MUTED}`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/20 ${TEXT_PRIMARY}`}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
+                    </span>
+                    <div className="flex-1">
+                      <div className={`font-bebas tracking-wider text-xl ${TEXT_PRIMARY}`}>Continue Workout</div>
+                      <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
+                    </div>
+                    <span className={`text-xl shrink-0 ${TEXT_FADED}`}>›</span>
                   </div>
-                  <span className={`text-xl shrink-0 ${TEXT_MUTED}`}>›</span>
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
