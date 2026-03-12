@@ -261,7 +261,7 @@ export default function HomeScreen() {
 
   const handleContinue = () => {
     if (!unfinished) return;
-    if (unfinished.type === 'CARDIO') {
+    if (unfinished.type && String(unfinished.type).toUpperCase() === 'CARDIO') {
       navigate('cardio');
       return;
     }
@@ -300,7 +300,7 @@ export default function HomeScreen() {
 
   const handleContinueCurrentWorkout = () => {
     setShowCardioActiveModal(false);
-    if (unfinished?.type === 'CARDIO') {
+    if (unfinished?.type && String(unfinished.type).toUpperCase() === 'CARDIO') {
       navigate('cardio');
     } else {
       setActiveWorkout({

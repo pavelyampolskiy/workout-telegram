@@ -11,9 +11,10 @@ import { MUSCLE_GROUPS } from '../constants';
 import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function DayScreen() {
-  const { params, userId, navigate, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
+  const { params, userId, navigate, replace, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
   const { day, dayLabel: paramLabel } = params;
   const dayLabel = paramLabel || day.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom Workout');
+  const isCardio = day && String(day).toUpperCase() === 'CARDIO';
 
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,15 @@ export default function DayScreen() {
   const [addingEx, setAddingEx] = useState(false);
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [elapsedSec, setElapsedSec] = useState(0);
+
+  // Cardio is handled by CardioScreen only — redirect if we got here with day CARDIO
+  useEffect(() => {
+    if (isCardio) replace('cardio');
+  }, [isCardio, replace]);
+
+  if (isCardio) {
+    return <LoadingScreen overlay="bg-black/65" image="/gym-bg.jpg" message="Opening cardio…" />;
+  }
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
