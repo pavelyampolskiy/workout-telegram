@@ -52,7 +52,7 @@ export default function HistoryDetailScreen() {
 
   const handleSaveSet = async () => {
     if (!editingSet) return;
-    const weight = parseFloat(editingSet.weight);
+    const weight = parseFloat(String(editingSet.weight).replace(',', '.'));
     const reps = parseInt(editingSet.reps);
     if (isNaN(weight) || weight < 0 || isNaN(reps) || reps <= 0) return;
     
