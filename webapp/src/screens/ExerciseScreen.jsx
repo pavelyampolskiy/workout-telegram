@@ -280,43 +280,63 @@ export default function ExerciseScreen() {
         </div>
       </div>
 
-      {/* Rest timer */}
+      {/* Rest timer + preset */}
       {restTimer !== null && (
-        <button
-          onClick={() => setRestEndTime(null)}
-          className="w-full rounded-2xl p-6 mb-4 text-center backdrop-blur-sm flex flex-col items-center"
-          style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
-        >
-          <div className={`text-[10px] font-bebas tracking-widest mb-3 ${TEXT_MUTED}`}>REST</div>
-          <div className="relative">
-            <svg width={120} height={120} className="transform -rotate-90">
-              <circle
-                cx={60}
-                cy={60}
-                r={52}
-                fill="none"
-                stroke="rgba(255,255,255,0.08)"
-                strokeWidth={6}
-              />
-              <circle
-                cx={60}
-                cy={60}
-                r={52}
-                fill="none"
-                stroke="rgba(255,255,255,0.6)"
-                strokeWidth={6}
-                strokeLinecap="round"
-                strokeDasharray={326.7}
-                strokeDashoffset={326.7 - (1 - restTimer / restDuration) * 326.7}
-                style={{ transition: 'stroke-dashoffset 1s linear' }}
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-4xl font-bebas text-white leading-none">{fmtTime(restTimer)}</span>
+        <>
+          <button
+            onClick={() => setRestEndTime(null)}
+            className="w-full rounded-2xl p-6 mb-4 text-center backdrop-blur-sm flex flex-col items-center"
+            style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
+          >
+            <div className={`text-[10px] font-bebas tracking-widest mb-3 ${TEXT_MUTED}`}>REST</div>
+            <div className="relative">
+              <svg width={120} height={120} className="transform -rotate-90">
+                <circle
+                  cx={60}
+                  cy={60}
+                  r={52}
+                  fill="none"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth={6}
+                />
+                <circle
+                  cx={60}
+                  cy={60}
+                  r={52}
+                  fill="none"
+                  stroke="rgba(255,255,255,0.6)"
+                  strokeWidth={6}
+                  strokeLinecap="round"
+                  strokeDasharray={326.7}
+                  strokeDashoffset={326.7 - (1 - restTimer / restDuration) * 326.7}
+                  style={{ transition: 'stroke-dashoffset 1s linear' }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-4xl font-bebas text-white leading-none">{fmtTime(restTimer)}</span>
+              </div>
+            </div>
+            <div className={`text-xs font-bebas mt-3 ${TEXT_FADED}`}>tap to skip</div>
+          </button>
+          <div className="mb-4">
+            <div className={`text-xs mb-2 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
+            <div className="flex gap-2">
+              {REST_PRESETS.map((sec) => (
+                <button
+                  key={sec}
+                  onClick={() => saveRestDuration(sec)}
+                  className={`px-4 py-2 rounded-xl font-bebas tracking-wider text-sm transition-colors ${
+                    restDuration === sec
+                      ? 'bg-white/20 text-white border border-white/30'
+                      : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
+                  }`}
+                >
+                  {sec}s
+                </button>
+              ))}
             </div>
           </div>
-          <div className={`text-xs font-bebas mt-3 ${TEXT_FADED}`}>tap to skip</div>
-        </button>
+        </>
       )}
 
       {/* Last performance */}
@@ -359,26 +379,6 @@ export default function ExerciseScreen() {
           </div>
         </div>
       )}
-
-      {/* Rest timer preset */}
-      <div className="mb-4">
-        <div className={`text-xs mb-2 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
-        <div className="flex gap-2">
-          {REST_PRESETS.map((sec) => (
-            <button
-              key={sec}
-              onClick={() => saveRestDuration(sec)}
-              className={`px-4 py-2 rounded-xl font-bebas tracking-wider text-sm transition-colors ${
-                restDuration === sec
-                  ? 'bg-white/20 text-white border border-white/30'
-                  : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
-              }`}
-            >
-              {sec}s
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Input */}
       <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
