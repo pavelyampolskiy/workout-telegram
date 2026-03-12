@@ -84,16 +84,19 @@ export default function CardioScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-5 safe-top safe-bottom">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-5 safe-top pb-40">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-white/60 mb-4">
             <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
           </svg>
           <h1 className="text-2xl font-bebas tracking-wider mb-2">Cardio</h1>
-          <p className="font-sans text-white/40 text-xs mb-10">Timer will start automatically</p>
+          <p className="font-sans text-white/40 text-xs">Timer will start automatically</p>
+        </div>
 
+        {/* Fixed bottom: START + BACK */}
+        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <button
             onClick={handleStart}
-            className="card-press w-full max-w-xs py-4 rounded-2xl font-bebas tracking-wider text-xl"
+            className="card-press w-full py-4 rounded-2xl font-bebas tracking-wider text-xl"
             style={{
               ...CARD_BTN_STYLE,
               background: 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 100%)',
@@ -102,7 +105,7 @@ export default function CardioScreen() {
           >
             Start
           </button>
-          <button onClick={goBack} className="mt-6 text-white/50 font-bebas tracking-wider text-sm">
+          <button onClick={goBack} className="mt-4 w-full text-white/50 font-bebas tracking-wider text-sm py-2">
             Back
           </button>
         </div>
