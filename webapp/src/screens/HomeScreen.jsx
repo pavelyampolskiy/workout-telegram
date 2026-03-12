@@ -7,6 +7,7 @@ import { CARD_BTN_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 const WorkoutIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -247,6 +248,8 @@ export default function HomeScreen() {
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
+  const [showCardioActiveModal, setShowCardioActiveModal] = useState(false);
+  const [switchingToCardio, setSwitchingToCardio] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -279,6 +282,45 @@ export default function HomeScreen() {
       navigate('workout');
     } else {
       navigate('recovery-check');
+    }
+  };
+
+  const handleCardioPress = () => {
+    if (unfinished) {
+      setShowCardioActiveModal(true);
+    } else {
+      navigate('cardio');
+    }
+  };
+
+  const handleContinueCurrentWorkout = () => {
+    setShowCardioActiveModal(false);
+    if (unfinished?.type === 'CARDIO') {
+      navigate('cardio');
+    } else {
+      setActiveWorkout({
+        id: unfinished.id,
+        day: unfinished.type,
+        startedAt: unfinished.created_at ? new Date(unfinished.created_at).getTime() : Date.now(),
+        exerciseMap: {},
+      });
+      navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
+    }
+  };
+
+  const handleStartNewCardio = async () => {
+    if (!unfinished) return;
+    setSwitchingToCardio(true);
+    try {
+      await api.deleteWorkout(unfinished.id);
+      setUnfinished(null);
+      setActiveWorkout(null);
+      setShowCardioActiveModal(false);
+      navigate('cardio');
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setSwitchingToCardio(false);
     }
   };
 
@@ -464,7 +506,7 @@ export default function HomeScreen() {
 
             {/* Cardio */}
             <button
-              onClick={() => navigate('cardio')}
+              onClick={handleCardioPress}
               className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
               style={CARD_BTN_STYLE}
             >
@@ -479,6 +521,17 @@ export default function HomeScreen() {
           </div>
         </div>
       </div>
+
+      <ConfirmModal
+        visible={showCardioActiveModal}
+        title="Active workout"
+        description={unfinished ? `You have an active workout (${unfinished.label || unfinished.type || 'Workout'}). Continue it or start a new one?` : ''}
+        primaryLabel="Continue current"
+        primaryOnClick={handleContinueCurrentWorkout}
+        secondaryLabel="Start new"
+        secondaryOnClick={handleStartNewCardio}
+        secondaryLoading={switchingToCardio}
+      />
     </div>
   );
 }
