@@ -261,10 +261,14 @@ export default function HomeScreen() {
 
   const handleContinue = () => {
     if (!unfinished) return;
+    if (unfinished.type === 'CARDIO') {
+      navigate('cardio');
+      return;
+    }
     setActiveWorkout({
       id: unfinished.id,
       day: unfinished.type,
-      startedAt: Date.now(),
+      startedAt: unfinished.created_at ? new Date(unfinished.created_at).getTime() : Date.now(),
       exerciseMap: {},
     });
     navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
