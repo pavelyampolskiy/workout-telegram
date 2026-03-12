@@ -6,7 +6,7 @@ import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE } from '../shared';
+import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, fmtTime } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 import { ConfirmModal } from '../components/ConfirmModal';
 
@@ -30,6 +30,7 @@ export default function DayScreen() {
   const [customExercises, setCustomExercises] = useState([]);
   const [addingEx, setAddingEx] = useState(false);
   const [retryTrigger, setRetryTrigger] = useState(0);
+  const [elapsedSec, setElapsedSec] = useState(0);
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
@@ -73,6 +74,19 @@ export default function DayScreen() {
     }
     init();
   }, [retryTrigger, day, userId]);
+
+  // Workout duration timer — updates every second when workout has started
+  useEffect(() => {
+    const startedAt = activeWorkout?.startedAt;
+    if (!startedAt) {
+      setElapsedSec(0);
+      return;
+    }
+    const tick = () => setElapsedSec(Math.max(0, Math.floor((Date.now() - startedAt) / 1000)));
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [activeWorkout?.startedAt]);
 
   const handleExerciseTap = async (idx) => {
     if (!workoutId) return;
@@ -247,8 +261,13 @@ export default function DayScreen() {
       <div className="relative z-10 flex flex-col flex-1 min-h-0">
       {/* Header */}
       <div className="flex items-center justify-between p-5 safe-top-lg flex-shrink-0">
-        <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
-        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors">
+        <h1 className="text-xl font-bebas text-white/85 shrink-0" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
+        {activeWorkout?.startedAt != null && (
+          <div className="flex-1 flex justify-center">
+            <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsedSec)}</span>
+          </div>
+        )}
+        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0">
           Cancel
         </button>
       </div>
