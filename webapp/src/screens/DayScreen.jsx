@@ -70,7 +70,7 @@ export default function DayScreen() {
       }
     }
     init();
-  }, [retryTrigger]);
+  }, [retryTrigger, day, userId]);
 
   const handleExerciseTap = async (idx) => {
     if (!workoutId) return;

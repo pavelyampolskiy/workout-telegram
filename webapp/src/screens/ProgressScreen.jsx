@@ -77,7 +77,7 @@ export default function ProgressScreen() {
         const seen = new Set();
         const list = [];
         for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) {
-          for (const ex of p[day]) {
+          for (const ex of (p[day] || [])) {
             if (!seen.has(ex.name)) {
               seen.add(ex.name);
               list.push(ex);

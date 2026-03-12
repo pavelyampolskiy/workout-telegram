@@ -48,7 +48,10 @@ class ErrorBoundary extends Component {
           <div className="text-red-400 font-bebas tracking-wider text-lg mb-2">Something went wrong</div>
           <div className="text-white/30 text-xs mb-6 font-bebas tracking-wider">{this.state.error}</div>
           <button
-            onClick={() => this.setState({ error: null })}
+            onClick={() => {
+              this.setState({ error: null });
+              this.props.onRetry?.();
+            }}
             className="card-press text-white/90 font-bebas tracking-wider px-8 py-3 rounded-2xl"
             style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06)' }}
           >
@@ -195,7 +198,7 @@ export default function App() {
       <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative" onClick={requestFullscreenOnTap}>
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div key={current.screen} className="min-h-screen relative">
-          <ErrorBoundary>
+          <ErrorBoundary onRetry={() => resetTo('home')}>
             <Screen />
           </ErrorBoundary>
         </div>

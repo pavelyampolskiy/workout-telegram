@@ -32,11 +32,12 @@ export default function HistoryDetailScreen() {
   const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
 
   useEffect(() => {
+    if (!workoutId) return;
     api.getWorkout(workoutId)
       .then(setWorkout)
       .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
-  }, []);
+  }, [workoutId]);
 
   const handleDelete = async () => {
     setDeleting(true);

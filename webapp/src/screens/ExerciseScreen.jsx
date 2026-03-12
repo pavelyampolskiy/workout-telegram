@@ -138,7 +138,13 @@ export default function ExerciseScreen() {
           api.getSets(exDbId),
           api.getLastExercise(exDbId, userId, workoutId),
         ]);
-        setProgram(prog[day][exIdx]);
+        const exData = prog[day]?.[exIdx];
+        if (!exData) {
+          setError('Exercise not found');
+          setLoading(false);
+          return;
+        }
+        setProgram(exData);
         setSets(setsData);
         setLastDate(lastData.date);
         setLastSets(lastData.sets);
@@ -274,7 +280,9 @@ export default function ExerciseScreen() {
       <div className="pt-2 mb-5">
         <button onClick={handleFinish} className="flex items-center gap-1 mb-3 -ml-0.5">
           <span className="text-white/35 text-base leading-none">‹</span>
-          <span className="font-bebas tracking-wider text-white/35 text-sm">{day.replace('DAY_', 'Day ')}</span>
+          <span className="font-bebas tracking-wider text-white/35 text-sm">
+            {day?.startsWith?.('CUSTOM') ? 'Custom' : (day || 'Workout').replace('DAY_', 'Day ')}
+          </span>
         </button>
         <div className="flex items-center gap-2 mb-1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/40 shrink-0">
