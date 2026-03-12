@@ -259,7 +259,7 @@ export default function ExerciseScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
       <ScreenBg image="/gym-bg.jpg" />
-      <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-5 pb-28 overflow-y-auto">
+      <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-8 pb-28 overflow-y-auto">
 
       {/* Recovery banner */}
       <RecoveryBanner recoveryData={recoveryData} />
