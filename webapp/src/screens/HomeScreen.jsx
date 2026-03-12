@@ -296,11 +296,11 @@ export default function HomeScreen() {
     <div className="min-h-screen relative overflow-hidden">
       {/* Blurred background */}
       <div
-        className="fixed inset-0 scale-110"
-        style={{ backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }}
+        className="fixed left-0 right-0 bottom-0 scale-110"
+        style={{ top: -80, height: 'calc(100vh + 80px)', minHeight: 'calc(100vh + 80px)', backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }}
       />
       {/* Dark overlay */}
-      <div className="fixed inset-0 bg-black/65" />
+      <div className="fixed left-0 right-0 bottom-0 bg-black/65" style={{ top: -80, height: 'calc(100vh + 80px)', minHeight: 'calc(100vh + 80px)' }} />
       {/* Top gradient — absorbs Telegram header */}
       <div className="fixed inset-x-0 top-0 h-32 bg-black/90" />
       <div className="fixed inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />

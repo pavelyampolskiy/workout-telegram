@@ -97,9 +97,11 @@ export default function App() {
       const tg = window.Telegram?.WebApp;
       if (tg) {
         tg.ready();
-        try { tg.expand(); } catch (_) {}
+        const doExpand = () => { try { tg.expand(); } catch (_) {} };
+        doExpand();
         try { tg.setHeaderColor('#000000'); } catch (_) {}
         try { tg.setBackgroundColor('#000000'); } catch (_) {}
+        try { tg.onEvent('viewportChanged', doExpand); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
         if (uid) {
           setUserId(Number(uid));

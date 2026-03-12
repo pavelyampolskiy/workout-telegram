@@ -1,6 +1,7 @@
-const FIXED_STYLE = { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 };
+const FIXED_BASE = { position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 0 };
 
 export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-black/70', fixed = false }) {
+  const extendTop = { top: -80, height: 'calc(100vh + 80px)', minHeight: 'calc(100vh + 80px)' };
   if (fixed) {
     return (
       <>
@@ -9,9 +10,9 @@ export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-blac
           alt=""
           aria-hidden="true"
           style={{
-            ...FIXED_STYLE,
+            ...FIXED_BASE,
+            ...extendTop,
             width: '100vw',
-            height: '100vh',
             objectFit: 'cover',
             objectPosition: 'center',
             transform: 'scale(1.1)',
@@ -20,17 +21,24 @@ export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-blac
             willChange: 'transform',
           }}
         />
-        <div className={overlay} style={FIXED_STYLE} />
+        <div className={overlay} style={{ ...FIXED_BASE, ...extendTop }} />
       </>
     );
   }
   return (
     <>
       <div
-        className="fixed inset-0 scale-110"
-        style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }}
+        className="scale-110"
+        style={{
+          ...FIXED_BASE,
+          ...extendTop,
+          backgroundImage: `url(${image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(2px)',
+        }}
       />
-      <div className={`fixed inset-0 ${overlay}`} />
+      <div className={overlay} style={{ ...FIXED_BASE, ...extendTop }} />
     </>
   );
 }
