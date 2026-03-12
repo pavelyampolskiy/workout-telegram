@@ -327,7 +327,7 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image={homeBg} overlay="bg-black/60" />
+      <ScreenBg image={homeBg} overlay="bg-black/75" />
       {/* Top gradient — absorbs Telegram header, keeps photo visible */}
       <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/70 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
