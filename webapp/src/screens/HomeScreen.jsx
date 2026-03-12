@@ -266,6 +266,22 @@ export default function HomeScreen() {
     navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
   };
 
+  const isRecoveryDoneToday = () => {
+    const ts = recoveryData?.timestamp;
+    if (!ts) return false;
+    const d = new Date(ts);
+    const today = new Date();
+    return d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
+  };
+
+  const handleNewWorkout = () => {
+    if (isRecoveryDoneToday()) {
+      navigate('workout');
+    } else {
+      navigate('recovery-check');
+    }
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
@@ -388,7 +404,7 @@ export default function HomeScreen() {
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <div className="space-y-2">
             <button
-              onClick={() => navigate('recovery-check')}
+              onClick={handleNewWorkout}
               className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
               style={{
                 ...CARD_BTN_STYLE,
