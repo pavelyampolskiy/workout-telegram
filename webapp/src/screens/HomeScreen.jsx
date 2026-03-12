@@ -273,10 +273,10 @@ export default function HomeScreen() {
       {/* Bottom gradient — grounds the cards */}
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent" style={{ zIndex: 0 }} />
 
-      {/* Content: title top, nav block fixed at bottom */}
+      {/* Content: title top, nav flows below content to avoid huge center gap */}
       <div className="relative z-10 flex flex-col min-h-screen safe-top p-5 pb-0">
-        {/* Scrollable content area — pb ensures content not hidden behind fixed nav */}
-        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-auto pb-64">
+        {/* Scrollable content area — nav inside so it sits right below widgets */}
+        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-y-auto overflow-x-hidden">
           {/* Headline */}
           <div className="pt-2 shrink-0">
             <div className="font-bebas leading-none w-full">
@@ -288,7 +288,7 @@ export default function HomeScreen() {
           {/* Status widget */}
           <StatusWidget userId={userId} />
 
-          <div className="flex flex-col gap-4 mt-4">
+          <div className="flex flex-col gap-4 mt-4 flex-none">
             {/* Weekly goal widget */}
             <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
 
@@ -375,12 +375,10 @@ export default function HomeScreen() {
             )}
           </div>
         )}
-
           </div>
-        </div>
 
-        {/* Navigation block — fixed to bottom of viewport */}
-        <div className="fixed bottom-0 left-0 right-0 z-10 max-w-lg mx-auto px-5 pt-2 pb-6 space-y-2 safe-bottom">
+          {/* Navigation block — in flow, right below content */}
+          <div className="pt-3 pb-4 space-y-2 safe-bottom shrink-0">
           {/* Big card - New Workout */}
           <button
             onClick={() => navigate('recovery-check')}
@@ -454,6 +452,7 @@ export default function HomeScreen() {
               </span>
               <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Cardio</div>
             </button>
+          </div>
           </div>
         </div>
       </div>
