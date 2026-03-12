@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -327,12 +328,12 @@ export default function HomeScreen() {
                   Dismiss
                 </button>
               </>
-            ) : (
-              <div className="fixed inset-0 z-50 flex items-center justify-center p-5 bg-black/75">
+            ) : createPortal(
+              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80" aria-modal="true" role="dialog">
                 <div 
                   className="w-full max-w-sm rounded-2xl p-5"
                   style={{
-                    background: 'rgba(0, 0, 0, 0.9)',
+                    background: 'rgba(0, 0, 0, 0.95)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.15)',
@@ -374,7 +375,8 @@ export default function HomeScreen() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div>,
+              document.body
             )}
           </div>
         )}
