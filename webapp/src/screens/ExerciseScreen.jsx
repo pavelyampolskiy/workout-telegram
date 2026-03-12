@@ -7,7 +7,17 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { fmtW, fmtTime, DARK_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
-const REST_DURATION = 90;
+const REST_PRESETS = [60, 90, 120, 160];
+const REST_STORAGE_KEY = 'workout_rest_duration';
+
+function getStoredRestDuration() {
+  try {
+    const v = parseInt(localStorage.getItem(REST_STORAGE_KEY), 10);
+    return REST_PRESETS.includes(v) ? v : 90;
+  } catch {
+    return 90;
+  }
+}
 
 // Play a beep sound using Web Audio API
 function playTimerSound() {
@@ -65,8 +75,14 @@ export default function ExerciseScreen() {
   const [inputError, setInputError] = useState('');
   const [restEndTime, setRestEndTime] = useState(null);
   const [restTimer, setRestTimer] = useState(null);
+  const [restDuration, setRestDuration] = useState(getStoredRestDuration);
 
   const weightRef = useRef(null);
+
+  const saveRestDuration = (sec) => {
+    localStorage.setItem(REST_STORAGE_KEY, String(sec));
+    setRestDuration(sec);
+  };
 
   // Rest timer - uses endTime to survive app minimize
   useEffect(() => {
@@ -154,10 +170,10 @@ export default function ExerciseScreen() {
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
-      setRestEndTime(Date.now() + REST_DURATION * 1000);
+      setRestEndTime(Date.now() + restDuration * 1000);
       // Schedule push notification via Telegram bot
       if (userId > 0) {
-        api.startRestTimer(userId, REST_DURATION, ex?.name).catch(() => {});
+        api.startRestTimer(userId, restDuration, ex?.name).catch(() => {});
       }
       setActiveWorkout(prev => prev ? {
         ...prev,
@@ -291,7 +307,7 @@ export default function ExerciseScreen() {
                 strokeWidth={6}
                 strokeLinecap="round"
                 strokeDasharray={326.7}
-                strokeDashoffset={326.7 - (1 - restTimer / REST_DURATION) * 326.7}
+                strokeDashoffset={326.7 - (1 - restTimer / restDuration) * 326.7}
                 style={{ transition: 'stroke-dashoffset 1s linear' }}
               />
             </svg>
@@ -343,6 +359,26 @@ export default function ExerciseScreen() {
           </div>
         </div>
       )}
+
+      {/* Rest timer preset */}
+      <div className="mb-4">
+        <div className={`text-xs mb-2 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
+        <div className="flex gap-2">
+          {REST_PRESETS.map((sec) => (
+            <button
+              key={sec}
+              onClick={() => saveRestDuration(sec)}
+              className={`px-4 py-2 rounded-xl font-bebas tracking-wider text-sm transition-colors ${
+                restDuration === sec
+                  ? 'bg-white/20 text-white border border-white/30'
+                  : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
+              }`}
+            >
+              {sec}s
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Input */}
       <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
