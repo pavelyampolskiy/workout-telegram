@@ -33,7 +33,7 @@ body {
   padding-top: max(env(safe-area-inset-top, 0px), 100px);
 }
 .safe-top-xl {
-  padding-top: max(env(safe-area-inset-top, 0px), 120px);
+  padding-top: max(env(safe-area-inset-top, 0px), 140px);
 }
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
