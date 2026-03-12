@@ -8,7 +8,6 @@ import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import { ConfirmModal } from '../components/ConfirmModal';
-import homeBg from '../assets/gym-bg.png';
 
 const WorkoutIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
@@ -327,7 +326,7 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image={homeBg} overlay="bg-black/40" />
+      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/40" />
       {/* Top gradient — absorbs Telegram header, keeps photo visible */}
       <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/70 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
