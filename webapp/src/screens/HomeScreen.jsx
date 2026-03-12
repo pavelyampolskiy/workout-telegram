@@ -304,36 +304,37 @@ export default function HomeScreen() {
       {/* Bottom gradient — grounds the cards */}
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent" style={{ zIndex: 0 }} />
 
-      {/* Content: title top, cards bottom */}
+      {/* Content: title top, nav block fixed at bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">
-        {/* Headline */}
-        <div className="pt-2">
-          <div className="font-bebas leading-none w-full">
-            <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
-            <div style={{ 
-              fontSize: '18vw', 
-              letterSpacing: '0.36em',
-              background: 'linear-gradient(180deg, #E8D5B7 0%, #C9A96E 25%, #D4A574 50%, #C2938A 75%, #B8A9A0 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>Ready?</div>
+        {/* Scrollable content area */}
+        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-auto">
+          {/* Headline */}
+          <div className="pt-2 shrink-0">
+            <div className="font-bebas leading-none w-full">
+              <div style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em', color: 'rgba(255,255,255,0.75)' }}>Are you</div>
+              <div style={{ 
+                fontSize: '18vw', 
+                letterSpacing: '0.36em',
+                background: 'linear-gradient(180deg, #E8D5B7 0%, #C9A96E 25%, #D4A574 50%, #C2938A 75%, #B8A9A0 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>Ready?</div>
+            </div>
           </div>
-        </div>
 
-        {/* Status widget */}
-        <StatusWidget userId={userId} />
+          {/* Status widget */}
+          <StatusWidget userId={userId} />
 
-        {/* Content with consistent spacing */}
-        <div className="flex-1 flex flex-col gap-4 mt-4">
-          {/* Weekly goal widget */}
-          <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+          <div className="flex flex-col gap-4 mt-4">
+            {/* Weekly goal widget */}
+            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
 
-          {/* Smart reminder */}
-          <SmartReminderBanner userId={userId} />
+            {/* Smart reminder */}
+            <SmartReminderBanner userId={userId} />
 
-          {/* Continue workout banner */}
-          {unfinished && (
+            {/* Continue workout banner */}
+            {unfinished && (
             <div className="relative">
             {!showDismissConfirm ? (
               <>
@@ -421,8 +422,11 @@ export default function HomeScreen() {
           </div>
         )}
 
-          {/* Navigation widgets */}
-          <div className="mt-auto pt-2 pb-6 space-y-2">
+          </div>
+        </div>
+
+        {/* Navigation block — fixed at bottom */}
+        <div className="shrink-0 pt-2 pb-5 space-y-2">
           {/* Big card - New Workout */}
           <button
             onClick={() => navigate('recovery-check')}
@@ -497,7 +501,6 @@ export default function HomeScreen() {
               <div className="font-bebas tracking-wider text-white/80 text-sm">Cardio</div>
             </button>
           </div>
-        </div>
         </div>
       </div>
 
