@@ -145,7 +145,7 @@ export default function WorkoutScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/60" />
       <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top">
-        <div className="flex items-center justify-between pt-6 mb-5">
+        <div className="flex items-center justify-between pt-6 mb-2">
           <h1 className="text-xl font-bebas tracking-wider">New Workout</h1>
           {days && days.length > 0 && (
             <button
@@ -157,7 +157,9 @@ export default function WorkoutScreen() {
           )}
         </div>
 
-        <div className="pb-20 overflow-y-auto flex-1 min-h-0">
+        <div className="flex-1 min-h-0 flex flex-col">
+          <div className="flex-1 min-h-0" />
+          <div className="pb-6 safe-bottom shrink-0">
           {loading ? (
             <div className="flex justify-center py-8"><Spinner /></div>
           ) : (
@@ -312,6 +314,7 @@ export default function WorkoutScreen() {
               )}
             </>
           )}
+          </div>
         </div>
       </div>
     </div>
