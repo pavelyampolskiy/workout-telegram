@@ -259,7 +259,7 @@ export default function ExerciseScreen() {
     return (
       <div className="screen-root">
         <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
+        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider" style={{ paddingTop: 'var(--app-top, 0px)' }}>Loading…</div>
       </div>
     );
   }
@@ -267,7 +267,7 @@ export default function ExerciseScreen() {
     return (
       <div className="screen-root">
         <ScreenBg />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4" style={{ paddingTop: 'var(--app-top, 0px)' }}>
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
           <div className="flex gap-3">
             <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={DARK_CARD_STYLE}>Back</button>
@@ -284,7 +284,7 @@ export default function ExerciseScreen() {
   return (
     <div className="screen-root">
       <ScreenBg />
-      <div className="relative z-10 h-full overflow-y-auto overscroll-none px-5 pt-5 pb-28">
+      <div className="relative z-10 h-full overflow-y-auto overscroll-none px-5 pb-28" style={{ paddingTop: 'calc(var(--app-top, 0px) + 1.25rem)' }}>
 
       {/* Recovery banner */}
       <RecoveryBanner recoveryData={recoveryData} />

@@ -184,7 +184,6 @@ input[type='number']::-webkit-outer-spin-button {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  padding-top: var(--app-top, 0px);
 }
 
 /* ── Screen transitions (disabled — instant) ──────────── */

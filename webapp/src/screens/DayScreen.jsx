@@ -227,7 +227,7 @@ export default function DayScreen() {
     return (
       <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
-        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Setting up workout…</div>
+        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider" style={{ paddingTop: 'var(--app-top, 0px)' }}>Setting up workout…</div>
       </div>
     );
   }
@@ -236,7 +236,7 @@ export default function DayScreen() {
     return (
       <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4" style={{ paddingTop: 'var(--app-top, 0px)' }}>
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
           <div className="flex gap-3">
             <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
@@ -253,7 +253,7 @@ export default function DayScreen() {
     return (
       <div className="screen-root" style={{ background: '#060606' }}>
         <ScreenBg overlay="bg-black/88" />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen select-none" style={{ paddingTop: 'var(--app-top, 0px)' }}>
           {isReady ? (
             <>
               <p className="cd-ready font-bebas tracking-widest text-white/30 text-sm mb-3 uppercase">
@@ -291,7 +291,7 @@ export default function DayScreen() {
     return (
       <div className="screen-root">
         <ScreenBg overlay="bg-black/65" />
-        <div className="relative z-10 h-full overflow-y-auto overscroll-none p-5">
+        <div className="relative z-10 h-full overflow-y-auto overscroll-none p-5" style={{ paddingTop: 'calc(var(--app-top, 0px) + 1.25rem)' }}>
           <div className="mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
               <path d="M20 6L9 17l-5-5"/>
@@ -372,7 +372,7 @@ export default function DayScreen() {
   return (
     <div className="screen-root">
       <ScreenBg overlay="bg-black/65" />
-      <div className="relative z-10 h-full overflow-y-auto overscroll-none pb-32">
+      <div className="relative z-10 h-full overflow-y-auto overscroll-none pb-32" style={{ paddingTop: 'var(--app-top, 0px)' }}>
       {/* Header */}
       <div className="flex items-center justify-between p-5 pt-6">
         <h1 className="text-xl font-bebas text-white/85" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
