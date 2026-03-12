@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -31,7 +31,6 @@ export default function DayScreen() {
   const [addingEx, setAddingEx] = useState(false);
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [elapsedSec, setElapsedSec] = useState(0);
-  const pausedElapsedRef = useRef(0);
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
   const exerciseMap = activeWorkout?.exerciseMap || {};
@@ -76,7 +75,7 @@ export default function DayScreen() {
     init();
   }, [retryTrigger, day, userId]);
 
-  // Workout duration timer — updates every second; pauses when app is in background
+  // Workout duration timer — updates every second (keeps counting when app is closed)
   useEffect(() => {
     const startedAt = activeWorkout?.startedAt;
     if (!startedAt) {
@@ -88,23 +87,6 @@ export default function DayScreen() {
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, [activeWorkout?.startedAt]);
-
-  // Pause timer when app goes to background; resume from same value when returning
-  useEffect(() => {
-    const handleVisibility = () => {
-      const startedAt = activeWorkout?.startedAt;
-      if (!startedAt) return;
-      if (document.visibilityState === 'hidden') {
-        pausedElapsedRef.current = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
-      } else {
-        setActiveWorkout(prev => prev?.startedAt
-          ? { ...prev, startedAt: Date.now() - pausedElapsedRef.current * 1000 }
-          : prev);
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => document.removeEventListener('visibilitychange', handleVisibility);
-  }, [activeWorkout?.startedAt, setActiveWorkout]);
 
   const handleExerciseTap = async (idx) => {
     if (!workoutId) return;
