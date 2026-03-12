@@ -7,13 +7,16 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { fmtW, fmtTime, DARK_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
-const REST_PRESETS = [60, 90, 120, 160];
+const REST_PRESETS = [60, 90, 120];
 const REST_STORAGE_KEY = 'workout_rest_duration';
+const REST_MIN = 30;
+const REST_MAX = 600;
 
 function getStoredRestDuration() {
   try {
     const v = parseInt(localStorage.getItem(REST_STORAGE_KEY), 10);
-    return REST_PRESETS.includes(v) ? v : 90;
+    if (!isNaN(v) && v >= REST_MIN && v <= REST_MAX) return v;
+    return 90;
   } catch {
     return 90;
   }
@@ -76,12 +79,23 @@ export default function ExerciseScreen() {
   const [restEndTime, setRestEndTime] = useState(null);
   const [restTimer, setRestTimer] = useState(null);
   const [restDuration, setRestDuration] = useState(getStoredRestDuration);
+  const [customRestInput, setCustomRestInput] = useState('');
 
   const weightRef = useRef(null);
 
   const saveRestDuration = (sec) => {
     localStorage.setItem(REST_STORAGE_KEY, String(sec));
     setRestDuration(sec);
+    setCustomRestInput('');
+  };
+
+  const applyCustomRest = () => {
+    const v = parseInt(customRestInput, 10);
+    if (!isNaN(v) && v >= REST_MIN && v <= REST_MAX) {
+      localStorage.setItem(REST_STORAGE_KEY, String(v));
+      setRestDuration(v);
+    }
+    setCustomRestInput('');
   };
 
   // Rest timer - uses endTime to survive app minimize
@@ -320,13 +334,13 @@ export default function ExerciseScreen() {
           </button>
           <div className="mb-4">
             <div className={`text-[10px] mb-1.5 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 items-center flex-wrap">
               {REST_PRESETS.map((sec) => (
                 <button
                   key={sec}
                   onClick={() => saveRestDuration(sec)}
                   className={`px-2.5 py-1 rounded-lg font-bebas tracking-wider text-xs transition-colors ${
-                    restDuration === sec
+                    restDuration === sec && !customRestInput
                       ? 'bg-white/20 text-white border border-white/30'
                       : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
                   }`}
@@ -334,6 +348,18 @@ export default function ExerciseScreen() {
                   {sec}s
                 </button>
               ))}
+              <input
+                type="number"
+                inputMode="numeric"
+                min={REST_MIN}
+                max={REST_MAX}
+                placeholder="sec"
+                value={customRestInput || (REST_PRESETS.includes(restDuration) ? '' : String(restDuration))}
+                onChange={e => setCustomRestInput(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                onBlur={applyCustomRest}
+                onKeyDown={e => e.key === 'Enter' && applyCustomRest()}
+                className="w-14 px-2 py-1 rounded-lg font-bebas tracking-wider text-xs bg-white/5 text-white/80 border border-white/10 outline-none placeholder-white/30 focus:border-white/25"
+              />
             </div>
           </div>
         </>
