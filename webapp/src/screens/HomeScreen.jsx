@@ -328,49 +328,51 @@ export default function HomeScreen() {
                 </button>
               </>
             ) : (
-              <div 
-                className="rounded-2xl p-5"
-                style={{
-                  background: 'rgba(0, 0, 0, 0.45)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.4)',
-                }}
-              >
-                <h3 className={`font-bebas text-lg tracking-wider mb-1 ${TEXT_PRIMARY}`}>Dismiss workout?</h3>
-                <p className={`text-sm mb-5 font-sans ${TEXT_MUTED}`}>This unfinished workout will be deleted.</p>
-                <div className="flex flex-col gap-2">
-                  <button
-                    onClick={() => setShowDismissConfirm(false)}
-                    className={`card-press w-full font-bebas tracking-wider text-base py-3 rounded-xl ${TEXT_PRIMARY}`}
-                    style={CARD_BTN_STYLE}
-                  >
-                    Keep it
-                  </button>
-                  <button
-                    onClick={() => {
-                      setDismissing(true);
-                      api.deleteWorkout(unfinished.id)
-                        .then(() => {
-                          setUnfinished(null);
-                          setShowDismissConfirm(false);
-                        })
-                        .catch(e => showToast(e.message))
-                        .finally(() => setDismissing(false));
-                    }}
-                    disabled={dismissing}
-                    className={`w-full py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2 ${TEXT_TERTIARY} active:text-white/80`}
-                  >
-                    {dismissing ? (
-                      <>
-                        <Spinner size={16} />
-                        Deleting…
-                      </>
-                    ) : (
-                      'Delete workout'
-                    )}
-                  </button>
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-5 bg-black/75">
+                <div 
+                  className="w-full max-w-sm rounded-2xl p-5"
+                  style={{
+                    background: 'rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.6)',
+                  }}
+                >
+                  <h3 className={`font-bebas text-lg tracking-wider mb-1 ${TEXT_PRIMARY}`}>Dismiss workout?</h3>
+                  <p className={`text-sm mb-5 font-sans ${TEXT_MUTED}`}>This unfinished workout will be deleted.</p>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => setShowDismissConfirm(false)}
+                      className={`card-press w-full font-bebas tracking-wider text-base py-3 rounded-xl ${TEXT_PRIMARY}`}
+                      style={CARD_BTN_STYLE}
+                    >
+                      Keep it
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDismissing(true);
+                        api.deleteWorkout(unfinished.id)
+                          .then(() => {
+                            setUnfinished(null);
+                            setShowDismissConfirm(false);
+                          })
+                          .catch(e => showToast(e.message))
+                          .finally(() => setDismissing(false));
+                      }}
+                      disabled={dismissing}
+                      className={`w-full py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2 ${TEXT_TERTIARY} active:text-white/80`}
+                    >
+                      {dismissing ? (
+                        <>
+                          <Spinner size={16} />
+                          Deleting…
+                        </>
+                      ) : (
+                        'Delete workout'
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
