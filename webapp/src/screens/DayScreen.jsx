@@ -61,7 +61,7 @@ export default function DayScreen() {
                 restoredCustom.push({ id: ex.id, group: ex.grp, name: ex.name, target_sets: ex.target_sets, isCustom: true });
               }
             });
-            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
+            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap, startedAt: Date.now() }));
             if (restoredCustom.length > 0) setCustomExercises(restoredCustom);
           }
         }
