@@ -130,7 +130,7 @@ export default function AchievementsScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto pb-10">
-        <h1 className="font-bebas text-white/85 pt-6 mb-2" style={PAGE_HEADING_STYLE}>
+        <h1 className="font-bebas text-white/85 pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
           Achievements
         </h1>
         <div className="text-white/40 text-sm font-sans mb-5">
