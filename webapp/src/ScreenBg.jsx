@@ -15,7 +15,7 @@ const BG_BASE = {
   pointerEvents: 'none',
 };
 
-export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-black/70' }) {
+export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-black/70', blur = 2 }) {
   return (
     <>
       <div
@@ -25,7 +25,7 @@ export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-blac
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          filter: 'blur(2px)',
+          filter: `blur(${blur}px)`,
           transform: 'scale(1.15)',
           transformOrigin: 'center center',
         }}
