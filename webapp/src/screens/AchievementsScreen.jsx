@@ -3,7 +3,8 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Skeleton, SkeletonCard } from '../components/Skeleton';
-import { CARD_BTN_STYLE } from '../shared';
+import { ErrorScreen } from '../components/ErrorScreen';
+import { PAGE_HEADING_STYLE } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 
 function AchievementsSkeleton() {
@@ -101,7 +102,7 @@ export default function AchievementsScreen() {
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
         <div className="relative z-10 p-5">
-          <h1 className="font-bebas text-white/85 pt-2 mb-5" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+          <h1 className="font-bebas text-white/85 pt-2 mb-5" style={PAGE_HEADING_STYLE}>
             Achievements
           </h1>
           <AchievementsSkeleton />
@@ -112,16 +113,14 @@ export default function AchievementsScreen() {
 
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
-          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
-          <div className="flex gap-3">
-            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
-            <button onClick={() => { setError(null); setLoading(true); api.getAchievements(userId).then(setData).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
-          </div>
-        </div>
-      </div>
+      <ErrorScreen
+        onBack={goBack}
+        onRetry={() => {
+          setError(null);
+          setLoading(true);
+          api.getAchievements(userId).then(setData).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false));
+        }}
+      />
     );
   }
 
@@ -131,7 +130,7 @@ export default function AchievementsScreen() {
     <div className="min-h-screen relative overflow-hidden pb-10">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-bebas text-white/85 pt-2 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <h1 className="font-bebas text-white/85 pt-2 mb-2" style={PAGE_HEADING_STYLE}>
           Achievements
         </h1>
         <div className="text-white/40 text-sm font-sans mb-5">

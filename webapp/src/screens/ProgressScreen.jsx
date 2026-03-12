@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { LoadingScreen } from '../components/LoadingScreen';
+import { ErrorScreen } from '../components/ErrorScreen';
 import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE } from '../shared';
 
 function LineChart({ data }) {
@@ -71,24 +73,23 @@ export default function ProgressScreen() {
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
+  const loadProgram = () => {
     api.getProgram()
       .then(p => {
         const seen = new Set();
         const list = [];
         for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) {
           for (const ex of (p[day] || [])) {
-            if (!seen.has(ex.name)) {
-              seen.add(ex.name);
-              list.push(ex);
-            }
+            if (!seen.has(ex.name)) { seen.add(ex.name); list.push(ex); }
           }
         }
         setProgram(list);
       })
       .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => { loadProgram(); }, []);
 
   const handleSelect = async (ex) => {
     setSelected(ex);
@@ -105,25 +106,14 @@ export default function ProgressScreen() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
-        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
-          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
-          <div className="flex gap-3">
-            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
-            <button onClick={() => { setError(null); setLoading(true); api.getProgram().then(p => { const seen = new Set(); const list = []; for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) { for (const ex of p[day]) { if (!seen.has(ex.name)) { seen.add(ex.name); list.push(ex); } } } setProgram(list); }).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
-          </div>
-        </div>
-      </div>
+      <ErrorScreen
+        onBack={goBack}
+        onRetry={() => { setError(null); setLoading(true); loadProgram(); }}
+      />
     );
   }
 
@@ -147,7 +137,8 @@ export default function ProgressScreen() {
         <div className="relative mb-5">
           <button
             onClick={() => setOpen(!open)}
-            className="card-press w-full bg-white/8 border border-white/10 rounded-2xl p-4 text-left flex items-center justify-between"
+            className="card-press w-full rounded-2xl p-4 text-left flex items-center justify-between"
+            style={CARD_BTN_STYLE}
           >
             <span className={selected ? 'text-white font-bebas tracking-wider' : 'text-white/40 font-bebas tracking-wider'}>
               {selected ? selected.name : 'Select exercise…'}

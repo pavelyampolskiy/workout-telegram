@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { StatsSkeleton } from '../components/Skeleton';
-import { CARD_BTN_STYLE } from '../shared';
+import { ErrorScreen } from '../components/ErrorScreen';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
@@ -99,16 +99,17 @@ export default function StatsScreen() {
       </div>
     );
   }
+  const retryStats = () => {
+    setError(null);
+    setLoading(true);
+    Promise.all([api.getStats(userId, 7), api.getStats(userId, 30), api.getFrequency(userId)])
+      .then(([week, month, freq]) => setData({ week, month, freq }))
+      .catch(e => { setError(e.message); showToast(e.message); })
+      .finally(() => setLoading(false));
+  };
+
   if (error) {
-    return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
-          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
-          <button onClick={() => { setError(null); setLoading(true); Promise.all([api.getStats(userId, 7), api.getStats(userId, 30), api.getFrequency(userId)]).then(([week, month, freq]) => setData({ week, month, freq })).catch(e => { setError(e.message); showToast(e.message); }).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
-        </div>
-      </div>
-    );
+    return <ErrorScreen onRetry={retryStats} />;
   }
 
   const renderContent = () => {

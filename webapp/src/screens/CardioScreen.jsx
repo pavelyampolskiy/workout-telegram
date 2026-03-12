@@ -3,6 +3,8 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
+import { LoadingScreen } from '../components/LoadingScreen';
+import { ErrorScreen } from '../components/ErrorScreen';
 import { fmtTime, CARD_BTN_STYLE } from '../shared';
 
 export default function CardioScreen() {
@@ -70,26 +72,11 @@ export default function CardioScreen() {
   };
 
   if (error) {
-    return (
-      <div className="min-h-screen relative">
-        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
-          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
-          <div className="flex gap-3">
-            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
-          </div>
-        </div>
-      </div>
-    );
+    return <ErrorScreen overlay="bg-black/60" image="/cardio-bg.jpg" onBack={goBack} />;
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen relative">
-        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
-        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
-      </div>
-    );
+    return <LoadingScreen overlay="bg-black/60" image="/cardio-bg.jpg" />;
   }
 
   // Pre-start screen

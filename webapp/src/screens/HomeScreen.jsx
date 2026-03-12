@@ -245,7 +245,7 @@ function StatusWidget({ userId }) {
 }
 
 export default function HomeScreen() {
-  const { navigate, userId, setActiveWorkout, recoveryData } = useApp();
+  const { navigate, userId, setActiveWorkout, recoveryData, showToast } = useApp();
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
@@ -373,7 +373,7 @@ export default function HomeScreen() {
                           setUnfinished(null);
                           setShowDismissConfirm(false);
                         })
-                        .catch(() => {})
+                        .catch(e => showToast(e.message))
                         .finally(() => setDismissing(false));
                     }}
                     disabled={dismissing}

@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
+import { LoadingScreen } from '../components/LoadingScreen';
+import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function DayScreen() {
   const { params, userId, navigate, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
@@ -94,7 +97,7 @@ export default function DayScreen() {
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    if (workoutId) api.finishWorkout(workoutId).catch(() => {});
+    if (workoutId) api.finishWorkout(workoutId).catch(e => showToast(e.message));
     setShowNote(true);
   };
 
@@ -116,7 +119,7 @@ export default function DayScreen() {
 
   const handleCancel = async () => {
     if (workoutId) {
-      api.deleteWorkout(workoutId).catch(() => {});
+      api.deleteWorkout(workoutId).catch(e => showToast(e.message));
     }
     resetTo('home');
   };
@@ -159,26 +162,16 @@ export default function DayScreen() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg overlay="bg-black/65" />
-        <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Setting up workout…</div>
-      </div>
-    );
+    return <LoadingScreen overlay="bg-black/65" message="Setting up workout…" />;
   }
 
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg overlay="bg-black/65" />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
-          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
-          <div className="flex gap-3">
-            <button onClick={goBack} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Back</button>
-            <button onClick={() => { setError(null); setLoading(true); setRetryTrigger(t => t + 1); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
-          </div>
-        </div>
-      </div>
+      <ErrorScreen
+        overlay="bg-black/65"
+        onBack={goBack}
+        onRetry={() => { setError(null); setLoading(true); setRetryTrigger(t => t + 1); }}
+      />
     );
   }
 
@@ -375,7 +368,7 @@ export default function DayScreen() {
         <button
           onClick={() => setShowAddExercise(true)}
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-          style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)' }}
+          style={SECONDARY_CARD_STYLE}
         >
           <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
             +
@@ -397,30 +390,15 @@ export default function DayScreen() {
         </button>
       </div>
 
-      {/* Cancel confirmation modal */}
-      {showCancelConfirm && (
-        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
-            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Cancel workout?</h3>
-            <p className="text-sm text-white/40 mb-6 font-sans">All progress will be lost.</p>
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => setShowCancelConfirm(false)}
-                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
-                style={CARD_BTN_STYLE}
-              >
-                Keep working
-              </button>
-              <button
-                onClick={handleCancel}
-                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
-              >
-                Cancel workout
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        visible={showCancelConfirm}
+        title="Cancel workout?"
+        description="All progress will be lost."
+        primaryLabel="Keep working"
+        primaryOnClick={() => setShowCancelConfirm(false)}
+        secondaryLabel="Cancel workout"
+        secondaryOnClick={handleCancel}
+      />
 
       {/* Add Exercise modal */}
       {showAddExercise && (

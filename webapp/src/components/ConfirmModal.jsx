@@ -11,8 +11,8 @@ export function ConfirmModal({
   primaryOnClick,
   secondaryLabel,
   secondaryOnClick,
-  secondaryDanger = false,
   loading = false,
+  secondaryLoading = false,
 }) {
   if (!visible) return null;
 
@@ -31,11 +31,10 @@ export function ConfirmModal({
           </button>
           <button
             onClick={secondaryOnClick}
-            className={`w-full py-3 font-bebas tracking-wider text-sm transition-colors ${
-              secondaryDanger ? 'text-white/50 active:text-white/80' : 'text-white/40 active:text-white/70'
-            }`}
+            disabled={secondaryLoading}
+            className="w-full py-3 font-bebas tracking-wider text-sm text-white/50 active:text-white/80 disabled:opacity-40 transition-colors"
           >
-            {secondaryLabel}
+            {secondaryLoading ? '…' : secondaryLabel}
           </button>
         </div>
       </div>

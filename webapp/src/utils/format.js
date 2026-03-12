@@ -35,3 +35,11 @@ export function fmtVol(v) {
   if (!v) return null;
   return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u202F') + ' kg';
 }
+
+const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+/** "March 2026" from "2026-03-03" */
+export function formatMonthLabel(dateStr) {
+  const [year, month] = dateStr.split('-');
+  return `${MONTHS_LONG[parseInt(month) - 1]} ${year}`;
+}

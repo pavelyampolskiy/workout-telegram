@@ -3,20 +3,12 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
-import { formatDate, fmtWorkoutType, fmtVol, CARD_BTN_STYLE } from '../shared';
+import { ConfirmModal } from '../components/ConfirmModal';
+import { ErrorScreen } from '../components/ErrorScreen';
+import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
-const MONTHS_LONG = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
-
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
-
-function formatMonthLabel(dateStr) {
-  const [year, month] = dateStr.split('-');
-  return `${MONTHS_LONG[parseInt(month) - 1]} ${year}`;
-}
 
 // "14:32" from ISO datetime string (UTC → local)
 function formatTime(isoStr) {
@@ -105,7 +97,7 @@ export default function HistoryScreen() {
       <div className="min-h-screen relative overflow-hidden">
         <ScreenBg />
         <div className="relative z-10 p-5">
-          <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+          <h1 className="font-bebas text-white/85 pt-2 mb-4" style={PAGE_HEADING_STYLE}>
             History
           </h1>
           <HistorySkeleton />
@@ -115,15 +107,9 @@ export default function HistoryScreen() {
   }
   if (error) {
     return (
-      <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
-          <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
-          <div className="flex gap-3">
-            <button onClick={() => { setError(null); setLoading(true); load(0).finally(() => setLoading(false)); }} className="card-press rounded-2xl px-6 py-3 font-bebas tracking-wider" style={CARD_BTN_STYLE}>Retry</button>
-          </div>
-        </div>
-      </div>
+      <ErrorScreen
+        onRetry={() => { setError(null); setLoading(true); load(0).finally(() => setLoading(false)); }}
+      />
     );
   }
 
@@ -131,7 +117,7 @@ export default function HistoryScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg />
       <div className="relative z-10 p-5">
-        <h1 className="font-bebas text-white/85 pt-2 mb-4" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
+        <h1 className="font-bebas text-white/85 pt-2 mb-4" style={PAGE_HEADING_STYLE}>
           History
         </h1>
 
@@ -235,31 +221,16 @@ export default function HistoryScreen() {
         )}
       </div>
 
-      {/* Delete confirmation modal */}
-      {showDeleteConfirm && (
-        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
-            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">Delete all history?</h3>
-            <p className="text-sm text-white/40 mb-6 font-sans">All workouts will be permanently removed.</p>
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl"
-                style={CARD_BTN_STYLE}
-              >
-                Keep history
-              </button>
-              <button
-                onClick={handleDeleteAll}
-                disabled={deleting}
-                className="w-full text-white/45 active:text-white/70 disabled:opacity-40 py-3 font-bebas tracking-wider text-sm transition-colors"
-              >
-                {deleting ? 'Deleting…' : 'Delete all'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        visible={showDeleteConfirm}
+        title="Delete all history?"
+        description="All workouts will be permanently removed."
+        primaryLabel="Keep history"
+        primaryOnClick={() => setShowDeleteConfirm(false)}
+        secondaryLabel="Delete all"
+        secondaryOnClick={handleDeleteAll}
+        secondaryLoading={deleting}
+      />
     </div>
   );
 }

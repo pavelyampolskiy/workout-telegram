@@ -14,3 +14,5 @@ export function ScreenLayout({ children, overlay = 'bg-black/70', image, classNa
     </div>
   );
 }
+
+export default ScreenLayout;

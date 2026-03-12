@@ -5,7 +5,7 @@ export const MONTHS_ABBR = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
-export { formatDate, fmtW, fmtTime, dayLabel, fmtWorkoutType, fmtVol } from './utils/format';
+export { formatDate, fmtW, fmtTime, dayLabel, fmtWorkoutType, fmtVol, formatMonthLabel } from './utils/format';
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
 
@@ -21,3 +21,12 @@ export const DARK_CARD_STYLE = {
   background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%) rgba(0,0,0,0.65)',
   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
 };
+
+/** Secondary/add-action card — Add Exercise buttons, etc. */
+export const SECONDARY_CARD_STYLE = {
+  background: 'rgba(255,255,255,0.06)',
+  border: '1px solid rgba(255,255,255,0.10)',
+};
+
+/** Page heading — list screens (History, Achievements) */
+export const PAGE_HEADING_STYLE = { fontSize: '6vw', letterSpacing: '0.1em' };
