@@ -258,7 +258,7 @@ export default function ExerciseScreen() {
   if (loading) {
     return (
       <div className="screen-root">
-        <ScreenBg fixed />
+        <ScreenBg />
         <div className="relative z-10 flex items-center justify-center h-screen text-white/40 font-bebas tracking-wider">Loading…</div>
       </div>
     );
@@ -266,7 +266,7 @@ export default function ExerciseScreen() {
   if (error) {
     return (
       <div className="screen-root">
-        <ScreenBg fixed />
+        <ScreenBg />
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-5 gap-4">
           <p className="text-white/50 font-bebas tracking-wider text-center">Something went wrong</p>
           <div className="flex gap-3">
@@ -283,7 +283,7 @@ export default function ExerciseScreen() {
 
   return (
     <div className="screen-root">
-      <ScreenBg fixed />
+      <ScreenBg />
       <div className="relative z-10 h-full overflow-y-auto overscroll-none px-5 pt-5 pb-28">
 
       {/* Recovery banner */}
