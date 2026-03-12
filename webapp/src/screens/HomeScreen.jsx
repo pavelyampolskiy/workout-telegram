@@ -233,7 +233,7 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-3 flex items-center gap-4">
+    <div className="mt-0.5 flex items-center gap-4">
       {parts.map((p, i) => (
         <span key={i} className={`font-bebas tracking-wider text-sm ${TEXT_TERTIARY}`}>{p}</span>
       ))}
@@ -277,16 +277,14 @@ export default function HomeScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top p-5 pb-0">
         {/* Scrollable content area — New Workout in flow; 2x2 grid fixed at bottom */}
         <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-y-auto overflow-x-hidden pb-40">
-          {/* Headline — extra top padding to avoid Telegram header overlap */}
-          <div className="pt-6 shrink-0">
+          {/* Headline + status — close together */}
+          <div className="pt-6 shrink-0 space-y-0.5">
             <div className="font-bebas leading-none w-full">
               <div className={TEXT_TERTIARY} style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
               <div className={TEXT_PRIMARY} style={{ fontSize: '18vw', letterSpacing: '0.36em' }}>Ready?</div>
             </div>
+            <StatusWidget userId={userId} />
           </div>
-
-          {/* Status widget */}
-          <StatusWidget userId={userId} />
 
           <div className="flex flex-col gap-4 mt-4 flex-none">
             {/* Weekly goal widget */}
