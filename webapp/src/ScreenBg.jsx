@@ -1,44 +1,34 @@
-const FIXED_BASE = { position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 0 };
+import { createPortal } from 'react-dom';
+
+const BG_STYLE = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  width: '100vw',
+  height: '100vh',
+  minHeight: '100vh',
+  zIndex: -1,
+  pointerEvents: 'none',
+};
 
 export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-black/70', fixed = false }) {
-  const extendTop = { top: -80, height: 'calc(100vh + 80px)', minHeight: 'calc(100vh + 80px)' };
-  if (fixed) {
-    return (
-      <>
-        <img
-          src={image}
-          alt=""
-          aria-hidden="true"
-          style={{
-            ...FIXED_BASE,
-            ...extendTop,
-            width: '100vw',
-            objectFit: 'cover',
-            objectPosition: 'center',
-            transform: 'scale(1.1)',
-            transformOrigin: 'center center',
-            filter: 'blur(2px)',
-            willChange: 'transform',
-          }}
-        />
-        <div className={overlay} style={{ ...FIXED_BASE, ...extendTop }} />
-      </>
-    );
-  }
-  return (
+  const content = (
     <>
       <div
-        className="scale-110"
         style={{
-          ...FIXED_BASE,
-          ...extendTop,
+          ...BG_STYLE,
           backgroundImage: `url(${image})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: 'blur(2px)',
+          transform: 'scale(1.1)',
+          transformOrigin: 'center center',
         }}
       />
-      <div className={overlay} style={{ ...FIXED_BASE, ...extendTop }} />
+      <div className={overlay} style={BG_STYLE} />
     </>
   );
+  return createPortal(content, document.body);
 }

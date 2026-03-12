@@ -188,11 +188,11 @@ export default function App() {
         showToast,
       }}
     >
-      <div className="min-h-screen bg-black text-white max-w-lg mx-auto overflow-hidden">
+      <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative">
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div
           key={current.screen}
-          className={`min-h-screen bg-black ${
+          className={`min-h-screen relative ${
             isAnimating
               ? direction === 'forward'
                 ? 'animate-slide-in-right'

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import ScreenBg from '../ScreenBg';
 import { CARD_BTN_STYLE } from '../shared';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
@@ -294,18 +295,12 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Blurred background */}
-      <div
-        className="fixed left-0 right-0 bottom-0 scale-110"
-        style={{ top: -80, height: 'calc(100vh + 80px)', minHeight: 'calc(100vh + 80px)', backgroundImage: 'url(/gym-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(2px)' }}
-      />
-      {/* Dark overlay */}
-      <div className="fixed left-0 right-0 bottom-0 bg-black/65" style={{ top: -80, height: 'calc(100vh + 80px)', minHeight: 'calc(100vh + 80px)' }} />
+      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
       {/* Top gradient — absorbs Telegram header */}
-      <div className="fixed inset-x-0 top-0 h-32 bg-black/90" />
-      <div className="fixed inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" />
+      <div className="fixed inset-x-0 top-0 h-32 bg-black/90" style={{ zIndex: 0 }} />
+      <div className="fixed inset-x-0 top-32 h-24 bg-gradient-to-b from-black/90 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
-      <div className="fixed inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" />
+      <div className="fixed inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/80 to-transparent" style={{ zIndex: 0 }} />
 
       {/* Content: title top, cards bottom */}
       <div className="relative z-10 flex flex-col min-h-screen p-5">
