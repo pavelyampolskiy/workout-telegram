@@ -319,13 +319,13 @@ export default function ExerciseScreen() {
             <div className={`text-xs font-bebas mt-3 ${TEXT_FADED}`}>tap to skip</div>
           </button>
           <div className="mb-4">
-            <div className={`text-xs mb-2 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
-            <div className="flex gap-2">
+            <div className={`text-[10px] mb-1.5 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
+            <div className="flex gap-1.5">
               {REST_PRESETS.map((sec) => (
                 <button
                   key={sec}
                   onClick={() => saveRestDuration(sec)}
-                  className={`px-4 py-2 rounded-xl font-bebas tracking-wider text-sm transition-colors ${
+                  className={`px-2.5 py-1 rounded-lg font-bebas tracking-wider text-xs transition-colors ${
                     restDuration === sec
                       ? 'bg-white/20 text-white border border-white/30'
                       : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
