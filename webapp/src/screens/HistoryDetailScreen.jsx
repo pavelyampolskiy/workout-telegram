@@ -129,13 +129,13 @@ export default function HistoryDetailScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen overlay="bg-black/65" image="/history-bg.jpg" />;
+    return <LoadingScreen overlay="bg-black/65" image="/workout-bg.jpg" />;
   }
   if (error) {
     return (
       <ErrorScreen
         overlay="bg-black/65"
-        image="/history-bg.jpg"
+        image="/workout-bg.jpg"
         onBack={goBack}
         onRetry={() => {
           setError(null);
@@ -149,7 +149,7 @@ export default function HistoryDetailScreen() {
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
-      <ScreenBg image="/history-bg.jpg" overlay="bg-black/65" />
+      <ScreenBg image="/workout-bg.jpg" overlay="bg-black/65" />
 
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         {/* Header */}
