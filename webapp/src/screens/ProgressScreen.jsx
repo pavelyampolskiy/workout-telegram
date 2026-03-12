@@ -106,11 +106,12 @@ export default function ProgressScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen image="/workout-bg.jpg" />;
   }
   if (error) {
     return (
       <ErrorScreen
+        image="/workout-bg.jpg"
         onBack={goBack}
         onRetry={() => { setError(null); setLoading(true); loadProgram(); }}
       />
@@ -129,7 +130,7 @@ export default function ProgressScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg />
+      <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 p-5">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5">Progress</h1>
 

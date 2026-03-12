@@ -91,7 +91,7 @@ export default function StatsScreen() {
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
+        <ScreenBg image="/workout-bg.jpg" />
         <div className="relative z-10 p-5">
           <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
           <StatsSkeleton />
@@ -109,7 +109,7 @@ export default function StatsScreen() {
   };
 
   if (error) {
-    return <ErrorScreen onRetry={retryStats} />;
+    return <ErrorScreen image="/workout-bg.jpg" onRetry={retryStats} />;
   }
 
   const renderContent = () => {
@@ -165,7 +165,7 @@ export default function StatsScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg />
+      <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 p-5">
         <h1 className="text-xl font-bebas tracking-wider pt-2 mb-5 text-white/85">Statistics</h1>
 

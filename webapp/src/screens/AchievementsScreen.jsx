@@ -100,7 +100,7 @@ export default function AchievementsScreen() {
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden">
-        <ScreenBg />
+        <ScreenBg image="/workout-bg.jpg" />
         <div className="relative z-10 p-5">
           <h1 className="font-bebas text-white/85 pt-2 mb-5" style={PAGE_HEADING_STYLE}>
             Achievements
@@ -128,7 +128,7 @@ export default function AchievementsScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-10">
-      <ScreenBg />
+      <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 p-5">
         <h1 className="font-bebas text-white/85 pt-2 mb-2" style={PAGE_HEADING_STYLE}>
           Achievements

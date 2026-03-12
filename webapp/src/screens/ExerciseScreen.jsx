@@ -241,11 +241,12 @@ export default function ExerciseScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen image="/gym-bg.jpg" />;
   }
   if (error) {
     return (
       <ErrorScreen
+        image="/gym-bg.jpg"
         onBack={goBack}
         onRetry={() => { setError(null); setLoading(true); window.location.reload(); }}
       />
@@ -257,7 +258,7 @@ export default function ExerciseScreen() {
 
   return (
     <div className="min-h-screen relative pb-28 overflow-hidden">
-      <ScreenBg />
+      <ScreenBg image="/gym-bg.jpg" />
       <div className="relative z-10 px-5 pt-5 pb-28">
 
       {/* Recovery banner */}
