@@ -3,7 +3,6 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
-import { ConfirmModal } from '../components/ConfirmModal';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
@@ -37,8 +36,6 @@ export default function HistoryScreen() {
   const [filterLoading, setFilterLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleting, setDeleting] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
 
   const PAGE = 10;
@@ -74,22 +71,6 @@ export default function HistoryScreen() {
     setLoadingMore(true);
     await load(offset, true);
     setLoadingMore(false);
-  };
-
-  const handleDeleteAll = async () => {
-    setDeleting(true);
-    try {
-      await api.deleteAllHistory(userId);
-      setItems([]);
-      setHasMore(false);
-      setOffset(0);
-    } catch (e) {
-      setError(e.message);
-      showToast(e.message);
-    } finally {
-      setDeleting(false);
-      setShowDeleteConfirm(false);
-    }
   };
 
   if (loading) {
@@ -209,29 +190,7 @@ export default function HistoryScreen() {
           </div>
         )}
 
-        {/* Delete all — only when there's something to delete */}
-        {items.length > 0 && (
-          <div className="mt-10 mb-6 flex justify-center">
-            <button
-              onClick={() => setShowDeleteConfirm(true)}
-              className="font-sans text-white/25 text-xs active:text-white/50 transition-colors"
-            >
-              Delete all history
-            </button>
-          </div>
-        )}
       </div>
-
-      <ConfirmModal
-        visible={showDeleteConfirm}
-        title="Delete all history?"
-        description="All workouts will be permanently removed."
-        primaryLabel="Keep history"
-        primaryOnClick={() => setShowDeleteConfirm(false)}
-        secondaryLabel="Delete all"
-        secondaryOnClick={handleDeleteAll}
-        secondaryLoading={deleting}
-      />
     </div>
   );
 }
