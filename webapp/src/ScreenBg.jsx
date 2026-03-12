@@ -1,7 +1,7 @@
 // Extend beyond viewport to cover status bar, notch, and Telegram header area.
 // Use 80px minimum so we always extend past the Telegram header (~56–64px) even when
 // safe-area-inset-top is 0 (Android, some WebViews). Add env() for devices with notch.
-// Rendered inside the screen tree (no portal) so background is reliable in Telegram WebView.
+// Use 100vh (not 100dvh) so background stays fixed when keyboard opens and doesn't jump/shrink.
 const EXTEND_TOP = 'max(env(safe-area-inset-top, 0px), 80px)';
 const BG_BASE = {
   position: 'fixed',
@@ -9,7 +9,7 @@ const BG_BASE = {
   left: 0,
   right: 0,
   width: '100vw',
-  height: `calc(100dvh + ${EXTEND_TOP})`,
+  height: `calc(100vh + ${EXTEND_TOP})`,
   minHeight: `calc(100vh + 120px)`,
   zIndex: 0,
   pointerEvents: 'none',
