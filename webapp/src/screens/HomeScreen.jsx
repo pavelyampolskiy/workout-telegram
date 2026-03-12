@@ -311,7 +311,7 @@ export default function HomeScreen() {
             <div style={{ 
               fontSize: '18vw', 
               letterSpacing: '0.36em',
-              background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.45) 100%)',
+              background: 'linear-gradient(180deg, rgba(255,220,120,1) 0%, rgba(255,185,60,0.95) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
