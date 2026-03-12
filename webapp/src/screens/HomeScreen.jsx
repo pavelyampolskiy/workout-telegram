@@ -378,23 +378,25 @@ export default function HomeScreen() {
         )}
           </div>
 
-          {/* New Workout — in flow */}
+          {/* New Workout — dimmed when Continue Workout is active */}
           <div className="pt-3 shrink-0">
           <button
             onClick={() => navigate('recovery-check')}
-            className="card-press w-full rounded-xl p-4 text-left"
+            className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
             style={{
               ...CARD_BTN_STYLE,
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
+              background: unfinished
+                ? 'rgba(255,255,255,0.04)'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
+              boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
             }}
           >
             <div className="flex items-center gap-3">
-              <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/20 ${TEXT_PRIMARY}`}>
+              <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/20'} ${TEXT_PRIMARY}`}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <div className={`font-bebas tracking-wider text-xl ${TEXT_PRIMARY}`}>New Workout</div>
+                <div className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`}>New Workout</div>
                 <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>Start your training session</div>
               </div>
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
