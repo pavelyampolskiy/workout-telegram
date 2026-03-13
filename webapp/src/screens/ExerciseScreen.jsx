@@ -294,15 +294,17 @@ export default function ExerciseScreen() {
         </div>
       </div>
 
-      {/* Rest timer + preset */}
+      {/* Rest timer popup: circle left, presets right in a column */}
       {restTimer !== null && (
-        <>
+        <div
+          className="rounded-2xl p-5 mb-4 backdrop-blur-sm flex items-center justify-between gap-4"
+          style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
+        >
           <button
             onClick={() => setRestEndTime(null)}
-            className="w-full rounded-2xl p-6 mb-4 text-center backdrop-blur-sm flex flex-col items-center"
-            style={{ background: 'rgba(0,0,0,0.65)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04)' }}
+            className="flex flex-col items-center shrink-0"
           >
-            <div className={`text-[10px] font-bebas tracking-widest mb-3 ${TEXT_MUTED}`}>REST</div>
+            <div className={`text-[10px] font-bebas tracking-widest mb-2 ${TEXT_MUTED}`}>REST</div>
             <div className="relative">
               <svg width={120} height={120} className="transform -rotate-90">
                 <circle
@@ -330,39 +332,36 @@ export default function ExerciseScreen() {
                 <span className="text-4xl font-bebas text-white leading-none">{fmtTime(restTimer)}</span>
               </div>
             </div>
-            <div className={`text-xs font-bebas mt-3 ${TEXT_FADED}`}>tap to skip</div>
+            <div className={`text-xs font-bebas mt-2 ${TEXT_FADED}`}>tap to skip</div>
           </button>
-          <div className="mb-4">
-            <div className={`text-[10px] mb-1.5 font-bebas ${TEXT_MUTED}`}>Rest timer</div>
-            <div className="flex gap-1.5 items-center flex-wrap">
-              {REST_PRESETS.map((sec) => (
-                <button
-                  key={sec}
-                  onClick={() => saveRestDuration(sec)}
-                  className={`px-2.5 py-1 rounded-lg font-bebas tracking-wider text-xs transition-colors ${
-                    restDuration === sec && !customRestInput
-                      ? 'bg-white/20 text-white border border-white/30'
-                      : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
-                  }`}
-                >
-                  {sec}s
-                </button>
-              ))}
-              <input
-                type="number"
-                inputMode="numeric"
-                min={REST_MIN}
-                max={REST_MAX}
-                placeholder="sec"
-                value={customRestInput || (REST_PRESETS.includes(restDuration) ? '' : String(restDuration))}
-                onChange={e => setCustomRestInput(e.target.value.replace(/\D/g, '').slice(0, 3))}
-                onBlur={applyCustomRest}
-                onKeyDown={e => e.key === 'Enter' && applyCustomRest()}
-                className="w-14 px-2 py-1 rounded-lg font-bebas tracking-wider text-xs bg-white/5 text-white/80 border border-white/10 outline-none placeholder-white/30 focus:border-white/25"
-              />
-            </div>
+          <div className="flex flex-col gap-1.5 shrink-0">
+            {REST_PRESETS.map((sec) => (
+              <button
+                key={sec}
+                onClick={() => saveRestDuration(sec)}
+                className={`w-14 px-3 py-2 rounded-lg font-bebas tracking-wider text-sm transition-colors text-center ${
+                  restDuration === sec && !customRestInput
+                    ? 'bg-white/20 text-white border border-white/30'
+                    : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
+                }`}
+              >
+                {sec}s
+              </button>
+            ))}
+            <input
+              type="number"
+              inputMode="numeric"
+              min={REST_MIN}
+              max={REST_MAX}
+              placeholder="sec"
+              value={customRestInput || (REST_PRESETS.includes(restDuration) ? '' : String(restDuration))}
+              onChange={e => setCustomRestInput(e.target.value.replace(/\D/g, '').slice(0, 3))}
+              onBlur={applyCustomRest}
+              onKeyDown={e => e.key === 'Enter' && applyCustomRest()}
+              className="w-14 px-2 py-2 rounded-lg font-bebas tracking-wider text-xs bg-white/5 text-white/80 border border-white/10 outline-none placeholder-white/30 focus:border-white/25 text-center"
+            />
           </div>
-        </>
+        </div>
       )}
 
       {/* Last performance */}
