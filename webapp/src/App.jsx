@@ -75,7 +75,8 @@ export default function App() {
   const dismissToast = useCallback(() => setToast(null), []);
 
   const current = stack[stack.length - 1];
-  const Screen = SCREENS[current.screen] || HomeScreen;
+  const isDayCardio = current.screen === 'day' && current.params?.day && String(current.params.day).toUpperCase() === 'CARDIO';
+  const Screen = isDayCardio ? SCREENS.cardio : (SCREENS[current.screen] || HomeScreen);
 
   useEffect(() => {
     try {
