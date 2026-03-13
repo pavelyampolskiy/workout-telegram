@@ -281,8 +281,8 @@ export default function App() {
               <div className="relative">
                 <div
                   key={label}
-                  className={`relative font-bebas leading-none text-white text-center animate-pulse ${
-                    isWord ? 'text-[96px] tracking-[0.18em]' : 'text-[144px] tracking-[0.24em]'
+                  className={`relative font-bebas leading-none text-white text-center countdown-zoom ${
+                    isWord ? 'text-[96px] tracking-[0.14em]' : 'text-[144px] tracking-[0.20em]'
                   }`}
                 >
                   {label}
