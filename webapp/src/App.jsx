@@ -137,10 +137,18 @@ export default function App() {
   }, []);
 
   const navigate = useCallback((screen, params = {}) => {
+    if (screen === 'day' && params?.day != null && String(params.day).toUpperCase() === 'CARDIO') {
+      setStack(prev => [...prev, { screen: 'cardio', params: {} }]);
+      return;
+    }
     setStack(prev => [...prev, { screen, params }]);
   }, []);
 
   const replace = useCallback((screen, params = {}) => {
+    if (screen === 'day' && params?.day != null && String(params.day).toUpperCase() === 'CARDIO') {
+      setStack(prev => [...prev.slice(0, -1), { screen: 'cardio', params: {} }]);
+      return;
+    }
     setStack(prev => [...prev.slice(0, -1), { screen, params }]);
   }, []);
 
