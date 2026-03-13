@@ -14,7 +14,6 @@ COPY webapp/index.html ./webapp/index.html
 
 ENV PYTHONUNBUFFERED=1
 ENV DB_PATH=/data/workouts.db
-VOLUME /data
 
 EXPOSE 8080
 CMD ["python", "-u", "bot.py"]
