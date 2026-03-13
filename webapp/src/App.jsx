@@ -197,7 +197,7 @@ export default function App() {
       window.Telegram?.WebApp?.HapticFeedback?.impactOccurred(style);
     } catch (_) {}
 
-    const delay = countdown.step === 0 ? 620 : 520;
+    const delay = countdown.step === 0 ? 700 : 650;
     const t = setTimeout(() => {
       setCountdown(prev => (prev ? { ...prev, step: prev.step + 1 } : prev));
     }, delay);
