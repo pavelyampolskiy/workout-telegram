@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Код приложения
 COPY bot.py database.py handlers.py keyboards.py parser.py program.py states.py webapp_validate.py ./
-COPY webapp ./webapp
+COPY webapp/index.html ./webapp/index.html
 
 ENV PYTHONUNBUFFERED=1
 ENV DB_PATH=/data/workouts.db
