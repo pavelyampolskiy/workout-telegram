@@ -5,10 +5,14 @@ from datetime import datetime, timedelta, date
 from contextlib import contextmanager
 
 def _get_db_path():
+    # Явно заданный путь (например в Railway Variables) имеет приоритет
+    explicit = os.getenv("DB_PATH", "").strip()
+    if explicit:
+        return explicit
     mount = os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "").rstrip("/")
     if mount:
         return os.path.join(mount, "workouts.db")
-    return os.getenv("DB_PATH", "workouts.db")
+    return "workouts.db"
 
 
 DB_PATH = _get_db_path()

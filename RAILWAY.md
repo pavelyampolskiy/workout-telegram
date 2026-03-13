@@ -27,10 +27,10 @@
    - `RAILWAY_VOLUME_MOUNT_PATH=/data`
    - `RAILWAY_VOLUME_NAME=...`
 
-Код сам подхватывает `RAILWAY_VOLUME_MOUNT_PATH` и кладёт БД в **`<mount_path>/workouts.db`** (при `/data` получится `/data/workouts.db`). Дополнительно `DB_PATH` задавать не нужно.
+- Если задали **`DB_PATH`** в Variables (например `/mnt/data/workout_diary.db`) — используется он. **Mount Path тома должен совпадать с путём к папке в DB_PATH**: для `/mnt/data/workout_diary.db` том должен быть смонтирован в **`/mnt/data`** (в настройках Volume укажите Mount Path = `/mnt/data`).
+- Если `DB_PATH` не задан, но том подключён — БД будет `<mount_path>/workouts.db` (например `/data/workouts.db` при Mount Path `/data`).
 
-Если том не используете, но хотите свой путь — задайте вручную, например:  
-`DB_PATH=/app/workouts.db` (данные всё равно не переживут редеплой без тома).
+Если том не используете, данные при редеплое теряются.
 
 ---
 
@@ -50,7 +50,12 @@
 
 ---
 
-## 4. Что проверить, если «не сохраняется»
+## 4. Если сервис падает (Crashed)
+
+1. **Deployments** → последний деплой → **View Logs** — в логах будет текст ошибки (например `Permission denied`, `No such file or directory`).
+2. **Путь к БД и том**: каталог в `DB_PATH` должен совпадать с **Mount Path** тома. У вас `DB_PATH=/mnt/data/workout_diary.db` → в настройках Volume должен быть **Mount Path = `/mnt/data`**. Если том смонтирован в `/data`, то либо смените Mount Path на `/mnt/data`, либо задайте `DB_PATH=/data/workout_diary.db`.
+
+## 5. Что проверить, если «не сохраняется»
 
 1. **Добавлен ли Volume** и указан ли Mount Path (например `/data`)?
 2. **Есть ли в Variables** `RAILWAY_VOLUME_MOUNT_PATH` после добавления тома (или вручную задан `DB_PATH` в директорию тома)?
@@ -59,7 +64,7 @@
 
 ---
 
-## 5. Краткий чеклист
+## 6. Краткий чеклист
 
 - [ ] `BOT_TOKEN` или `TELEGRAM_BOT_TOKEN` задан
 - [ ] `WEBAPP_URL` = полный URL сервиса (как в Railway), без `/` в конце
