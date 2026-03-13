@@ -144,6 +144,14 @@ export default function App() {
     setStack(prev => [...prev.slice(0, -1), { screen, params }]);
   }, []);
 
+  // As soon as we have day+CARDIO in stack, replace with cardio so ADD EXERCISE screen never shows
+  useEffect(() => {
+    const top = stack[stack.length - 1];
+    if (top?.screen === 'day' && top?.params?.day != null && String(top.params.day).toUpperCase() === 'CARDIO') {
+      replace('cardio');
+    }
+  }, [stack, replace]);
+
   const goBack = useCallback(() => {
     setStack(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
   }, []);
