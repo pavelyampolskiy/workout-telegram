@@ -274,15 +274,10 @@ export default function App() {
         </div>
         {countdown && (
           <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none">
-            <div className="flex flex-col items-center gap-3">
-              <div className="text-xs font-bebas tracking-[0.35em] text-white/40 uppercase">
-                Ready?
-              </div>
-              <div className="relative">
-                <div className="absolute inset-0 rounded-full bg-white/10 animate-ping" />
-                <div className="relative font-bebas text-[72px] leading-none tracking-[0.18em] text-white">
-                  {['Ready?', '1', '2', '3', 'Go!'][Math.min(countdown.step, 4)]}
-                </div>
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-white/10 animate-ping" />
+              <div className="relative font-bebas text-[144px] leading-none tracking-[0.24em] text-white">
+                {['READY?', '1', '2', '3', 'GO!'][Math.min(countdown.step, 4)]}
               </div>
             </div>
           </div>
