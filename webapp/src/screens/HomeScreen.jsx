@@ -130,6 +130,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   const { weekCount } = data;
   const progress = Math.min(weekCount / WEEKLY_GOAL, 1);
+  const displayCount = Math.min(weekCount, WEEKLY_GOAL);
 
   return (
     <div 
@@ -143,9 +144,9 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
       <div className="flex items-center justify-around gap-2">
         <StatRing
           progress={progress}
-          value={weekCount}
+          value={displayCount}
           label="Weekly Goal"
-          sublabel={`${weekCount} of ${WEEKLY_GOAL} workouts`}
+          sublabel={`${displayCount} of ${WEEKLY_GOAL} workouts`}
           gradientId="ringWeekly"
         />
         {recoveryScore !== null && (
