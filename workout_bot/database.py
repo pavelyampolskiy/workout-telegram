@@ -4,7 +4,14 @@ import os
 from datetime import datetime, timedelta, date
 from contextlib import contextmanager
 
-DB_PATH = os.getenv("DB_PATH", "workouts.db")
+def _get_db_path():
+    mount = os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "").rstrip("/")
+    if mount:
+        return os.path.join(mount, "workouts.db")
+    return os.getenv("DB_PATH", "workouts.db")
+
+
+DB_PATH = _get_db_path()
 
 
 def get_connection():
