@@ -105,6 +105,29 @@ def init_db():
                 UNIQUE(user_id, key)
             );
         """)
+        # Migration: ensure workout_sets.weight is REAL (decimal weights like 145.7)
+        try:
+            info = conn.execute("PRAGMA table_info(workout_sets)").fetchall()
+            weight_col = next((r for r in info if r[1] == "weight"), None)
+            if weight_col and str(weight_col[2]).upper() not in ("REAL", "DOUBLE", "FLOAT"):
+                conn.execute("""
+                    CREATE TABLE workout_sets_new (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        workout_exercise_id INTEGER NOT NULL REFERENCES workout_exercises(id) ON DELETE CASCADE,
+                        set_number INTEGER NOT NULL,
+                        weight REAL NOT NULL,
+                        reps INTEGER NOT NULL,
+                        ts TEXT NOT NULL
+                    )
+                """)
+                conn.execute("""
+                    INSERT INTO workout_sets_new (id, workout_exercise_id, set_number, weight, reps, ts)
+                    SELECT id, workout_exercise_id, set_number, CAST(weight AS REAL), reps, ts FROM workout_sets
+                """)
+                conn.execute("DROP TABLE workout_sets")
+                conn.execute("ALTER TABLE workout_sets_new RENAME TO workout_sets")
+        except Exception:
+            pass
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -312,17 +335,21 @@ def add_set(ex_id: int, set_number: int, weight: float, reps: int) -> int:
     with db() as conn:
         cur = conn.execute(
             "INSERT INTO workout_sets (workout_exercise_id, set_number, weight, reps, ts) VALUES (?,?,?,?,?)",
-            (ex_id, set_number, weight, reps, datetime.utcnow().isoformat()),
+            (ex_id, set_number, float(weight), reps, datetime.utcnow().isoformat()),
         )
         return cur.lastrowid
 
 
 def get_sets_for_exercise(ex_id: int):
     with db() as conn:
-        return conn.execute(
+        rows = conn.execute(
             "SELECT * FROM workout_sets WHERE workout_exercise_id=? ORDER BY set_number",
             (ex_id,),
         ).fetchall()
+        return [
+            {"id": r["id"], "set_number": r["set_number"], "weight": float(r["weight"]), "reps": r["reps"]}
+            for r in rows
+        ]
 
 
 def delete_set(set_id: int):
@@ -334,13 +361,16 @@ def update_set(set_id: int, weight: float, reps: int):
     with db() as conn:
         conn.execute(
             "UPDATE workout_sets SET weight=?, reps=? WHERE id=?",
-            (weight, reps, set_id),
+            (float(weight), reps, set_id),
         )
 
 
 def get_set(set_id: int):
     with db() as conn:
-        return conn.execute("SELECT * FROM workout_sets WHERE id=?", (set_id,)).fetchone()
+        r = conn.execute("SELECT * FROM workout_sets WHERE id=?", (set_id,)).fetchone()
+        if r is None:
+            return None
+        return {**dict(r), "weight": float(r["weight"])}
 
 
 # ── Cardio ────────────────────────────────────────────────────────────────────
@@ -386,10 +416,14 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
         ).fetchone()
         if not row:
             return None, None
-        sets = conn.execute(
+        rows = conn.execute(
             "SELECT * FROM workout_sets WHERE workout_exercise_id=? ORDER BY set_number",
             (row["id"],),
         ).fetchall()
+        sets = [
+            {"weight": float(r["weight"]), "reps": r["reps"]}
+            for r in rows
+        ]
         return row["date"], sets
 
 
