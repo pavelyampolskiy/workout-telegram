@@ -121,7 +121,7 @@ export default function CardioScreen() {
       <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" scale={1} position="top" lockViewport />
 
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <div className="pt-6 mb-6">
+        <div className="pt-6 mb-5">
           <div className="flex items-center justify-between">
             <div>
               <div className="mb-2 text-white">
@@ -148,6 +148,10 @@ export default function CardioScreen() {
           className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-36 outline-none text-base font-sans focus:border-white/20"
           autoFocus
         />
+
+        <p className="mt-2 text-[11px] text-white/35 font-sans">
+          These notes will appear in your workout history.
+        </p>
 
         <button
           onClick={handleSave}

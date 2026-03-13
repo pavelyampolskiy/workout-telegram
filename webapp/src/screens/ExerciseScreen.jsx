@@ -169,11 +169,25 @@ export default function ExerciseScreen() {
   const ex = program;
   const target = ex?.target_sets || 4;
 
+  const triggerErrorHaptic = () => {
+    try {
+      window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('error');
+    } catch (_) {}
+  };
+
   const handleSaveSet = async () => {
     const w = (weight === 'BW' || weight === 'BAR') ? 0 : parseFloat(String(weight).replace(',', '.'));
     const r = parseInt(reps);
-    if (weight !== 'BW' && weight !== 'BAR' && (isNaN(w) || w < 0)) { setInputError('Enter weight'); return; }
-    if (!r || r <= 0 || r > 100) { setInputError('Enter reps (1–100)'); return; }
+    if (weight !== 'BW' && weight !== 'BAR' && (isNaN(w) || w < 0)) {
+      setInputError('Enter weight');
+      triggerErrorHaptic();
+      return;
+    }
+    if (!r || r <= 0 || r > 100) {
+      setInputError('Enter reps (1–100)');
+      triggerErrorHaptic();
+      return;
+    }
     setInputError('');
 
     setSaving(true);
@@ -214,6 +228,7 @@ export default function ExerciseScreen() {
       weightRef.current?.focus();
     } catch (e) {
       showToast(e.message);
+      triggerErrorHaptic();
     } finally {
       setSaving(false);
     }
@@ -412,7 +427,7 @@ export default function ExerciseScreen() {
       {/* Input */}
       <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
         <div className={`text-xs mb-3 uppercase tracking-wider font-bebas ${TEXT_TERTIARY}`}>
-          Set {done + 1}
+          Current set · {done + 1}
         </div>
         
         {/* Weight input with +/- buttons */}
@@ -495,7 +510,7 @@ export default function ExerciseScreen() {
         </div>
 
         {inputError && (
-          <div className="text-xs font-bebas text-red-400/80 text-center mb-2">{inputError}</div>
+          <div className="text-[11px] font-sans text-red-400/85 text-center mb-2">{inputError}</div>
         )}
 
         <button
