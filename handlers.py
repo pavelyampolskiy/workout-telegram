@@ -3,6 +3,7 @@
 All bot handlers organized by screen/flow.
 Register them via register_handlers(dp).
 """
+import os
 from datetime import date, timedelta
 
 from aiogram import Router, F
@@ -179,7 +180,7 @@ async def cb_day_ex(cq: CallbackQuery, state: FSMContext):
 
     label = f"{ex_info['group']} — {ex_info['name']}"
     text = f"{label} — сет {k}/{target}\nФормат: 140x12"
-    await safe_edit(cq, text, kb_set_input(day))
+    await safe_edit(cq, text, kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")))
 
 
 @router.callback_query(F.data.startswith("day|save|"))
@@ -247,7 +248,7 @@ async def msg_set_input(msg: Message, state: FSMContext):
         for s in sets:
             lines.append(f"  Сет {s['set_number']}: {s['weight']}кг × {s['reps']}")
 
-    await msg.answer("\n".join(lines), reply_markup=kb_set_input(day))
+    await msg.answer("\n".join(lines), reply_markup=kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")))
 
 
 # Default rest times by muscle group (in seconds)
@@ -342,7 +343,7 @@ async def cb_rest_skip(cq: CallbackQuery, state: FSMContext):
     label = f"{ex_info['group']} — {ex_info['name']}"
     
     await state.set_state(Flow.set_input)
-    await safe_edit(cq, f"{label} — сет {k}/{target}\nФормат: 140x12", kb_set_input(day))
+    await safe_edit(cq, f"{label} — сет {k}/{target}\nФормат: 140x12", kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")))
 
 
 @router.callback_query(F.data.startswith("rest|info|"))
@@ -365,7 +366,7 @@ async def cb_set_next(cq: CallbackQuery, state: FSMContext):
     k = len(sets) + 1
     target = ex_info["target_sets"]
     label = f"{ex_info['group']} — {ex_info['name']}"
-    await safe_edit(cq, f"{label} — сет {k}/{target}\nФормат: 140x12", kb_set_input(day))
+    await safe_edit(cq, f"{label} — сет {k}/{target}\nФормат: 140x12", kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")))
 
 
 @router.callback_query(F.data.startswith("set|edit_last|"))
@@ -382,7 +383,7 @@ async def cb_set_edit_last(cq: CallbackQuery, state: FSMContext):
     await safe_edit(
         cq,
         f"Исправить сет {last['set_number']}: {last['weight']}кг × {last['reps']} повт.\nВведи новое значение:",
-        kb_set_input(day),
+        kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")),
     )
     # Switch to a sub-state: we'll handle the next message as an edit
     await state.update_data(mode="edit_last")
@@ -409,7 +410,7 @@ async def cb_set_delete_last(cq: CallbackQuery, state: FSMContext):
         lines.append("\nЗаписанные сеты:")
         for s in sets_updated:
             lines.append(f"  Сет {s['set_number']}: {s['weight']}кг × {s['reps']}")
-    await safe_edit(cq, "\n".join(lines), kb_set_input(day))
+    await safe_edit(cq, "\n".join(lines), kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")))
 
 
 @router.callback_query(F.data.startswith("set|finish_ex|"))
@@ -538,7 +539,7 @@ async def cb_day_custom_ex(cq: CallbackQuery, state: FSMContext):
     
     label = f"{ex['grp']} — {ex['name']}"
     text = f"{label} — сет {k}/{target}\nФормат: 140x12"
-    await safe_edit(cq, text, kb_set_input(day))
+    await safe_edit(cq, text, kb_set_input(day, ex_db_id=ex_db_id, webapp_url=os.environ.get("WEBAPP_URL")))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

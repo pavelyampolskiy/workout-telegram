@@ -9,7 +9,8 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Код приложения
-COPY bot.py database.py handlers.py keyboards.py parser.py program.py states.py ./
+COPY bot.py database.py handlers.py keyboards.py parser.py program.py states.py webapp_validate.py ./
+COPY webapp ./webapp
 
 ENV PYTHONUNBUFFERED=1
 ENV DB_PATH=/data/workouts.db

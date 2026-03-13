@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Сет</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root { --bg: #1a1a2e; --card: #16213e; --accent: #0f3460; --text: #eee; --muted: #888; }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 16px; background: var(--bg); color: var(--text); min-height: 100vh; }
+    h1 { font-size: 1.25rem; margin: 0 0 16px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 0.875rem; }
+    .field input { width: 100%; padding: 12px; font-size: 1.125rem; border: 1px solid var(--accent); border-radius: 8px; background: var(--card); color: var(--text); }
+    /* Дробный вес: разрешаем десятичную точку и запятую */
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    button { width: 100%; padding: 14px; font-size: 1rem; font-weight: 600; background: var(--accent); color: var(--text); border: none; border-radius: 8px; cursor: pointer; margin-top: 8px; }
+    button:active { opacity: 0.9; }
+    .msg { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 0.875rem; }
+    .msg.ok { background: #0a3d0a; }
+    .msg.err { background: #5d0a0a; }
+  </style>
+</head>
+<body>
+  <h1>Ввод сета</h1>
+  <div class="field">
+    <label for="weight">Вес (кг) — можно дробный, например 145.7</label>
+    <input type="text" inputmode="decimal" id="weight" placeholder="145.7" autocomplete="off" />
+  </div>
+  <div class="field">
+    <label for="reps">Повторения</label>
+    <input type="number" id="reps" min="1" max="100" value="10" />
+  </div>
+  <button id="save">Сохранить сет</button>
+  <div id="msg"></div>
+
+  <script>
+    (function() {
+      var tg = window.Telegram && window.Telegram.WebApp;
+      if (tg) tg.ready();
+
+      var params = new URLSearchParams(window.location.search);
+      var exId = params.get('ex_id');
+      if (!exId) { showMsg('Ошибка: не передан ex_id', true); return; }
+
+      var weightEl = document.getElementById('weight');
+      var repsEl = document.getElementById('reps');
+      var saveBtn = document.getElementById('save');
+      var msgEl = document.getElementById('msg');
+
+      function showMsg(text, isErr) {
+        msgEl.textContent = text;
+        msgEl.className = 'msg ' + (isErr ? 'err' : 'ok');
+      }
+
+      function parseWeight(val) {
+        if (val == null || val === '') return NaN;
+        var s = String(val).trim().replace(',', '.');
+        return parseFloat(s, 10);
+      }
+
+      saveBtn.addEventListener('click', function() {
+        var weight = parseWeight(weightEl.value);
+        var reps = parseInt(repsEl.value, 10);
+        if (isNaN(weight) || weight <= 0) { showMsg('Введите корректный вес (например 145.7)', true); return; }
+        if (isNaN(reps) || reps < 1 || reps > 100) { showMsg('Повторения: от 1 до 100', true); return; }
+
+        saveBtn.disabled = true;
+        var payload = {
+          ex_id: parseInt(exId, 10),
+          weight: weight,
+          reps: reps,
+          init_data: tg ? tg.initData : ''
+        };
+
+        fetch('/api/set', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        .then(function(r) { return r.json().then(function(data) { return { ok: r.ok, data: data }; }); })
+        .then(function(result) {
+          if (result.ok && result.data.ok) {
+            showMsg('Сет сохранён: ' + weight + ' кг × ' + reps + ' повт.');
+            weightEl.value = ''; weightEl.focus();
+            if (tg && tg.close) tg.close();
+          } else {
+            showMsg(result.data.error || 'Ошибка сохранения', true);
+          }
+        })
+        .catch(function() { showMsg('Ошибка сети', true); })
+        .finally(function() { saveBtn.disabled = false; });
+      });
+    })();
+  </script>
+</body>
+</html>

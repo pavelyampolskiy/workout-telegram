@@ -1,5 +1,5 @@
 # keyboards.py
-from aiogram.types import InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardMarkup, WebAppInfo
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
@@ -60,8 +60,13 @@ def kb_cancel_confirm(day: str) -> InlineKeyboardMarkup:
     return kb.as_markup()
 
 
-def kb_set_input(day: str) -> InlineKeyboardMarkup:
+def kb_set_input(day: str, ex_db_id: int = None, webapp_url: str = None) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
+    if ex_db_id and webapp_url:
+        kb.button(
+            text="📱 Ввести вес в приложении (дробный)",
+            web_app=WebAppInfo(url=f"{webapp_url.rstrip('/')}/app/index.html?ex_id={ex_db_id}"),
+        )
     kb.button(text="✅ Сохранить сет", callback_data=cb("set", "save", day))
     kb.button(text="➕ Следующий сет", callback_data=cb("set", "next", day))
     kb.button(text="✏️ Исправить последний", callback_data=cb("set", "edit_last", day))
@@ -69,7 +74,7 @@ def kb_set_input(day: str) -> InlineKeyboardMarkup:
     kb.button(text="📌 Завершить упражнение", callback_data=cb("set", "finish_ex", day))
     kb.button(text="⬅️ К упражнениям", callback_data=cb("set", "back_to_day", day))
     kb.button(text="🗑 Отменить тренировку", callback_data=cb("set", "cancel", day))
-    kb.adjust(2, 2, 2, 1)
+    kb.adjust(*( (1, 2, 2, 2, 1) if (ex_db_id and webapp_url) else (2, 2, 2, 1) ))
     return kb.as_markup()
 
 
