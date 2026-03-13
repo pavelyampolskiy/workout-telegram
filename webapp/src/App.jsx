@@ -78,6 +78,21 @@ export default function App() {
   const isDayCardio = current.screen === 'day' && current.params?.day && String(current.params.day).toUpperCase() === 'CARDIO';
   const Screen = isDayCardio ? SCREENS.cardio : (SCREENS[current.screen] || HomeScreen);
 
+  // Виброотклик при нажатии на любую кнопку
+  useEffect(() => {
+    const triggerHaptic = () => {
+      try {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      } catch (_) {}
+    };
+    const onDocClick = (e) => {
+      const el = e.target?.closest?.('button, [role="button"], .card-press');
+      if (el) triggerHaptic();
+    };
+    document.addEventListener('click', onDocClick, true);
+    return () => document.removeEventListener('click', onDocClick, true);
+  }, []);
+
   useEffect(() => {
     try {
       const tg = window.Telegram?.WebApp;
