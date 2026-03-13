@@ -180,35 +180,6 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
   );
 }
 
-function SmartReminderBanner({ userId }) {
-  const [reminder, setReminder] = useState(null);
-
-  useEffect(() => {
-    api.getSmartReminder(userId)
-      .then(data => setReminder(data.reminder))
-      .catch(() => {});
-  }, [userId]);
-
-  if (!reminder) return null;
-
-  return (
-    <div 
-      className="rounded-xl p-3 flex items-center gap-3"
-      style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)',
-        border: '1px solid rgba(255,255,255,0.08)',
-      }}
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={`w-5 h-5 ${TEXT_TERTIARY} shrink-0`}>
-        <circle cx="12" cy="12" r="10"/>
-        <circle cx="12" cy="12" r="6"/>
-        <circle cx="12" cy="12" r="2"/>
-      </svg>
-      <div className={`${TEXT_SECONDARY} text-xs font-sans flex-1`}>{reminder}</div>
-    </div>
-  );
-}
-
 function StatusWidget({ userId }) {
   const [stats, setStats] = useState(undefined); // undefined = loading
 
@@ -354,9 +325,6 @@ export default function HomeScreen() {
           <div className="flex flex-col gap-4 mt-4 flex-none">
             {/* Weekly goal widget */}
             <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
-
-            {/* Smart reminder */}
-            <SmartReminderBanner userId={userId} />
 
             {/* Continue workout banner */}
             {unfinished && (
