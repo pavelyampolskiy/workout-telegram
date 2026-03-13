@@ -145,7 +145,7 @@ export default function CardioScreen() {
           value={text}
           onChange={e => setText(e.target.value)}
           placeholder="E.g. Running 30 min, 5 km"
-          className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-36 outline-none text-sm font-sans focus:border-white/20"
+          className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-36 outline-none text-base font-sans focus:border-white/20"
           autoFocus
         />
 
