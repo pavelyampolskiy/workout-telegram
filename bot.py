@@ -29,10 +29,16 @@ def _webapp_path():
 
 async def _serve_miniapp(_request: web.Request) -> web.Response:
     """Отдаём Mini App по корню /, чтобы по основной ссылке открывалось приложение, а не «ok»."""
-    path = _webapp_path()
-    if not os.path.isfile(path):
+    try:
+        path = _webapp_path()
+        if not os.path.isfile(path):
+            return web.Response(text="ok", status=200)
+        with open(path, "r", encoding="utf-8") as f:
+            body = f.read()
+        return web.Response(text=body, content_type="text/html; charset=utf-8")
+    except Exception as e:
+        logging.exception("serve_miniapp: %s", e)
         return web.Response(text="ok", status=200)
-    return web.FileResponse(path, content_type="text/html")
 
 
 async def _api_set(request: web.Request) -> web.Response:
@@ -41,36 +47,40 @@ async def _api_set(request: web.Request) -> web.Response:
         body = await request.json()
     except Exception:
         return web.json_response({"ok": False, "error": "Invalid JSON"}, status=400)
-    ex_id = body.get("ex_id")
-    weight = body.get("weight")
-    reps = body.get("reps")
-    init_data = body.get("init_data") or ""
-    bot_token = request.app.get("bot_token")
-    if not bot_token:
-        return web.json_response({"ok": False, "error": "Server error"}, status=500)
-    parsed = validate_init_data(init_data, bot_token)
-    if not parsed or "user" not in parsed:
-        return web.json_response({"ok": False, "error": "Invalid init_data"}, status=401)
-    user_id = parsed["user"].get("id")
-    if ex_id is None or weight is None or reps is None:
-        return web.json_response({"ok": False, "error": "Missing ex_id, weight or reps"}, status=400)
     try:
-        ex_id = int(ex_id)
-        weight = float(weight)
-        reps = int(reps)
-    except (TypeError, ValueError):
-        return web.json_response({"ok": False, "error": "Invalid numbers"}, status=400)
-    if weight <= 0 or reps < 1 or reps > 100:
-        return web.json_response({"ok": False, "error": "Weight > 0, reps 1–100"}, status=400)
-    ex = db_ops.get_exercise(ex_id)
-    if not ex:
-        return web.json_response({"ok": False, "error": "Exercise not found"}, status=404)
-    workout = db_ops.get_workout(ex["workout_id"])
-    if not workout or workout["user_id"] != user_id:
-        return web.json_response({"ok": False, "error": "Access denied"}, status=403)
-    sets = db_ops.get_sets_for_exercise(ex_id)
-    db_ops.add_set(ex_id, len(sets) + 1, weight, reps)
-    return web.json_response({"ok": True})
+        ex_id = body.get("ex_id")
+        weight = body.get("weight")
+        reps = body.get("reps")
+        init_data = body.get("init_data") or ""
+        bot_token = request.app.get("bot_token")
+        if not bot_token:
+            return web.json_response({"ok": False, "error": "Server error"}, status=500)
+        parsed = validate_init_data(init_data, bot_token)
+        if not parsed or "user" not in parsed:
+            return web.json_response({"ok": False, "error": "Invalid init_data"}, status=401)
+        user_id = parsed["user"].get("id")
+        if ex_id is None or weight is None or reps is None:
+            return web.json_response({"ok": False, "error": "Missing ex_id, weight or reps"}, status=400)
+        try:
+            ex_id = int(ex_id)
+            weight = float(weight)
+            reps = int(reps)
+        except (TypeError, ValueError):
+            return web.json_response({"ok": False, "error": "Invalid numbers"}, status=400)
+        if weight <= 0 or reps < 1 or reps > 100:
+            return web.json_response({"ok": False, "error": "Weight > 0, reps 1–100"}, status=400)
+        ex = db_ops.get_exercise(ex_id)
+        if not ex:
+            return web.json_response({"ok": False, "error": "Exercise not found"}, status=404)
+        workout = db_ops.get_workout(ex["workout_id"])
+        if not workout or workout["user_id"] != user_id:
+            return web.json_response({"ok": False, "error": "Access denied"}, status=403)
+        sets = db_ops.get_sets_for_exercise(ex_id)
+        db_ops.add_set(ex_id, len(sets) + 1, weight, reps)
+        return web.json_response({"ok": True})
+    except Exception as e:
+        logging.exception("api_set: %s", e)
+        return web.json_response({"ok": False, "error": "Internal error"}, status=500)
 
 
 async def main():
