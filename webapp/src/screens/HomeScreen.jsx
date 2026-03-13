@@ -317,7 +317,7 @@ export default function HomeScreen() {
           <div className="pt-6 shrink-0 space-y-0.5">
             <div className="font-bebas leading-none w-full">
               <div className={TEXT_TERTIARY} style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: '18vw', letterSpacing: '0.36em' }}>Ready?</div>
+              <div className={TEXT_PRIMARY} style={{ fontSize: '18vw', letterSpacing: '0.36em', color: '#fff' }}>Ready?</div>
             </div>
             <StatusWidget userId={userId} />
           </div>
