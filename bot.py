@@ -23,22 +23,30 @@ async def _health(_request: web.Request) -> web.Response:
     return web.Response(text="ok", status=200)
 
 
-def _webapp_path():
-    return os.path.join(os.path.dirname(__file__), "webapp", "index.html")
+def _webapp_paths():
+    """Несколько возможных путей к index.html (разный cwd в Docker/локально)."""
+    base = os.path.dirname(os.path.abspath(__file__))
+    yield os.path.join(base, "webapp", "index.html")
+    yield os.path.join(os.getcwd(), "webapp", "index.html")
 
 
 async def _serve_miniapp(_request: web.Request) -> web.Response:
     """Отдаём Mini App по корню /, чтобы по основной ссылке открывалось приложение, а не «ok»."""
-    try:
-        path = _webapp_path()
-        if not os.path.isfile(path):
-            return web.Response(text="ok", status=200)
-        with open(path, "r", encoding="utf-8") as f:
-            body = f.read()
-        return web.Response(text=body, content_type="text/html; charset=utf-8")
-    except Exception as e:
-        logging.exception("serve_miniapp: %s", e)
+    body = None
+    tried = []
+    for path in _webapp_paths():
+        tried.append(path)
+        if os.path.isfile(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    body = f.read()
+                break
+            except Exception as e:
+                logging.warning("webapp read %s: %s", path, e)
+    if not body:
+        logging.warning("webapp index.html not found, tried: %s", tried)
         return web.Response(text="ok", status=200)
+    return web.Response(text=body, content_type="text/html; charset=utf-8")
 
 
 async def _api_set(request: web.Request) -> web.Response:
