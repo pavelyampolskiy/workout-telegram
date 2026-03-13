@@ -70,6 +70,7 @@ export default function App() {
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [recoveryData, setRecoveryData] = useState(null); // { score, modifier, timestamp }
   const [toast, setToast] = useState(null);
+  const [countdown, setCountdown] = useState(null); // { step, targetScreen, targetParams }
 
   const showToast = useCallback((msg) => setToast(msg), []);
   const dismissToast = useCallback(() => setToast(null), []);
@@ -167,6 +168,42 @@ export default function App() {
     setStack(prev => [...prev.slice(0, -1), { screen, params }]);
   }, []);
 
+  // Pre-workout countdown (Nike-style "Ready? 1 2 3 Go!")
+  const startWorkoutCountdown = useCallback((screen, params = {}) => {
+    setCountdown({ step: 0, targetScreen: screen, targetParams: params });
+  }, []);
+
+  useEffect(() => {
+    if (!countdown) return;
+
+    const STEPS = ['Ready?', '1', '2', '3', 'Go!'];
+
+    // When countdown finished — navigate to target screen
+    if (countdown.step >= STEPS.length) {
+      const { targetScreen, targetParams } = countdown;
+      setCountdown(null);
+      navigate(targetScreen, targetParams);
+      return;
+    }
+
+    // Haptic feedback for each tick
+    try {
+      const style =
+        countdown.step === 0
+          ? 'light'
+          : countdown.step === STEPS.length - 1
+          ? 'heavy'
+          : 'medium';
+      window.Telegram?.WebApp?.HapticFeedback?.impactOccurred(style);
+    } catch (_) {}
+
+    const delay = countdown.step === 0 ? 700 : 650;
+    const t = setTimeout(() => {
+      setCountdown(prev => (prev ? { ...prev, step: prev.step + 1 } : prev));
+    }, delay);
+    return () => clearTimeout(t);
+  }, [countdown, navigate]);
+
   // As soon as we have day+CARDIO in stack, replace with cardio so ADD EXERCISE screen never shows
   useEffect(() => {
     const top = stack[stack.length - 1];
@@ -217,6 +254,7 @@ export default function App() {
         userId,
         navigate,
         replace,
+        startWorkoutCountdown,
         goBack,
         resetTo,
         params: current.params,
@@ -234,6 +272,21 @@ export default function App() {
             <Screen />
           </ErrorBoundary>
         </div>
+        {countdown && (
+          <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none">
+            <div className="flex flex-col items-center gap-3">
+              <div className="text-xs font-bebas tracking-[0.35em] text-white/40 uppercase">
+                Ready?
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-white/10 animate-ping" />
+                <div className="relative font-bebas text-[72px] leading-none tracking-[0.18em] text-white">
+                  {['Ready?', '1', '2', '3', 'Go!'][Math.min(countdown.step, 4)]}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </AppCtx.Provider>
   );

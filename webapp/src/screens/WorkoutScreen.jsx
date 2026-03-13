@@ -77,7 +77,7 @@ function DayCard({ day, onPress, editMode, onRename, onDelete }) {
 }
 
 export default function WorkoutScreen() {
-  const { navigate, userId, showToast, activeWorkout, setActiveWorkout } = useApp();
+  const { navigate, startWorkoutCountdown, userId, showToast, activeWorkout, setActiveWorkout } = useApp();
   const [days, setDays] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -96,7 +96,7 @@ export default function WorkoutScreen() {
     const isCardio = targetScreen === 'cardio' || (targetParams?.day != null && String(targetParams.day).toUpperCase() === 'CARDIO');
     if (isCardio) {
       if (!activeWorkout) {
-        navigate('cardio');
+        startWorkoutCountdown('cardio');
         return;
       }
       if (activeWorkout.day === 'CARDIO') {
@@ -107,7 +107,7 @@ export default function WorkoutScreen() {
       return;
     }
     if (!activeWorkout) {
-      navigate('day', targetParams);
+      startWorkoutCountdown('day', targetParams);
       return;
     }
     const currentDay = activeWorkout.day;
@@ -137,9 +137,9 @@ export default function WorkoutScreen() {
       setActiveWorkout(null);
       setActiveWorkoutModal(null);
       if (activeWorkoutModal.screen === 'day') {
-        navigate('day', activeWorkoutModal.params);
+        startWorkoutCountdown('day', activeWorkoutModal.params);
       } else {
-        navigate('cardio');
+        startWorkoutCountdown('cardio');
       }
     } catch (e) {
       showToast(e.message);
