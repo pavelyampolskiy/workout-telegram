@@ -83,7 +83,7 @@ export default function CardioScreen() {
   if (!started) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
-        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" scale={1} position="top" />
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" scale={1} position="top" lockViewport />
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-5 safe-top pb-40">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-white/60 mb-4">
             <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
@@ -118,7 +118,7 @@ export default function CardioScreen() {
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" scale={1} position="top" />
+      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" scale={1} position="top" lockViewport />
 
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         <div className="pt-6 mb-6">

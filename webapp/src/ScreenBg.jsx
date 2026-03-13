@@ -15,12 +15,36 @@ const BG_BASE = {
   pointerEvents: 'none',
 };
 
-export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-black/70', blur = 2, scale = 1.15, position = 'center' }) {
+// Alternative base for screens where we want the background
+// to be completely insensitive to visual viewport changes (e.g. when keyboard opens).
+// Uses 100dvh so iOS doesn't shrink it together with the visual viewport.
+const LOCK_BASE = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  width: '100vw',
+  height: '100dvh',
+  minHeight: '100dvh',
+  zIndex: 0,
+  pointerEvents: 'none',
+};
+
+export default function ScreenBg({
+  image = '/workout-bg.jpg',
+  overlay = 'bg-black/70',
+  blur = 2,
+  scale = 1.15,
+  position = 'center',
+  lockViewport = false,
+}) {
+  const base = lockViewport ? LOCK_BASE : BG_BASE;
+
   return (
     <>
       <div
         style={{
-          ...BG_BASE,
+          ...base,
           backgroundImage: image ? `url(${image})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: position,
@@ -30,7 +54,7 @@ export default function ScreenBg({ image = '/workout-bg.jpg', overlay = 'bg-blac
           transformOrigin: 'center center',
         }}
       />
-      <div className={overlay} style={BG_BASE} />
+      <div className={overlay} style={base} />
     </>
   );
 }
