@@ -43,7 +43,15 @@
 
       var params = new URLSearchParams(window.location.search);
       var exId = params.get('ex_id');
-      if (!exId) { showMsg('Ошибка: не передан ex_id', true); return; }
+      if (!exId) {
+        document.querySelector('h1').textContent = 'Workout Journal';
+        document.querySelectorAll('.field').forEach(function(el) { el.style.display = 'none'; });
+        document.getElementById('save').style.display = 'none';
+        var m = document.getElementById('msg');
+        m.textContent = 'Откройте приложение из бота: выберите упражнение и нажмите «Ввести вес в приложении (дробный)».';
+        m.className = 'msg';
+        return;
+      }
 
       var weightEl = document.getElementById('weight');
       var repsEl = document.getElementById('reps');

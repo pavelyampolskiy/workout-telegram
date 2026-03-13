@@ -23,6 +23,18 @@ async def _health(_request: web.Request) -> web.Response:
     return web.Response(text="ok", status=200)
 
 
+def _webapp_path():
+    return os.path.join(os.path.dirname(__file__), "webapp", "index.html")
+
+
+async def _serve_miniapp(_request: web.Request) -> web.Response:
+    """Отдаём Mini App по корню /, чтобы по основной ссылке открывалось приложение, а не «ok»."""
+    path = _webapp_path()
+    if not os.path.isfile(path):
+        return web.Response(text="ok", status=200)
+    return web.FileResponse(path, content_type="text/html")
+
+
 async def _api_set(request: web.Request) -> web.Response:
     """POST /api/set — сохранение сета из Mini App (вес поддерживает дробные)."""
     try:
@@ -72,7 +84,8 @@ async def main():
     port = int(os.environ.get("PORT", "8080"))
     app = web.Application()
     app["bot_token"] = token
-    app.router.add_get("/", _health)
+    app.router.add_get("/health", _health)
+    app.router.add_get("/", _serve_miniapp)
     app.router.add_post("/api/set", _api_set)
     webapp_path = os.path.join(os.path.dirname(__file__), "webapp")
     if os.path.isdir(webapp_path):
