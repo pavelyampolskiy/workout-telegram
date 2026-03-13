@@ -272,16 +272,25 @@ export default function App() {
             <Screen />
           </ErrorBoundary>
         </div>
-        {countdown && (
-          <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none">
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-white/10 animate-ping" />
-              <div className="relative font-bebas text-[144px] leading-none tracking-[0.24em] text-white">
-                {['READY?', '1', '2', '3', 'GO!'][Math.min(countdown.step, 4)]}
+        {countdown && (() => {
+          const labels = ['READY?', '1', '2', '3', 'GO!'];
+          const label = labels[Math.min(countdown.step, 4)];
+          const isWord = label.length > 1;
+          return (
+            <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none">
+              <div className="relative">
+                <div
+                  key={label}
+                  className={`relative font-bebas leading-none text-white text-center animate-pulse ${
+                    isWord ? 'text-[96px] tracking-[0.18em]' : 'text-[144px] tracking-[0.24em]'
+                  }`}
+                >
+                  {label}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     </AppCtx.Provider>
   );
