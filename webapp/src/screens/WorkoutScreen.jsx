@@ -93,18 +93,26 @@ export default function WorkoutScreen() {
   const renameRef = useRef(null);
 
   const handleDayOrCardioPress = (targetScreen, targetParams) => {
-    if (!activeWorkout) {
-      if (targetScreen === 'day') navigate('day', targetParams);
-      else navigate('cardio');
+    const isCardio = targetScreen === 'cardio' || (targetParams?.day != null && String(targetParams.day).toUpperCase() === 'CARDIO');
+    if (isCardio) {
+      if (!activeWorkout) {
+        navigate('cardio');
+        return;
+      }
+      if (activeWorkout.day === 'CARDIO') {
+        navigate('cardio');
+        return;
+      }
+      setActiveWorkoutModal({ screen: 'cardio', params: {} });
       return;
     }
-    const currentDay = activeWorkout.day;
-    if (targetScreen === 'day' && targetParams?.day === currentDay) {
+    if (!activeWorkout) {
       navigate('day', targetParams);
       return;
     }
-    if (targetScreen === 'cardio' && currentDay === 'CARDIO') {
-      navigate('cardio');
+    const currentDay = activeWorkout.day;
+    if (targetParams?.day === currentDay) {
+      navigate('day', targetParams);
       return;
     }
     setActiveWorkoutModal({ screen: targetScreen, params: targetParams || {} });
@@ -229,7 +237,7 @@ export default function WorkoutScreen() {
                     key={day.id}
                     day={day}
                     editMode={editMode}
-                    onPress={() => handleDayOrCardioPress('day', { day: day.key, dayLabel: day.label })}
+                    onPress={() => (String(day.key).toUpperCase() === 'CARDIO' ? navigate('cardio') : handleDayOrCardioPress('day', { day: day.key, dayLabel: day.label }))}
                     onRename={(d) => { setRenamingDay(d); setRenameLabel(d.label); }}
                     onDelete={(d) => setDeletingDay(d)}
                   />
