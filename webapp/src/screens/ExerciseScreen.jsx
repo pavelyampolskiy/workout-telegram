@@ -203,8 +203,12 @@ export default function ExerciseScreen() {
         setWeight(nextLastSet.weight === 0 ? 'BAR' : String(nextLastSet.weight));
         setReps(String(nextLastSet.reps));
       } else {
-        // Fallback: keep the same weight/reps from the set we just saved
-        setWeight(w === 0 ? 'BAR' : String(w));
+        // Fallback: keep exactly what user typed for weight (so \"140,5\" не превращается в \"140.5\")
+        if (w === 0) {
+          setWeight('BAR');
+        } else {
+          setWeight(weight);
+        }
         setReps(String(r));
       }
       weightRef.current?.focus();
