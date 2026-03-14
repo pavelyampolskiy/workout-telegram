@@ -261,7 +261,10 @@ export default function StatsScreen() {
                 </button>
                 {monthPickerOpen && (
                   <>
-                    <div className="absolute left-0 top-full mt-1 z-20 py-2 rounded-xl bg-black/90 border border-white/15 shadow-xl min-w-[140px] max-h-[50vh] overflow-y-auto">
+                    <div
+                      className="absolute left-0 top-full mt-1 z-20 py-2 rounded-2xl min-w-[140px] max-h-[50vh] overflow-y-auto backdrop-blur-sm bg-white/5 border border-white/10"
+                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' }}
+                    >
                       {getMonthOptions().map((opt) => (
                         <button
                           key={`${opt.year}-${opt.month}`}
@@ -270,7 +273,7 @@ export default function StatsScreen() {
                             setFreqMonth({ year: opt.year, month: opt.month });
                             setMonthPickerOpen(false);
                           }}
-                          className="w-full text-left px-3 py-1.5 text-xs font-sans text-white/80 hover:bg-white/10"
+                          className="w-full text-left px-3 py-2 text-xs font-sans text-white/90 active:bg-white/10 border-b border-white/[0.05] last:border-b-0 transition-colors"
                         >
                           {opt.label}
                         </button>
