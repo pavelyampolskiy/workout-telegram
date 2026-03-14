@@ -83,6 +83,10 @@ export default function App() {
   const isDayCardio = current.screen === 'day' && current.params?.day && String(current.params.day).toUpperCase() === 'CARDIO';
   const Screen = isDayCardio ? SCREENS.cardio : (SCREENS[current.screen] || HomeScreen);
 
+  useEffect(() => {
+    setToast(null);
+  }, [stack]);
+
   // Виброотклик при нажатии на любую кнопку
   useEffect(() => {
     const triggerHaptic = () => {
