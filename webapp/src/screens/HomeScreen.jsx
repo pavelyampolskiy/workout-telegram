@@ -272,6 +272,9 @@ export default function HomeScreen() {
           </div>
 
           <div className="flex flex-col gap-4 mt-4 flex-none">
+            {/* Weekly goal widget */}
+            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+
             {/* Continue workout banner */}
             {unfinished && (
             <div className="relative">
@@ -362,10 +365,9 @@ export default function HomeScreen() {
 
         </div>
 
-        {/* Fixed bottom: widget + New Workout + 2x2 grid */}
+        {/* Fixed bottom: New Workout + 2x2 grid */}
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <div className="space-y-2">
-            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
             <button
               onClick={handleNewWorkout}
               className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
