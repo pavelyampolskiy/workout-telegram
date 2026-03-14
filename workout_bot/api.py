@@ -380,11 +380,23 @@ def get_stats(user_id: int, days: int = 7):
 
 
 @app.get("/api/stats/frequency")
-def get_frequency(user_id: int, weeks: int = 6):
+def get_frequency(user_id: int, period: str = "month"):
+    """period=month: this month's workouts and calendar dates. period=weeks: last N weeks (legacy)."""
+    today = date.today()
+    if period == "month":
+        since = today.replace(day=1)
+        end = today
+        dates = db_ops.get_workout_dates(user_id, since, end)
+        total = len(dates)
+        days_elapsed = (today - since).days + 1
+        weeks_elapsed = max(0.1, days_elapsed / 7.0)
+        avg = round(total / weeks_elapsed, 1)
+        return {"total": total, "avg": avg, "period": "month", "since": since.isoformat(), "until": end.isoformat(), "dates": dates}
+    weeks = 6
     total, avg = db_ops.stats_frequency(user_id, weeks)
-    since = date.today() - timedelta(weeks=weeks)
+    since = today - timedelta(weeks=weeks)
     dates = db_ops.get_workout_dates(user_id, since)
-    return {"total": total, "avg": avg, "weeks": weeks, "dates": dates}
+    return {"total": total, "avg": avg, "period": "weeks", "weeks": weeks, "dates": dates}
 
 
 # ── Progress ──────────────────────────────────────────────────────────────────

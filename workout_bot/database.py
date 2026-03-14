@@ -605,13 +605,19 @@ def stats_frequency(user_id: int, weeks: int = 4):
     return total, avg
 
 
-def get_workout_dates(user_id: int, since: date):
+def get_workout_dates(user_id: int, since: date, end: date = None):
     """Return list of date strings (YYYY-MM-DD), one per finished workout (duplicates = multiple workouts that day)."""
     with db() as conn:
-        rows = conn.execute(
-            "SELECT date FROM workouts WHERE user_id=? AND date>=? AND finished_at IS NOT NULL ORDER BY date",
-            (user_id, since.isoformat()),
-        ).fetchall()
+        if end is not None:
+            rows = conn.execute(
+                "SELECT date FROM workouts WHERE user_id=? AND date>=? AND date<=? AND finished_at IS NOT NULL ORDER BY date",
+                (user_id, since.isoformat(), end.isoformat()),
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT date FROM workouts WHERE user_id=? AND date>=? AND finished_at IS NOT NULL ORDER BY date",
+                (user_id, since.isoformat()),
+            ).fetchall()
     return [r["date"] for r in rows]
 
 

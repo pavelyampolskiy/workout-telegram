@@ -48,8 +48,6 @@ const PERIOD_OPTIONS = [
   { key: 'year', label: 'Year' },
 ];
 
-const WEEKS_HEATMAP = 6;
-const DAYS_TOTAL = WEEKS_HEATMAP * 7;
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function toDateStr(d) {
@@ -59,20 +57,28 @@ function toDateStr(d) {
   return `${y}-${m}-${day}`;
 }
 
-function ActivityHeatmap({ dates = [] }) {
+function getMonthLabel(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+}
+
+function ActivityHeatmap({ dates = [], period = 'month' }) {
   const countByDate = {};
   dates.forEach((d) => { countByDate[d] = (countByDate[d] || 0) + 1; });
-  const start = new Date();
-  start.setDate(start.getDate() - (DAYS_TOTAL - 1));
-  const dayOfWeek = start.getDay();
-  const toMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  start.setDate(start.getDate() + toMonday);
-  const dayStrings = [];
-  for (let i = 0; i < DAYS_TOTAL; i++) {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    dayStrings.push(toDateStr(d));
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const first = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0).getDate();
+  const firstWeekday = first.getDay();
+  const padMonday = (firstWeekday === 0 ? 6 : firstWeekday - 1);
+  const cells = [];
+  for (let i = 0; i < padMonday; i++) cells.push(null);
+  for (let day = 1; day <= lastDay; day++) {
+    cells.push(toDateStr(new Date(year, month, day)));
   }
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-7 gap-1.5 items-center w-full">
@@ -81,8 +87,8 @@ function ActivityHeatmap({ dates = [] }) {
             {label}
           </div>
         ))}
-        {dayStrings.map((dateStr, i) => {
-          const count = countByDate[dateStr] || 0;
+        {cells.map((dateStr, i) => {
+          const count = dateStr ? (countByDate[dateStr] || 0) : 0;
           const opacity = count === 0 ? 0.08 : Math.min(0.95, 0.35 + count * 0.2);
           return (
             <div
@@ -91,17 +97,19 @@ function ActivityHeatmap({ dates = [] }) {
               style={{
                 background: `rgba(255,255,255,${opacity})`,
               }}
-              title={count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr}
+              title={dateStr ? (count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr) : ''}
               aria-hidden
             >
-              {count > 1 && (
+              {dateStr && count > 1 && (
                 <span className="text-[8px] font-bebas text-white/90 leading-none">{count}</span>
               )}
             </div>
           );
         })}
       </div>
-      <p className="font-sans text-[10px] text-white/35 mt-2">Last {WEEKS_HEATMAP} weeks</p>
+      <p className="font-sans text-[10px] text-white/35 mt-2">
+        {period === 'month' ? getMonthLabel(`${year}-${String(month + 1).padStart(2, '0')}-01`) : 'Last 6 weeks'}
+      </p>
     </div>
   );
 }
@@ -200,7 +208,7 @@ export default function StatsScreen() {
             </div>
           </div>
           <div className={CARD.className} style={CARD.style}>
-            <ActivityHeatmap dates={dates} />
+            <ActivityHeatmap dates={dates} period={data.freq.period} />
           </div>
         </div>
       );
