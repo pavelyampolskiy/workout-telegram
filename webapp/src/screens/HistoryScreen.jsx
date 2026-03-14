@@ -156,7 +156,7 @@ export default function HistoryScreen() {
                             w.duration_min > 0 && `${w.duration_min} min`,
                             w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
                             w.total_volume > 0 && fmtVol(w.total_volume),
-                          ].filter(Boolean).join(', ')}
+                          ].filter(Boolean).join(' ')}
                         </div>
                       </div>
                       <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
