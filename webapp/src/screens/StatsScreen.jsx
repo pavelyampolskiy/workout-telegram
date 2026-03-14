@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-import ScreenLayout from '../components/ScreenLayout';
+import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { StatsSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
@@ -130,7 +130,7 @@ function getMonthOptions(freqMonths) {
 }
 
 export default function StatsScreen() {
-  const { userId, navigate, goBack, showToast } = useApp();
+  const { userId, navigate, showToast } = useApp();
   const [tab, setTab] = useState('amount');
   const [amountPeriod, setAmountPeriod] = useState('week'); // week | month | year
   const [data, setData] = useState({});
@@ -362,11 +362,18 @@ export default function StatsScreen() {
   };
 
   return (
-    <ScreenLayout title="Statistics" onBack={goBack} image="/workout-bg.jpg">
-      <div className="mb-2">
-        <Tabs tabs={STATS_TABS} activeKey={tab} onSelect={handleTabSelect} />
+    <div className="min-h-screen relative flex flex-col overflow-hidden">
+      <ScreenBg image="/workout-bg.jpg" />
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+        <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Statistics</h1>
+
+        {/* Tabs */}
+        <div className="mb-2">
+          <Tabs tabs={STATS_TABS} activeKey={tab} onSelect={handleTabSelect} />
+        </div>
+
+        {renderContent()}
       </div>
-      {renderContent()}
-    </ScreenLayout>
+    </div>
   );
 }

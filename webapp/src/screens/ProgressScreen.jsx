@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-import ScreenLayout from '../components/ScreenLayout';
-import { Spinner } from '../components/Spinner';
+import ScreenBg from '../ScreenBg';
+import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE } from '../shared';
 
@@ -115,11 +115,7 @@ export default function ProgressScreen() {
   };
 
   if (loading) {
-    return (
-      <ScreenLayout title="Progress" onBack={goBack} image="/workout-bg.jpg">
-        <div className="flex items-center justify-center py-20"><Spinner /></div>
-      </ScreenLayout>
-    );
+    return <LoadingScreen image="/workout-bg.jpg" />;
   }
   if (error) {
     return (
@@ -142,7 +138,11 @@ export default function ProgressScreen() {
   const t = trend();
 
   return (
-    <ScreenLayout title="Progress" onBack={goBack} image="/workout-bg.jpg">
+    <div className="min-h-screen relative flex flex-col overflow-hidden">
+      <ScreenBg image="/workout-bg.jpg" />
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+        <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5">Progress</h1>
+
         {/* Exercise selector */}
         <div className="relative mb-5">
           <button
@@ -230,6 +230,7 @@ export default function ProgressScreen() {
             <p className="font-bebas text-sm">Select an exercise above</p>
           </div>
         )}
-    </ScreenLayout>
+      </div>
+    </div>
   );
 }
