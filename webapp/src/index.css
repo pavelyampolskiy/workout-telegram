@@ -92,6 +92,26 @@ input[type='number']::-webkit-outer-spin-button {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
   }
 
+  /* ── Ready? Rim Light: градиентная граница (свет сверху-слева, тень снизу-справа) ────────────────── */
+  .headline-rim {
+    display: inline-block;
+    padding: 3px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.08) 40%,
+      rgba(0, 0, 0, 0.5) 70%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
+    border-radius: 2px;
+  }
+  .headline-rim-inner {
+    display: block;
+    background: #0a0a0a;
+    border-radius: 1px;
+    padding: 0.02em 0;
+  }
+
   /* ── Input focus ──────────────────────────────────────── */
   input, textarea {
     transition: border-color 180ms ease-out, box-shadow 180ms ease-out;

@@ -278,7 +278,9 @@ export default function HomeScreen() {
           <div className="pt-6 space-y-0.5">
             <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
               <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
+              <span className="headline-rim">
+                <span className={`headline-rim-inner ${TEXT_PRIMARY}`} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</span>
+              </span>
             </div>
             <StatusWidget userId={userId} />
           </div>
