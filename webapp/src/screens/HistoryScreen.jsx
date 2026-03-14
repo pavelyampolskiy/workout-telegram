@@ -165,7 +165,7 @@ export default function HistoryScreen() {
         {!filterLoading && items.length > 0 && (() => {
           const totalVolume = items.reduce((s, w) => s + (w.total_volume || 0), 0);
           const totalMin = items.reduce((s, w) => s + (w.duration_min || 0), 0);
-          const cardStyle = 'rounded-xl py-3 px-2 flex flex-col items-center justify-center bg-white/5 border border-white/10 min-h-[4rem]';
+          const cardStyle = 'py-3 px-2 flex flex-col items-center justify-center min-h-[4rem]';
           const valueStyle = 'font-bebas text-white/95 tracking-wide text-xl leading-none';
           const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
           return (
