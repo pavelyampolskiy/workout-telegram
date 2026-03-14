@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+        sans: ['Roboto', 'system-ui', 'sans-serif'],
         bebas: ['"Bebas Neue"', 'cursive'],
       },
     },
