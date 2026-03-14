@@ -42,17 +42,23 @@ function Bar({ label, value, max, mounted }) {
   );
 }
 
+const PERIOD_OPTIONS = [
+  { key: 'week', label: 'Week' },
+  { key: 'month', label: 'Month' },
+  { key: 'year', label: 'Year' },
+];
+
 export default function StatsScreen() {
   const { userId, navigate, showToast } = useApp();
-  const [tab, setTab] = useState('week');
+  const [tab, setTab] = useState('amount');
+  const [amountPeriod, setAmountPeriod] = useState('week'); // week | month | year
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [barMounted, setBarMounted] = useState(false);
 
   const STATS_TABS = [
-    { key: 'week', label: 'Week' },
-    { key: 'month', label: 'Month' },
+    { key: 'amount', label: 'Amount' },
     { key: 'freq', label: 'Frequency' },
     { key: 'progress', label: 'Progress' },
   ];
@@ -60,12 +66,13 @@ export default function StatsScreen() {
   useEffect(() => {
     async function load() {
       try {
-        const [week, month, freq] = await Promise.all([
+        const [week, month, year, freq] = await Promise.all([
           api.getStats(userId, 7),
           api.getStats(userId, 30),
+          api.getStats(userId, 365),
           api.getFrequency(userId),
         ]);
-        setData({ week, month, freq });
+        setData({ week, month, year, freq });
       } catch (e) {
         setError(e.message);
         showToast(e.message);
@@ -74,14 +81,14 @@ export default function StatsScreen() {
       }
     }
     load();
-  }, []);
+  }, [userId, showToast]);
 
-  // Reset bar animation when tab changes
+  // Reset bar animation when tab or period changes
   useEffect(() => {
     setBarMounted(false);
     const t = setTimeout(() => setBarMounted(true), 60);
     return () => clearTimeout(t);
-  }, [tab, loading]);
+  }, [tab, amountPeriod, loading]);
 
   const handleTabSelect = (key) => {
     if (key === 'progress') navigate('progress');
@@ -102,8 +109,13 @@ export default function StatsScreen() {
   const retryStats = () => {
     setError(null);
     setLoading(true);
-    Promise.all([api.getStats(userId, 7), api.getStats(userId, 30), api.getFrequency(userId)])
-      .then(([week, month, freq]) => setData({ week, month, freq }))
+    Promise.all([
+      api.getStats(userId, 7),
+      api.getStats(userId, 30),
+      api.getStats(userId, 365),
+      api.getFrequency(userId),
+    ])
+      .then(([week, month, year, freq]) => setData({ week, month, year, freq }))
       .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
   };
@@ -131,7 +143,36 @@ export default function StatsScreen() {
       );
     }
 
-    const d = tab === 'week' ? data.week : data.month;
+    if (tab === 'amount') {
+      const d = data[amountPeriod];
+      if (!d) return null;
+      return (
+        <>
+          <div className="flex gap-1.5 mb-4 p-1 rounded-xl bg-white/5">
+            {PERIOD_OPTIONS.map(({ key, label }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setAmountPeriod(key)}
+                className={`flex-1 py-2 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
+                  amountPeriod === key
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/50 active:text-white/80'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {renderAmountContent(d)}
+        </>
+      );
+    }
+
+    return null;
+  };
+
+  const renderAmountContent = (d) => {
     const { total, by_type } = d;
     const a = by_type?.DAY_A || 0;
     const b = by_type?.DAY_B || 0;
