@@ -73,10 +73,10 @@ function ActivityHeatmap({ dates = [] }) {
     dayStrings.push(toDateStr(d));
   }
   return (
-    <div>
-      <div className="grid grid-cols-7 gap-1 items-center" style={{ width: 'fit-content' }}>
+    <div className="w-full">
+      <div className="grid grid-cols-7 gap-1.5 items-center w-full">
         {DAY_LABELS.map((label) => (
-          <div key={label} className="w-2.5 h-3 flex items-center justify-center text-[9px] font-sans text-white/40 uppercase tracking-wide">
+          <div key={label} className="min-w-0 flex items-center justify-center text-[10px] font-sans text-white/40 uppercase tracking-wide">
             {label}
           </div>
         ))}
@@ -85,7 +85,7 @@ function ActivityHeatmap({ dates = [] }) {
           return (
             <div
               key={i}
-              className="w-2.5 h-2.5 rounded-[3px] flex-shrink-0 transition-colors"
+              className="w-full aspect-square max-w-[999px] rounded-[4px] transition-colors"
               style={{
                 background: active ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.08)',
               }}
