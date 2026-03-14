@@ -117,9 +117,9 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   if (data === undefined) {
     return (
-      <div className="rounded-2xl p-4 backdrop-blur-md" style={{
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(255,255,255,0.12)',
+      <div className="rounded-2xl p-4" style={{
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.05)',
       }}>
         <HomeStatsSkeleton />
       </div>
@@ -133,11 +133,11 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   return (
     <div
-      className="rounded-2xl p-4 backdrop-blur-md"
+      className="rounded-2xl p-4"
       style={{
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(255,255,255,0.12)',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
       }}
     >
       <div className="flex items-center justify-around gap-2">
@@ -291,11 +291,10 @@ export default function HomeScreen() {
               <>
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-xl p-4 text-left backdrop-blur-md"
+                  className="card-press w-full rounded-xl p-4 text-left"
                   style={{
                     ...CARD_BTN_STYLE,
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
-                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
                   }}
                 >
@@ -375,18 +374,17 @@ export default function HomeScreen() {
 
         </div>
 
-        {/* Fixed bottom: New Workout + 2x2 grid (glass) */}
-        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 backdrop-blur-xl bg-black/30 border-t border-white/10">
+        {/* Fixed bottom: New Workout + 2x2 grid */}
+        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <div className="space-y-2">
             <button
               onClick={handleNewWorkout}
-              className={`card-press w-full rounded-xl p-4 text-left transition-opacity backdrop-blur-md ${unfinished ? 'opacity-50' : ''}`}
+              className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
               style={{
                 ...CARD_BTN_STYLE,
                 background: unfinished
-                  ? 'rgba(255,255,255,0.05)'
-                  : 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 100%)',
-                border: `1px solid ${unfinished ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.15)'}`,
+                  ? 'rgba(255,255,255,0.04)'
+                  : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
                 boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
               }}
             >
@@ -405,8 +403,8 @@ export default function HomeScreen() {
             {/* History */}
             <button
               onClick={() => navigate('history')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0 backdrop-blur-md"
-              style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              style={CARD_BTN_STYLE}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
@@ -417,8 +415,8 @@ export default function HomeScreen() {
             {/* Statistics */}
             <button
               onClick={() => navigate('stats')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0 backdrop-blur-md"
-              style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              style={CARD_BTN_STYLE}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <StatsIcon />
@@ -429,8 +427,8 @@ export default function HomeScreen() {
             {/* Achievements */}
             <button
               onClick={() => navigate('achievements')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0 backdrop-blur-md"
-              style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              style={CARD_BTN_STYLE}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <TrophyIcon />
@@ -441,8 +439,8 @@ export default function HomeScreen() {
             {/* My program */}
             <button
               onClick={() => navigate('program')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0 backdrop-blur-md"
-              style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              style={CARD_BTN_STYLE}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
