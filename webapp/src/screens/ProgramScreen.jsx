@@ -188,16 +188,14 @@ export default function ProgramScreen() {
                 >
                   <PencilIcon />
                 </button>
-                {String(day.key || '').startsWith('CUSTOM_') && (
-                  <button
-                    type="button"
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
-                    className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
-                    aria-label="Delete day"
-                  >
-                    <TrashIcon />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
+                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
+                  aria-label="Delete day"
+                >
+                  <TrashIcon />
+                </button>
               </div>
             );
           })}
