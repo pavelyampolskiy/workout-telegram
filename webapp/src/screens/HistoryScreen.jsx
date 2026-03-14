@@ -170,8 +170,17 @@ export default function HistoryScreen() {
           const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
           const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
           return (
-            <div className="mb-4 text-center">
-              <div className="font-sans text-[11px] text-white/40 uppercase tracking-widest mb-1.5">{periodLabel}</div>
+            <div className="mb-4 text-center pb-4 border-b border-white/10">
+              <button
+                type="button"
+                onClick={() => {}}
+                className="inline-flex items-center justify-center gap-1.5 font-sans text-[11px] text-white/60 hover:text-white/80 active:opacity-80 uppercase tracking-widest mb-1.5 mx-auto"
+              >
+                {periodLabel}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </button>
               <div className="grid grid-cols-3 gap-2">
                 <div className={cardStyle}>
                   <span className={valueStyle}>{items.length}</span>
@@ -200,7 +209,7 @@ export default function HistoryScreen() {
               <path d="M9 12h6M9 16h4"/>
             </svg>
             <p className="font-bebas tracking-wider text-white/80 text-base">No workouts yet</p>
-            <p className="font-sans text-white/40 text-sm mt-1.5">Your completed workouts will appear here.</p>
+            <p className="font-sans text-white/50 text-sm mt-1.5">New month, new goals. Start your first workout!</p>
           </div>
         ) : (
           <div className="space-y-2">
