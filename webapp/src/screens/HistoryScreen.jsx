@@ -144,30 +144,22 @@ export default function HistoryScreen() {
                     style={CARD_BTN_STYLE}
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
+                      <div className="min-w-0 space-y-0.5">
+                        <div className="font-sans text-white/35 text-xs">{formatDate(w.date)}</div>
                         <div className="font-bebas text-white/92 leading-none text-base tracking-wider">
                           {fmtWorkoutType(w.type)}
                         </div>
-                        <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
-                          <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
-                          {w.duration_min > 0 && (
-                            <>
-                              <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-white/35 text-xs">{w.duration_min} min</span>
-                            </>
-                          )}
-                          {w.total_sets > 0 && (
-                            <>
-                              <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-white/35 text-xs">{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
-                            </>
-                          )}
-                          {w.total_volume > 0 && (
-                            <>
-                              <span className="font-sans text-white/20 text-xs">•</span>
-                              <span className="font-sans text-white/35 text-xs">{fmtVol(w.total_volume)}</span>
-                            </>
-                          )}
+                        <div className="flex items-center flex-wrap gap-1.5 font-sans text-white/35 text-xs">
+                          {[
+                            w.duration_min > 0 && `${w.duration_min} min`,
+                            w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
+                            w.total_volume > 0 && fmtVol(w.total_volume),
+                          ].filter(Boolean).map((part, i) => (
+                            <span key={i} className="flex items-center gap-1.5">
+                              {i > 0 && <span className="text-white/20">•</span>}
+                              {part}
+                            </span>
+                          ))}
                         </div>
                       </div>
                       <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
