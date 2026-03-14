@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { formatDate, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
@@ -161,26 +161,30 @@ export default function HistoryScreen() {
           />
         </div>
 
-        {/* Summary: three dashboard cards */}
+        {/* Summary: period + three dashboard cards */}
         {!filterLoading && items.length > 0 && (() => {
           const totalVolume = items.reduce((s, w) => s + (w.total_volume || 0), 0);
           const totalMin = items.reduce((s, w) => s + (w.duration_min || 0), 0);
-          const cardStyle = 'py-3 px-2 flex flex-col items-center justify-center min-h-[4rem]';
-          const valueStyle = 'font-bebas text-white/95 tracking-wide text-xl leading-none';
+          const periodLabel = formatMonthLabel(items[0].date).toUpperCase();
+          const cardStyle = 'py-2 px-2 flex flex-col items-center justify-center';
+          const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
           const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
           return (
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              <div className={cardStyle}>
-                <span className={valueStyle}>{items.length}</span>
-                <span className={labelStyle}>Workouts</span>
-              </div>
-              <div className={cardStyle}>
-                <span className={valueStyle}>{totalVolume > 0 ? `${(totalVolume / 1000).toFixed(1)}t` : '—'}</span>
-                <span className={labelStyle}>Total Weight</span>
-              </div>
-              <div className={cardStyle}>
-                <span className={valueStyle}>{formatDurationCompact(totalMin)}</span>
-                <span className={labelStyle}>Duration</span>
+            <div className="mb-4 text-center">
+              <div className="font-sans text-[11px] text-white/40 uppercase tracking-widest mb-1.5">{periodLabel}</div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className={cardStyle}>
+                  <span className={valueStyle}>{items.length}</span>
+                  <span className={labelStyle}>Workouts</span>
+                </div>
+                <div className={cardStyle}>
+                  <span className={valueStyle}>{totalVolume > 0 ? `${(totalVolume / 1000).toFixed(1)}t` : '—'}</span>
+                  <span className={labelStyle}>Total Weight</span>
+                </div>
+                <div className={cardStyle}>
+                  <span className={valueStyle}>{formatDurationCompact(totalMin)}</span>
+                  <span className={labelStyle}>Duration</span>
+                </div>
               </div>
             </div>
           );
