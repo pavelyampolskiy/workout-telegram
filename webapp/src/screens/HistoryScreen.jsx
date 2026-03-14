@@ -203,14 +203,7 @@ export default function HistoryScreen() {
               const isNewMonth = idx === 0 || getMonthKey(w.date) !== getMonthKey(items[idx - 1].date);
 
               return (
-                <div key={w.id}>
-                  {/* Month separator */}
-                  {isNewMonth && (
-                    <div className={`font-sans text-white/25 text-xs ${idx === 0 ? 'mb-2' : 'mt-5 mb-2'}`}>
-                      {formatMonthLabel(w.date)}
-                    </div>
-                  )}
-
+                <div key={w.id} className={isNewMonth && idx > 0 ? 'mt-5' : ''}>
                   <button
                     onClick={() => navigate('history-detail', { workoutId: w.id })}
                     className="card-press w-full rounded-2xl p-4 text-left"
