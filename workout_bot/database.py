@@ -641,6 +641,22 @@ def get_workout_dates(user_id: int, since: date, end: date = None):
     return [r["date"] for r in rows]
 
 
+def get_frequency_months(user_id: int):
+    """Return list of (year, month) for months that have at least one finished workout, newest first."""
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT DISTINCT CAST(strftime('%Y', date) AS INTEGER) AS year,
+                   CAST(strftime('%m', date) AS INTEGER) AS month
+            FROM workouts
+            WHERE user_id = ? AND finished_at IS NOT NULL
+            ORDER BY year DESC, month DESC
+            """,
+            (user_id,),
+        ).fetchall()
+    return [(r["year"], r["month"]) for r in rows]
+
+
 def get_cardio_count(user_id: int) -> int:
     with db() as conn:
         result = conn.execute(

@@ -111,18 +111,20 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
   );
 }
 
-function getMonthOptions() {
-  const now = new Date();
-  const list = [];
-  for (let i = 0; i < 12; i++) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    list.push({
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-      label: getMonthLabel(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`),
-    });
+function getMonthOptions(freqMonths) {
+  if (!freqMonths || freqMonths.length === 0) {
+    const now = new Date();
+    return [{
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      label: getMonthLabel(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`),
+    }];
   }
-  return list;
+  return freqMonths.map(({ year, month }) => ({
+    year,
+    month,
+    label: getMonthLabel(`${year}-${String(month).padStart(2, '0')}-01`),
+  }));
 }
 
 export default function StatsScreen() {
@@ -134,6 +136,7 @@ export default function StatsScreen() {
   const [error, setError] = useState(null);
   const [barMounted, setBarMounted] = useState(false);
   const [freqMonth, setFreqMonth] = useState(null);
+  const [freqMonths, setFreqMonths] = useState([]);
   const [monthPickerOpen, setMonthPickerOpen] = useState(false);
 
   const STATS_TABS = [
@@ -145,13 +148,15 @@ export default function StatsScreen() {
   useEffect(() => {
     async function load() {
       try {
-        const [week, month, year, freq] = await Promise.all([
+        const [week, month, year, freq, months] = await Promise.all([
           api.getStats(userId, 7),
           api.getStats(userId, 30),
           api.getStats(userId, 365),
           api.getFrequency(userId),
+          api.getFrequencyMonths(userId),
         ]);
         setData({ week, month, year, freq });
+        setFreqMonths(months || []);
       } catch (e) {
         setError(e.message);
         showToast(e.message);
@@ -211,8 +216,12 @@ export default function StatsScreen() {
       api.getStats(userId, 30),
       api.getStats(userId, 365),
       api.getFrequency(userId),
+      api.getFrequencyMonths(userId),
     ])
-      .then(([week, month, year, freq]) => setData({ week, month, year, freq }))
+      .then(([week, month, year, freq, months]) => {
+        setData({ week, month, year, freq });
+        setFreqMonths(months || []);
+      })
       .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
   };
@@ -264,7 +273,7 @@ export default function StatsScreen() {
                       className="absolute left-0 top-full mt-1 z-20 py-2 rounded-2xl min-w-[140px] max-h-[50vh] overflow-y-auto backdrop-blur-sm bg-white/5 border border-white/10"
                       style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' }}
                     >
-                      {getMonthOptions().map((opt) => (
+                      {getMonthOptions(freqMonths).map((opt) => (
                         <button
                           key={`${opt.year}-${opt.month}`}
                           type="button"

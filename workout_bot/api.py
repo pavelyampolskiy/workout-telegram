@@ -413,6 +413,13 @@ def get_frequency(user_id: int, period: str = "month", year: int = None, month: 
     return {"total": total, "avg": avg, "period": "weeks", "weeks": weeks, "dates": dates}
 
 
+@app.get("/api/stats/frequency/months")
+def get_frequency_months(user_id: int):
+    """Return list of {year, month} for months that have at least one workout, newest first."""
+    months = db_ops.get_frequency_months(user_id)
+    return [{"year": y, "month": m} for y, m in months]
+
+
 # ── Progress ──────────────────────────────────────────────────────────────────
 
 @app.get("/api/progress")
