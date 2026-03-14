@@ -92,6 +92,14 @@ input[type='number']::-webkit-outer-spin-button {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
   }
 
+  /* ── Gradient text (Ready?, New Workout) ──────────────────────────────────────── */
+  .text-gradient-head {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0.55) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   /* ── Input focus ──────────────────────────────────────── */
   input, textarea {
     transition: border-color 180ms ease-out, box-shadow 180ms ease-out;

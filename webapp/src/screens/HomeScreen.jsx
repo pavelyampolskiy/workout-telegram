@@ -278,7 +278,7 @@ export default function HomeScreen() {
           <div className="pt-6 space-y-0.5">
             <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
               <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
+              <div className="text-gradient-head font-bebas leading-none" style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
             </div>
             <StatusWidget userId={userId} />
           </div>
@@ -378,9 +378,10 @@ export default function HomeScreen() {
 
         {/* Button block — fills all space from widget to bottom */}
         <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
-          <button
-            onClick={handleNewWorkout}
-            className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center ${unfinished ? 'opacity-50 card-press' : 'btn-main card-press'} ${unfinished ? 'rounded-xl' : ''}`}
+          <div className="flex justify-center">
+            <button
+              onClick={handleNewWorkout}
+              className={`w-[calc((100%-0.75rem)/2)] min-h-[60px] p-4 text-left flex flex-col justify-center ${unfinished ? 'opacity-50 card-press' : 'btn-main card-press'} ${unfinished ? 'rounded-xl' : ''}`}
             style={unfinished ? {
               ...CARD_BTN_STYLE,
               background: 'rgba(255,255,255,0.04)',
@@ -392,12 +393,13 @@ export default function HomeScreen() {
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
+                <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
                 <div className={`text-[10px] font-sans mt-0.5 ${TEXT_MUTED}`}>Start your training session</div>
               </div>
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
           </button>
+          </div>
           <div className="grid grid-cols-2 gap-3 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
