@@ -153,21 +153,34 @@ export default function HistoryScreen() {
           />
         </div>
 
-        {/* Summary (highlights) for current list */}
+        {/* Summary by month */}
         {!filterLoading && items.length > 0 && (() => {
-          const totalVolume = items.reduce((s, w) => s + (w.total_volume || 0), 0);
-          const totalMin = items.reduce((s, w) => s + (w.duration_min || 0), 0);
-          const durationStr = formatTotalDuration(totalMin);
-          const parts = [
-            `${items.length} Workout${items.length !== 1 ? 's' : ''}`,
-            totalVolume > 0 && `${fmtVol(totalVolume)} Total`,
-            durationStr,
-          ].filter(Boolean);
-          if (parts.length === 0) return null;
+          const byMonth = {};
+          items.forEach((w) => {
+            const key = getMonthKey(w.date);
+            if (!byMonth[key]) byMonth[key] = { count: 0, volume: 0, min: 0, sampleDate: w.date };
+            byMonth[key].count += 1;
+            byMonth[key].volume += w.total_volume || 0;
+            byMonth[key].min += w.duration_min || 0;
+          });
+          const monthKeys = Object.keys(byMonth).sort((a, b) => b.localeCompare(a));
           return (
-            <div className="mb-4 px-3 py-2 rounded-xl font-sans text-xs text-white/50 bg-white/5 border border-white/10">
-              <span className="text-white/40 mr-1.5">Summary:</span>
-              {parts.join(' | ')}
+            <div className="mb-4 px-3 py-2.5 rounded-xl font-sans text-xs bg-white/5 border border-white/10 space-y-1.5">
+              {monthKeys.map((key) => {
+                const m = byMonth[key];
+                const parts = [
+                  `${m.count} Workout${m.count !== 1 ? 's' : ''}`,
+                  m.volume > 0 && `${fmtVol(m.volume)} Total`,
+                  formatTotalDuration(m.min),
+                ].filter(Boolean);
+                if (parts.length === 0) return null;
+                return (
+                  <div key={key} className="text-white/50">
+                    <span className="text-white/40 mr-1.5">{formatMonthLabel(m.sampleDate)}:</span>
+                    {parts.join(' | ')}
+                  </div>
+                );
+              })}
             </div>
           );
         })()}
