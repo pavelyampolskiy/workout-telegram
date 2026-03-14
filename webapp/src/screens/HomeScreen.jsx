@@ -82,8 +82,8 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
             </linearGradient>
           </defs>
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`font-bebas text-lg ${TEXT_PRIMARY}`}>{value}</span>
+        <div className="absolute inset-0 flex items-center justify-center leading-none">
+          <span className={`font-bebas text-lg leading-none ${TEXT_PRIMARY}`} style={{ transform: 'translateY(-0.06em)' }}>{value}</span>
         </div>
       </div>
       <div className="mt-2 text-center">
