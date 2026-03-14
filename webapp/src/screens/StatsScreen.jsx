@@ -148,7 +148,7 @@ export default function StatsScreen() {
       if (!d) return null;
       return (
         <>
-          <div className="mb-3">
+          <div className="mb-1">
             <Tabs tabs={PERIOD_OPTIONS} activeKey={amountPeriod} onSelect={setAmountPeriod} />
           </div>
           {renderAmountContent(d)}
