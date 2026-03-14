@@ -24,7 +24,7 @@ export function Tabs({ tabs, activeKey, onSelect, className = '' }) {
       style={{ minHeight: 34, padding: 2, borderRadius: 10 }}
     >
       <div
-        className="absolute bg-white/12 transition-all duration-300 ease-out"
+        className="absolute bg-white/18 transition-all duration-300 ease-out"
         style={{
           left: indicatorStyle.left,
           width: indicatorStyle.width,
@@ -41,7 +41,7 @@ export function Tabs({ tabs, activeKey, onSelect, className = '' }) {
           style={{
             fontSize: 13,
             borderRadius: 8,
-            color: activeKey === t.key ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.35)',
+            color: activeKey === t.key ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.6)',
           }}
         >
           {t.label}
