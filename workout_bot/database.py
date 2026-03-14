@@ -150,6 +150,14 @@ def init_db():
                 target_sets INTEGER NOT NULL
             )
         """)
+        # Migration: exercise renames so Progress keeps history (old_name -> new_name)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS exercise_aliases (
+                user_id INTEGER NOT NULL,
+                from_name TEXT NOT NULL,
+                to_name TEXT NOT NULL
+            )
+        """)
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -194,9 +202,50 @@ def get_user_program(user_id: int, day_key: str):
     return [dict(r) for r in rows]
 
 
+def _record_exercise_rename(conn, user_id: int, day_key: str, old_list: list, new_list: list):
+    """When saving program, record renames (same index, different name) so Progress can show history."""
+    for i in range(min(len(old_list), len(new_list))):
+        old_name = (old_list[i].get("name") or "").strip()
+        new_name = (new_list[i].get("name") or "").strip()
+        if old_name and new_name and old_name != new_name:
+            existing = conn.execute(
+                "SELECT 1 FROM exercise_aliases WHERE user_id=? AND from_name=? AND to_name=?",
+                (user_id, old_name, new_name),
+            ).fetchone()
+            if not existing:
+                conn.execute(
+                    "INSERT INTO exercise_aliases (user_id, from_name, to_name) VALUES (?,?,?)",
+                    (user_id, old_name, new_name),
+                )
+
+
+def _resolve_exercise_names(conn, user_id: int, current_name: str) -> list:
+    """Return [current_name] + all previous names that were renamed to this (transitively)."""
+    names = {current_name}
+    while True:
+        added = set()
+        for to_name in list(names):
+            rows = conn.execute(
+                "SELECT from_name FROM exercise_aliases WHERE user_id=? AND to_name=?",
+                (user_id, to_name),
+            ).fetchall()
+            for r in rows:
+                added.add(r["from_name"])
+        if not added - names:
+            break
+        names |= added
+    return list(names)
+
+
 def save_user_program(user_id: int, day_key: str, exercises: list):
     """Replace all exercises for (user_id, day_key) with the given list. Each item: { grp, name, target_sets }."""
     with db() as conn:
+        old_list = conn.execute(
+            "SELECT grp, name, target_sets FROM user_program WHERE user_id=? AND day_key=? ORDER BY sort_order",
+            (user_id, day_key),
+        ).fetchall()
+        old_list = [dict(r) for r in old_list]
+        _record_exercise_rename(conn, user_id, day_key, old_list, exercises)
         conn.execute("DELETE FROM user_program WHERE user_id=? AND day_key=?", (user_id, day_key))
         for i, ex in enumerate(exercises):
             conn.execute(
@@ -475,19 +524,24 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
 # ── Progress ──────────────────────────────────────────────────────────────────
 
 def get_exercise_progress(user_id: int, exercise_name: str, limit: int = 6):
+    """Return progress (date, max_weight) per workout. Includes history under previous names (renames)."""
     with db() as conn:
+        names = _resolve_exercise_names(conn, user_id, exercise_name)
+        if not names:
+            return []
+        placeholders = ",".join("?" * len(names))
         rows = conn.execute(
-            """
+            f"""
             SELECT w.date, MAX(ws.weight) as max_weight
             FROM workout_sets ws
             JOIN workout_exercises we ON ws.workout_exercise_id = we.id
             JOIN workouts w ON we.workout_id = w.id
-            WHERE w.user_id = ? AND we.name = ?
+            WHERE w.user_id = ? AND we.name IN ({placeholders})
             GROUP BY w.id
             ORDER BY w.date DESC, w.id DESC
             LIMIT ?
             """,
-            (user_id, exercise_name, limit),
+            (user_id, *names, limit),
         ).fetchall()
     return list(reversed(rows))
 
