@@ -281,29 +281,8 @@ export default function HomeScreen() {
           </div>
 
           <div className="flex flex-col gap-4 mt-4 flex-none">
-            {/* New Workout — primary action at top */}
-            <button
-              onClick={handleNewWorkout}
-              className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
-              style={{
-                ...CARD_BTN_STYLE,
-                background: unfinished
-                  ? 'rgba(255,255,255,0.04)'
-                  : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
-                boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/20'} ${TEXT_PRIMARY}`}>
-                  <WorkoutIcon />
-                </span>
-                <div className="flex-1">
-                  <div className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`}>New Workout</div>
-                  <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>Start your training session</div>
-                </div>
-                <span className={`text-xl ${TEXT_FADED}`}>›</span>
-              </div>
-            </button>
+            {/* Weekly goal widget */}
+            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
 
             {/* Continue workout banner */}
             {unfinished && (
@@ -395,10 +374,31 @@ export default function HomeScreen() {
 
         </div>
 
-        {/* Fixed bottom: Weekly goal widget + 2x2 grid */}
+        {/* Fixed bottom: New Workout + 2x2 grid */}
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <div className="space-y-2">
-            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+            <button
+              onClick={handleNewWorkout}
+              className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
+              style={{
+                ...CARD_BTN_STYLE,
+                background: unfinished
+                  ? 'rgba(255,255,255,0.04)'
+                  : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
+                boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/20'} ${TEXT_PRIMARY}`}>
+                  <WorkoutIcon />
+                </span>
+                <div className="flex-1">
+                  <div className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`}>New Workout</div>
+                  <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>Start your training session</div>
+                </div>
+                <span className={`text-xl ${TEXT_FADED}`}>›</span>
+              </div>
+            </button>
           <div className="grid grid-cols-2 gap-2 sm:gap-3">
             {/* History */}
             <button
