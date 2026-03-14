@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['ui-monospace', '"SF Mono"', '"Cascadia Code"', 'Consolas', '"Liberation Mono"', 'monospace'],
+        sans: ['Georgia', '"Times New Roman"', 'serif'],
         bebas: ['"Bebas Neue"', 'cursive'],
       },
     },
