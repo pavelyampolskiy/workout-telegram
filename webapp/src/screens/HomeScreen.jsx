@@ -117,10 +117,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   if (data === undefined) {
     return (
-      <div className="rounded-2xl p-4" style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.05)',
-      }}>
+      <div className="p-4">
         <HomeStatsSkeleton />
       </div>
     );
@@ -132,13 +129,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
   const displayCount = Math.min(weekCount, WEEKLY_GOAL);
 
   return (
-    <div 
-      className="rounded-2xl p-4"
-      style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.05)',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
-      }}
+    <div className="p-4"
     >
       <div className="flex items-center justify-around gap-2">
         <StatRing
