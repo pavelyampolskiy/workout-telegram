@@ -100,7 +100,6 @@ input[type='number']::-webkit-outer-spin-button {
 
 @keyframes metalShine {
   0%   { left: -150%; }
-  50%  { left: 150%; }
   100% { left: 150%; }
 }
 
