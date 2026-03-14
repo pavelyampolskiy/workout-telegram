@@ -3,8 +3,9 @@ export function Toast({ message, onClose, visible }) {
   if (!visible || !message) return null;
   return (
     <div
-      className="toast fixed left-4 right-4 top-4 z-[10001] flex items-center justify-between gap-3 rounded-xl px-4 py-3 font-bebas tracking-wider text-sm"
+      className="toast fixed left-4 right-4 z-[10001] flex items-center justify-between gap-3 rounded-xl px-4 py-3 font-bebas tracking-wider text-sm"
       style={{
+        top: 'max(calc(env(safe-area-inset-top, 0px) + 1rem), 5.5rem)',
         background: 'rgba(20,20,22,0.95)',
         border: '1px solid rgba(255,255,255,0.12)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',

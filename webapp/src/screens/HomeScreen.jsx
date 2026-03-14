@@ -7,8 +7,6 @@ import { CARD_BTN_STYLE, PRIMARY_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
-import { ConfirmModal } from '../components/ConfirmModal';
-import { CardioIcon } from '../components/Icons';
 import homeBg from '../assets/gym-bg.jpg';
 
 const WorkoutIcon = () => (
@@ -222,8 +220,6 @@ export default function HomeScreen() {
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
-  const [showCardioActiveModal, setShowCardioActiveModal] = useState(false);
-  const [switchingToCardio, setSwitchingToCardio] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -260,45 +256,6 @@ export default function HomeScreen() {
       navigate('workout');
     } else {
       navigate('recovery-check');
-    }
-  };
-
-  const handleCardioPress = () => {
-    if (unfinished) {
-      setShowCardioActiveModal(true);
-    } else {
-      navigate('cardio');
-    }
-  };
-
-  const handleContinueCurrentWorkout = () => {
-    setShowCardioActiveModal(false);
-    if (unfinished?.type && String(unfinished.type).toUpperCase() === 'CARDIO') {
-      navigate('cardio');
-    } else {
-      setActiveWorkout({
-        id: unfinished.id,
-        day: unfinished.type,
-        startedAt: unfinished.created_at ? new Date(unfinished.created_at).getTime() : Date.now(),
-        exerciseMap: {},
-      });
-      navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
-    }
-  };
-
-  const handleStartNewCardio = async () => {
-    if (!unfinished) return;
-    setSwitchingToCardio(true);
-    try {
-      await api.deleteWorkout(unfinished.id);
-      setUnfinished(null);
-      setActiveWorkout(null);
-      setShowCardioActiveModal(false);
-      navigate('cardio');
-    } catch (e) {
-      showToast(e.message);
-    } finally {
-      setSwitchingToCardio(false);
     }
   };
 
@@ -479,44 +436,22 @@ export default function HomeScreen() {
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
             </button>
 
-            {/* Cardio */}
-            <button
-              onClick={handleCardioPress}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
-              style={CARD_BTN_STYLE}
-            >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
-                <CardioIcon />
-              </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Cardio</div>
-            </button>
-
-            {/* Program */}
+            {/* My program */}
             <button
               onClick={() => navigate('program')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0 col-span-2"
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
               style={CARD_BTN_STYLE}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Program</div>
+              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>My program</div>
             </button>
           </div>
           </div>
         </div>
       </div>
 
-      <ConfirmModal
-        visible={showCardioActiveModal}
-        title="Active workout"
-        description={unfinished ? `You have an active workout (${unfinished.label || unfinished.type || 'Workout'}). Continue it or start a new one?` : ''}
-        primaryLabel="Continue current"
-        primaryOnClick={handleContinueCurrentWorkout}
-        secondaryLabel="Start new"
-        secondaryOnClick={handleStartNewCardio}
-        secondaryLoading={switchingToCardio}
-      />
     </div>
   );
 }
