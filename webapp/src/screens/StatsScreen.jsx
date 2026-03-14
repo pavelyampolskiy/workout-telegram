@@ -148,7 +148,7 @@ export default function StatsScreen() {
       if (!d) return null;
       return (
         <>
-          <div className="mb-1">
+          <div className="mb-2">
             <Tabs tabs={PERIOD_OPTIONS} activeKey={amountPeriod} onSelect={setAmountPeriod} />
           </div>
           {renderAmountContent(d)}
@@ -198,7 +198,7 @@ export default function StatsScreen() {
         <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Statistics</h1>
 
         {/* Tabs */}
-        <div className="mb-3">
+        <div className="mb-2">
           <Tabs tabs={STATS_TABS} activeKey={tab} onSelect={handleTabSelect} />
         </div>
 
