@@ -26,6 +26,12 @@ const PlusIcon = () => (
   </svg>
 );
 
+const TrashIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+  </svg>
+);
+
 export default function ProgramScreen() {
   const { userId, navigate, showToast } = useApp();
   const [days, setDays] = useState(null);
@@ -38,6 +44,8 @@ export default function ProgramScreen() {
   const [showAddDay, setShowAddDay] = useState(false);
   const [newDayLabel, setNewDayLabel] = useState('');
   const [adding, setAdding] = useState(false);
+  const [deleteDay, setDeleteDay] = useState(null); // { id, label, key }
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -103,6 +111,26 @@ export default function ProgramScreen() {
     }
   };
 
+  const submitDeleteDay = async () => {
+    if (!deleteDay) return;
+    setDeleting(true);
+    try {
+      await api.deleteDay(deleteDay.id);
+      setDays(prev => prev?.filter(d => d.id !== deleteDay.id) ?? prev);
+      setProgram(prev => {
+        const next = { ...prev };
+        delete next[deleteDay.key];
+        return next;
+      });
+      showToast('Day deleted');
+      setDeleteDay(null);
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -160,6 +188,16 @@ export default function ProgramScreen() {
                 >
                   <PencilIcon />
                 </button>
+                {String(day.key || '').startsWith('CUSTOM_') && (
+                  <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
+                    className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
+                    aria-label="Delete day"
+                  >
+                    <TrashIcon />
+                  </button>
+                )}
               </div>
             );
           })}
@@ -252,6 +290,39 @@ export default function ProgramScreen() {
                 className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {renaming ? '…' : 'Save'}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {deleteDay && createPortal(
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-5 bg-black/70"
+          onClick={() => setDeleteDay(null)}
+        >
+          <div
+            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 border border-white/10 shadow-xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="font-bebas text-white/90 tracking-wider mb-1">Delete day</div>
+            <p className="text-white/50 text-sm font-sans mb-4">Remove "{deleteDay.label}"? Its exercises will be deleted. Past workouts stay in history.</p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setDeleteDay(null)}
+                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider text-white/70 hover:text-white transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={submitDeleteDay}
+                disabled={deleting}
+                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-red-500/20 text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {deleting ? '…' : 'Delete'}
               </button>
             </div>
           </div>
