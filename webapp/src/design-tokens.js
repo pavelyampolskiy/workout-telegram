@@ -2,7 +2,7 @@
  * Design tokens — single source of truth for UI consistency.
  * Use these in components; avoid hardcoding colors, radii, or card styles.
  *
- * Typography: Bebas Neue (headings), Georgia (body) — see tailwind.config.js and index.css.
+ * Typography: Bebas Neue (headings), IBM Plex Mono (secondary) — see tailwind.config.js and index.css.
  */
 
 // ─── Palette (text) ─────────────────────────────────────────────────────────
