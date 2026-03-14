@@ -375,7 +375,7 @@ export default function HomeScreen() {
         </div>
 
         {/* Fixed bottom: New Workout + 2x2 grid */}
-        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
+        <div className="fixed left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent" style={{ bottom: '1.5rem' }}>
           <div className="space-y-2">
             <button
               onClick={handleNewWorkout}
