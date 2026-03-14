@@ -118,7 +118,6 @@ export default function WorkoutScreen() {
         </div>
 
         <div className="flex-1 min-h-0 flex flex-col">
-          <div className="flex-1 min-h-0" />
           <div className="pb-6 safe-bottom shrink-0">
           {loading ? (
             <div className="flex justify-center py-8"><Spinner /></div>
