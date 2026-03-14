@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-import ScreenBg from '../ScreenBg';
 import { Skeleton, SkeletonCard } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { PAGE_HEADING_STYLE } from '../shared';
+import ScreenLayout from '../components/ScreenLayout';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 
 function AchievementsSkeleton() {
@@ -100,15 +99,9 @@ export default function AchievementsScreen() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative flex flex-col overflow-hidden">
-        <ScreenBg image="/workout-bg.jpg" />
-        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-          <h1 className="font-bebas text-white/85 pt-6 mb-5" style={PAGE_HEADING_STYLE}>
-            Achievements
-          </h1>
-          <AchievementsSkeleton />
-        </div>
-      </div>
+      <ScreenLayout title="Achievements" onBack={goBack} image="/workout-bg.jpg">
+        <AchievementsSkeleton />
+      </ScreenLayout>
     );
   }
 
@@ -130,19 +123,14 @@ export default function AchievementsScreen() {
   const isEmpty = total === 0;
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/workout-bg.jpg" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto pb-10">
-        <h1 className="font-bebas text-white/85 pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
-          Achievements
-        </h1>
-        {!isEmpty && (
-          <div className="text-white/40 text-sm font-sans mb-5">
-            {unlocked.length} of {total} unlocked
-          </div>
-        )}
+    <ScreenLayout title="Achievements" onBack={goBack} image="/workout-bg.jpg">
+      {!isEmpty && (
+        <div className="text-white/40 text-sm font-sans mb-5">
+          {unlocked.length} of {total} unlocked
+        </div>
+      )}
 
-        {isEmpty ? (
+      {isEmpty ? (
           <div className="text-center py-16 px-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
               <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
@@ -178,7 +166,6 @@ export default function AchievementsScreen() {
         )}
           </>
         )}
-      </div>
-    </div>
+    </ScreenLayout>
   );
 }

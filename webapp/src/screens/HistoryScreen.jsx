@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import ScreenLayout from '../components/ScreenLayout';
+import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
@@ -124,34 +124,23 @@ export default function HistoryScreen() {
 
   if (loading) {
     return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-          <h1 className="font-bebas text-white/85 pt-6 mb-4" style={PAGE_HEADING_STYLE}>
-            History
-          </h1>
-          <HistorySkeleton />
-        </div>
-      </div>
+      <ScreenLayout title="History" onBack={goBack} image="/workout-bg.jpg" overlay="bg-black/70">
+        <HistorySkeleton />
+      </ScreenLayout>
     );
   }
   if (error) {
     return (
       <ErrorScreen
         image="/workout-bg.jpg"
+        onBack={goBack}
         onRetry={() => { setError(null); setLoading(true); load(0).finally(() => setLoading(false)); }}
       />
     );
   }
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <h1 className="font-bebas text-white/85 pt-6 mb-4" style={PAGE_HEADING_STYLE}>
-          History
-        </h1>
-
+    <ScreenLayout title="History" onBack={goBack} image="/workout-bg.jpg" overlay="bg-black/70">
         {/* Filter tabs */}
         <div className="mb-5">
           <Tabs
@@ -265,7 +254,6 @@ export default function HistoryScreen() {
           </div>
         )}
 
-      </div>
-    </div>
+    </ScreenLayout>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
-import ScreenBg from '../ScreenBg';
+import ScreenLayout from '../components/ScreenLayout';
 import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 import { Spinner } from '../components/Spinner';
@@ -114,18 +114,15 @@ export default function ProgramDayScreen() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative flex flex-col overflow-hidden">
-        <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-        <div className="relative z-10 flex-1 flex items-center justify-center p-5 safe-top"><Spinner /></div>
-      </div>
+      <ScreenLayout title={dayLabel || dayKey} onBack={goBack} image="/workout-bg.jpg" overlay="bg-black/70">
+        <div className="flex items-center justify-center py-20"><Spinner /></div>
+      </ScreenLayout>
     );
   }
 
   return (
-    <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto pb-28">
-        <h1 className="font-bebas text-white/90 pt-2 pb-1 text-xl tracking-wider">{dayLabel || dayKey}</h1>
+    <>
+    <ScreenLayout title={dayLabel || dayKey} onBack={goBack} image="/workout-bg.jpg" overlay="bg-black/70" contentClassName="safe-top-lg pb-28">
         <p className="text-white/40 text-xs font-sans mb-5">Add, remove, or reorder exercises. Tap to rename.</p>
 
         <div className="space-y-2">
@@ -179,7 +176,7 @@ export default function ProgramDayScreen() {
           <span className="w-8 h-8 rounded-lg border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">+</span>
           <span className="font-bebas tracking-wider text-white/60">Add Exercise</span>
         </button>
-      </div>
+    </ScreenLayout>
 
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom z-20">
         <button
@@ -300,6 +297,6 @@ export default function ProgramDayScreen() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
