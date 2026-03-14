@@ -267,25 +267,21 @@ export default function HomeScreen() {
       {/* Bottom gradient — grounds the cards */}
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent" style={{ zIndex: 0 }} />
 
-      {/* Content: title top, nav flows below content to avoid huge center gap */}
-      <div className="relative z-10 flex flex-col min-h-screen safe-top p-5 pb-0">
-        {/* Scrollable content area — New Workout in flow; 2x2 grid fixed at bottom */}
-        <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-y-auto overflow-x-hidden pb-64">
-          {/* Headline + status — close together. Cap font so "Ready?" fits in max-w-lg (512px) on desktop. */}
-          <div className="pt-6 shrink-0 space-y-0.5 overflow-visible">
-            <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
-              <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
-            </div>
-            <StatusWidget userId={userId} />
+      {/* Content: compact header, then full-height button area */}
+      <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto">
+        {/* Compact header */}
+        <div className="shrink-0 pt-4 pb-2 flex items-center justify-between gap-3">
+          <div className="font-bebas leading-none min-w-0">
+            <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(12px, 6vw, 20px)', letterSpacing: '0.28em' }}>Are you</div>
+            <div className={TEXT_PRIMARY} style={{ fontSize: 'clamp(20px, 12vw, 36px)', letterSpacing: '0.2em' }}>Ready?</div>
           </div>
+          <StatusWidget userId={userId} />
+        </div>
 
-          <div className="flex flex-col gap-4 mt-4 flex-none">
-            {/* Weekly goal widget */}
-            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
-
-            {/* Continue workout banner */}
-            {unfinished && (
+        {/* Widget + Continue — compact */}
+        <div className="shrink-0 flex flex-col gap-2 mb-3">
+          <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+          {unfinished && (
             <div className="relative">
             {!showDismissConfirm ? (
               <>
@@ -370,84 +366,73 @@ export default function HomeScreen() {
             )}
           </div>
         )}
-          </div>
-
         </div>
 
-        {/* Fixed bottom: New Workout + 2x2 grid */}
-        <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
-          <div className="space-y-2">
-            <button
-              onClick={handleNewWorkout}
-              className={`card-press w-full rounded-xl p-4 text-left transition-opacity ${unfinished ? 'opacity-50' : ''}`}
-              style={{
-                ...CARD_BTN_STYLE,
-                background: unfinished
-                  ? 'rgba(255,255,255,0.04)'
-                  : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
-                boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/20'} ${TEXT_PRIMARY}`}>
-                  <WorkoutIcon />
-                </span>
-                <div className="flex-1">
-                  <div className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`}>New Workout</div>
-                  <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>Start your training session</div>
-                </div>
-                <span className={`text-xl ${TEXT_FADED}`}>›</span>
+        {/* Full-height button area: New Workout + 2x2 grid fill the screen */}
+        <div className="flex-1 min-h-0 flex flex-col gap-3">
+          <button
+            onClick={handleNewWorkout}
+            className={`card-press flex-1 min-h-0 rounded-2xl p-5 text-left transition-opacity flex flex-col justify-center ${unfinished ? 'opacity-50' : ''}`}
+            style={{
+              ...CARD_BTN_STYLE,
+              background: unfinished
+                ? 'rgba(255,255,255,0.04)'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
+              boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
+            }}
+          >
+            <div className="flex items-center gap-4">
+              <span className={`w-14 h-14 rounded-xl flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/20'} ${TEXT_PRIMARY}`}>
+                <WorkoutIcon />
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className={`font-bebas tracking-wider text-2xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`}>New Workout</div>
+                <div className={`text-xs font-sans ${TEXT_MUTED}`}>Start your training session</div>
               </div>
-            </button>
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
-            {/* History */}
+              <span className={`text-2xl shrink-0 ${TEXT_FADED}`}>›</span>
+            </div>
+          </button>
+          <div className="grid grid-cols-2 gap-3 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              className="card-press rounded-2xl p-4 text-left flex flex-col justify-between min-h-0 min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>History</div>
+              <div className={`font-bebas tracking-wider text-base truncate ${TEXT_SECONDARY}`}>History</div>
             </button>
-
-            {/* Statistics */}
             <button
               onClick={() => navigate('stats')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              className="card-press rounded-2xl p-4 text-left flex flex-col justify-between min-h-0 min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <StatsIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Statistics</div>
+              <div className={`font-bebas tracking-wider text-base truncate ${TEXT_SECONDARY}`}>Statistics</div>
             </button>
-
-            {/* Achievements */}
             <button
               onClick={() => navigate('achievements')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              className="card-press rounded-2xl p-4 text-left flex flex-col justify-between min-h-0 min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <TrophyIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
+              <div className={`font-bebas tracking-wider text-base truncate ${TEXT_SECONDARY}`}>Achievements</div>
             </button>
-
-            {/* My program */}
             <button
               onClick={() => navigate('program')}
-              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
+              className="card-press rounded-2xl p-4 text-left flex flex-col justify-between min-h-0 min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>My program</div>
+              <div className={`font-bebas tracking-wider text-base truncate ${TEXT_SECONDARY}`}>My program</div>
             </button>
-          </div>
           </div>
         </div>
       </div>
