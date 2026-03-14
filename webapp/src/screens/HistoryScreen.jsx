@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import { formatDate, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
@@ -15,6 +15,14 @@ function formatTotalDuration(totalMin) {
   const h = Math.floor(totalMin / 60);
   const m = totalMin % 60;
   return m > 0 ? `${h}h ${m} min` : `${h}h`;
+}
+
+function formatDurationCompact(totalMin) {
+  if (!totalMin || totalMin <= 0) return '—';
+  if (totalMin < 60) return `${totalMin}m`;
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
 // Previous workout of the same type (list is newest-first, so "previous" = next in array)
@@ -153,34 +161,27 @@ export default function HistoryScreen() {
           />
         </div>
 
-        {/* Summary by month */}
+        {/* Summary: three dashboard cards */}
         {!filterLoading && items.length > 0 && (() => {
-          const byMonth = {};
-          items.forEach((w) => {
-            const key = getMonthKey(w.date);
-            if (!byMonth[key]) byMonth[key] = { count: 0, volume: 0, min: 0, sampleDate: w.date };
-            byMonth[key].count += 1;
-            byMonth[key].volume += w.total_volume || 0;
-            byMonth[key].min += w.duration_min || 0;
-          });
-          const monthKeys = Object.keys(byMonth).sort((a, b) => b.localeCompare(a));
+          const totalVolume = items.reduce((s, w) => s + (w.total_volume || 0), 0);
+          const totalMin = items.reduce((s, w) => s + (w.duration_min || 0), 0);
+          const cardStyle = 'rounded-xl py-3 px-2 flex flex-col items-center justify-center bg-white/5 border border-white/10 min-h-[4rem]';
+          const valueStyle = 'font-bebas text-white/95 tracking-wide text-xl leading-none';
+          const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
           return (
-            <div className="mb-4 px-3 py-2.5 rounded-xl font-sans text-xs bg-white/5 border border-white/10 space-y-1.5">
-              {monthKeys.map((key) => {
-                const m = byMonth[key];
-                const parts = [
-                  `${m.count} Workout${m.count !== 1 ? 's' : ''}`,
-                  m.volume > 0 && `${fmtVol(m.volume)} Total`,
-                  formatTotalDuration(m.min),
-                ].filter(Boolean);
-                if (parts.length === 0) return null;
-                return (
-                  <div key={key} className="text-white/50">
-                    <span className="text-white/40 mr-1.5">{formatMonthLabel(m.sampleDate)}:</span>
-                    {parts.join(' | ')}
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className={cardStyle}>
+                <span className={valueStyle}>{items.length}</span>
+                <span className={labelStyle}>Workouts</span>
+              </div>
+              <div className={cardStyle}>
+                <span className={valueStyle}>{totalVolume > 0 ? `${(totalVolume / 1000).toFixed(1)}t` : '—'}</span>
+                <span className={labelStyle}>Total Weight</span>
+              </div>
+              <div className={cardStyle}>
+                <span className={valueStyle}>{formatDurationCompact(totalMin)}</span>
+                <span className={labelStyle}>Duration</span>
+              </div>
             </div>
           );
         })()}
