@@ -253,8 +253,8 @@ export default function StatsScreen() {
                 <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
               </div>
               <div className="flex-1 text-center pl-4">
-                <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{data.freq.period === 'month' ? total : avg}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">{data.freq.period === 'month' ? 'Avg / Month' : 'Avg / Week'}</div>
+                <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
               </div>
             </div>
           </div>
