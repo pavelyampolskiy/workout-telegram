@@ -72,6 +72,8 @@ export default function ProgressScreen() {
   const [loadingProg, setLoadingProg] = useState(false);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
+  const [previousName, setPreviousName] = useState('');
+  const [linking, setLinking] = useState(false);
 
   const loadProgram = () => {
     api.getProgram(userId)
@@ -170,13 +172,46 @@ export default function ProgressScreen() {
 
         {!loadingProg && selected && progress && (
           progress.length === 0 ? (
-            <div className="text-center text-white/30 py-12">
+            <div className="text-center text-white/30 py-8">
               <div className="flex justify-center mb-3 text-white/30">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
                   <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                 </svg>
               </div>
-              <p className="font-bebas text-sm">No data yet for {selected.name}</p>
+              <p className="font-bebas text-sm mb-5">No data yet for {selected.name}</p>
+              <p className="font-sans text-xs text-white/40 mb-2">Was it renamed? Enter the previous name to link history:</p>
+              <div className="flex gap-2 max-w-xs mx-auto">
+                <input
+                  type="text"
+                  value={previousName}
+                  onChange={(e) => setPreviousName(e.target.value)}
+                  placeholder="e.g. French press"
+                  className="flex-1 rounded-xl px-3 py-2 text-sm font-sans bg-white/10 border border-white/15 text-white placeholder-white/30"
+                />
+                <button
+                  type="button"
+                  disabled={linking || !previousName.trim()}
+                  onClick={async () => {
+                    const from = previousName.trim();
+                    if (!from) return;
+                    setLinking(true);
+                    try {
+                      await api.linkProgressAlias(userId, from, selected.name);
+                      const data = await api.getProgress(userId, selected.name);
+                      setProgress(data);
+                      setPreviousName('');
+                      showToast(data.length > 0 ? 'History linked' : 'No data under that name');
+                    } catch (e) {
+                      showToast(e.message);
+                    } finally {
+                      setLinking(false);
+                    }
+                  }}
+                  className="rounded-xl px-4 py-2 text-sm font-bebas tracking-wider bg-white/15 text-white/90 disabled:opacity-50"
+                >
+                  {linking ? '…' : 'Link'}
+                </button>
+              </div>
             </div>
           ) : (
             <div className="space-y-4">

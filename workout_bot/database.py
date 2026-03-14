@@ -219,6 +219,26 @@ def _record_exercise_rename(conn, user_id: int, day_key: str, old_list: list, ne
                 )
 
 
+def add_exercise_alias(user_id: int, from_name: str, to_name: str) -> bool:
+    """Manually link an old exercise name to the current one so progress is merged. Returns True if added."""
+    from_name = (from_name or "").strip()
+    to_name = (to_name or "").strip()
+    if not from_name or not to_name or from_name == to_name:
+        return False
+    with db() as conn:
+        existing = conn.execute(
+            "SELECT 1 FROM exercise_aliases WHERE user_id=? AND from_name=? AND to_name=?",
+            (user_id, from_name, to_name),
+        ).fetchone()
+        if existing:
+            return False
+        conn.execute(
+            "INSERT INTO exercise_aliases (user_id, from_name, to_name) VALUES (?,?,?)",
+            (user_id, from_name, to_name),
+        )
+    return True
+
+
 def _resolve_exercise_names(conn, user_id: int, current_name: str) -> list:
     """Return [current_name] + all previous names that were renamed to this (transitively)."""
     names = {current_name}

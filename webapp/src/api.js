@@ -69,6 +69,8 @@ export const api = {
   },
   getProgress: (user_id, exercise_name) =>
     req('GET', `/api/progress?user_id=${user_id}&exercise_name=${encodeURIComponent(exercise_name)}`),
+  linkProgressAlias: (user_id, from_name, to_name) =>
+    req('POST', '/api/progress/link-alias', { user_id, from_name, to_name }),
   
   getAchievements: (user_id) => req('GET', `/api/achievements?user_id=${user_id}`),
   
