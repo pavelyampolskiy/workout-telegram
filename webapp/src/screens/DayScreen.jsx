@@ -49,7 +49,7 @@ export default function DayScreen() {
   useEffect(() => {
     async function init() {
       try {
-        const prog = await api.getProgram();
+        const prog = await api.getProgram(userId);
         const dayProgram = prog[day] || [];
         setProgram(dayProgram);
 

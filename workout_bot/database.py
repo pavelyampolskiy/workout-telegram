@@ -139,6 +139,17 @@ def init_db():
                 conn.execute("ALTER TABLE workout_sets_new RENAME TO workout_sets")
         except Exception:
             pass
+        # Migration: user_program table for per-user program templates
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS user_program (
+                user_id INTEGER NOT NULL,
+                day_key TEXT NOT NULL,
+                sort_order INTEGER NOT NULL,
+                grp TEXT NOT NULL,
+                name TEXT NOT NULL,
+                target_sets INTEGER NOT NULL
+            )
+        """)
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -169,6 +180,29 @@ def rename_custom_day(day_id: int, label: str):
 def delete_custom_day(day_id: int):
     with db() as conn:
         conn.execute("DELETE FROM custom_days WHERE id=?", (day_id,))
+
+
+# ── User Program (template per day) ─────────────────────────────────────────
+
+def get_user_program(user_id: int, day_key: str):
+    """Return list of { grp, name, target_sets } for the day, ordered by sort_order."""
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT grp, name, target_sets FROM user_program WHERE user_id=? AND day_key=? ORDER BY sort_order",
+            (user_id, day_key),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def save_user_program(user_id: int, day_key: str, exercises: list):
+    """Replace all exercises for (user_id, day_key) with the given list. Each item: { grp, name, target_sets }."""
+    with db() as conn:
+        conn.execute("DELETE FROM user_program WHERE user_id=? AND day_key=?", (user_id, day_key))
+        for i, ex in enumerate(exercises):
+            conn.execute(
+                "INSERT INTO user_program (user_id, day_key, sort_order, grp, name, target_sets) VALUES (?,?,?,?,?,?)",
+                (user_id, day_key, i, ex.get("grp") or ex.get("group"), ex.get("name"), ex.get("target_sets", 3)),
+            )
 
 
 def count_finished_workouts_for_day(user_id: int, day_key: str) -> int:

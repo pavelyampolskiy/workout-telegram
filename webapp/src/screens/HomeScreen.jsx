@@ -37,6 +37,12 @@ const TrophyIcon = () => (
   </svg>
 );
 
+const ProgramIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+  </svg>
+);
+
 const ITEMS = [
   { screen: 'workout', icon: <WorkoutIcon />, title: 'New Workout', primary: true },
   { screen: 'history', icon: <HistoryIcon />, title: 'History' },
@@ -483,6 +489,18 @@ export default function HomeScreen() {
                 <CardioIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Cardio</div>
+            </button>
+
+            {/* Program */}
+            <button
+              onClick={() => navigate('program')}
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0 col-span-2"
+              style={CARD_BTN_STYLE}
+            >
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+                <ProgramIcon />
+              </span>
+              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Program</div>
             </button>
           </div>
           </div>

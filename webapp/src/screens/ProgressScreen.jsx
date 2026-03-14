@@ -74,7 +74,7 @@ export default function ProgressScreen() {
   const [open, setOpen] = useState(false);
 
   const loadProgram = () => {
-    api.getProgram()
+    api.getProgram(userId)
       .then(p => {
         const seen = new Set();
         const list = [];

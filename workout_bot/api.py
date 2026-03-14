@@ -36,9 +36,46 @@ app.add_middleware(
 
 # ── Program ───────────────────────────────────────────────────────────────────
 
+def _program_for_user(user_id: int):
+    """Build program dict for user: each day_key -> list of { group, name, target_sets }. Uses user_program if set, else PROGRAM default."""
+    days = db_ops.get_custom_days(user_id)
+    if not days:
+        _seed_default_days(user_id)
+        days = db_ops.get_custom_days(user_id)
+    out = {}
+    for d in days:
+        key = d["key"]
+        custom = db_ops.get_user_program(user_id, key)
+        if custom:
+            out[key] = [{"group": r["grp"], "name": r["name"], "target_sets": r["target_sets"]} for r in custom]
+        elif key in PROGRAM:
+            out[key] = [{"group": x["group"], "name": x["name"], "target_sets": x["target_sets"]} for x in PROGRAM[key]]
+        else:
+            out[key] = []
+    return out
+
+
 @app.get("/api/program")
-def get_program():
-    return PROGRAM
+def get_program(user_id: int):
+    return _program_for_user(user_id)
+
+
+class ProgramDayBody(BaseModel):
+    user_id: int
+    exercises: list  # [ { group, name, target_sets }, ... ]
+
+
+@app.put("/api/program/{day_key}")
+def save_program_day(day_key: str, body: ProgramDayBody):
+    exercises = []
+    for ex in body.exercises:
+        item = ex if isinstance(ex, dict) else {}
+        grp = item.get("group") or item.get("grp") or "CHEST"
+        name = item.get("name") or "Exercise"
+        target_sets = int(item.get("target_sets", 3))
+        exercises.append({"grp": grp, "name": name, "target_sets": target_sets})
+    db_ops.save_user_program(body.user_id, day_key, exercises)
+    return {"ok": True}
 
 
 # ── Custom Days ───────────────────────────────────────────────────────────────

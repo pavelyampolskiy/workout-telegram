@@ -134,7 +134,7 @@ export default function ExerciseScreen() {
         }
 
         const [prog, setsData, lastData] = await Promise.all([
-          api.getProgram(),
+          api.getProgram(userId),
           api.getSets(exDbId),
           api.getLastExercise(exDbId, userId, workoutId),
         ]);

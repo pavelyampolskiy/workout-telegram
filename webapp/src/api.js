@@ -25,7 +25,9 @@ async function req(method, path, body) {
 }
 
 export const api = {
-  getProgram: () => req('GET', '/api/program'),
+  getProgram: (user_id) => req('GET', `/api/program?user_id=${user_id}`),
+  saveProgramDay: (user_id, day_key, exercises) =>
+    req('PUT', `/api/program/${encodeURIComponent(day_key)}`, { user_id, exercises }),
 
   getDays: (user_id) => req('GET', `/api/days?user_id=${user_id}`),
   createDay: (user_id, label) => req('POST', '/api/days', { user_id, label }),
