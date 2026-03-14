@@ -3,11 +3,12 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { CARD_BTN_STYLE, PRIMARY_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import { ConfirmModal } from '../components/ConfirmModal';
+import { CardioIcon } from '../components/Icons';
 import homeBg from '../assets/gym-bg.jpg';
 
 const WorkoutIcon = () => (
@@ -42,12 +43,6 @@ const ITEMS = [
   { screen: 'stats',   icon: <StatsIcon />,   title: 'Statistics' },
   { screen: 'achievements', icon: <TrophyIcon />, title: 'Achievements' },
 ];
-
-const PRIMARY_CARD_STYLE = {
-  background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 100%) rgba(0,0,0,0.10)',
-  border: '1px solid rgba(255,255,255,0.20)',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30), 0 0 22px rgba(255,255,255,0.09), 0 0 7px rgba(255,255,255,0.05)',
-};
 
 function daysAgoLabel(dateStr) {
   const today = new Date();
@@ -485,9 +480,7 @@ export default function HomeScreen() {
               style={CARD_BTN_STYLE}
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 ${TEXT_PRIMARY}`}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
-                </svg>
+                <CardioIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Cardio</div>
             </button>

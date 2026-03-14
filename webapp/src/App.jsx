@@ -265,7 +265,7 @@ export default function App() {
         showToast,
       }}
     >
-      <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative" onClick={requestFullscreenOnTap} data-build="cardio-fix-v2">
+      <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative z-[1]" onClick={requestFullscreenOnTap} data-build="cardio-fix-v2">
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div key={current.screen} className="min-h-screen relative">
           <ErrorBoundary onRetry={() => resetTo('home')}>

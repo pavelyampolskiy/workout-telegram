@@ -125,6 +125,8 @@ export default function AchievementsScreen() {
   }
 
   const { unlocked, locked } = data;
+  const total = unlocked.length + locked.length;
+  const isEmpty = total === 0;
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -133,10 +135,23 @@ export default function AchievementsScreen() {
         <h1 className="font-bebas text-white/85 pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
           Achievements
         </h1>
-        <div className="text-white/40 text-sm font-sans mb-5">
-          {unlocked.length} of {unlocked.length + locked.length} unlocked
-        </div>
+        {!isEmpty && (
+          <div className="text-white/40 text-sm font-sans mb-5">
+            {unlocked.length} of {total} unlocked
+          </div>
+        )}
 
+        {isEmpty ? (
+          <div className="text-center py-16 px-4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
+              <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+              <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
+            </svg>
+            <p className="font-bebas tracking-wider text-white/80 text-base">No achievements yet</p>
+            <p className="font-sans text-white/40 text-sm mt-1.5">Complete workouts to unlock achievements.</p>
+          </div>
+        ) : (
+          <>
         {/* Unlocked */}
         {unlocked.length > 0 && (
           <div className="mb-6">
@@ -159,6 +174,8 @@ export default function AchievementsScreen() {
               ))}
             </div>
           </div>
+        )}
+          </>
         )}
       </div>
     </div>

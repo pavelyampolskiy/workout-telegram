@@ -115,13 +115,14 @@ export default function HistoryScreen() {
         {filterLoading ? (
           <div className="text-center text-white/30 py-10 text-sm font-bebas tracking-wider">Loading…</div>
         ) : items.length === 0 ? (
-          <div className="text-center text-white/30 py-16">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 mx-auto mb-3 opacity-30">
+          <div className="text-center py-16 px-4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
               <rect x="9" y="3" width="6" height="4" rx="1"/>
               <path d="M9 12h6M9 16h4"/>
             </svg>
-            <p className="text-sm font-bebas tracking-wider">No workouts yet</p>
+            <p className="font-bebas tracking-wider text-white/80 text-base">No workouts yet</p>
+            <p className="font-sans text-white/40 text-sm mt-1.5">Your completed workouts will appear here.</p>
           </div>
         ) : (
           <div className="space-y-2">
