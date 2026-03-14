@@ -62,8 +62,11 @@ export const api = {
   updateNote: (workout_id, text) => req('PUT', `/api/workouts/${workout_id}/note`, { text }),
 
   getStats: (user_id, days) => req('GET', `/api/stats?user_id=${user_id}&days=${days}`),
-  getFrequency: (user_id, period = 'month') =>
-    req('GET', `/api/stats/frequency?user_id=${user_id}&period=${period}`),
+  getFrequency: (user_id, period = 'month', year = null, month = null) => {
+    let url = `/api/stats/frequency?user_id=${user_id}&period=${period}`;
+    if (year != null && month != null) url += `&year=${year}&month=${month}`;
+    return req('GET', url);
+  },
   getProgress: (user_id, exercise_name) =>
     req('GET', `/api/progress?user_id=${user_id}&exercise_name=${encodeURIComponent(exercise_name)}`),
   

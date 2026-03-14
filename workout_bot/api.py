@@ -380,18 +380,32 @@ def get_stats(user_id: int, days: int = 7):
 
 
 @app.get("/api/stats/frequency")
-def get_frequency(user_id: int, period: str = "month"):
-    """period=month: this month's workouts and calendar dates. period=weeks: last N weeks (legacy)."""
+def get_frequency(user_id: int, period: str = "month", year: int = None, month: int = None):
+    """period=month: workouts for a calendar month. year/month = that month; else current month."""
     today = date.today()
     if period == "month":
-        since = today.replace(day=1)
-        end = today
+        if year is not None and month is not None:
+            since = date(year, month, 1)
+            next_first = date(year, month + 1, 1) if month < 12 else date(year + 1, 1, 1)
+            end = next_first - timedelta(days=1)
+        else:
+            since = today.replace(day=1)
+            end = today
         dates = db_ops.get_workout_dates(user_id, since, end)
         total = len(dates)
-        days_elapsed = (today - since).days + 1
-        weeks_elapsed = max(0.1, days_elapsed / 7.0)
+        days_in_range = (end - since).days + 1
+        weeks_elapsed = max(0.1, days_in_range / 7.0)
         avg = round(total / weeks_elapsed, 1)
-        return {"total": total, "avg": avg, "period": "month", "since": since.isoformat(), "until": end.isoformat(), "dates": dates}
+        return {
+            "total": total,
+            "avg": avg,
+            "period": "month",
+            "year": since.year,
+            "month": since.month,
+            "since": since.isoformat(),
+            "until": end.isoformat(),
+            "dates": dates,
+        }
     weeks = 6
     total, avg = db_ops.stats_frequency(user_id, weeks)
     since = today - timedelta(weeks=weeks)

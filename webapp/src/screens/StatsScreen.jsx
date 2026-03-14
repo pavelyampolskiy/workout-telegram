@@ -62,13 +62,13 @@ function getMonthLabel(dateStr) {
   return d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 }
 
-function ActivityHeatmap({ dates = [], period = 'month' }) {
+function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
   const countByDate = {};
   dates.forEach((d) => { countByDate[d] = (countByDate[d] || 0) + 1; });
 
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
+  const year = displayYear != null ? displayYear : now.getFullYear();
+  const month = displayMonth != null ? displayMonth - 1 : now.getMonth();
   const first = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0).getDate();
   const firstWeekday = first.getDay();
@@ -107,11 +107,22 @@ function ActivityHeatmap({ dates = [], period = 'month' }) {
           );
         })}
       </div>
-      <p className="font-sans text-[10px] text-white/35 mt-2">
-        {period === 'month' ? getMonthLabel(`${year}-${String(month + 1).padStart(2, '0')}-01`) : 'Last 6 weeks'}
-      </p>
     </div>
   );
+}
+
+function getMonthOptions() {
+  const now = new Date();
+  const list = [];
+  for (let i = 0; i < 12; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    list.push({
+      year: d.getFullYear(),
+      month: d.getMonth() + 1,
+      label: getMonthLabel(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`),
+    });
+  }
+  return list;
 }
 
 export default function StatsScreen() {
@@ -122,6 +133,8 @@ export default function StatsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [barMounted, setBarMounted] = useState(false);
+  const [freqMonth, setFreqMonth] = useState(null);
+  const [monthPickerOpen, setMonthPickerOpen] = useState(false);
 
   const STATS_TABS = [
     { key: 'amount', label: 'Amount' },
@@ -148,6 +161,24 @@ export default function StatsScreen() {
     }
     load();
   }, [userId, showToast]);
+
+  useEffect(() => {
+    if (tab !== 'freq' || !userId || freqMonth === null) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const freq = await api.getFrequency(userId, 'month', freqMonth.year, freqMonth.month);
+        if (!cancelled) setData((prev) => ({ ...prev, freq }));
+      } catch (e) {
+        if (!cancelled) showToast(e.message);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [userId, tab, freqMonth, showToast]);
+
+  useEffect(() => {
+    if (tab !== 'freq') setMonthPickerOpen(false);
+  }, [tab]);
 
   // Reset bar animation when tab or period changes
   useEffect(() => {
@@ -208,7 +239,52 @@ export default function StatsScreen() {
             </div>
           </div>
           <div className={CARD.className} style={CARD.style}>
-            <ActivityHeatmap dates={dates} period={data.freq.period} />
+            <ActivityHeatmap
+              dates={dates}
+              displayYear={data.freq.year}
+              displayMonth={data.freq.month}
+            />
+            {data.freq.period === 'month' && (
+              <div className="mt-2 relative">
+                <button
+                  type="button"
+                  onClick={() => setMonthPickerOpen((o) => !o)}
+                  className="font-sans text-[10px] text-white/50 hover:text-white/70 uppercase tracking-wider flex items-center gap-1"
+                >
+                  {data.freq.year != null
+                    ? getMonthLabel(`${data.freq.year}-${String(data.freq.month).padStart(2, '0')}-01`)
+                    : getMonthLabel(`${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-01`)}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
+                    <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {monthPickerOpen && (
+                  <>
+                    <div className="absolute left-0 top-full mt-1 z-20 py-2 rounded-xl bg-black/90 border border-white/15 shadow-xl min-w-[140px] max-h-[50vh] overflow-y-auto">
+                      {getMonthOptions().map((opt) => (
+                        <button
+                          key={`${opt.year}-${opt.month}`}
+                          type="button"
+                          onClick={() => {
+                            setFreqMonth({ year: opt.year, month: opt.month });
+                            setMonthPickerOpen(false);
+                          }}
+                          className="w-full text-left px-3 py-1.5 text-xs font-sans text-white/80 hover:bg-white/10"
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Close"
+                      className="fixed inset-0 z-10"
+                      onClick={() => setMonthPickerOpen(false)}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       );
