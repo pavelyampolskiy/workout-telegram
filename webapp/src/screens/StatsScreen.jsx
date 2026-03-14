@@ -48,7 +48,7 @@ const PERIOD_OPTIONS = [
   { key: 'year', label: 'Year' },
 ];
 
-const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function toDateStr(d) {
   const y = d.getFullYear();
@@ -72,37 +72,36 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
   const first = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0).getDate();
   const firstWeekday = first.getDay();
+  const mondayCol = firstWeekday === 0 ? 7 : firstWeekday;
   const cells = [];
   for (let day = 1; day <= lastDay; day++) {
-    cells.push({ day, dateStr: toDateStr(new Date(year, month, day)) });
+    cells.push(toDateStr(new Date(year, month, day)));
   }
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-7 gap-1.5 items-center w-full" >
+      <div className="grid grid-cols-7 gap-1.5 items-center w-full">
         {DAY_LABELS.map((label) => (
           <div key={label} className="min-w-0 flex items-center justify-center text-[10px] font-sans text-white/40 uppercase tracking-wide">
             {label}
           </div>
         ))}
-        {cells.map((cell, i) => {
-          const { day: dayNum, dateStr } = cell;
+        {cells.map((dateStr, i) => {
           const count = countByDate[dateStr] || 0;
           const opacity = count === 0 ? 0.08 : Math.min(0.95, 0.35 + count * 0.2);
           return (
             <div
               key={i}
-              className="w-full aspect-square max-w-[999px] rounded-[4px] transition-colors flex flex-col items-center justify-center"
+              className="w-full aspect-square max-w-[999px] rounded-[4px] transition-colors flex items-center justify-center"
               style={{
                 background: `rgba(255,255,255,${opacity})`,
-                gridColumn: i === 0 ? firstWeekday + 1 : 'auto',
+                gridColumn: i === 0 ? mondayCol : 'auto',
               }}
               title={count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr}
               aria-hidden
             >
-              <span className="text-[9px] font-sans text-white/50 leading-none">{dayNum}</span>
               {count > 1 && (
-                <span className="text-[8px] font-bebas text-white/90 leading-none mt-0.5">{count}</span>
+                <span className="text-[8px] font-bebas text-white/90 leading-none">{count}</span>
               )}
             </div>
           );
