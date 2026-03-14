@@ -73,7 +73,6 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
   const lastDay = new Date(year, month + 1, 0).getDate();
   const firstWeekday = first.getDay();
   const cells = [];
-  for (let i = 0; i < firstWeekday; i++) cells.push(null);
   for (let day = 1; day <= lastDay; day++) {
     cells.push(toDateStr(new Date(year, month, day)));
   }
@@ -87,7 +86,7 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
           </div>
         ))}
         {cells.map((dateStr, i) => {
-          const count = dateStr ? (countByDate[dateStr] || 0) : 0;
+          const count = countByDate[dateStr] || 0;
           const opacity = count === 0 ? 0.08 : Math.min(0.95, 0.35 + count * 0.2);
           return (
             <div
@@ -95,11 +94,12 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
               className="w-full aspect-square max-w-[999px] rounded-[4px] transition-colors flex items-center justify-center"
               style={{
                 background: `rgba(255,255,255,${opacity})`,
+                gridColumnStart: i === 0 ? firstWeekday + 1 : undefined,
               }}
-              title={dateStr ? (count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr) : ''}
+              title={count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr}
               aria-hidden
             >
-              {dateStr && count > 1 && (
+              {count > 1 && (
                 <span className="text-[8px] font-bebas text-white/90 leading-none">{count}</span>
               )}
             </div>
