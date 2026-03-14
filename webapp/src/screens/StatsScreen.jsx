@@ -48,7 +48,7 @@ const PERIOD_OPTIONS = [
   { key: 'year', label: 'Year' },
 ];
 
-const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function toDateStr(d) {
   const y = d.getFullYear();
@@ -72,9 +72,8 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
   const first = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0).getDate();
   const firstWeekday = first.getDay();
-  const padMonday = (firstWeekday === 0 ? 6 : firstWeekday - 1);
   const cells = [];
-  for (let i = 0; i < padMonday; i++) cells.push(null);
+  for (let i = 0; i < firstWeekday; i++) cells.push(null);
   for (let day = 1; day <= lastDay; day++) {
     cells.push(toDateStr(new Date(year, month, day)));
   }
