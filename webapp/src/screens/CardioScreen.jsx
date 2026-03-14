@@ -105,9 +105,6 @@ export default function CardioScreen() {
           >
             Start
           </button>
-          <button onClick={goBack} className="mt-4 w-full text-white/50 font-bebas tracking-wider text-sm py-2">
-            Back
-          </button>
         </div>
       </div>
     );

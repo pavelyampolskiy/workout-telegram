@@ -58,9 +58,6 @@ export default function ProgramScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-        <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5 text-white/50 text-base leading-none font-bebas tracking-wider active:text-white/80">
-          ‹ Back
-        </button>
         <h1 className="font-bebas text-white/90 pt-2 pb-4 text-xl tracking-wider">Program</h1>
         <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
 
