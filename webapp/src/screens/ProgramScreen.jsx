@@ -80,7 +80,6 @@ export default function ProgramScreen() {
     try {
       await api.renameDay(renameDay.id, label);
       setDays(prev => prev?.map(d => d.id === renameDay.id ? { ...d, label } : d) ?? prev);
-      showToast('Saved');
       closeRename();
     } catch (e) {
       showToast(e.message);
@@ -102,7 +101,6 @@ export default function ProgramScreen() {
       const created = await api.createDay(userId, label);
       setDays(prev => [...(prev || []), { id: created.id, key: created.key, label: created.label, sort_order: created.sort_order }]);
       setProgram(prev => ({ ...prev, [created.key]: [] }));
-      showToast('Day added');
       closeAddDay();
     } catch (e) {
       showToast(e.message);
@@ -122,7 +120,6 @@ export default function ProgramScreen() {
         delete next[deleteDay.key];
         return next;
       });
-      showToast('Day deleted');
       setDeleteDay(null);
     } catch (e) {
       showToast(e.message);
