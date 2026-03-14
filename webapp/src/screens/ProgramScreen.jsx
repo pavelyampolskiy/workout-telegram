@@ -37,7 +37,7 @@ export default function ProgramScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-        <div className="relative z-10 flex-1 flex items-center justify-center p-5">
+        <div className="relative z-10 flex-1 flex items-center justify-center p-5 safe-top">
           <Spinner />
         </div>
       </div>
@@ -57,7 +57,7 @@ export default function ProgramScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         <button onClick={goBack} className="flex items-center gap-1 mb-3 -ml-0.5 text-white/50 text-base leading-none font-bebas tracking-wider active:text-white/80">
           ‹ Back
         </button>
