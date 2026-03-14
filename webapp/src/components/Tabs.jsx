@@ -18,18 +18,31 @@ export function Tabs({ tabs, activeKey, onSelect, className = '' }) {
   }, [activeKey, tabs]);
 
   return (
-    <div ref={tabsRef} className={`relative flex gap-1 p-1 rounded-2xl overflow-x-auto bg-white/5 ${className}`}>
+    <div
+      ref={tabsRef}
+      className={`relative flex gap-0.5 overflow-x-auto bg-white/5 ${className}`}
+      style={{ minHeight: 34, padding: 2, borderRadius: 10 }}
+    >
       <div
-        className="absolute top-1 bottom-1 rounded-xl bg-white/12 transition-all duration-300 ease-out"
-        style={{ left: indicatorStyle.left, width: indicatorStyle.width }}
+        className="absolute bg-white/12 transition-all duration-300 ease-out"
+        style={{
+          left: indicatorStyle.left,
+          width: indicatorStyle.width,
+          top: 2,
+          bottom: 2,
+          borderRadius: 8,
+        }}
       />
       {tabs.map(t => (
         <button
           key={t.key}
           onClick={() => onSelect(t.key)}
-          className={`relative z-10 flex-1 py-2 px-2 rounded-xl text-xs font-bebas tracking-wider whitespace-nowrap transition-colors duration-200 ${
-            activeKey === t.key ? 'text-white/92' : 'text-white/35 active:text-white/60'
-          }`}
+          className="relative z-10 flex-1 h-[30px] flex items-center justify-center font-bebas tracking-wider whitespace-nowrap transition-colors duration-200"
+          style={{
+            fontSize: 13,
+            borderRadius: 8,
+            color: activeKey === t.key ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.35)',
+          }}
         >
           {t.label}
         </button>
