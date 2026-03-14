@@ -308,11 +308,11 @@ export default function HomeScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top p-5 pb-0">
         {/* Scrollable content area — New Workout in flow; 2x2 grid fixed at bottom */}
         <div className="flex-1 min-h-0 flex flex-col gap-4 overflow-y-auto overflow-x-hidden pb-64">
-          {/* Headline + status — close together */}
-          <div className="pt-6 shrink-0 space-y-0.5">
-            <div className="font-bebas leading-none w-full">
-              <div className={TEXT_TERTIARY} style={{ fontSize: '9vw', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: '18vw', letterSpacing: '0.36em' }}>Ready?</div>
+          {/* Headline + status — close together. Cap font so "Ready?" fits in max-w-lg (512px) on desktop. */}
+          <div className="pt-6 shrink-0 space-y-0.5 overflow-visible">
+            <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
+              <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
+              <div className={TEXT_PRIMARY} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
             </div>
             <StatusWidget userId={userId} />
           </div>
@@ -436,53 +436,53 @@ export default function HomeScreen() {
                 <span className={`text-xl ${TEXT_FADED}`}>›</span>
               </div>
             </button>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
             {/* History */}
             <button
               onClick={() => navigate('history')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>History</div>
+              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>History</div>
             </button>
 
             {/* Statistics */}
             <button
               onClick={() => navigate('stats')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <StatsIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Statistics</div>
+              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Statistics</div>
             </button>
 
             {/* Achievements */}
             <button
               onClick={() => navigate('achievements')}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <TrophyIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Achievements</div>
+              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
             </button>
 
             {/* Cardio */}
             <button
               onClick={handleCardioPress}
-              className="card-press rounded-xl p-3 text-left h-20 flex flex-col justify-between"
+              className="card-press rounded-xl p-3 text-left min-h-[72px] flex flex-col justify-between min-w-0"
               style={CARD_BTN_STYLE}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <CardioIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm ${TEXT_SECONDARY}`}>Cardio</div>
+              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Cardio</div>
             </button>
           </div>
           </div>

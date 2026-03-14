@@ -554,7 +554,13 @@ if DIST_DIR.is_dir():
 
     @app.get("/{full_path:path}")
     async def serve_spa(request: Request, full_path: str):
-        file = DIST_DIR / full_path
+        # Resolve path and ensure it stays under DIST_DIR (prevent path traversal)
+        try:
+            file = (DIST_DIR / full_path).resolve()
+            if not str(file).startswith(str(DIST_DIR.resolve())):
+                return FileResponse(DIST_DIR / "index.html")
+        except (OSError, RuntimeError):
+            return FileResponse(DIST_DIR / "index.html")
         if file.is_file():
             return FileResponse(file)
         return FileResponse(DIST_DIR / "index.html")
