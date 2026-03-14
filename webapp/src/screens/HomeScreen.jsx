@@ -252,6 +252,9 @@ export default function HomeScreen() {
   };
 
   const handleNewWorkout = () => {
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
     if (isRecoveryDoneToday()) {
       navigate('workout');
     } else {
@@ -377,22 +380,20 @@ export default function HomeScreen() {
         <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
           <button
             onClick={handleNewWorkout}
-            className={`card-press w-full rounded-xl p-4 text-left transition-opacity flex-1 min-h-0 flex flex-col justify-center ${unfinished ? 'opacity-50' : ''}`}
-            style={{
+            className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center ${unfinished ? 'opacity-50 card-press' : 'btn-main card-press'} ${unfinished ? 'rounded-xl' : ''}`}
+            style={unfinished ? {
               ...CARD_BTN_STYLE,
-              background: unfinished
-                ? 'rgba(255,255,255,0.04)'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
-              boxShadow: unfinished ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
-            }}
+              background: 'rgba(255,255,255,0.04)',
+              boxShadow: 'none',
+            } : undefined}
           >
-            <div className="flex items-center gap-3">
-              <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/20'} ${TEXT_PRIMARY}`}>
+            <div className="flex items-center gap-3 relative z-[1]">
+              <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/15'} ${TEXT_PRIMARY}`}>
                 <WorkoutIcon />
               </span>
               <div className="flex-1">
-                <div className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`}>New Workout</div>
-                <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>Start your training session</div>
+                <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : TEXT_PRIMARY}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
+                <div className={`text-[10px] font-sans mt-0.5 ${TEXT_MUTED}`}>Start your training session</div>
               </div>
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
