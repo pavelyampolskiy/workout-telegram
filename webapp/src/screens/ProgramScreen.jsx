@@ -178,7 +178,7 @@ export default function ProgramScreen() {
                     <div className="font-bebas tracking-wider text-base text-white/90">{day.label}</div>
                     <div className="text-xs text-white/40 font-sans mt-0.5">{count} exercise{count !== 1 ? 's' : ''}</div>
                   </div>
-                  <span className="text-white/35 text-lg shrink-0">›</span>
+                  <span className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/35 text-2xl leading-none">›</span>
                 </button>
                 <button
                   type="button"
