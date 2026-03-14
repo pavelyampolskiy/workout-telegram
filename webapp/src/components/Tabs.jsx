@@ -41,7 +41,7 @@ export function Tabs({ tabs, activeKey, onSelect, className = '' }) {
           style={{
             fontSize: 13,
             borderRadius: 8,
-            color: activeKey === t.key ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.6)',
+            color: activeKey === t.key ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.38)',
           }}
         >
           {t.label}
