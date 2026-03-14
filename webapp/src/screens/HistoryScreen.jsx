@@ -151,17 +151,12 @@ export default function HistoryScreen() {
                           </span>
                           <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
                         </div>
-                        <div className="flex items-center flex-wrap gap-1.5 font-sans text-white/35 text-xs">
+                        <div className="font-sans text-white/35 text-xs">
                           {[
                             w.duration_min > 0 && `${w.duration_min} min`,
                             w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
                             w.total_volume > 0 && fmtVol(w.total_volume),
-                          ].filter(Boolean).map((part, i) => (
-                            <span key={i} className="flex items-center gap-1.5">
-                              {i > 0 && <span className="text-white/20">•</span>}
-                              {part}
-                            </span>
-                          ))}
+                          ].filter(Boolean).join(', ')}
                         </div>
                       </div>
                       <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
