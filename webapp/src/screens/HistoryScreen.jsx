@@ -9,6 +9,14 @@ import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
 
+function formatTotalDuration(totalMin) {
+  if (!totalMin || totalMin <= 0) return null;
+  if (totalMin < 60) return `${totalMin} min`;
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return m > 0 ? `${h}h ${m} min` : `${h}h`;
+}
+
 // Previous workout of the same type (list is newest-first, so "previous" = next in array)
 function getPrevSameType(items, currentIndex) {
   const type = items[currentIndex]?.type;
@@ -144,6 +152,25 @@ export default function HistoryScreen() {
             onSelect={handleFilter}
           />
         </div>
+
+        {/* Summary (highlights) for current list */}
+        {!filterLoading && items.length > 0 && (() => {
+          const totalVolume = items.reduce((s, w) => s + (w.total_volume || 0), 0);
+          const totalMin = items.reduce((s, w) => s + (w.duration_min || 0), 0);
+          const durationStr = formatTotalDuration(totalMin);
+          const parts = [
+            `${items.length} Workout${items.length !== 1 ? 's' : ''}`,
+            totalVolume > 0 && `${fmtVol(totalVolume)} Total`,
+            durationStr,
+          ].filter(Boolean);
+          if (parts.length === 0) return null;
+          return (
+            <div className="mb-4 px-3 py-2 rounded-xl font-sans text-xs text-white/50 bg-white/5 border border-white/10">
+              <span className="text-white/40 mr-1.5">Summary:</span>
+              {parts.join(' | ')}
+            </div>
+          );
+        })()}
 
         {filterLoading ? (
           <div className="text-center text-white/30 py-10 text-sm font-bebas tracking-wider">Loading…</div>
