@@ -5,7 +5,12 @@ import ScreenBg from '../ScreenBg';
 import { Skeleton, SkeletonCard } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { PAGE_HEADING_STYLE } from '../shared';
-import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
+const TrophyIcon = ({ className = 'w-5 h-5' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+    <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
+  </svg>
+);
 
 function AchievementsSkeleton() {
   return (
@@ -26,8 +31,7 @@ function AchievementsSkeleton() {
 }
 
 function Badge({ achievement, locked = false }) {
-  const { type = 'workouts', name, desc, progress, earned } = achievement;
-  const IconComponent = ACHIEVEMENT_CATEGORY_ICONS[type] || ACHIEVEMENT_CATEGORY_ICONS.workouts;
+  const { name, desc, progress, earned } = achievement;
   
   return (
     <div 
@@ -46,15 +50,15 @@ function Badge({ achievement, locked = false }) {
     >
       <div className="flex items-center gap-4">
         <div 
-          className="w-12 h-12 rounded-xl flex items-center justify-center"
+          className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300"
           style={{
             background: earned 
               ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)'
               : 'rgba(255,255,255,0.05)',
-            color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
+            color: earned ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.35)',
           }}
         >
-          {IconComponent}
+          <TrophyIcon />
         </div>
         <div className="flex-1 min-w-0">
           <div className="font-bebas tracking-wider text-base text-white/90">{name}</div>
