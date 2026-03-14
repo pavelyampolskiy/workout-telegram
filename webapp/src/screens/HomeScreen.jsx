@@ -220,6 +220,11 @@ export default function HomeScreen() {
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
+  const [shimmerKey, setShimmerKey] = useState(0);
+
+  useEffect(() => {
+    setShimmerKey(Date.now());
+  }, []);
 
   useEffect(() => {
     if (!userId) return;
@@ -278,7 +283,10 @@ export default function HomeScreen() {
           <div className="pt-6 space-y-0.5">
             <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
               <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className={TEXT_PRIMARY} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
+              <div className="headline-ready-wrap">
+                {shimmerKey !== 0 && <div key={shimmerKey} className="headline-shine" aria-hidden="true" />}
+                <span className={`${TEXT_PRIMARY} relative z-[1]`} style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</span>
+              </div>
             </div>
             <StatusWidget userId={userId} />
           </div>
@@ -387,6 +395,7 @@ export default function HomeScreen() {
               boxShadow: 'none',
             } : undefined}
           >
+            {!unfinished && <div key={shimmerKey} className="btn-main-shine" aria-hidden="true" />}
             <div className="flex items-center gap-3 relative z-[1]">
               <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/15'} ${TEXT_PRIMARY}`}>
                 <WorkoutIcon />
