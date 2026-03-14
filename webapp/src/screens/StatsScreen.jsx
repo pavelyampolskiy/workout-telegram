@@ -48,7 +48,7 @@ const PERIOD_OPTIONS = [
   { key: 'year', label: 'Year' },
 ];
 
-const WEEKS_HEATMAP = 12;
+const WEEKS_HEATMAP = 6;
 const DAYS_TOTAL = WEEKS_HEATMAP * 7;
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
