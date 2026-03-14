@@ -1,5 +1,5 @@
 /** Muscle groups for exercise selection */
-export const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS'];
+export const MUSCLE_GROUPS = ['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS', 'ABS'];
 
 /** Achievement category icons (SVG elements) */
 export const ACHIEVEMENT_CATEGORY_ICONS = {
