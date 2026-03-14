@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { CARD_BTN_STYLE } from '../shared';
-import { Spinner } from '../components/Spinner';
+import { WorkoutSkeleton } from '../components/Skeleton';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { CardioIcon } from '../components/Icons';
 
@@ -121,7 +121,7 @@ export default function WorkoutScreen() {
           <div className="flex-1 min-h-0" />
           <div className="pb-6 safe-bottom shrink-0">
           {loading ? (
-            <div className="flex justify-center py-8"><Spinner /></div>
+            <WorkoutSkeleton />
           ) : (
             <>
               <div className="space-y-3">

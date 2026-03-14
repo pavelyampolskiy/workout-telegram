@@ -5,6 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 import { Spinner } from '../components/Spinner';
+import { ProgramDaySkeleton } from '../components/Skeleton';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
 
 const TrashIcon = () => (
@@ -116,7 +117,11 @@ export default function ProgramDayScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-        <div className="relative z-10 flex-1 flex items-center justify-center p-5 safe-top"><Spinner /></div>
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+          <h1 className="font-bebas text-white/90 pt-2 pb-1 text-xl tracking-wider">{dayLabel || dayKey}</h1>
+          <p className="text-white/40 text-xs font-sans mb-5">Add, remove, or reorder exercises. Tap to rename.</p>
+          <ProgramDaySkeleton />
+        </div>
       </div>
     );
   }

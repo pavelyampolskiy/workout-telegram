@@ -76,3 +76,170 @@ export function HomeStatsSkeleton() {
     </div>
   );
 }
+
+/** Progress screen: selector card + content cards */
+export function ProgressSkeleton() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-14 w-full rounded-2xl" />
+      <div className="space-y-4">
+        <Skeleton className="h-20 w-full rounded-2xl" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+        <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.04)' }}>
+          <Skeleton className="h-3 w-24 mb-3" />
+          <div className="space-y-2">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="flex justify-between">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-3 w-12" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Workout screen: day cards + cardio */
+export function WorkoutSkeleton() {
+  return (
+    <div className="space-y-3">
+      {[1, 2, 3].map(i => (
+        <SkeletonCard key={i} className="p-4 flex items-center gap-4">
+          <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+          <div className="flex-1">
+            <Skeleton className="h-4 w-24 mb-1" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </SkeletonCard>
+      ))}
+      <div className="flex items-center gap-3 my-4">
+        <div className="flex-1 h-px bg-white/8" />
+        <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
+        <div className="flex-1 h-px bg-white/8" />
+      </div>
+      <SkeletonCard className="p-4 flex items-center gap-4">
+        <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+        <Skeleton className="h-4 w-20" />
+      </SkeletonCard>
+    </div>
+  );
+}
+
+/** Program screen: title, subtitle, day cards */
+export function ProgramSkeleton() {
+  return (
+    <div className="space-y-2">
+      <Skeleton className="h-4 w-20 mb-1" />
+      <Skeleton className="h-3 w-full mb-5" />
+      {[1, 2, 3, 4].map(i => (
+        <SkeletonCard key={i} className="p-4 flex items-center gap-4">
+          <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
+          <div className="flex-1">
+            <Skeleton className="h-4 w-24 mb-1" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </SkeletonCard>
+      ))}
+    </div>
+  );
+}
+
+/** Program day screen: title, subtitle, exercise rows, Add button */
+export function ProgramDaySkeleton() {
+  return (
+    <div className="space-y-2">
+      <Skeleton className="h-3 w-full mb-5" />
+      {[1, 2, 3, 4].map(i => (
+        <div key={i} className="rounded-xl p-4 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.04)' }}>
+          <div className="flex flex-col gap-1 shrink-0">
+            <Skeleton className="h-5 w-5 rounded" />
+            <Skeleton className="h-5 w-5 rounded" />
+          </div>
+          <div className="flex-1">
+            <Skeleton className="h-4 w-32 mb-1" />
+            <Skeleton className="h-3 w-24" />
+          </div>
+        </div>
+      ))}
+      <Skeleton className="h-14 w-full rounded-xl mt-4" />
+    </div>
+  );
+}
+
+/** Exercise screen: back, title, progress bar, set rows */
+export function ExerciseSkeleton() {
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center gap-1">
+        <Skeleton className="h-4 w-4" />
+        <Skeleton className="h-3 w-16" />
+      </div>
+      <div>
+        <Skeleton className="h-3 w-20 mb-2" />
+        <Skeleton className="h-7 w-48" />
+      </div>
+      <Skeleton className="h-2 w-full rounded-full" />
+      <div className="space-y-2">
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className="flex items-center justify-between py-2">
+            <Skeleton className="h-4 w-8" />
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** History detail: date, title, exercise cards */
+export function HistoryDetailSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div>
+        <Skeleton className="h-3 w-24 mb-1" />
+        <Skeleton className="h-8 w-32" />
+      </div>
+      {[1, 2, 3].map(i => (
+        <SkeletonCard key={i} className="p-4">
+          <Skeleton className="h-4 w-28 mb-2" />
+          <Skeleton className="h-3 w-20 mb-3" />
+          <div className="space-y-2">
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-4/5" />
+          </div>
+        </SkeletonCard>
+      ))}
+    </div>
+  );
+}
+
+/** Day screen: header, exercise list rows */
+export function DaySkeleton() {
+  return (
+    <div className="space-y-2">
+      {[1, 2, 3, 4, 5].map(i => (
+        <SkeletonCard key={i} className="p-4 flex items-center gap-4">
+          <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+          <div className="flex-1">
+            <Skeleton className="h-4 w-28 mb-1" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </SkeletonCard>
+      ))}
+    </div>
+  );
+}
+
+/** Cardio screen: content area + bottom CTA */
+export function CardioSkeleton() {
+  return (
+    <div className="space-y-6">
+      <Skeleton className="h-24 w-full rounded-2xl" />
+      <Skeleton className="h-4 w-48 max-w-full" />
+      <Skeleton className="h-14 w-full rounded-2xl mt-8" />
+    </div>
+  );
+}

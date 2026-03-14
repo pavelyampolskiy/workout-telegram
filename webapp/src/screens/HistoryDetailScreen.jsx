@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
+import { HistoryDetailSkeleton } from '../components/Skeleton';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
 import { formatDate, fmtW, fmtWorkoutType, DARK_CARD_STYLE, CARD_BTN_STYLE, SECONDARY_CARD_STYLE } from '../shared';
@@ -129,7 +129,14 @@ export default function HistoryDetailScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen overlay="bg-black/65" image="/workout-bg.jpg" />;
+    return (
+      <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
+        <ScreenBg image="/workout-bg.jpg" overlay="bg-black/65" />
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+          <HistoryDetailSkeleton />
+        </div>
+      </div>
+    );
   }
   if (error) {
     return (

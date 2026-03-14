@@ -4,8 +4,8 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { CARD_BTN_STYLE } from '../shared';
-import { Spinner } from '../components/Spinner';
 import { ErrorScreen } from '../components/ErrorScreen';
+import { ProgramSkeleton } from '../components/Skeleton';
 
 const DayIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -132,8 +132,10 @@ export default function ProgramScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-        <div className="relative z-10 flex-1 flex items-center justify-center p-5 safe-top">
-          <Spinner />
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+          <h1 className="font-bebas text-white/90 pt-2 pb-4 text-xl tracking-wider">Program</h1>
+          <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
+          <ProgramSkeleton />
         </div>
       </div>
     );

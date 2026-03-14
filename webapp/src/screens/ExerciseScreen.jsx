@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
+import { ExerciseSkeleton } from '../components/Skeleton';
 import { fmtW, fmtTime, DARK_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
 const REST_PRESETS = [60, 90, 120];
@@ -262,7 +262,14 @@ export default function ExerciseScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen image="/gym-bg.jpg" />;
+    return (
+      <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
+        <ScreenBg image="/gym-bg.jpg" />
+        <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-8 pb-28 overflow-y-auto">
+          <ExerciseSkeleton />
+        </div>
+      </div>
+    );
   }
   if (error) {
     return (

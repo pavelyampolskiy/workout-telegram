@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
-import { LoadingScreen } from '../components/LoadingScreen';
+import { CardioSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { fmtTime, CARD_BTN_STYLE } from '../shared';
 
@@ -76,7 +76,14 @@ export default function CardioScreen() {
   }
 
   if (loading) {
-    return <LoadingScreen overlay="bg-black/60" image="/cardio-bg.jpg" />;
+    return (
+      <div className="min-h-screen relative flex flex-col overflow-hidden">
+        <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" />
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+          <CardioSkeleton />
+        </div>
+      </div>
+    );
   }
 
   // Pre-start screen

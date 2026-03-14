@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
+import { DaySkeleton } from '../components/Skeleton';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
 import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, fmtTime } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
@@ -39,7 +39,15 @@ export default function DayScreen() {
   }, [isCardio, replace]);
 
   if (isCardio) {
-    return <LoadingScreen overlay="bg-black/65" image="/gym-bg.jpg" message="Opening cardio…" />;
+    return (
+      <div className="min-h-screen relative flex flex-col overflow-hidden">
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+          <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Cardio</h1>
+          <DaySkeleton />
+        </div>
+      </div>
+    );
   }
 
   // exerciseMap: { [exIdx]: { dbId, setsCount } }
@@ -186,7 +194,15 @@ export default function DayScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen overlay="bg-black/65" image="/gym-bg.jpg" message="Setting up workout…" />;
+    return (
+      <div className="min-h-screen relative flex flex-col overflow-hidden">
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+          <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">{dayLabel || 'Workout'}</h1>
+          <DaySkeleton />
+        </div>
+      </div>
+    );
   }
 
   if (error) {

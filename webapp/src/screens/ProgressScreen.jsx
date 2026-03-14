@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { LoadingScreen } from '../components/LoadingScreen';
 import { ErrorScreen } from '../components/ErrorScreen';
+import { ProgressSkeleton } from '../components/Skeleton';
 import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE } from '../shared';
 
 function LineChart({ data }) {
@@ -115,7 +115,15 @@ export default function ProgressScreen() {
   };
 
   if (loading) {
-    return <LoadingScreen image="/workout-bg.jpg" />;
+    return (
+      <div className="min-h-screen relative flex flex-col overflow-hidden">
+        <ScreenBg image="/workout-bg.jpg" />
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+          <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Progress</h1>
+          <ProgressSkeleton />
+        </div>
+      </div>
+    );
   }
   if (error) {
     return (
