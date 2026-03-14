@@ -85,7 +85,7 @@ input[type='number']::-webkit-outer-spin-button {
       transparent 100%
     );
     transform: skewX(-20deg);
-    animation: metalShine 14s infinite linear;
+    animation: metalShine 7s infinite linear;
   }
   .btn-main:active {
     transform: scale(0.97);
