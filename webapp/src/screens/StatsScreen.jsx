@@ -145,7 +145,7 @@ export default function StatsScreen() {
   const [monthPickerOpen, setMonthPickerOpen] = useState(false);
 
   const STATS_TABS = [
-    { key: 'amount', label: 'Amount' },
+    { key: 'amount', label: 'Workouts' },
     { key: 'freq', label: 'Frequency' },
     { key: 'progress', label: 'Progress' },
   ];
