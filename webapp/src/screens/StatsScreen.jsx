@@ -148,23 +148,8 @@ export default function StatsScreen() {
       if (!d) return null;
       return (
         <>
-          <div className={`mb-4 rounded-2xl overflow-hidden ${CARD.className}`} style={CARD.style}>
-            <div className="divide-y divide-white/[0.06]">
-              {PERIOD_OPTIONS.map(({ key, label }) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setAmountPeriod(key)}
-                  className={`w-full py-3.5 px-4 text-left font-bebas tracking-wider text-base transition-colors ${
-                    amountPeriod === key
-                      ? 'bg-white/15 text-white'
-                      : 'text-white/60 active:bg-white/10 active:text-white/80'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
+          <div className="mb-4">
+            <Tabs tabs={PERIOD_OPTIONS} activeKey={amountPeriod} onSelect={setAmountPeriod} />
           </div>
           {renderAmountContent(d)}
         </>
