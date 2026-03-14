@@ -544,24 +544,20 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
 # ── Progress ──────────────────────────────────────────────────────────────────
 
 def get_exercise_progress(user_id: int, exercise_name: str, limit: int = 6):
-    """Return progress (date, max_weight) per workout. Includes history under previous names (renames)."""
+    """Return progress (date, max_weight) per workout for the given exercise name only."""
     with db() as conn:
-        names = _resolve_exercise_names(conn, user_id, exercise_name)
-        if not names:
-            return []
-        placeholders = ",".join("?" * len(names))
         rows = conn.execute(
-            f"""
+            """
             SELECT w.date, MAX(ws.weight) as max_weight
             FROM workout_sets ws
             JOIN workout_exercises we ON ws.workout_exercise_id = we.id
             JOIN workouts w ON we.workout_id = w.id
-            WHERE w.user_id = ? AND we.name IN ({placeholders})
+            WHERE w.user_id = ? AND we.name = ?
             GROUP BY w.id
             ORDER BY w.date DESC, w.id DESC
             LIMIT ?
             """,
-            (user_id, *names, limit),
+            (user_id, exercise_name, limit),
         ).fetchall()
     return list(reversed(rows))
 

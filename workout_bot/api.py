@@ -428,19 +428,6 @@ def get_progress(user_id: int, exercise_name: str, limit: int = 8):
     return [{"date": r["date"], "max_weight": r["max_weight"]} for r in rows]
 
 
-class LinkAliasBody(BaseModel):
-    user_id: int
-    from_name: str
-    to_name: str
-
-
-@app.post("/api/progress/link-alias")
-def link_progress_alias(body: LinkAliasBody):
-    """Link an old exercise name to the current one so progress history is merged."""
-    added = db_ops.add_exercise_alias(body.user_id, body.from_name, body.to_name)
-    return {"ok": True, "added": added}
-
-
 # ── Achievements ─────────────────────────────────────────────────────────────
 
 ACHIEVEMENTS = [

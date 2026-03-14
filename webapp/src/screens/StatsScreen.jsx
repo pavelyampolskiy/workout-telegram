@@ -112,19 +112,21 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
 }
 
 function getMonthOptions(freqMonths) {
-  if (!freqMonths || freqMonths.length === 0) {
-    const now = new Date();
-    return [{
-      year: now.getFullYear(),
-      month: now.getMonth() + 1,
-      label: getMonthLabel(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`),
-    }];
-  }
-  return freqMonths.map(({ year, month }) => ({
+  const now = new Date();
+  const current = { year: now.getFullYear(), month: now.getMonth() + 1 };
+  const list = (freqMonths || []).map(({ year, month }) => ({
     year,
     month,
     label: getMonthLabel(`${year}-${String(month).padStart(2, '0')}-01`),
   }));
+  const hasCurrent = list.some((o) => o.year === current.year && o.month === current.month);
+  if (!hasCurrent) {
+    list.unshift({
+      ...current,
+      label: getMonthLabel(`${current.year}-${String(current.month).padStart(2, '0')}-01`),
+    });
+  }
+  return list.length ? list : [{ ...current, label: getMonthLabel(`${current.year}-${String(current.month).padStart(2, '0')}-01`) }];
 }
 
 export default function StatsScreen() {
@@ -135,7 +137,10 @@ export default function StatsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [barMounted, setBarMounted] = useState(false);
-  const [freqMonth, setFreqMonth] = useState(null);
+  const [freqMonth, setFreqMonth] = useState(() => {
+    const n = new Date();
+    return { year: n.getFullYear(), month: n.getMonth() + 1 };
+  });
   const [freqMonths, setFreqMonths] = useState([]);
   const [monthPickerOpen, setMonthPickerOpen] = useState(false);
 
@@ -168,7 +173,7 @@ export default function StatsScreen() {
   }, [userId, showToast]);
 
   useEffect(() => {
-    if (tab !== 'freq' || !userId || freqMonth === null) return;
+    if (tab !== 'freq' || !userId) return;
     let cancelled = false;
     (async () => {
       try {
@@ -194,7 +199,13 @@ export default function StatsScreen() {
 
   const handleTabSelect = (key) => {
     if (key === 'progress') navigate('progress');
-    else setTab(key);
+    else {
+      setTab(key);
+      if (key === 'freq') {
+        const n = new Date();
+        setFreqMonth({ year: n.getFullYear(), month: n.getMonth() + 1 });
+      }
+    }
   };
 
   if (loading) {

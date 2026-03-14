@@ -72,17 +72,24 @@ export default function ProgressScreen() {
   const [loadingProg, setLoadingProg] = useState(false);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
-  const [previousName, setPreviousName] = useState('');
-  const [linking, setLinking] = useState(false);
 
   const loadProgram = () => {
-    api.getProgram(userId)
-      .then(p => {
+    Promise.all([
+      api.getProgram(userId),
+      api.searchExercises(userId, '', 200),
+    ])
+      .then(([p, searchRes]) => {
         const seen = new Set();
         const list = [];
         for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) {
           for (const ex of (p[day] || [])) {
             if (!seen.has(ex.name)) { seen.add(ex.name); list.push(ex); }
+          }
+        }
+        for (const ex of (searchRes?.exercises || [])) {
+          if (!seen.has(ex.name)) {
+            seen.add(ex.name);
+            list.push({ name: ex.name, grp: ex.grp, target_sets: 0 });
           }
         }
         setProgram(list);
@@ -158,7 +165,7 @@ export default function ProgressScreen() {
                   className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
                 >
                   <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
-                  <div className="text-xs text-white/30 font-bebas">{ex.group}</div>
+                  <div className="text-xs text-white/30 font-bebas">{ex.grp}</div>
                 </button>
               ))}
             </div>
@@ -178,40 +185,7 @@ export default function ProgressScreen() {
                   <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                 </svg>
               </div>
-              <p className="font-bebas text-sm mb-5">No data yet for {selected.name}</p>
-              <p className="font-sans text-xs text-white/40 mb-2">Was it renamed? Enter the previous name to link history:</p>
-              <div className="flex gap-2 max-w-xs mx-auto">
-                <input
-                  type="text"
-                  value={previousName}
-                  onChange={(e) => setPreviousName(e.target.value)}
-                  placeholder="e.g. French press"
-                  className="flex-1 rounded-xl px-3 py-2 text-sm font-sans bg-white/10 border border-white/15 text-white placeholder-white/30"
-                />
-                <button
-                  type="button"
-                  disabled={linking || !previousName.trim()}
-                  onClick={async () => {
-                    const from = previousName.trim();
-                    if (!from) return;
-                    setLinking(true);
-                    try {
-                      await api.linkProgressAlias(userId, from, selected.name);
-                      const data = await api.getProgress(userId, selected.name);
-                      setProgress(data);
-                      setPreviousName('');
-                      showToast(data.length > 0 ? 'History linked' : 'No data under that name');
-                    } catch (e) {
-                      showToast(e.message);
-                    } finally {
-                      setLinking(false);
-                    }
-                  }}
-                  className="rounded-xl px-4 py-2 text-sm font-bebas tracking-wider bg-white/15 text-white/90 disabled:opacity-50"
-                >
-                  {linking ? '…' : 'Link'}
-                </button>
-              </div>
+              <p className="font-bebas text-sm">No data yet for {selected.name}</p>
             </div>
           ) : (
             <div className="space-y-4">
