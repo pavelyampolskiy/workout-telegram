@@ -60,7 +60,8 @@ function toDateStr(d) {
 }
 
 function ActivityHeatmap({ dates = [] }) {
-  const set = new Set(dates);
+  const countByDate = {};
+  dates.forEach((d) => { countByDate[d] = (countByDate[d] || 0) + 1; });
   const start = new Date();
   start.setDate(start.getDate() - (DAYS_TOTAL - 1));
   const dayOfWeek = start.getDay();
@@ -81,17 +82,22 @@ function ActivityHeatmap({ dates = [] }) {
           </div>
         ))}
         {dayStrings.map((dateStr, i) => {
-          const active = set.has(dateStr);
+          const count = countByDate[dateStr] || 0;
+          const opacity = count === 0 ? 0.08 : Math.min(0.95, 0.35 + count * 0.2);
           return (
             <div
               key={i}
-              className="w-full aspect-square max-w-[999px] rounded-[4px] transition-colors"
+              className="w-full aspect-square max-w-[999px] rounded-[4px] transition-colors flex items-center justify-center"
               style={{
-                background: active ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.08)',
+                background: `rgba(255,255,255,${opacity})`,
               }}
-              title={dateStr}
+              title={count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr}
               aria-hidden
-            />
+            >
+              {count > 1 && (
+                <span className="text-[8px] font-bebas text-white/90 leading-none">{count}</span>
+              )}
+            </div>
           );
         })}
       </div>
