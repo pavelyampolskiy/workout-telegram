@@ -50,6 +50,7 @@ const PERIOD_OPTIONS = [
 
 const WEEKS_HEATMAP = 12;
 const DAYS_TOTAL = WEEKS_HEATMAP * 7;
+const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function toDateStr(d) {
   const y = d.getFullYear();
@@ -62,6 +63,9 @@ function ActivityHeatmap({ dates = [] }) {
   const set = new Set(dates);
   const start = new Date();
   start.setDate(start.getDate() - (DAYS_TOTAL - 1));
+  const dayOfWeek = start.getDay();
+  const toMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  start.setDate(start.getDate() + toMonday);
   const dayStrings = [];
   for (let i = 0; i < DAYS_TOTAL; i++) {
     const d = new Date(start);
@@ -69,8 +73,13 @@ function ActivityHeatmap({ dates = [] }) {
     dayStrings.push(toDateStr(d));
   }
   return (
-    <div className="mt-4">
-      <div className="grid grid-cols-7 gap-1" style={{ width: 'fit-content' }}>
+    <div>
+      <div className="grid grid-cols-7 gap-1 items-center" style={{ width: 'fit-content' }}>
+        {DAY_LABELS.map((label) => (
+          <div key={label} className="w-2.5 h-3 flex items-center justify-center text-[9px] font-sans text-white/40 uppercase tracking-wide">
+            {label}
+          </div>
+        ))}
         {dayStrings.map((dateStr, i) => {
           const active = set.has(dateStr);
           return (
@@ -171,18 +180,22 @@ export default function StatsScreen() {
     if (tab === 'freq') {
       const { total, avg, dates = [] } = data.freq;
       return (
-        <div className={CARD.className} style={CARD.style}>
-          <div className="flex">
-            <div className="flex-1 text-center border-r border-white/[0.06] pr-4">
-              <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
-            </div>
-            <div className="flex-1 text-center pl-4">
-              <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
+        <div className="space-y-4">
+          <div className={CARD.className} style={CARD.style}>
+            <div className="flex">
+              <div className="flex-1 text-center border-r border-white/[0.06] pr-4">
+                <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
+              </div>
+              <div className="flex-1 text-center pl-4">
+                <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
+              </div>
             </div>
           </div>
-          <ActivityHeatmap dates={dates} />
+          <div className={CARD.className} style={CARD.style}>
+            <ActivityHeatmap dates={dates} />
+          </div>
         </div>
       );
     }
