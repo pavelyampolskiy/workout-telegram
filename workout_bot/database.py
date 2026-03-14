@@ -551,6 +551,16 @@ def stats_frequency(user_id: int, weeks: int = 4):
     return total, avg
 
 
+def get_workout_dates(user_id: int, since: date):
+    """Return list of date strings (YYYY-MM-DD) when user had a finished workout."""
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT DISTINCT date FROM workouts WHERE user_id=? AND date>=? AND finished_at IS NOT NULL",
+            (user_id, since.isoformat()),
+        ).fetchall()
+    return [r["date"] for r in rows]
+
+
 def get_cardio_count(user_id: int) -> int:
     with db() as conn:
         result = conn.execute(

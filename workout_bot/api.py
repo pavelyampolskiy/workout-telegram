@@ -380,9 +380,11 @@ def get_stats(user_id: int, days: int = 7):
 
 
 @app.get("/api/stats/frequency")
-def get_frequency(user_id: int, weeks: int = 4):
+def get_frequency(user_id: int, weeks: int = 12):
     total, avg = db_ops.stats_frequency(user_id, weeks)
-    return {"total": total, "avg": avg, "weeks": weeks}
+    since = date.today() - timedelta(weeks=weeks)
+    dates = db_ops.get_workout_dates(user_id, since)
+    return {"total": total, "avg": avg, "weeks": weeks, "dates": dates}
 
 
 # ── Progress ──────────────────────────────────────────────────────────────────

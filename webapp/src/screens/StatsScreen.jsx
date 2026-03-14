@@ -48,6 +48,49 @@ const PERIOD_OPTIONS = [
   { key: 'year', label: 'Year' },
 ];
 
+const WEEKS_HEATMAP = 12;
+const DAYS_TOTAL = WEEKS_HEATMAP * 7;
+
+function toDateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+function ActivityHeatmap({ dates = [] }) {
+  const set = new Set(dates);
+  const start = new Date();
+  start.setDate(start.getDate() - (DAYS_TOTAL - 1));
+  const dayStrings = [];
+  for (let i = 0; i < DAYS_TOTAL; i++) {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    dayStrings.push(toDateStr(d));
+  }
+  return (
+    <div className="mt-4">
+      <div className="grid grid-cols-7 gap-1" style={{ width: 'fit-content' }}>
+        {dayStrings.map((dateStr, i) => {
+          const active = set.has(dateStr);
+          return (
+            <div
+              key={i}
+              className="w-2.5 h-2.5 rounded-[3px] flex-shrink-0 transition-colors"
+              style={{
+                background: active ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.08)',
+              }}
+              title={dateStr}
+              aria-hidden
+            />
+          );
+        })}
+      </div>
+      <p className="font-sans text-[10px] text-white/35 mt-2">Last {WEEKS_HEATMAP} weeks</p>
+    </div>
+  );
+}
+
 export default function StatsScreen() {
   const { userId, navigate, showToast } = useApp();
   const [tab, setTab] = useState('amount');
@@ -126,7 +169,7 @@ export default function StatsScreen() {
 
   const renderContent = () => {
     if (tab === 'freq') {
-      const { total, avg } = data.freq;
+      const { total, avg, dates = [] } = data.freq;
       return (
         <div className={CARD.className} style={CARD.style}>
           <div className="flex">
@@ -139,6 +182,7 @@ export default function StatsScreen() {
               <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
             </div>
           </div>
+          <ActivityHeatmap dates={dates} />
         </div>
       );
     }
