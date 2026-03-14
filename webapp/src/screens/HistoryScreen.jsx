@@ -9,6 +9,39 @@ import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
 
+// Previous workout of the same type (list is newest-first, so "previous" = next in array)
+function getPrevSameType(items, currentIndex) {
+  const type = items[currentIndex]?.type;
+  if (!type) return null;
+  for (let i = currentIndex + 1; i < items.length; i++) {
+    if (items[i].type === type) return items[i];
+  }
+  return null;
+}
+
+function VolumeChange({ items, index, totalVolume }) {
+  if (!totalVolume || totalVolume <= 0) return null;
+  const prev = getPrevSameType(items, index);
+  if (!prev || !prev.total_volume || prev.total_volume <= 0) return null;
+  const pct = Math.round(((totalVolume - prev.total_volume) / prev.total_volume) * 100);
+  if (pct === 0) return null;
+  const isUp = pct > 0;
+  return (
+    <span className={`inline-flex items-center gap-0.5 font-sans text-[10px] ${isUp ? 'text-emerald-400/95' : 'text-red-400/90'}`}>
+      {isUp ? (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+          <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+      )}
+      <span>{isUp ? '+' : ''}{pct}%</span>
+    </span>
+  );
+}
+
 // "14:32" from ISO datetime string (UTC → local)
 function formatTime(isoStr) {
   if (!isoStr) return null;
@@ -152,13 +185,16 @@ export default function HistoryScreen() {
                           <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
                         </div>
                         <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
-                          {[
-                            w.duration_min > 0 && `${w.duration_min} min`,
-                            w.total_sets > 0 && `${w.total_sets} set${w.total_sets !== 1 ? 's' : ''}`,
-                            w.total_volume > 0 && fmtVol(w.total_volume),
-                          ].filter(Boolean).map((part, i) => (
-                            <span key={i}>{part}</span>
-                          ))}
+                          {w.duration_min > 0 && <span>{w.duration_min} min</span>}
+                          {w.total_sets > 0 && (
+                            <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                          )}
+                          {w.total_volume > 0 && (
+                            <span className="inline-flex items-center gap-1.5">
+                              <span>{fmtVol(w.total_volume)}</span>
+                              <VolumeChange items={items} index={idx} totalVolume={w.total_volume} />
+                            </span>
+                          )}
                         </div>
                       </div>
                       <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
