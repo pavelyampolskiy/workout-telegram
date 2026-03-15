@@ -34,29 +34,19 @@ function Badge({ achievement, locked = false }) {
       className={`rounded-2xl p-4 ${locked ? 'opacity-50' : ''}`}
       style={{
         background: earned 
-          ? 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)'
-          : 'rgba(255,255,255,0.03)',
-        border: earned 
-          ? '1px solid rgba(255,255,255,0.15)'
-          : '1px solid rgba(255,255,255,0.05)',
-        boxShadow: earned 
-          ? 'inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,0.05)'
-          : 'none',
+          ? 'rgba(255,255,255,0.06)'
+          : 'rgba(255,255,255,0.04)',
       }}
     >
       <div className="flex items-center gap-4">
-        <div 
-          className="w-12 h-12 rounded-xl flex items-center justify-center"
+        <span 
+          className="shrink-0 flex items-center justify-center"
           style={{
-            background: earned 
-              ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)'
-              : 'rgba(255,255,255,0.05)',
             color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
-            filter: earned ? undefined : 'blur(1.5px)',
           }}
         >
           {IconComponent}
-        </div>
+        </span>
         <div className="flex-1 min-w-0">
           <div className="font-bebas tracking-wider text-base text-white/90">{name}</div>
           <div className="text-xs text-white/40 font-sans">{desc}</div>
