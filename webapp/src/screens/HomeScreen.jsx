@@ -217,7 +217,7 @@ export default function HomeScreen() {
           ) : (
             <button
               onClick={handleNewWorkout}
-              className="w-full p-4 flex-1 min-h-0 flex flex-row justify-center items-center card-press rounded-xl gap-2"
+              className="w-1/2 min-w-0 mx-auto p-4 flex-1 min-h-0 flex flex-row justify-center items-center card-press rounded-xl gap-5"
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><WorkoutIcon /></span>
