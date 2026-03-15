@@ -11,7 +11,7 @@ import homeBg from '../assets/gym-bg.jpg';
 /** Единая толщина контура всех иконок. */
 const ICON_STROKE = 1;
 /** Фон всех карточек/плашек на главном экране (без границ). */
-const CARD_BG = 'rgba(255,255,255,0.05)';
+const CARD_BG = 'rgba(255,255,255,0.03)';
 /** Стиль обёртки иконки в карточке. */
 const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white';
 /** Стиль подписи в карточке (иконка + текст). */

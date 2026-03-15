@@ -170,11 +170,11 @@ export default function HistoryScreen() {
           const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
           const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
           return (
-            <div className="mb-4 text-center pb-4 border-b border-white/10">
+            <div className="mb-4 rounded-2xl p-4" style={CARD_BTN_STYLE}>
               <button
                 type="button"
                 onClick={() => {}}
-                className="inline-flex items-center justify-center gap-1.5 font-sans text-[11px] text-white/60 hover:text-white/80 active:opacity-80 uppercase tracking-widest mb-1.5 mx-auto"
+                className="inline-flex items-center justify-center gap-1.5 font-sans text-[11px] text-white/60 hover:text-white/80 active:opacity-80 uppercase tracking-widest mb-3 mx-auto w-full"
               >
                 {periodLabel}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
