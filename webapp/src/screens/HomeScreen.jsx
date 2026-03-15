@@ -246,7 +246,7 @@ export default function HomeScreen() {
                   className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><HistoryIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
                 </button>
                 <button
@@ -254,7 +254,7 @@ export default function HomeScreen() {
                   className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><StatsIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
                 </button>
                 <button
@@ -262,7 +262,7 @@ export default function HomeScreen() {
                   className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><TrophyIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
                 </button>
                 <button
@@ -270,7 +270,7 @@ export default function HomeScreen() {
                   className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><ProgramIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
                 </button>
               </div>
@@ -280,19 +280,19 @@ export default function HomeScreen() {
             <div className="flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button onClick={() => navigate('history')} className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><HistoryIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
                 </button>
                 <button onClick={() => navigate('stats')} className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><StatsIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
                 </button>
                 <button onClick={() => navigate('achievements')} className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><TrophyIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
                 </button>
                 <button onClick={() => navigate('program')} className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
-                  <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
+                  <span className="shrink-0 flex items-center justify-center text-white"><ProgramIcon /></span>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
                 </button>
               </div>
