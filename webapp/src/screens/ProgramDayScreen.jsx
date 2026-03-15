@@ -38,7 +38,6 @@ export default function ProgramDayScreen() {
 
   const [addGroup, setAddGroup] = useState('CHEST');
   const [addName, setAddName] = useState('');
-  const [addTargetSets, setAddTargetSets] = useState(3);
   const [adding, setAdding] = useState(false);
 
   const [editName, setEditName] = useState('');
@@ -73,10 +72,9 @@ export default function ProgramDayScreen() {
     if (!addName.trim()) return;
     setAdding(true);
     try {
-      const newEx = { group: addGroup, name: addName.trim(), target_sets: Math.max(1, Math.min(10, addTargetSets)) };
+      const newEx = { group: addGroup, name: addName.trim(), target_sets: 3 };
       setExercises(prev => [...prev, newEx]);
       setAddName('');
-      setAddTargetSets(3);
       setShowAdd(false);
     } finally {
       setAdding(false);
@@ -178,15 +176,15 @@ export default function ProgramDayScreen() {
 
         <button
           onClick={() => setShowAdd(true)}
-          className="card-press w-full rounded-xl p-4 mt-4 flex items-center gap-3"
+          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors mt-4"
           style={SECONDARY_CARD_STYLE}
         >
-          <span className="shrink-0 flex items-center justify-center text-white/50">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+          <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
+            +
           </span>
-          <span className="font-bebas tracking-wider text-white/60">Add Exercise</span>
+          <div className="font-bebas tracking-wider text-base text-white/50">
+            Add Exercise
+          </div>
         </button>
       </div>
 
@@ -200,11 +198,12 @@ export default function ProgramDayScreen() {
         </button>
       </div>
 
-      {/* Add modal */}
+      {/* Add modal — same as DayScreen */}
       {showAdd && (
-        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="modal-content w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
+
             <div className="mb-4">
               <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Muscle Group</label>
               <div className="flex flex-wrap gap-2">
@@ -221,33 +220,40 @@ export default function ProgramDayScreen() {
                 ))}
               </div>
             </div>
-            <div className="mb-4">
-              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Name</label>
+
+            <div className="mb-5">
+              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Exercise Name</label>
               <ExerciseNameInput
                 value={addName}
                 onChange={setAddName}
                 onSelectSuggestion={(item) => { setAddName(item.name); setAddGroup(item.grp); }}
                 userId={userId}
-                placeholder="e.g. Bench Press"
+                placeholder="e.g. Dumbbell Curls"
                 className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
+                autoFocus
               />
             </div>
-            <div className="mb-5">
-              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Target sets</label>
-              <input
-                type="number"
-                min={1}
-                max={10}
-                value={addTargetSets}
-                onChange={e => setAddTargetSets(parseInt(e.target.value, 10) || 3)}
-                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white outline-none font-bebas tracking-wider focus:border-white/25"
-              />
-            </div>
+
             <div className="flex flex-col gap-2">
-              <button onClick={handleAdd} disabled={!addName.trim() || adding} className="btn-active-style card-press w-full text-white/90 font-bebas tracking-wider py-3 rounded-[14px] disabled:opacity-40">
-                {adding ? 'Adding…' : 'Add'}
+              <button
+                onClick={handleAdd}
+                disabled={!addName.trim() || adding}
+                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40"
+                style={CARD_BTN_STYLE}
+              >
+                {adding ? (
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Spinner size={18} />
+                    Adding…
+                  </span>
+                ) : (
+                  'Add Exercise'
+                )}
               </button>
-              <button onClick={() => { setShowAdd(false); setAddName(''); }} className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm">
+              <button
+                onClick={() => { setShowAdd(false); setAddName(''); }}
+                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
+              >
                 Cancel
               </button>
             </div>
