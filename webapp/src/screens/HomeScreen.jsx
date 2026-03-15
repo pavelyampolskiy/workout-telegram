@@ -9,7 +9,8 @@ import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import homeBg from '../assets/gym-bg.jpg';
 
-const ICON_STROKE = 1.5;
+/** Единая толщина контура всех иконок (часы, графики, кубок, гантель, список). */
+const ICON_STROKE = 1;
 const WorkoutIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
