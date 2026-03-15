@@ -19,7 +19,7 @@ const LABEL_STYLE = { letterSpacing: '1.5px' };
 const LABEL_CLASS = 'font-bebas tracking-wider text-xl';
 const LABEL_CLASS_MUTED = 'font-bebas tracking-wider text-base text-white/50 truncate w-full text-center';
 const WorkoutIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
   </svg>
 );
@@ -221,7 +221,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><WorkoutIcon /></span>
-              <div className="font-bebas tracking-wider text-white shrink-0" style={{ letterSpacing: '0.18em', fontSize: 'clamp(14px, 7.5vw, 32px)' }}>New Workout</div>
+              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
             </button>
           )}
           {unfinished && showDismissConfirm && createPortal(
