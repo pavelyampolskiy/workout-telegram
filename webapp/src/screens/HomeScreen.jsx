@@ -279,7 +279,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>History</div>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
@@ -287,7 +287,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>Statistics</div>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
@@ -295,7 +295,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>Achievements</div>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
@@ -303,7 +303,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>My program</div>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
             </button>
           </div>
         </div>
