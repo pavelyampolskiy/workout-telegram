@@ -433,10 +433,6 @@ export default function ExerciseScreen() {
 
       {/* Input */}
       <div className={`rounded-2xl p-4 mb-4 backdrop-blur-sm overflow-hidden ${justSaved ? 'save-flash' : ''}`} style={DARK_CARD_STYLE}>
-        <div className={`text-xs mb-3 uppercase tracking-wider font-bebas ${TEXT_TERTIARY}`}>
-          Current set · {done + 1}
-        </div>
-        
         {/* Weight input with +/- buttons */}
         <div className="mb-4">
           <label className={`text-xs mb-2 block font-bebas ${TEXT_MUTED}`}>Weight (kg)</label>
