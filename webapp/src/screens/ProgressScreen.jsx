@@ -163,7 +163,17 @@ export default function ProgressScreen() {
             <span className={selected ? 'text-white font-bebas tracking-wider' : 'text-white/40 font-bebas tracking-wider'}>
               {selected ? selected.name : 'Select exercise…'}
             </span>
-            <span className="text-white/35 text-lg">{open ? '▲' : '▼'}</span>
+            <span className="text-white/35 shrink-0">
+              {open ? (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" className="w-5 h-5">
+                  <path d="M12 6L20 18H4z"/>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" className="w-5 h-5">
+                  <path d="M12 18L4 6h16z"/>
+                </svg>
+              )}
+            </span>
           </button>
 
           {open && (
@@ -183,7 +193,7 @@ export default function ProgressScreen() {
                     const q = searchQuery.trim().toLowerCase();
                     if (!q) return true;
                     const name = (ex.name || '').toLowerCase();
-                    const grp = (ex.grp || '').toLowerCase();
+                    const grp = (ex.grp || ex.group || '').toLowerCase();
                     return name.includes(q) || grp.includes(q);
                   })
                   .map((ex, i) => (
@@ -193,7 +203,7 @@ export default function ProgressScreen() {
                       className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
                     >
                       <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
-                      <div className="text-xs text-white/30 font-bebas">{ex.grp}</div>
+                      <div className="text-xs text-white/30 font-bebas">{ex.grp || ex.group}</div>
                     </button>
                   ))}
               </div>
