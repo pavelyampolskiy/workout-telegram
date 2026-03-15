@@ -93,9 +93,9 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-0 flex flex-nowrap items-center justify-start gap-x-12 w-full overflow-x-auto min-w-0">
+    <div className="mt-0 flex flex-wrap items-center justify-start gap-x-6 gap-y-1 w-full min-w-0">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas text-white/25 shrink-0" style={{ fontSize: '1rem', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
+        <span key={i} className="font-bebas text-white/25 shrink-0" style={{ fontSize: '0.9375rem', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
       ))}
     </div>
   );
