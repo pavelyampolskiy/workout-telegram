@@ -120,10 +120,13 @@ export default function HomeScreen() {
       navigate('cardio');
       return;
     }
+    const startedAt = unfinished.created_at
+      ? new Date(unfinished.created_at.replace(' ', 'T') + 'Z').getTime()
+      : Date.now();
     setActiveWorkout({
       id: unfinished.id,
       day: unfinished.type,
-      startedAt: Date.now(), // timer for current session, not since workout was created
+      startedAt, // match workout start, timer doesn't reset when leaving app
       exerciseMap: {},
     });
     navigate('day', { day: unfinished.type, dayLabel: unfinished.label });

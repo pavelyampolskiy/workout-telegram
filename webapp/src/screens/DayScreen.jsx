@@ -80,7 +80,7 @@ export default function DayScreen() {
                 restoredCustom.push({ id: ex.id, group: ex.grp, name: ex.name, target_sets: ex.target_sets, isCustom: true });
               }
             });
-            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap, startedAt: Date.now() }));
+            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap })); // keep startedAt so timer doesn't reset
             if (restoredCustom.length > 0) setCustomExercises(restoredCustom);
           }
         }
@@ -343,6 +343,11 @@ export default function DayScreen() {
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
                   </div>
                 )}
+                {complete && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                )}
               </div>
             </button>
           );
@@ -389,6 +394,11 @@ export default function DayScreen() {
                     <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
                   </div>
+                )}
+                {complete && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
                 )}
               </div>
             </button>
