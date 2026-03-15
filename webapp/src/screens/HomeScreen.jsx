@@ -153,7 +153,7 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image={homeBg} overlay="bg-black/65" blur={2} scale={1} />
+      <ScreenBg image={homeBg} overlay="bg-black/65" blur={6} scale={1} />
       {/* Top gradient — absorbs Telegram header, keeps photo visible */}
       <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
@@ -182,7 +182,7 @@ export default function HomeScreen() {
               <div className="flex-1 min-h-0 flex flex-col gap-3">
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-xl p-4 flex-1 min-h-0 flex flex-col justify-between items-center"
+                  className="card-press w-full rounded-xl py-12 px-4 flex-1 min-h-0 flex flex-col justify-between items-center"
                   style={{ background: CARD_BG }}
                 >
                   <span className={ICON_WRAPPER}>
@@ -204,7 +204,7 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
-                  className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
+                  className="w-full py-12 px-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/40">
@@ -218,7 +218,7 @@ export default function HomeScreen() {
             <div className="mt-auto flex flex-col gap-3">
               <button
                 onClick={handleNewWorkout}
-                className="w-full p-4 flex flex-row justify-between items-center card-press rounded-xl"
+                className="w-full py-12 px-4 flex flex-row justify-between items-center card-press rounded-xl"
                 style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
               >
                 <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
@@ -227,7 +227,7 @@ export default function HomeScreen() {
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button
                   onClick={() => navigate('history')}
-                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
@@ -235,7 +235,7 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => navigate('stats')}
-                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
@@ -243,7 +243,7 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => navigate('achievements')}
-                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
@@ -251,7 +251,7 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => navigate('program')}
-                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
@@ -263,19 +263,19 @@ export default function HomeScreen() {
           {unfinished && !showDismissConfirm && (
             <div className="mt-auto flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
-                <button onClick={() => navigate('history')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                <button onClick={() => navigate('history')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
                   <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
                 </button>
-                <button onClick={() => navigate('stats')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                <button onClick={() => navigate('stats')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
                   <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
                 </button>
-                <button onClick={() => navigate('achievements')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                <button onClick={() => navigate('achievements')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
                   <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
                 </button>
-                <button onClick={() => navigate('program')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                <button onClick={() => navigate('program')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
                   <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
                 </button>
