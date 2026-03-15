@@ -215,14 +215,72 @@ export default function HomeScreen() {
               </div>
             </>
           ) : (
-            <button
-              onClick={handleNewWorkout}
-              className="w-full p-4 flex flex-row justify-between items-center card-press rounded-xl"
-              style={{ background: CARD_BG }}
-            >
-              <span className={ICON_WRAPPER}><WorkoutIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
-            </button>
+            <div className="mt-auto flex flex-col gap-3">
+              <button
+                onClick={handleNewWorkout}
+                className="w-full p-4 flex flex-row justify-between items-center card-press rounded-xl"
+                style={{ background: CARD_BG }}
+              >
+                <span className={ICON_WRAPPER}><WorkoutIcon /></span>
+                <div className="font-bebas tracking-wider text-base text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
+              </button>
+              <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
+                <button
+                  onClick={() => navigate('history')}
+                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  style={{ background: CARD_BG }}
+                >
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
+                </button>
+                <button
+                  onClick={() => navigate('stats')}
+                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  style={{ background: CARD_BG }}
+                >
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
+                </button>
+                <button
+                  onClick={() => navigate('achievements')}
+                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  style={{ background: CARD_BG }}
+                >
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
+                </button>
+                <button
+                  onClick={() => navigate('program')}
+                  className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+                  style={{ background: CARD_BG }}
+                >
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
+                </button>
+              </div>
+            </div>
+          )}
+          {unfinished && !showDismissConfirm && (
+            <div className="mt-auto flex flex-col gap-3">
+              <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
+                <button onClick={() => navigate('history')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
+                </button>
+                <button onClick={() => navigate('stats')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
+                </button>
+                <button onClick={() => navigate('achievements')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
+                </button>
+                <button onClick={() => navigate('program')} className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
+                  <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
+                  <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
+                </button>
+              </div>
+            </div>
           )}
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} aria-modal="true" role="dialog">
@@ -272,40 +330,6 @@ export default function HomeScreen() {
             </div>,
             document.body
           )}
-          <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
-            <button
-              onClick={() => navigate('history')}
-              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
-            </button>
-            <button
-              onClick={() => navigate('stats')}
-              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
-            </button>
-            <button
-              onClick={() => navigate('achievements')}
-              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
-            </button>
-            <button
-              onClick={() => navigate('program')}
-              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
-            </button>
-          </div>
         </div>
       </div>
 
