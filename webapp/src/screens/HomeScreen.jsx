@@ -166,8 +166,8 @@ export default function HomeScreen() {
           {/* Headline + status — две строки, тонкое начертание, воздух сверху и снизу */}
           <div className="pt-12 w-full">
             <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-nowrap items-baseline gap-2" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-              <span className="text-white/15 shrink-0" style={{ letterSpacing: '0.46em' }}>ARE YOU</span>
-              <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.52em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+              <span className="text-white/15 shrink-0" style={{ letterSpacing: '0.23em' }}>ARE YOU</span>
+              <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.26em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
             </div>
             <div className="mt-1 w-full flex justify-center">
               <StatusWidget userId={userId} />
