@@ -142,11 +142,11 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image={homeBg} overlay="bg-black/75" blur={1} scale={1} />
+      <ScreenBg image={homeBg} overlay="bg-black/65" blur={1} scale={1} />
       {/* Top gradient — absorbs Telegram header, keeps photo visible */}
-      <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/70 to-transparent" style={{ zIndex: 0 }} />
+      <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
-      <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent" style={{ zIndex: 0 }} />
+      <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent" style={{ zIndex: 0 }} />
 
       {/* Content: header + widget shrink, button block fills remaining space */}
       <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto">
@@ -172,7 +172,7 @@ export default function HomeScreen() {
                 <button
                   onClick={handleContinue}
                   className="btn-active-style card-press w-full rounded-xl p-4 flex-1 min-h-0 flex flex-col justify-between items-center"
-                  style={{ background: 'rgba(255,255,255,0.06)' }}
+                  style={{ background: 'rgba(255,255,255,0.05)' }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/50">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
@@ -185,7 +185,7 @@ export default function HomeScreen() {
                 <button
                   onClick={handleNewWorkout}
                   className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.04)' }}
+                  style={{ background: 'rgba(255,255,255,0.035)' }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/40">
                     <WorkoutIcon />
@@ -204,7 +204,7 @@ export default function HomeScreen() {
             <button
               onClick={handleNewWorkout}
               className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
+              style={{ background: 'rgba(255,255,255,0.05)' }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/50">
                 <WorkoutIcon />
@@ -264,7 +264,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('history')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
+              style={{ background: 'rgba(255,255,255,0.05)' }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/50">
                 <HistoryIcon />
@@ -274,7 +274,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('stats')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
+              style={{ background: 'rgba(255,255,255,0.05)' }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/50">
                 <StatsIcon />
@@ -284,7 +284,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('achievements')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
+              style={{ background: 'rgba(255,255,255,0.05)' }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/50">
                 <TrophyIcon />
@@ -294,7 +294,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('program')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.06)' }}
+              style={{ background: 'rgba(255,255,255,0.05)' }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/50">
                 <ProgramIcon />
