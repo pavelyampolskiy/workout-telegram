@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, PRIMARY_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
@@ -117,10 +117,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
 
   if (data === undefined) {
     return (
-      <div className="rounded-2xl p-4" style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.05)',
-      }}>
+      <div className="p-4">
         <HomeStatsSkeleton />
       </div>
     );
@@ -132,15 +129,7 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
   const displayCount = Math.min(weekCount, WEEKLY_GOAL);
 
   return (
-    <div
-      className="rounded-2xl p-4"
-      style={{
-        background: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.05)',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
-      }}
-    >
-      <div className="flex items-center justify-around gap-2">
+    <div className="flex items-center justify-between w-full gap-4 py-2">
         <StatRing
           progress={progress}
           value={displayCount}
@@ -174,7 +163,6 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }
@@ -294,7 +282,8 @@ export default function HomeScreen() {
               <>
                 <button
                   onClick={handleContinue}
-                  className="btn-active-style card-press w-full rounded-[14px] p-4 text-left"
+                  className="btn-active-style card-press w-full rounded-xl p-4 text-left"
+                  style={{ background: 'rgba(255,255,255,0.06)' }}
                 >
                   <div className="flex items-center gap-3">
                     <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/20 ${TEXT_PRIMARY}`}>
@@ -321,11 +310,10 @@ export default function HomeScreen() {
                 <div 
                   className="w-full max-w-sm rounded-2xl p-5"
                   style={{
-                    background: 'rgba(0, 0, 0, 0.95)',
+                    background: 'rgba(0, 0, 0, 0.92)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.6)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
                   }}
                 >
                   <h3 className={`font-bebas text-lg tracking-wider mb-1 ${TEXT_PRIMARY}`}>Dismiss workout?</h3>
@@ -374,12 +362,10 @@ export default function HomeScreen() {
         <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
           <button
             onClick={handleNewWorkout}
-            className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center ${unfinished ? 'opacity-50 card-press' : 'btn-main card-press'} ${unfinished ? 'rounded-xl' : ''}`}
-            style={unfinished ? {
-              ...CARD_BTN_STYLE,
-              background: 'rgba(255,255,255,0.04)',
-              boxShadow: 'none',
-            } : undefined}
+            className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
+            style={{
+              background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
+            }}
           >
             <div className="flex items-center gap-3 relative z-[1]">
               <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/15'} ${TEXT_PRIMARY}`}>
@@ -392,40 +378,43 @@ export default function HomeScreen() {
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
           </button>
-          <div className="grid grid-cols-2 gap-3 flex-1 min-h-0 grid-rows-2">
+          <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
-              className="btn-active-style card-press rounded-[14px] p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
+              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
-              className="btn-active-style card-press rounded-[14px] p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
+              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
                 <StatsIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
-              className="card-press rounded-xl p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
-              style={CARD_BTN_STYLE}
+              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
                 <TrophyIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
-              className="btn-active-style card-press rounded-[14px] p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
+              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>My program</div>
