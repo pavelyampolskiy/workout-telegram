@@ -123,7 +123,7 @@ export default function HomeScreen() {
     setActiveWorkout({
       id: unfinished.id,
       day: unfinished.type,
-      startedAt: unfinished.created_at ? new Date(unfinished.created_at).getTime() : Date.now(),
+      startedAt: Date.now(), // timer for current session, not since workout was created
       exerciseMap: {},
     });
     navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
