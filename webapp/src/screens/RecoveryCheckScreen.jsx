@@ -86,7 +86,7 @@ export default function RecoveryCheckScreen() {
 
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
-        <ScreenBg image="/gym-bg.jpg" />
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top flex flex-col overflow-y-auto">
           <h1 className="font-bebas text-white/85 pt-6 mb-6" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
             Recovery Score
@@ -132,7 +132,7 @@ export default function RecoveryCheckScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image="/gym-bg.jpg" />
+      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
       <div className="relative z-10 p-5 safe-top flex flex-col min-h-screen">
         <h1 className="font-bebas text-white/85 pt-6 mb-2" style={{ fontSize: '6vw', letterSpacing: '0.1em' }}>
           Recovery Check

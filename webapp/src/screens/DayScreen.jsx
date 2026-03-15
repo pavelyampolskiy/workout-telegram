@@ -42,7 +42,7 @@ export default function DayScreen() {
   if (isCardio) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
-        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
           <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Cardio</h1>
           <DaySkeleton />
@@ -197,7 +197,7 @@ export default function DayScreen() {
   if (loading) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
-        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
           <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">{dayLabel || 'Workout'}</h1>
           <DaySkeleton />
@@ -220,7 +220,7 @@ export default function DayScreen() {
   if (showNote) {
     return (
       <div className="min-h-screen relative">
-        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/70" />
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
         <div className="relative z-10 p-5 safe-top-xl">
           <div className="pt-4 mb-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
@@ -283,7 +283,7 @@ export default function DayScreen() {
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden pb-32">
-      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" />
+      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
       <div className="relative z-10 flex flex-col flex-1 min-h-0">
       {/* Header */}
       <div className="flex items-center justify-between p-5 safe-top-lg flex-shrink-0">

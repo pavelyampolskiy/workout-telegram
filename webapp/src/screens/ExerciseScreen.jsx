@@ -264,7 +264,7 @@ export default function ExerciseScreen() {
   if (loading) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
-        <ScreenBg image="/gym-bg.jpg" />
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
         <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-8 pb-28 overflow-y-auto">
           <ExerciseSkeleton />
         </div>
@@ -286,7 +286,7 @@ export default function ExerciseScreen() {
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden pb-28">
-      <ScreenBg image="/gym-bg.jpg" />
+      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
       <div className="relative z-10 flex-1 min-h-0 px-5 safe-top pt-8 pb-28 overflow-y-auto">
 
       {/* Exercise header */}
