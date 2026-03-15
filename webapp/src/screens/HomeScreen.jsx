@@ -284,9 +284,9 @@ export default function HomeScreen() {
                   style={{ background: 'rgba(255,255,255,0.06)' }}
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/20 ${TEXT_PRIMARY}`}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    <span className="shrink-0 flex items-center justify-center text-white/50">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                        <path d="M5 3l14 9-14 9V3z"/>
                       </svg>
                     </span>
                     <div className="flex-1">
@@ -365,7 +365,7 @@ export default function HomeScreen() {
               background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
             }}
           >
-            <div className="w-full flex items-center justify-between px-4 relative z-[1]">
+            <div className="w-full flex flex-col items-center justify-center gap-2 relative z-[1]">
               <span className={`shrink-0 flex items-center justify-center ${unfinished ? 'text-white/40' : 'text-white/50'}`}>
                 <WorkoutIcon />
               </span>

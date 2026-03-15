@@ -181,7 +181,11 @@ export default function ProgramDayScreen() {
           className="card-press w-full rounded-xl p-4 mt-4 flex items-center gap-3"
           style={SECONDARY_CARD_STYLE}
         >
-          <span className="w-8 h-8 rounded-lg border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">+</span>
+          <span className="shrink-0 flex items-center justify-center text-white/50">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </span>
           <span className="font-bebas tracking-wider text-white/60">Add Exercise</span>
         </button>
       </div>

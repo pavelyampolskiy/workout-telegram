@@ -8,7 +8,7 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
 
 const DayIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
   </svg>
 );
@@ -21,7 +21,7 @@ const PencilIcon = () => (
 );
 
 const PlusIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
     <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
   </svg>
 );
@@ -170,7 +170,7 @@ export default function ProgramScreen() {
                   onClick={() => navigate('program-day', { dayKey: day.key, dayLabel: day.label })}
                   className="card-press flex-1 min-w-0 flex items-center gap-4 text-left"
                 >
-                  <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/15 text-white/90">
+                  <span className="shrink-0 flex items-center justify-center text-white/50">
                     <DayIcon />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -203,7 +203,7 @@ export default function ProgramScreen() {
             className="card-press w-full rounded-xl p-4 flex items-center gap-4 text-left border border-dashed border-white/20"
             style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.04)' }}
           >
-            <span className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/10 text-white/50">
+            <span className="shrink-0 flex items-center justify-center text-white/50">
               <PlusIcon />
             </span>
             <div className="font-bebas tracking-wider text-base text-white/50">Add day</div>

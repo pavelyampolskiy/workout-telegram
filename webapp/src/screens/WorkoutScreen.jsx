@@ -27,7 +27,7 @@ function DayCard({ day, onPress }) {
       onClick={onPress}
       className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
     >
-      <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+      <span className="shrink-0 flex items-center justify-center text-white/50">
         <DayIcon />
       </span>
       <div className="min-w-0 flex-1">
