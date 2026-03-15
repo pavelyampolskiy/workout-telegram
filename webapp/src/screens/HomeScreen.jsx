@@ -87,8 +87,8 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
         </div>
       </div>
       <div className="mt-2 text-center">
-        <div className={`font-bebas tracking-wider text-[10px] uppercase ${TEXT_TERTIARY}`}>{label}</div>
-        <div className={`text-xs font-bebas tracking-wider mt-0.5 ${TEXT_SECONDARY}`}>{sublabel ?? '—'}</div>
+        <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.2em]">{label}</div>
+        <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.2em]">{sublabel ?? '—'}</div>
       </div>
     </div>
   );
@@ -169,8 +169,8 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
               </div>
             </div>
             <div className="mt-2 text-center">
-              <div className={`font-bebas tracking-wider text-[10px] uppercase ${TEXT_TERTIARY}`}>Last Achievement</div>
-              <div className={`text-xs font-bebas tracking-wider mt-0.5 ${TEXT_SECONDARY}`}>{lastAchievement.name}</div>
+              <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.2em]">Last Achievement</div>
+              <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.2em]">{lastAchievement.name}</div>
             </div>
           </div>
         )}
@@ -275,7 +275,7 @@ export default function HomeScreen() {
         {/* Header + widget — compact, no scroll */}
         <div className="shrink-0 flex flex-col gap-4">
           {/* Headline + status */}
-          <div className="pt-6 space-y-0.5">
+          <div className="pt-6 space-y-0.5 w-full">
             <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
               <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
               <div className="text-gradient-head font-bebas leading-none" style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>

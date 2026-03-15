@@ -5,12 +5,30 @@ import ScreenBg from '../ScreenBg';
 import { Spinner } from '../components/Spinner';
 import { CardioSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { fmtTime, CARD_BTN_STYLE } from '../shared';
+import { fmtTime } from '../shared';
+
+const ACTIVITIES = [
+  { key: 'Running', label: 'Running' },
+  { key: 'Cycling', label: 'Cycling' },
+  { key: 'Swimming', label: 'Swimming' },
+  { key: 'Walking', label: 'Walking' },
+  { key: 'Rowing', label: 'Rowing' },
+  { key: 'Other', label: 'Other' },
+];
+
+const PRESETS = [
+  { label: 'Running 30 min', activity: 'Running', text: '30 min' },
+  { label: 'Cycling 45 min', activity: 'Cycling', text: '45 min' },
+  { label: 'Walking 1 h', activity: 'Walking', text: '1 h' },
+  { label: 'Swimming', activity: 'Swimming', text: '' },
+];
 
 export default function CardioScreen() {
   const { userId, resetTo, goBack, showToast } = useApp();
   const [workoutId, setWorkoutId] = useState(null);
   const [text, setText] = useState('');
+  const [activityType, setActivityType] = useState('');
+  const [distance, setDistance] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [started, setStarted] = useState(false);
@@ -58,17 +76,34 @@ export default function CardioScreen() {
     }
   };
 
+  const buildSaveText = () => {
+    const durationMin = Math.floor(elapsed / 60);
+    const timePart = durationMin + ' min' + (distance.trim() ? ', ' + distance.trim().replace(/,/g, '.') + ' km' : '');
+    const parts = [];
+    if (activityType) parts.push(activityType);
+    parts.push(timePart);
+    if (text.trim()) parts.push(text.trim());
+    return parts.join(' — ');
+  };
+
   const handleSave = async () => {
-    if (!text.trim()) return;
+    const toSave = buildSaveText();
+    if (!toSave.trim()) return;
     setSaving(true);
     try {
-      await api.addCardio(workoutId, text.trim());
+      await api.addCardio(workoutId, toSave.trim());
       await api.finishWorkout(workoutId);
       resetTo('home');
     } catch (e) {
       showToast(e.message);
       setSaving(false);
     }
+  };
+
+  const applyPreset = (preset) => {
+    setActivityType(preset.activity);
+    setText(preset.text);
+    setDistance('');
   };
 
   if (error) {
@@ -96,10 +131,11 @@ export default function CardioScreen() {
             <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
           </svg>
           <h1 className="text-2xl font-bebas tracking-wider mb-2">Cardio</h1>
-          <p className="font-sans text-white/40 text-xs">Timer will start automatically</p>
+          <p className="font-sans text-white/40 text-xs text-center max-w-[260px]">
+            Track time and add notes. Choose activity type and optional distance when you finish.
+          </p>
         </div>
 
-        {/* Fixed bottom: START + BACK */}
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <button
             onClick={handleStart}
@@ -114,13 +150,14 @@ export default function CardioScreen() {
 
   // Active session
   const durationMin = Math.floor(elapsed / 60);
+  const canSave = !!workoutId && (durationMin > 0 || text.trim() || distance.trim() || activityType);
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/60" scale={1} position="top" lockViewport />
 
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <div className="pt-6 mb-5">
+        <div className="pt-6 mb-4">
           <div className="flex items-center justify-between">
             <div>
               <div className="mb-2 text-white">
@@ -137,25 +174,79 @@ export default function CardioScreen() {
               )}
             </div>
           </div>
-          <p className="font-sans text-white/25 text-xs mt-1">Describe your session</p>
         </div>
 
-        <textarea
-          value={text}
-          onChange={e => setText(e.target.value)}
-          placeholder="E.g. Running 30 min, 5 km"
-          className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-36 outline-none text-base font-sans focus:border-white/20"
-          autoFocus
-        />
+        {/* Quick presets */}
+        <div className="mb-4">
+          <p className="font-sans text-white/35 text-[10px] uppercase tracking-wider mb-2">Quick start</p>
+          <div className="flex flex-wrap gap-2">
+            {PRESETS.map((p) => (
+              <button
+                key={p.label}
+                type="button"
+                onClick={() => applyPreset(p)}
+                className="px-3 py-2 rounded-xl font-sans text-sm border border-white/15 bg-white/5 text-white/80 hover:bg-white/10 hover:border-white/25 transition-colors"
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
-        <p className="mt-2 text-[11px] text-white/35 font-sans">
-          These notes will appear in your workout history.
+        {/* Activity type */}
+        <div className="mb-4">
+          <p className="font-sans text-white/35 text-[10px] uppercase tracking-wider mb-2">Activity</p>
+          <div className="flex flex-wrap gap-2">
+            {ACTIVITIES.map((a) => (
+              <button
+                key={a.key}
+                type="button"
+                onClick={() => setActivityType(activityType === a.key ? '' : a.key)}
+                className={`px-3 py-2 rounded-xl font-sans text-sm border transition-colors ${
+                  activityType === a.key
+                    ? 'bg-white/20 border-white/35 text-white'
+                    : 'border-white/15 bg-white/5 text-white/70 hover:bg-white/10 hover:border-white/25'
+                }`}
+              >
+                {a.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Distance (optional) */}
+        <div className="mb-4">
+          <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Distance, km</label>
+          <input
+            type="text"
+            inputMode="decimal"
+            value={distance}
+            onChange={e => setDistance(e.target.value.replace(/[^0-9.,]/g, ''))}
+            placeholder="e.g. 5 or 3.5"
+            className="w-full max-w-[120px] appearance-none bg-black/50 border border-white/8 rounded-xl px-3 py-2 text-white placeholder-white/25 outline-none text-base font-sans focus:border-white/20"
+          />
+        </div>
+
+        {/* Notes */}
+        <div className="mb-4">
+          <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Notes</label>
+          <textarea
+            value={text}
+            onChange={e => setText(e.target.value)}
+            placeholder="E.g. Treadmill, felt good, intervals…"
+            className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-28 outline-none text-base font-sans focus:border-white/20"
+            autoFocus
+          />
+        </div>
+
+        <p className="mb-4 text-[11px] text-white/35 font-sans">
+          Session will be saved as: activity, duration from timer, distance (if set), and your notes.
         </p>
 
         <button
           onClick={handleSave}
-          disabled={saving || !text.trim() || !workoutId}
-          className="btn-active-style card-press w-full mt-4 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
+          disabled={saving || !canSave || !workoutId}
+          className="btn-active-style card-press w-full disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
         >
           {saving ? (
             <span className="inline-flex items-center justify-center gap-2">

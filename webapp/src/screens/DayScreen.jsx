@@ -427,7 +427,7 @@ export default function DayScreen() {
       {/* Fixed bottom button — рендер в body, чтобы не обрезалось при скролле */}
       {createPortal(
         <div
-          className="fixed bottom-0 left-0 right-0 z-[100] max-w-lg mx-auto px-4 pt-6 bg-black"
+          className="fixed bottom-0 left-0 right-0 z-[100] max-w-lg mx-auto px-4 pt-6 bg-gradient-to-t from-transparent from-0% via-black via-15% to-black"
           style={{ paddingBottom: 'max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1rem))' }}
         >
           <button

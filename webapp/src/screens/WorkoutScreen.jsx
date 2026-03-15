@@ -49,7 +49,7 @@ export default function WorkoutScreen() {
     const isCardio = targetScreen === 'cardio' || (targetParams?.day != null && String(targetParams.day).toUpperCase() === 'CARDIO');
     if (isCardio) {
       if (!activeWorkout) {
-        startWorkoutCountdown('cardio');
+        navigate('cardio');
         return;
       }
       if (activeWorkout.day === 'CARDIO') {
@@ -92,7 +92,7 @@ export default function WorkoutScreen() {
       if (activeWorkoutModal.screen === 'day') {
         startWorkoutCountdown('day', activeWorkoutModal.params);
       } else {
-        startWorkoutCountdown('cardio');
+        navigate('cardio');
       }
     } catch (e) {
       showToast(e.message);
