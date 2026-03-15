@@ -43,6 +43,7 @@ function Badge({ achievement, locked = false }) {
           className="shrink-0 flex items-center justify-center"
           style={{
             color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
+            filter: earned ? undefined : 'blur(1.5px)',
           }}
         >
           {IconComponent}

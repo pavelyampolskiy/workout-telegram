@@ -8,7 +8,6 @@ import { ErrorScreen } from '../components/ErrorScreen';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
-  style: { boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' },
 };
 
 const GRADIENT_TEXT = {
@@ -246,9 +245,9 @@ export default function StatsScreen() {
       const { total, avg, dates = [] } = data.freq;
       return (
         <div className="space-y-4">
-          <div className={CARD.className} style={CARD.style}>
+          <div className={CARD.className}>
             <div className="flex">
-              <div className="flex-1 text-center border-r border-white/[0.06] pr-4">
+              <div className="flex-1 text-center pr-4">
                 <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
                 <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
               </div>
@@ -258,7 +257,7 @@ export default function StatsScreen() {
               </div>
             </div>
           </div>
-          <div className={CARD.className} style={CARD.style}>
+          <div className={CARD.className}>
             <ActivityHeatmap
               dates={dates}
               displayYear={data.freq.year}
@@ -281,8 +280,7 @@ export default function StatsScreen() {
                 {monthPickerOpen && (
                   <>
                     <div
-                      className="absolute left-0 top-full mt-1 z-20 py-2 rounded-2xl min-w-[140px] max-h-[50vh] overflow-y-auto backdrop-blur-sm bg-white/5 border border-white/10"
-                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' }}
+                      className="absolute left-0 top-full mt-1 z-20 py-2 rounded-2xl min-w-[140px] max-h-[50vh] overflow-y-auto backdrop-blur-sm bg-white/5"
                     >
                       {getMonthOptions(freqMonths).map((opt) => (
                         <button
@@ -292,7 +290,7 @@ export default function StatsScreen() {
                             setFreqMonth({ year: opt.year, month: opt.month });
                             setMonthPickerOpen(false);
                           }}
-                          className="w-full text-left px-3 py-2 text-xs font-sans text-white/90 active:bg-white/10 border-b border-white/[0.05] last:border-b-0 transition-colors"
+                          className="w-full text-left px-3 py-2 text-xs font-sans text-white/90 active:bg-white/10 transition-colors"
                         >
                           {opt.label}
                         </button>
@@ -339,14 +337,14 @@ export default function StatsScreen() {
 
     return (
       <div className="space-y-4">
-        <div className={CARD.className} style={CARD.style}>
+        <div className={CARD.className}>
           <div className="text-center">
             <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
           </div>
         </div>
 
-        <div className={CARD.className} style={CARD.style}>
+        <div className={CARD.className}>
           <div className="text-[10px] uppercase tracking-widest font-bebas mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
           <div className="space-y-4">
             <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
