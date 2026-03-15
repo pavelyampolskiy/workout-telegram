@@ -275,7 +275,7 @@ export default function HomeScreen() {
           <div className="pt-6 space-y-0.5 w-full">
             <div className="font-bebas leading-none w-full min-w-0 whitespace-nowrap" style={{ maxWidth: '100%', fontSize: 'clamp(22px, 16vw, 48px)', letterSpacing: '0.26em' }}>
               <span className="text-white/55 font-normal" style={{ letterSpacing: '0.28em' }}>ARE YOU </span>
-              <span className="text-gradient-head font-bold" style={{ letterSpacing: '0.22em' }}>READY?</span>
+              <span className="text-white font-bold" style={{ letterSpacing: '0.22em' }}>READY?</span>
             </div>
             <StatusWidget userId={userId} />
           </div>
@@ -380,7 +380,7 @@ export default function HomeScreen() {
               <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <WorkoutIcon />
               </span>
-              <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
+              <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-white'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
             </div>
           </button>
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
