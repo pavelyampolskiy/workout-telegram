@@ -93,7 +93,7 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-0.5 flex items-center justify-center w-full gap-2">
+    <div className="mt-0.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-0.5 w-full text-center">
       {parts.map((p, i) => (
         <span key={i} className="font-bebas text-sm text-white/15" style={{ letterSpacing: '0.36em' }}>{p}</span>
       ))}
@@ -169,7 +169,7 @@ export default function HomeScreen() {
               <div className="text-white/15" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
               <div className="text-white" style={{ fontSize: '1.95em', letterSpacing: '0.52em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
-            <div className="mt-1">
+            <div className="mt-1 w-full flex justify-center">
               <StatusWidget userId={userId} />
             </div>
           </div>
