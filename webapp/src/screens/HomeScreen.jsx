@@ -215,7 +215,7 @@ export default function HomeScreen() {
             </button>
           )}
           {unfinished && showDismissConfirm && createPortal(
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80" aria-modal="true" role="dialog">
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} aria-modal="true" role="dialog">
               <div 
                 className="w-full max-w-sm rounded-2xl p-5"
                 style={{
