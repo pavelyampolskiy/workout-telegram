@@ -233,7 +233,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><WorkoutIcon /></span>
-              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>New Workout</div>
+              <div className="font-bebas tracking-wider text-white shrink-0" style={{ ...LABEL_STYLE, fontSize: '2rem' }}>New Workout</div>
             </button>
           )}
           {unfinished && showDismissConfirm && createPortal(
