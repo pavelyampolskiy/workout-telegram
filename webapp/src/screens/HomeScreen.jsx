@@ -13,7 +13,7 @@ const ICON_STROKE = 1;
 /** Фон всех карточек/плашек на главном экране (без границ). */
 const CARD_BG = 'rgba(255,255,255,0.05)';
 /** Стиль обёртки иконки в карточке. */
-const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white/50';
+const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white';
 /** Стиль подписи в карточке (иконка + текст). */
 const LABEL_STYLE = { letterSpacing: '1.5px' };
 const LABEL_CLASS = 'font-bebas tracking-wider text-xl';
@@ -221,7 +221,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><WorkoutIcon /></span>
-              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={{ ...LABEL_STYLE, fontSize: '2rem' }}>New Workout</div>
+              <div className="font-bebas tracking-wider text-white shrink-0" style={{ ...LABEL_STYLE, fontSize: '2rem' }}>New Workout</div>
             </button>
           )}
           {unfinished && showDismissConfirm && createPortal(
@@ -279,7 +279,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><HistoryIcon /></span>
-              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>History</div>
+              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
@@ -287,7 +287,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><StatsIcon /></span>
-              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>Statistics</div>
+              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
@@ -295,7 +295,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><TrophyIcon /></span>
-              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>Achievements</div>
+              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
@@ -303,7 +303,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><ProgramIcon /></span>
-              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>My program</div>
+              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>My program</div>
             </button>
           </div>
         </div>
