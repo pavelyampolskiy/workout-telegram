@@ -207,7 +207,7 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-0.5 flex items-center gap-4">
+    <div className="mt-0.5 flex items-center justify-between w-full gap-2">
       {parts.map((p, i) => (
         <span key={i} className={`font-bebas tracking-wider text-sm ${TEXT_TERTIARY}`}>{p}</span>
       ))}
