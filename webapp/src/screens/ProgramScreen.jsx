@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE } from '../shared';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
 
@@ -17,12 +17,6 @@ const PencilIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
     <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
     <path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-  </svg>
-);
-
-const PlusIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
   </svg>
 );
 
@@ -200,11 +194,11 @@ export default function ProgramScreen() {
           <button
             type="button"
             onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
-            className="card-press w-full rounded-xl p-4 flex items-center gap-4 text-left border border-dashed border-white/10"
-            style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.04)' }}
+            className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+            style={SECONDARY_CARD_STYLE}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/50">
-              <PlusIcon />
+            <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
+              +
             </span>
             <div className="font-bebas tracking-wider text-base text-white/50">Add day</div>
           </button>
