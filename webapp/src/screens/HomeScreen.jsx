@@ -229,13 +229,11 @@ export default function HomeScreen() {
           ) : (
             <button
               onClick={handleNewWorkout}
-              className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press rounded-xl"
+              className="w-full p-4 flex-1 min-h-0 flex flex-row justify-between items-center card-press rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
-              <span className={ICON_WRAPPER}>
-                <WorkoutIcon />
-              </span>
-              <span className={`${LABEL_CLASS} shrink-0 text-white`} style={LABEL_STYLE}>New Workout</span>
+              <span className={ICON_WRAPPER}><WorkoutIcon /></span>
+              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>New Workout</div>
             </button>
           )}
           {unfinished && showDismissConfirm && createPortal(
