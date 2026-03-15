@@ -111,16 +111,16 @@ export default function RecoveryCheckScreen() {
             )}
           </div>
 
-          <div className="space-y-3 mt-auto pb-6">
+          <div className="space-y-3 mt-auto pt-4 pb-4 safe-bottom">
             <button
               onClick={handleContinue}
-              className="btn-active-style card-press w-full rounded-[14px] p-4 text-center font-bebas tracking-wider text-white/90"
+              className="btn-active-style card-press w-full rounded-[14px] py-4 px-4 text-center font-bebas tracking-wider text-white/90 text-xl"
             >
               Start Workout
             </button>
             <button
               onClick={() => navigate('home')}
-              className="w-full text-white/40 text-sm font-sans py-2"
+              className="w-full text-white/40 font-sans py-2 text-lg"
             >
               Back to Home
             </button>

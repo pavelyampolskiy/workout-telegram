@@ -33,7 +33,6 @@ function DayCard({ day, onPress }) {
       <div className="min-w-0 flex-1">
         <div className="font-bebas tracking-wider text-lg text-white/65">{day.label}</div>
       </div>
-      <span className="ml-auto text-white/35 text-xl shrink-0">›</span>
     </button>
   );
 }
@@ -148,7 +147,6 @@ export default function WorkoutScreen() {
                 <div className="min-w-0 flex-1">
                   <div className="font-bebas tracking-wider text-lg text-white/65">Cardio</div>
                 </div>
-                <span className="ml-auto text-white/35 text-xl shrink-0">›</span>
               </button>
 
               <ConfirmModal
