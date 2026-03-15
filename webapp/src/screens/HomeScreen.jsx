@@ -162,9 +162,9 @@ export default function HomeScreen() {
         <div className="shrink-0 flex flex-col gap-4">
           {/* Headline + status — две строки, тонкое начертание, воздух сверху и снизу */}
           <div className="pt-12 w-full">
-            <div className="font-bebas font-light leading-tight w-full min-w-0" style={{ fontSize: 'clamp(15px, 8.5vw, 36px)' }}>
+            <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)' }}>
               <div className="text-white/50" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
-              <div className="text-white" style={{ fontSize: '2em', letterSpacing: '0.65em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
+              <div className="text-white" style={{ fontSize: '1.85em', letterSpacing: '0.48em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
             <div className="mt-10">
               <StatusWidget userId={userId} />
