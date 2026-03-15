@@ -5,7 +5,10 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Roboto', 'system-ui', 'sans-serif'],
-        bebas: ['"Bebas Neue"', 'cursive'],
+        bebas: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
+      fontWeight: {
+        display: '700',
       },
     },
   },

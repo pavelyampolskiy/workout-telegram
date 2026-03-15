@@ -15,7 +15,8 @@ html, body {
 }
 
 body {
-  font-family: 'Bebas Neue', cursive;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-weight: 700;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
