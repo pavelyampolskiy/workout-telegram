@@ -95,7 +95,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-0.5 flex items-center justify-between w-full gap-2">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas tracking-wider text-sm text-white/35">{p}</span>
+        <span key={i} className="font-bebas text-sm text-white" style={{ letterSpacing: '0.52em' }}>{p}</span>
       ))}
     </div>
   );
@@ -167,7 +167,7 @@ export default function HomeScreen() {
           <div className="pt-12 w-full">
             <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)' }}>
               <div className="text-white/15" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
-              <div className="text-white/15" style={{ fontSize: '1.95em', letterSpacing: '0.46em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
+              <div className="text-white" style={{ fontSize: '1.95em', letterSpacing: '0.52em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
             <div className="mt-1">
               <StatusWidget userId={userId} />
