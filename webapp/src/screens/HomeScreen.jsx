@@ -3,8 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED, PRIMARY_CARD_STYLE } from '../shared';
-import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
+import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import homeBg from '../assets/gym-bg.jpg';
@@ -56,113 +55,6 @@ function daysAgoLabel(dateStr) {
   if (diff === 1) return 'Yesterday';
   if (diff < 7) return `${diff} days ago`;
   return dateStr.split('-').slice(1).reverse().join('.');
-}
-
-const RING_SIZE = 60;
-const RING_STROKE = 5;
-
-function StatRing({ progress, value, label, sublabel, gradientId }) {
-  const radius = (RING_SIZE - RING_STROKE) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (progress * circumference);
-  const id = gradientId || 'ringGrad';
-  const gradientStops = [<stop key="a" offset="0%" stopColor="rgba(255,255,255,0.95)"/>, <stop key="b" offset="100%" stopColor="rgba(255,255,255,0.6)"/>];
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative">
-        <svg width={RING_SIZE} height={RING_SIZE} className="transform -rotate-90">
-          <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
-          <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={radius} fill="none" stroke={`url(#${id})`} strokeWidth={RING_STROKE} strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}/>
-          <defs>
-            <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="0%">
-              {gradientStops}
-            </linearGradient>
-          </defs>
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center leading-none">
-          <span className={`font-bebas text-lg leading-none ${TEXT_PRIMARY}`} style={{ transform: 'translateY(-0.06em)' }}>{value}</span>
-        </div>
-      </div>
-      <div className="mt-2 text-center">
-        <div className="font-bebas text-[10px] uppercase text-white/50 tracking-[0.2em]">{label}</div>
-        <div className="text-xs font-bebas mt-0.5 text-white/50 tracking-[0.2em]">{sublabel ?? '—'}</div>
-      </div>
-    </div>
-  );
-}
-
-function WeeklyGoalWidget({ userId, recoveryScore }) {
-  const [data, setData] = useState(undefined);
-  const [lastAchievement, setLastAchievement] = useState(null);
-  const WEEKLY_GOAL = 3;
-
-  useEffect(() => {
-    Promise.all([
-      api.getStats(userId, 7),
-      api.getFrequency(userId),
-      api.getAchievements(userId),
-    ]).then(([week, freq, ach]) => {
-      setData({
-        weekCount: week.total ?? 0,
-        total: freq.total ?? 0,
-      });
-      if (ach.unlocked?.length > 0) {
-        setLastAchievement(ach.unlocked[ach.unlocked.length - 1]);
-      }
-    }).catch(() => setData(null));
-  }, [userId]);
-
-  if (data === undefined) {
-    return (
-      <div className="p-4">
-        <HomeStatsSkeleton />
-      </div>
-    );
-  }
-  if (!data) return null;
-
-  const { weekCount } = data;
-  const progress = Math.min(weekCount / WEEKLY_GOAL, 1);
-  const displayCount = Math.min(weekCount, WEEKLY_GOAL);
-
-  return (
-    <div className="flex items-center justify-between w-full gap-4 py-2">
-        <StatRing
-          progress={progress}
-          value={displayCount}
-          label="Weekly Goal"
-          sublabel={`${displayCount} of ${WEEKLY_GOAL} workouts`}
-          gradientId="ringWeekly"
-        />
-        {recoveryScore !== null && (
-          <StatRing
-            progress={recoveryScore / 100}
-            value={`${recoveryScore}%`}
-            label="Ready"
-            sublabel="Recovery score"
-            gradientId="ringReady"
-          />
-        )}
-        {lastAchievement && (
-          <div className="flex flex-col items-center">
-            <div className="relative" style={{ width: RING_SIZE, height: RING_SIZE }}>
-              <svg width={RING_SIZE} height={RING_SIZE}>
-                <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
-                <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth={RING_STROKE} strokeLinecap="round"/>
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center text-white/50">
-                {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
-              </div>
-            </div>
-            <div className="mt-2 text-center">
-              <div className="font-bebas text-[10px] uppercase text-white/50 tracking-[0.2em]">Last Achievement</div>
-              <div className="text-xs font-bebas mt-0.5 text-white/50 tracking-[0.2em]">{lastAchievement.name}</div>
-            </div>
-          </div>
-        )}
-    </div>
-  );
 }
 
 function StatusWidget({ userId }) {
@@ -272,11 +164,6 @@ export default function HomeScreen() {
           </div>
 
           <div className="flex flex-col gap-4 flex-none">
-            {/* Weekly goal widget */}
-            <div className="rounded-xl p-4 w-full" style={PRIMARY_CARD_STYLE}>
-              <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
-            </div>
-
             {/* Continue workout banner */}
             {unfinished && (
             <div className="relative">
