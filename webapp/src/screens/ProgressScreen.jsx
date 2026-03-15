@@ -39,12 +39,12 @@ function LineChart({ data }) {
       </defs>
 
       {/* Y-axis labels */}
-      <text x={LPAD - 4} y={TPAD + 4} fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="end" fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif">{fmtW(maxW)}</text>
-      <text x={LPAD - 4} y={H - BPAD} fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="end" fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif">{fmtW(minW)}</text>
+      <text x={LPAD - 4} y={TPAD + 4} fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="end" fontFamily="'Bebas Neue', sans-serif">{fmtW(maxW)}</text>
+      <text x={LPAD - 4} y={H - BPAD} fill="rgba(255,255,255,0.35)" fontSize="9" textAnchor="end" fontFamily="'Bebas Neue', sans-serif">{fmtW(minW)}</text>
 
       {/* X-axis date labels */}
-      <text x={xs[0]} y={H - 4} fill="rgba(255,255,255,0.30)" fontSize="8" textAnchor="start" fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif">{fmtDate(data[0].date)}</text>
-      <text x={xs[xs.length-1]} y={H - 4} fill="rgba(255,255,255,0.30)" fontSize="8" textAnchor="end" fontFamily="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif">{fmtDate(data[data.length-1].date)}</text>
+      <text x={xs[0]} y={H - 4} fill="rgba(255,255,255,0.30)" fontSize="8" textAnchor="start" fontFamily="'Bebas Neue', sans-serif">{fmtDate(data[0].date)}</text>
+      <text x={xs[xs.length-1]} y={H - 4} fill="rgba(255,255,255,0.30)" fontSize="8" textAnchor="end" fontFamily="'Bebas Neue', sans-serif">{fmtDate(data[data.length-1].date)}</text>
 
       {/* Baseline */}
       <line x1={LPAD} y1={H - BPAD} x2={W - RPAD} y2={H - BPAD} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
