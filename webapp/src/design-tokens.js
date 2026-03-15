@@ -25,30 +25,24 @@ export const ACCENT_COLOR = '#C9A96E';
 
 // ─── Card styles (inline style objects) ──────────────────────────────────────
 
-/** Glass card button — main tappable cards (nav tiles, primary actions). */
+/** Glass card button — main tappable cards (nav tiles, primary actions). Minimal: no border, subtle bg. */
 export const CARD_BTN_STYLE = {
-  background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%) rgba(0,0,0,0.10)',
-  border: '1px solid rgba(255,255,255,0.05)',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06), 0 0 6px rgba(255,255,255,0.04)',
+  background: 'rgba(255,255,255,0.05)',
 };
 
 /** Primary CTA card (e.g. "New Workout", "Continue Workout") — slightly brighter. */
 export const PRIMARY_CARD_STYLE = {
-  background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 100%) rgba(0,0,0,0.10)',
-  border: '1px solid rgba(255,255,255,0.20)',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.30), 0 0 22px rgba(255,255,255,0.09), 0 0 7px rgba(255,255,255,0.05)',
+  background: 'rgba(255,255,255,0.06)',
 };
 
 /** Dark glass panel — data blocks (exercise sets, history detail). */
 export const DARK_CARD_STYLE = {
-  background: 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%) rgba(0,0,0,0.65)',
-  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.5)',
+  background: 'rgba(255,255,255,0.05)',
 };
 
 /** Secondary / add-action card (e.g. "Add Exercise"). */
 export const SECONDARY_CARD_STYLE = {
-  background: 'rgba(255,255,255,0.06)',
-  border: '1px solid rgba(255,255,255,0.10)',
+  background: 'rgba(255,255,255,0.04)',
 };
 
 // ─── Typography (inline styles) ────────────────────────────────────────────
