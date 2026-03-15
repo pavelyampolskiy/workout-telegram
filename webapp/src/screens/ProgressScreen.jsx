@@ -72,6 +72,7 @@ export default function ProgressScreen() {
   const [loadingProg, setLoadingProg] = useState(false);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const loadProgram = () => {
     Promise.all([
@@ -103,6 +104,7 @@ export default function ProgressScreen() {
   const handleSelect = async (ex) => {
     setSelected(ex);
     setOpen(false);
+    setSearchQuery('');
     setLoadingProg(true);
     try {
       const data = await api.getProgress(userId, ex.name);
@@ -165,17 +167,36 @@ export default function ProgressScreen() {
           </button>
 
           {open && (
-            <div className="absolute top-full left-0 right-0 z-10 mt-1 border border-white/[0.07] rounded-2xl overflow-hidden shadow-xl max-h-[30rem] overflow-y-auto backdrop-blur-xl" style={{ background: 'rgba(18,18,18,0.28)' }}>
-              {program.map((ex, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleSelect(ex)}
-                  className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
-                >
-                  <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
-                  <div className="text-xs text-white/30 font-bebas">{ex.grp}</div>
-                </button>
-              ))}
+            <div className="absolute top-full left-0 right-0 z-10 mt-1 rounded-2xl overflow-hidden shadow-xl max-h-[30rem] flex flex-col backdrop-blur-xl" style={{ background: 'rgba(18,18,18,0.28)' }}>
+              <div className="p-2 shrink-0">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by name or muscle group…"
+                  className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 border-0 outline-none focus:ring-1 focus:ring-white/20"
+                />
+              </div>
+              <div className="overflow-y-auto flex-1 min-h-0">
+                {program
+                  .filter((ex) => {
+                    const q = searchQuery.trim().toLowerCase();
+                    if (!q) return true;
+                    const name = (ex.name || '').toLowerCase();
+                    const grp = (ex.grp || '').toLowerCase();
+                    return name.includes(q) || grp.includes(q);
+                  })
+                  .map((ex, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSelect(ex)}
+                      className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
+                    >
+                      <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
+                      <div className="text-xs text-white/30 font-bebas">{ex.grp}</div>
+                    </button>
+                  ))}
+              </div>
             </div>
           )}
         </div>
