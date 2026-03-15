@@ -180,7 +180,7 @@ export default function HomeScreen() {
                     </svg>
                   </span>
                   <div className="flex items-center justify-center gap-2 shrink-0 flex-wrap">
-                    <span className="font-bebas tracking-wider text-xl text-white" style={{ letterSpacing: '1.5px' }}>Continue Workout: </span>
+                    <span className="font-bebas tracking-wider text-xl text-white" style={{ letterSpacing: '1.5px' }}>Continue Workout </span>
                     <span className={`font-bebas tracking-wider text-xl ${TEXT_MUTED}`} style={{ letterSpacing: '1.5px' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                   </div>
                 </button>
