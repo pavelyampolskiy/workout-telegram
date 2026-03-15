@@ -93,7 +93,7 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-0.5 flex flex-nowrap items-center justify-start gap-x-12 w-full overflow-x-auto min-w-0">
+    <div className="mt-0 flex flex-nowrap items-center justify-start gap-x-12 w-full overflow-x-auto min-w-0">
       {parts.map((p, i) => (
         <span key={i} className="font-bebas text-white/25 shrink-0" style={{ fontSize: '0.8125rem', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
       ))}
@@ -169,7 +169,7 @@ export default function HomeScreen() {
               <span className="text-white/15 shrink-0" style={{ letterSpacing: '0.23em' }}>ARE YOU</span>
               <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.26em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
             </div>
-            <div className="mt-1 w-full flex justify-start">
+            <div className="mt-0 w-full flex justify-start">
               <StatusWidget userId={userId} />
             </div>
           </div>
