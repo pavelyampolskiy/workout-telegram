@@ -171,21 +171,16 @@ export default function HomeScreen() {
               <>
                 <button
                   onClick={handleContinue}
-                  className="btn-active-style card-press w-full rounded-xl p-4 text-left"
+                  className="btn-active-style card-press w-full rounded-xl p-4 flex flex-col items-center justify-center gap-4"
                   style={{ background: 'rgba(255,255,255,0.06)' }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="shrink-0 flex items-center justify-center text-white/50">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                        <path d="M5 3l14 9-14 9V3z"/>
-                      </svg>
-                    </span>
-                    <div className="flex-1">
-                      <div className={`font-bebas tracking-wider text-xl ${TEXT_PRIMARY}`}>Continue Workout</div>
-                      <div className={`text-[10px] font-sans ${TEXT_MUTED}`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</div>
-                    </div>
-                    <span className={`text-xl shrink-0 ${TEXT_FADED}`}>›</span>
-                  </div>
+                  <span className="shrink-0 flex items-center justify-center text-white/50">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+                      <path d="M5 3l14 9-14 9V3z"/>
+                    </svg>
+                  </span>
+                  <span className="font-bebas tracking-wider text-xl text-white text-center" style={{ letterSpacing: '1.5px' }}>Continue Workout</span>
+                  <span className={`text-[10px] font-sans ${TEXT_MUTED} text-center`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
@@ -251,17 +246,15 @@ export default function HomeScreen() {
         <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
           <button
             onClick={handleNewWorkout}
-            className={`w-full p-4 flex-1 min-h-0 flex flex-col justify-center items-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
+            className={`w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
             style={{
               background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
             }}
           >
-            <div className="w-full flex flex-col items-center justify-center gap-4 relative z-[1]">
-              <span className={`shrink-0 flex items-center justify-center ${unfinished ? 'text-white/40' : 'text-white/50'}`}>
-                <WorkoutIcon />
-              </span>
-              <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-white'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
-            </div>
+            <span className={`shrink-0 flex items-center justify-center ${unfinished ? 'text-white/40' : 'text-white/50'}`}>
+              <WorkoutIcon />
+            </span>
+            <span className={`font-bebas tracking-wider text-xl shrink-0 ${unfinished ? TEXT_MUTED : 'text-white'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
           </button>
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
             <button
