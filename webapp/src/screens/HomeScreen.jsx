@@ -289,35 +289,35 @@ export default function HomeScreen() {
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
-              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><HistoryIcon /></span>
-              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>History</div>
+              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
-              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><StatsIcon /></span>
-              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>Statistics</div>
+              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
-              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><TrophyIcon /></span>
-              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>Achievements</div>
+              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
-              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
               <span className={ICON_WRAPPER}><ProgramIcon /></span>
-              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>My program</div>
+              <div className={`${LABEL_CLASS_MUTED} shrink-0`} style={LABEL_STYLE}>My program</div>
             </button>
           </div>
         </div>
