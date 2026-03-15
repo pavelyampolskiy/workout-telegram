@@ -173,10 +173,10 @@ export default function CardioScreen() {
                 key={a.key}
                 type="button"
                 onClick={() => setActivityType(activityType === a.key ? '' : a.key)}
-                className={`px-3 py-2 rounded-xl font-sans text-sm border transition-colors ${
+                className={`px-3 py-2 rounded-xl font-sans text-sm transition-colors ${
                   activityType === a.key
-                    ? 'bg-white/20 border-white/35 text-white'
-                    : 'border-white/15 bg-white/5 text-white/70 hover:bg-white/10 hover:border-white/25'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-white/5 text-white/70 hover:bg-white/10'
                 }`}
               >
                 {a.label}
@@ -194,7 +194,7 @@ export default function CardioScreen() {
             value={distance}
             onChange={e => setDistance(e.target.value.replace(/[^0-9.,]/g, ''))}
             placeholder="e.g. 5 or 3.5"
-            className="w-full max-w-[120px] appearance-none bg-black/50 border border-white/8 rounded-xl px-3 py-2 text-white placeholder-white/25 outline-none text-base font-sans focus:border-white/20"
+            className="w-full max-w-[120px] appearance-none bg-black/50 rounded-xl px-3 py-2 text-white placeholder-white/25 outline-none text-base font-sans"
           />
         </div>
 
@@ -205,7 +205,7 @@ export default function CardioScreen() {
             value={text}
             onChange={e => setText(e.target.value)}
             placeholder="E.g. Treadmill, felt good, intervals…"
-            className="w-full appearance-none bg-black/50 border border-white/8 rounded-xl p-4 text-white placeholder-white/25 resize-none h-28 outline-none text-base font-sans focus:border-white/20"
+            className="w-full appearance-none bg-black/50 rounded-xl p-4 text-white placeholder-white/25 resize-none h-28 outline-none text-base font-sans"
             autoFocus
           />
         </div>

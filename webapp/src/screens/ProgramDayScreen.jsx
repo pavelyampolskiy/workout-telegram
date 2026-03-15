@@ -179,7 +179,7 @@ export default function ProgramDayScreen() {
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors mt-4"
           style={SECONDARY_CARD_STYLE}
         >
-          <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
+          <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
             +
           </span>
           <div className="font-bebas tracking-wider text-base text-white/50">
@@ -201,7 +201,7 @@ export default function ProgramDayScreen() {
       {/* Add modal — same as DayScreen */}
       {showAdd && (
         <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
 
             <div className="mb-4">
@@ -212,7 +212,7 @@ export default function ProgramDayScreen() {
                     key={grp}
                     onClick={() => setAddGroup(grp)}
                     className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
-                      addGroup === grp ? 'bg-white/20 text-white border border-white/30' : 'bg-white/5 text-white/50 border border-white/10'
+                      addGroup === grp ? 'bg-white/20 text-white' : 'bg-white/5 text-white/50'
                     }`}
                   >
                     {grp}
@@ -229,7 +229,7 @@ export default function ProgramDayScreen() {
                 onSelectSuggestion={(item) => { setAddName(item.name); setAddGroup(item.grp); }}
                 userId={userId}
                 placeholder="e.g. Dumbbell Curls"
-                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
+                className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider"
                 autoFocus
               />
             </div>
@@ -264,7 +264,7 @@ export default function ProgramDayScreen() {
       {/* Edit modal */}
       {editingIdx != null && (
         <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="modal-content w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+          <div className="modal-content w-full max-w-sm bg-black/90 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Edit Exercise</h3>
             <div className="mb-4">
               <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Muscle Group</label>
@@ -274,7 +274,7 @@ export default function ProgramDayScreen() {
                     key={grp}
                     onClick={() => setEditGroup(grp)}
                     className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
-                      editGroup === grp ? 'bg-white/20 text-white border border-white/30' : 'bg-white/5 text-white/50 border border-white/10'
+                      editGroup === grp ? 'bg-white/20 text-white' : 'bg-white/5 text-white/50'
                     }`}
                   >
                     {grp}
@@ -289,7 +289,7 @@ export default function ProgramDayScreen() {
                 value={editName}
                 onChange={e => setEditName(e.target.value)}
                 placeholder="Exercise name"
-                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
+                className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider"
               />
             </div>
             <div className="mb-5">
@@ -300,7 +300,7 @@ export default function ProgramDayScreen() {
                 max={10}
                 value={editTargetSets}
                 onChange={e => setEditTargetSets(parseInt(e.target.value, 10) || 3)}
-                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white outline-none font-bebas tracking-wider focus:border-white/25"
+                className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white outline-none font-bebas tracking-wider"
               />
             </div>
             <div className="flex flex-col gap-2">

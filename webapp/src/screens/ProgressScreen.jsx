@@ -184,7 +184,7 @@ export default function ProgressScreen() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by name or muscle group…"
-                  className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 border-0 outline-none focus:ring-0"
+                  className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 outline-none focus:ring-0"
                 />
               </div>
               <div className="overflow-y-auto flex-1 min-h-0">
@@ -200,7 +200,7 @@ export default function ProgressScreen() {
                     <button
                       key={i}
                       onClick={() => handleSelect(ex)}
-                      className="w-full text-left px-4 py-3 active:bg-white/8 border-b border-white/[0.05] last:border-0 transition-colors"
+                      className="w-full text-left px-4 py-3 active:bg-white/8 transition-colors"
                     >
                       <div className="text-sm font-bebas tracking-wider text-white/80">{ex.name}</div>
                       <div className="text-xs text-white/30 font-bebas">{ex.grp || ex.group}</div>
@@ -229,20 +229,20 @@ export default function ProgressScreen() {
           ) : (
             <div className="space-y-4">
               {t && (
-                <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
+                <div className="bg-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
                   <span className={`text-2xl font-bebas tracking-wider ${t.color}`}>{t.text}</span>
                   <span className="text-white/40 text-sm font-bebas">over {progress.length} sessions</span>
                 </div>
               )}
 
-              <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4">
+              <div className="bg-white/[0.04] rounded-2xl p-4">
                 <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-bebas">
                   Max weight per session (kg)
                 </div>
                 <LineChart data={progress} />
               </div>
 
-              <div className="bg-white/[0.04] border border-white/[0.04] rounded-2xl p-4">
+              <div className="bg-white/[0.04] rounded-2xl p-4">
                 <div className="text-xs text-white/40 mb-3 uppercase tracking-widest font-bebas">
                   Sessions
                 </div>

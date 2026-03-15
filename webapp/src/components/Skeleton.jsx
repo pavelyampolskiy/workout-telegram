@@ -13,7 +13,6 @@ export function SkeletonCard({ children, className = '' }) {
       className={`rounded-2xl p-4 ${className}`}
       style={{
         background: 'rgba(255, 255, 255, 0.03)',
-        border: '1px solid rgba(255, 255, 255, 0.05)',
       }}
     >
       {children}
@@ -85,7 +84,7 @@ export function ProgressSkeleton() {
       <div className="space-y-4">
         <Skeleton className="h-20 w-full rounded-2xl" />
         <Skeleton className="h-32 w-full rounded-2xl" />
-        <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.04)' }}>
+        <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.04)' }}>
           <Skeleton className="h-3 w-24 mb-3" />
           <div className="space-y-2">
             {[1, 2, 3, 4].map(i => (
@@ -152,7 +151,7 @@ export function ProgramDaySkeleton() {
     <div className="space-y-2">
       <Skeleton className="h-3 w-full mb-5" />
       {[1, 2, 3, 4].map(i => (
-        <div key={i} className="rounded-xl p-4 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.04)' }}>
+        <div key={i} className="rounded-xl p-4 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.05)' }}>
           <div className="flex flex-col gap-1 shrink-0">
             <Skeleton className="h-5 w-5 rounded" />
             <Skeleton className="h-5 w-5 rounded" />

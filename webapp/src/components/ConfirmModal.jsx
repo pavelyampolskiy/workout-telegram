@@ -18,7 +18,7 @@ export function ConfirmModal({
 
   return (
     <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm">
-      <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+      <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6">
         <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">{title}</h3>
         {description && <p className="text-sm text-white/40 mb-6 font-sans">{description}</p>}
         <div className="flex flex-col gap-2">

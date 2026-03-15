@@ -57,7 +57,7 @@ class ErrorBoundary extends Component {
               this.props.onRetry?.();
             }}
             className="card-press text-white/90 font-bebas tracking-wider px-8 py-3 rounded-2xl"
-            style={{ background: 'rgba(0,0,0,0.10)', border: '1px solid rgba(255,255,255,0.05)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06)' }}
+            style={{ background: 'rgba(0,0,0,0.10)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20), 0 0 18px rgba(255,255,255,0.06)' }}
           >
             Try Again
           </button>

@@ -103,7 +103,7 @@ export default function RecoveryCheckScreen() {
               {rec.text}
             </div>
             {rec.modifier < 1 && (
-              <div className="mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+              <div className="mt-4 px-4 py-2 rounded-xl bg-white/5">
                 <span className="text-white/70 text-xs font-sans">
                   Suggested weight adjustment: <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
                 </span>

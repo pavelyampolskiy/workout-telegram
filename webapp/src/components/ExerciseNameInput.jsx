@@ -50,7 +50,7 @@ export function ExerciseNameInput({ value, onChange, onSelectSuggestion, userId,
       />
       {showSuggestions && suggestions.length > 0 && (
         <div
-          className="absolute left-0 right-0 top-full mt-1 max-h-40 overflow-y-auto rounded-xl border border-white/10 bg-black/95 py-1 z-10"
+          className="absolute left-0 right-0 top-full mt-1 max-h-40 overflow-y-auto rounded-xl bg-black/95 py-1 z-10"
           style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}
         >
           {suggestions.map((item, i) => (

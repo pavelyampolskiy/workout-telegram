@@ -59,7 +59,6 @@ input[type='number']::-webkit-outer-spin-button {
     position: relative;
     min-height: 60px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 14px;
     color: #ffffff;
     overflow: hidden;
@@ -113,7 +112,7 @@ input[type='number']::-webkit-outer-spin-button {
 
   /* ── Input focus ──────────────────────────────────────── */
   input, textarea {
-    transition: border-color 180ms ease-out, box-shadow 180ms ease-out;
+    transition: box-shadow 180ms ease-out;
   }
 }
 

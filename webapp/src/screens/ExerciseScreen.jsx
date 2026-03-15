@@ -367,8 +367,8 @@ export default function ExerciseScreen() {
                 onClick={() => saveRestDuration(sec)}
                 className={`w-14 px-3 py-2 rounded-lg font-bebas tracking-wider text-sm transition-colors text-center ${
                   restDuration === sec && !customRestInput
-                    ? 'bg-white/20 text-white border border-white/30'
-                    : 'bg-white/5 text-white/50 border border-white/10 active:bg-white/10'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-white/5 text-white/50 active:bg-white/10'
                 }`}
               >
                 {sec}s
@@ -384,7 +384,7 @@ export default function ExerciseScreen() {
               onChange={e => setCustomRestInput(e.target.value.replace(/\D/g, '').slice(0, 3))}
               onBlur={applyCustomRest}
               onKeyDown={e => e.key === 'Enter' && applyCustomRest()}
-              className="w-14 px-2 py-2 rounded-lg font-bebas tracking-wider text-xs bg-white/5 text-white/80 border border-white/10 outline-none placeholder-white/30 focus:border-white/25 text-center"
+              className="w-14 px-2 py-2 rounded-lg font-bebas tracking-wider text-xs bg-white/5 text-white/80 outline-none placeholder-white/30 text-center"
             />
           </div>
         </div>
@@ -447,7 +447,7 @@ export default function ExerciseScreen() {
                 setWeight(String(w - 2.5));
               }}
               className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              style={{ background: 'rgba(255,255,255,0.08)' }}
             >
               −
             </button>
@@ -458,7 +458,7 @@ export default function ExerciseScreen() {
               value={weight}
               onChange={e => { setWeight(e.target.value); setInputError(''); }}
               placeholder="0"
-              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20"
             />
             <button
               onClick={() => {
@@ -470,7 +470,7 @@ export default function ExerciseScreen() {
                 setWeight(String(w + 2.5));
               }}
               className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              style={{ background: 'rgba(255,255,255,0.08)' }}
             >
               +
             </button>
@@ -487,7 +487,7 @@ export default function ExerciseScreen() {
             <button
               onClick={() => setReps(r => String(Math.max(1, (parseInt(r) || 0) - 1)))}
               className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              style={{ background: 'rgba(255,255,255,0.08)' }}
             >
               −
             </button>
@@ -500,12 +500,12 @@ export default function ExerciseScreen() {
               value={reps}
               onChange={e => { setReps(e.target.value); setInputError(''); }}
               placeholder="0"
-              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 border border-white/10 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20 focus:border-white/[0.22] focus:shadow-[inset_0_0_12px_rgba(255,255,255,0.04)]"
+              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20"
             />
             <button
               onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
               className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bebas active:text-white active:bg-white/15 transition-colors shrink-0 ${TEXT_SECONDARY}`}
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              style={{ background: 'rgba(255,255,255,0.08)' }}
             >
               +
             </button>
@@ -519,7 +519,7 @@ export default function ExerciseScreen() {
         <button
           onClick={handleSaveSet}
           disabled={saving || !weight || !reps}
-          className="btn-active-style card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:opacity-40 border border-white/20"
+          className="btn-active-style card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:opacity-40"
           style={weight && reps ? { ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)' } : { ...CARD_BTN_STYLE, color: 'rgba(255,255,255,0.4)' }}
         >
           {saving ? (
@@ -546,7 +546,7 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40 text-white/80 border border-white/20"
+            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40 text-white/80"
             style={CARD_BTN_STYLE}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
@@ -556,7 +556,7 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center text-white/90 border border-white/20"
+            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center text-white/90"
             style={CARD_BTN_STYLE}
           >
             Finish Exercise

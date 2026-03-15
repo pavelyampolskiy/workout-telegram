@@ -7,7 +7,6 @@ export function Toast({ message, onClose, visible }) {
       style={{
         bottom: 'max(env(safe-area-inset-bottom, 0px) + 1rem, 1.5rem)',
         background: 'rgba(20,20,22,0.95)',
-        border: '1px solid rgba(255,255,255,0.12)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       }}
       role="alert"

@@ -254,7 +254,7 @@ export default function DayScreen() {
             value={note}
             onChange={e => setNote(e.target.value)}
             placeholder="E.g. Felt strong today…"
-            className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
+            className="w-full appearance-none bg-black/50 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
           />
           <button
             onClick={handleFinish}
@@ -411,7 +411,7 @@ export default function DayScreen() {
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
           style={SECONDARY_CARD_STYLE}
         >
-          <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
+          <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
             +
           </span>
           <div className="font-bebas tracking-wider text-base text-white/50">
@@ -449,7 +449,7 @@ export default function DayScreen() {
       {/* Add Exercise modal */}
       {showAddExercise && (
         <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 border border-white/10 rounded-2xl p-6">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
             
             {/* Muscle group selector */}
@@ -462,8 +462,8 @@ export default function DayScreen() {
                     onClick={() => setCustomExGroup(grp)}
                     className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
                       customExGroup === grp
-                        ? 'bg-white/20 text-white border border-white/30'
-                        : 'bg-white/5 text-white/50 border border-white/10'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-white/5 text-white/50'
                     }`}
                   >
                     {grp}
@@ -481,7 +481,7 @@ export default function DayScreen() {
                 onSelectSuggestion={(item) => { setCustomExName(item.name); setCustomExGroup(item.grp); }}
                 userId={userId}
                 placeholder="e.g. Dumbbell Curls"
-                className="w-full appearance-none bg-black/50 border border-white/10 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider focus:border-white/25"
+                className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider"
                 autoFocus
               />
             </div>

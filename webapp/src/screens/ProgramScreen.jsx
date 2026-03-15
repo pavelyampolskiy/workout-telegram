@@ -197,7 +197,7 @@ export default function ProgramScreen() {
             className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
             style={SECONDARY_CARD_STYLE}
           >
-            <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-lg shrink-0">
+            <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
               +
             </span>
             <div className="font-bebas tracking-wider text-base text-white/50">Add day</div>
@@ -211,7 +211,7 @@ export default function ProgramScreen() {
           onClick={closeAddDay}
         >
           <div
-            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 border border-white/10 shadow-xl"
+            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 shadow-xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="font-bebas text-white/90 tracking-wider mb-3">New day</div>
@@ -220,7 +220,7 @@ export default function ProgramScreen() {
               value={newDayLabel}
               onChange={e => setNewDayLabel(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') submitAddDay(); if (e.key === 'Escape') closeAddDay(); }}
-              className="w-full rounded-xl px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 font-sans text-base focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full rounded-xl px-4 py-3 bg-white/10 text-white placeholder-white/40 font-sans text-base focus:outline-none"
               placeholder="Day name"
               autoFocus
             />
@@ -252,7 +252,7 @@ export default function ProgramScreen() {
           onClick={closeRename}
         >
           <div
-            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 border border-white/10 shadow-xl"
+            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 shadow-xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="font-bebas text-white/90 tracking-wider mb-3">Rename day</div>
@@ -261,7 +261,7 @@ export default function ProgramScreen() {
               value={renameValue}
               onChange={e => setRenameValue(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') submitRename(); if (e.key === 'Escape') closeRename(); }}
-              className="w-full rounded-xl px-4 py-3 bg-white/10 border border-white/20 text-white placeholder-white/40 font-sans text-base focus:outline-none focus:ring-2 focus:ring-white/30"
+              className="w-full rounded-xl px-4 py-3 bg-white/10 text-white placeholder-white/40 font-sans text-base focus:outline-none"
               placeholder="Day name"
               autoFocus
             />
@@ -293,7 +293,7 @@ export default function ProgramScreen() {
           onClick={() => setDeleteDay(null)}
         >
           <div
-            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 border border-white/10 shadow-xl"
+            className="rounded-2xl p-5 w-full max-w-sm bg-neutral-900 shadow-xl"
             onClick={e => e.stopPropagation()}
           >
             <div className="font-bebas text-white/90 tracking-wider mb-1">Delete day</div>
