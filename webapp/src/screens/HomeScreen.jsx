@@ -95,7 +95,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-0.5 flex items-center justify-between w-full gap-2">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas text-sm text-white/15" style={{ letterSpacing: '0.46em' }}>{p}</span>
+        <span key={i} className="font-bebas text-sm text-white/15" style={{ letterSpacing: '0.36em' }}>{p}</span>
       ))}
     </div>
   );
