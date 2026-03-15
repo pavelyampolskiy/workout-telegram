@@ -179,8 +179,10 @@ export default function HomeScreen() {
                       <path d="M5 3l14 9-14 9V3z"/>
                     </svg>
                   </span>
-                  <span className="font-bebas tracking-wider text-xl text-white text-center shrink-0" style={{ letterSpacing: '1.5px' }}>Continue Workout</span>
-                  <span className={`text-[10px] font-sans ${TEXT_MUTED} text-center shrink-0`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                  <div className="flex items-center justify-center gap-2 shrink-0 flex-wrap">
+                    <span className="font-bebas tracking-wider text-xl text-white" style={{ letterSpacing: '1.5px' }}>Continue Workout</span>
+                    <span className={`text-xs font-bebas tracking-wider ${TEXT_MUTED}`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                  </div>
                 </button>
                 <button
                   onClick={handleNewWorkout}
