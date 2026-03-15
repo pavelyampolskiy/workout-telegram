@@ -376,7 +376,7 @@ export default function HomeScreen() {
             onClick={handleNewWorkout}
             className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
             style={{
-              background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.07)',
+              background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
             }}
           >
             <div className="flex items-center gap-3 relative z-[1]">
