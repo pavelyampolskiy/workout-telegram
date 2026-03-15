@@ -60,8 +60,20 @@ function daysAgoLabel(dateStr) {
   return dateStr.split('-').slice(1).reverse().join('.');
 }
 
+function daysAgoShort(dateStr) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const d = new Date(dateStr);
+  d.setHours(0, 0, 0, 0);
+  const diff = Math.round((today - d) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yest.';
+  if (diff < 7) return `${diff}d`;
+  return dateStr.split('-').slice(1).reverse().join('.');
+}
+
 const RING_SIZE = 60;
-const RING_STROKE = 5;
+const RING_STROKE = 2;
 
 function StatRing({ progress, value, label, sublabel, gradientId }) {
   const radius = (RING_SIZE - RING_STROKE) / 2;
@@ -87,8 +99,8 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
         </div>
       </div>
       <div className="mt-2 text-center">
-        <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.2em]">{label}</div>
-        <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.2em]">{sublabel ?? '—'}</div>
+        <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.23em]">{label}</div>
+        <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.23em]">{sublabel ?? '—'}</div>
       </div>
     </div>
   );
@@ -169,8 +181,8 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
               </div>
             </div>
             <div className="mt-2 text-center">
-              <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.2em]">Last Achievement</div>
-              <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.2em]">{lastAchievement.name}</div>
+              <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.23em]">Last Achievement</div>
+              <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.23em]">{lastAchievement.name}</div>
             </div>
           </div>
         )}
@@ -200,17 +212,21 @@ function StatusWidget({ userId }) {
   if (!stats) return null;
 
   const { lastDate, weekCount, total } = stats;
-  const parts = [
-    `${total} workout${total !== 1 ? 's' : ''}`,
-    lastDate ? `Last ${daysAgoLabel(lastDate)}` : null,
-    `${weekCount} this week`,
-  ].filter(Boolean);
 
   return (
-    <div className="mt-0.5 flex items-center gap-4">
-      {parts.map((p, i) => (
-        <span key={i} className={`font-bebas tracking-wider text-sm ${TEXT_TERTIARY}`}>{p}</span>
-      ))}
+    <div className="mt-0.5 flex items-center justify-between w-full">
+      <div className="flex flex-col items-center">
+        <span className="font-bebas text-lg leading-none text-white/90">{total}</span>
+        <span className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.23em] mt-0.5">Total</span>
+      </div>
+      <div className="flex flex-col items-center">
+        <span className="font-bebas text-lg leading-none text-white/90">{lastDate ? daysAgoShort(lastDate) : '—'}</span>
+        <span className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.23em] mt-0.5">Last</span>
+      </div>
+      <div className="flex flex-col items-center">
+        <span className="font-bebas text-lg leading-none text-white/90">{weekCount}</span>
+        <span className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.23em] mt-0.5">Week</span>
+      </div>
     </div>
   );
 }
@@ -376,7 +392,7 @@ export default function HomeScreen() {
             onClick={handleNewWorkout}
             className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
             style={{
-              background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
+              background: unfinished ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.08)',
             }}
           >
             <div className="flex items-center gap-3 relative z-[1]">
@@ -385,7 +401,6 @@ export default function HomeScreen() {
               </span>
               <div className="flex-1">
                 <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
-                <div className={`text-[10px] font-sans mt-0.5 ${TEXT_MUTED}`}>Start your training session</div>
               </div>
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
@@ -393,43 +408,43 @@ export default function HomeScreen() {
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-3 min-h-0 flex flex-col items-center justify-center gap-2 min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.03)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 text-white">
                 <HistoryIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>History</div>
+              <div className="font-bebas tracking-wider text-sm truncate text-white/55">History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-3 min-h-0 flex flex-col items-center justify-center gap-2 min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.03)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 text-white">
                 <StatsIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Statistics</div>
+              <div className="font-bebas tracking-wider text-sm truncate text-white/55">Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-3 min-h-0 flex flex-col items-center justify-center gap-2 min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.03)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 text-white">
                 <TrophyIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
+              <div className="font-bebas tracking-wider text-sm truncate text-white/55">Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-3 min-h-0 flex flex-col items-center justify-center gap-2 min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.03)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 text-white">
                 <ProgramIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>My program</div>
+              <div className="font-bebas tracking-wider text-sm truncate text-white/55">My program</div>
             </button>
           </div>
         </div>
