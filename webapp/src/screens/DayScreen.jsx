@@ -298,7 +298,7 @@ export default function DayScreen() {
       </div>
 
       {/* Exercise list */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 space-y-2 pb-4">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 space-y-2 pb-28">
         {program?.map((ex, idx) => {
           const info = exerciseMap[idx];
           const done = info?.setsCount || 0;
@@ -423,8 +423,8 @@ export default function DayScreen() {
         </button>
       </div>
 
-      {/* Fixed bottom button */}
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom">
+      {/* Fixed bottom button — сплошной фон, без градиента внизу, чтобы при скролле не было артефактов */}
+      <div className="fixed bottom-0 left-0 right-0 z-20 max-w-lg mx-auto px-4 pt-6 pb-[max(1rem,env(safe-area-inset-bottom))] bg-black">
         <button
           onClick={handleSave}
           className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"

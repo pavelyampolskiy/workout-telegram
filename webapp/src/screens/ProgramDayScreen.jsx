@@ -186,7 +186,7 @@ export default function ProgramDayScreen() {
         </button>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom z-20">
+      <div className="fixed bottom-0 left-0 right-0 z-20 max-w-lg mx-auto px-4 pt-6 pb-[max(1rem,env(safe-area-inset-bottom))] bg-black">
         <button
           onClick={handleSave}
           disabled={saving}
