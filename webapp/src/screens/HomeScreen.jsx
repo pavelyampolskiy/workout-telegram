@@ -169,7 +169,7 @@ export default function HomeScreen() {
               <div className="text-white/15" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
               <div className="text-white" style={{ fontSize: '1.95em', letterSpacing: '0.52em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
-            <div className="mt-10">
+            <div className="mt-1">
               <StatusWidget userId={userId} />
             </div>
           </div>
