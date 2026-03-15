@@ -8,8 +8,16 @@ import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import homeBg from '../assets/gym-bg.jpg';
 
-/** Единая толщина контура всех иконок (часы, графики, кубок, гантель, список). */
+/** Единая толщина контура всех иконок. */
 const ICON_STROKE = 1;
+/** Фон всех карточек/плашек на главном экране (без границ). */
+const CARD_BG = 'rgba(255,255,255,0.05)';
+/** Стиль обёртки иконки в карточке. */
+const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white/50';
+/** Стиль подписи в карточке (иконка + текст). */
+const LABEL_STYLE = { letterSpacing: '1.5px' };
+const LABEL_CLASS = 'font-bebas tracking-wider text-xl';
+const LABEL_CLASS_MUTED = 'font-bebas tracking-wider text-base text-white/50 truncate w-full text-center';
 const WorkoutIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
@@ -171,28 +179,28 @@ export default function HomeScreen() {
               <div className="flex-1 min-h-0 flex flex-col gap-3">
                 <button
                   onClick={handleContinue}
-                  className="btn-active-style card-press w-full rounded-xl p-4 flex-1 min-h-0 flex flex-col justify-between items-center"
-                  style={{ background: 'rgba(255,255,255,0.05)' }}
+                  className="card-press w-full rounded-xl p-4 flex-1 min-h-0 flex flex-col justify-between items-center"
+                  style={{ background: CARD_BG }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/50">
+                  <span className={ICON_WRAPPER}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
                       <path d="M5 3l14 9-14 9V3z"/>
                     </svg>
                   </span>
                   <div className="flex items-center justify-center gap-2 shrink-0 flex-wrap">
-                    <span className="font-bebas tracking-wider text-xl text-white" style={{ letterSpacing: '1.5px' }}>Continue Workout </span>
-                    <span className={`font-bebas tracking-wider text-xl ${TEXT_MUTED}`} style={{ letterSpacing: '1.5px' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                    <span className={`${LABEL_CLASS} text-white`} style={LABEL_STYLE}>Continue Workout </span>
+                    <span className={`${LABEL_CLASS} ${TEXT_MUTED}`} style={LABEL_STYLE}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                   </div>
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
                   className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.035)' }}
+                  style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/40">
                     <WorkoutIcon />
                   </span>
-                  <span className={`font-bebas tracking-wider text-xl shrink-0 ${TEXT_MUTED}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
+                  <span className={`${LABEL_CLASS} shrink-0 ${TEXT_MUTED}`} style={LABEL_STYLE}>New Workout</span>
                 </button>
               </div>
             </>
@@ -200,12 +208,12 @@ export default function HomeScreen() {
             <button
               onClick={handleNewWorkout}
               className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+              style={{ background: CARD_BG }}
             >
-              <span className="shrink-0 flex items-center justify-center text-white/50">
+              <span className={ICON_WRAPPER}>
                 <WorkoutIcon />
               </span>
-              <span className="font-bebas tracking-wider text-xl shrink-0 text-white" style={{ letterSpacing: '1.5px' }}>New Workout</span>
+              <span className={`${LABEL_CLASS} shrink-0 text-white`} style={LABEL_STYLE}>New Workout</span>
             </button>
           )}
           {unfinished && showDismissConfirm && createPortal(
@@ -260,42 +268,34 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('history')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+              style={{ background: CARD_BG }}
             >
-              <span className="shrink-0 flex items-center justify-center text-white/50">
-                <HistoryIcon />
-              </span>
-              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>History</div>
+              <span className={ICON_WRAPPER}><HistoryIcon /></span>
+              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+              style={{ background: CARD_BG }}
             >
-              <span className="shrink-0 flex items-center justify-center text-white/50">
-                <StatsIcon />
-              </span>
-              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Statistics</div>
+              <span className={ICON_WRAPPER}><StatsIcon /></span>
+              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+              style={{ background: CARD_BG }}
             >
-              <span className="shrink-0 flex items-center justify-center text-white/50">
-                <TrophyIcon />
-              </span>
-              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Achievements</div>
+              <span className={ICON_WRAPPER}><TrophyIcon /></span>
+              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.05)' }}
+              style={{ background: CARD_BG }}
             >
-              <span className="shrink-0 flex items-center justify-center text-white/50">
-                <ProgramIcon />
-              </span>
-              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>My program</div>
+              <span className={ICON_WRAPPER}><ProgramIcon /></span>
+              <div className={LABEL_CLASS_MUTED} style={LABEL_STYLE}>My program</div>
             </button>
           </div>
         </div>
