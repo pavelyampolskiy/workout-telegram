@@ -87,7 +87,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-0.5 flex items-center justify-between w-full gap-2">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas tracking-wider text-sm text-white/50">{p}</span>
+        <span key={i} className="font-bebas tracking-wider text-sm text-white/35">{p}</span>
       ))}
     </div>
   );
@@ -185,7 +185,7 @@ export default function HomeScreen() {
                   </div>
                 </button>
                 <button
-                  onClick={handleNewWorkout}
+                  onClick={() => setShowDismissConfirm(true)}
                   className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.035)' }}
                 >
@@ -195,12 +195,6 @@ export default function HomeScreen() {
                   <span className={`font-bebas tracking-wider text-xl shrink-0 ${TEXT_MUTED}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
                 </button>
               </div>
-              <button
-                onClick={() => setShowDismissConfirm(true)}
-                className={`w-full text-center text-xs font-bebas tracking-wider py-2 shrink-0 ${TEXT_FADED}`}
-              >
-                Dismiss
-              </button>
             </>
           ) : (
             <button
