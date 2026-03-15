@@ -200,7 +200,7 @@ export default function ProgramScreen() {
           <button
             type="button"
             onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
-            className="card-press w-full rounded-xl p-4 flex items-center gap-4 text-left border border-dashed border-white/20"
+            className="card-press w-full rounded-xl p-4 flex items-center gap-4 text-left border border-dashed border-white/10"
             style={{ ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.04)' }}
           >
             <span className="shrink-0 flex items-center justify-center text-white/50">
