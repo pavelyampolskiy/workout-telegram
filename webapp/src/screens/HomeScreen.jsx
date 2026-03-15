@@ -162,16 +162,16 @@ export default function HomeScreen() {
               <StatusWidget userId={userId} />
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col gap-4 flex-none">
-            {/* Continue workout banner */}
-            {unfinished && (
-            <div className="relative">
-            {!showDismissConfirm ? (
-              <>
+        {/* Button block — fills all space from widget to bottom */}
+        <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
+          {unfinished && !showDismissConfirm ? (
+            <>
+              <div className="flex-1 min-h-0 flex flex-col gap-3">
                 <button
                   onClick={handleContinue}
-                  className="btn-active-style card-press w-full rounded-xl p-4 flex flex-col items-center justify-center gap-4"
+                  className="btn-active-style card-press w-full rounded-xl p-4 flex-1 min-h-0 flex flex-col justify-between items-center"
                   style={{ background: 'rgba(255,255,255,0.06)' }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/50">
@@ -179,83 +179,87 @@ export default function HomeScreen() {
                       <path d="M5 3l14 9-14 9V3z"/>
                     </svg>
                   </span>
-                  <span className="font-bebas tracking-wider text-xl text-white text-center" style={{ letterSpacing: '1.5px' }}>Continue Workout</span>
-                  <span className={`text-[10px] font-sans ${TEXT_MUTED} text-center`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                  <span className="font-bebas tracking-wider text-xl text-white text-center shrink-0" style={{ letterSpacing: '1.5px' }}>Continue Workout</span>
+                  <span className={`text-[10px] font-sans ${TEXT_MUTED} text-center shrink-0`}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                 </button>
                 <button
-                  onClick={() => setShowDismissConfirm(true)}
-                  className={`w-full text-center text-xs font-bebas tracking-wider py-2 mt-1 ${TEXT_FADED}`}
+                  onClick={handleNewWorkout}
+                  className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.04)' }}
                 >
-                  Dismiss
+                  <span className="shrink-0 flex items-center justify-center text-white/40">
+                    <WorkoutIcon />
+                  </span>
+                  <span className={`font-bebas tracking-wider text-xl shrink-0 ${TEXT_MUTED}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
                 </button>
-              </>
-            ) : createPortal(
-              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80" aria-modal="true" role="dialog">
-                <div 
-                  className="w-full max-w-sm rounded-2xl p-5"
-                  style={{
-                    background: 'rgba(0, 0, 0, 0.92)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-                  }}
-                >
-                  <h3 className={`font-bebas text-lg tracking-wider mb-1 ${TEXT_PRIMARY}`}>Dismiss workout?</h3>
-                  <p className={`text-sm mb-5 font-sans ${TEXT_MUTED}`}>This unfinished workout will be deleted.</p>
-                  <div className="flex flex-col gap-2">
-                    <button
-                      onClick={() => setShowDismissConfirm(false)}
-                      className={`btn-active-style card-press w-full font-bebas tracking-wider text-base py-3 rounded-[14px] ${TEXT_PRIMARY}`}
-                    >
-                      Keep it
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDismissing(true);
-                        api.deleteWorkout(unfinished.id)
-                          .then(() => {
-                            setUnfinished(null);
-                            setShowDismissConfirm(false);
-                          })
-                          .catch(e => showToast(e.message))
-                          .finally(() => setDismissing(false));
-                      }}
-                      disabled={dismissing}
-                      className={`w-full py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2 ${TEXT_TERTIARY} active:text-white/80`}
-                    >
-                      {dismissing ? (
-                        <>
-                          <Spinner size={16} />
-                          Deleting…
-                        </>
-                      ) : (
-                        'Delete workout'
-                      )}
-                    </button>
-                  </div>
+              </div>
+              <button
+                onClick={() => setShowDismissConfirm(true)}
+                className={`w-full text-center text-xs font-bebas tracking-wider py-2 shrink-0 ${TEXT_FADED}`}
+              >
+                Dismiss
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handleNewWorkout}
+              className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
+            >
+              <span className="shrink-0 flex items-center justify-center text-white/50">
+                <WorkoutIcon />
+              </span>
+              <span className="font-bebas tracking-wider text-xl shrink-0 text-white" style={{ letterSpacing: '1.5px' }}>New Workout</span>
+            </button>
+          )}
+          {unfinished && showDismissConfirm && createPortal(
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80" aria-modal="true" role="dialog">
+              <div 
+                className="w-full max-w-sm rounded-2xl p-5"
+                style={{
+                  background: 'rgba(0, 0, 0, 0.92)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                }}
+              >
+                <h3 className={`font-bebas text-lg tracking-wider mb-1 ${TEXT_PRIMARY}`}>Dismiss workout?</h3>
+                <p className={`text-sm mb-5 font-sans ${TEXT_MUTED}`}>This unfinished workout will be deleted.</p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => setShowDismissConfirm(false)}
+                    className={`btn-active-style card-press w-full font-bebas tracking-wider text-base py-3 rounded-[14px] ${TEXT_PRIMARY}`}
+                  >
+                    Keep it
+                  </button>
+                  <button
+                    onClick={() => {
+                      setDismissing(true);
+                      api.deleteWorkout(unfinished.id)
+                        .then(() => {
+                          setUnfinished(null);
+                          setShowDismissConfirm(false);
+                        })
+                        .catch(e => showToast(e.message))
+                        .finally(() => setDismissing(false));
+                    }}
+                    disabled={dismissing}
+                    className={`w-full py-3 font-bebas tracking-wider text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2 ${TEXT_TERTIARY} active:text-white/80`}
+                  >
+                    {dismissing ? (
+                      <>
+                        <Spinner size={16} />
+                        Deleting…
+                      </>
+                    ) : (
+                      'Delete workout'
+                    )}
+                  </button>
                 </div>
-              </div>,
-              document.body
-            )}
-          </div>
-        )}
-          </div>
-        </div>
-
-        {/* Button block — fills all space from widget to bottom */}
-        <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
-          <button
-            onClick={handleNewWorkout}
-            className={`w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
-            style={{
-              background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
-            }}
-          >
-            <span className={`shrink-0 flex items-center justify-center ${unfinished ? 'text-white/40' : 'text-white/50'}`}>
-              <WorkoutIcon />
-            </span>
-            <span className={`font-bebas tracking-wider text-xl shrink-0 ${unfinished ? TEXT_MUTED : 'text-white'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
-          </button>
+              </div>
+            </div>,
+            document.body
+          )}
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
