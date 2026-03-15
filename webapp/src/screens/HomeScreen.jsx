@@ -164,19 +164,40 @@ export default function HomeScreen() {
 
       {/* Content: header + widget shrink, button block fills remaining space */}
       <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto">
-        {/* Header + widget — compact, no scroll */}
+        {/* Header + widget + New Workout — одна плашка когда нет активной тренировки */}
         <div className="shrink-0 flex flex-col gap-4">
-          {/* Headline + status — в плашке */}
           <div className="pt-12 w-full">
-            <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
-              <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
-                <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+            {unfinished && !showDismissConfirm ? (
+              <>
+                <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
+                  <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                    <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
+                    <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+                  </div>
+                  <div className="mt-3 w-full flex justify-start">
+                    <StatusWidget userId={userId} />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
+                <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                  <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
+                  <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+                </div>
+                <div className="mt-3 w-full flex justify-start">
+                  <StatusWidget userId={userId} />
+                </div>
+                <button
+                  onClick={handleNewWorkout}
+                  className="card-press w-full mt-4 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
+                >
+                  <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
+                  <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                </button>
               </div>
-              <div className="mt-3 w-full flex justify-start">
-                <StatusWidget userId={userId} />
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -219,14 +240,6 @@ export default function HomeScreen() {
             </>
           ) : (
             <div className="mt-auto flex flex-col gap-3">
-              <button
-                onClick={handleNewWorkout}
-                className="w-full py-12 px-4 flex flex-row justify-between items-center card-press rounded-xl"
-                style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
-              >
-                <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
-              </button>
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button
                   onClick={() => navigate('history')}
