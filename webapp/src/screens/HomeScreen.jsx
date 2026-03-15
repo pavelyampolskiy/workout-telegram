@@ -239,7 +239,7 @@ export default function HomeScreen() {
               </div>
             </>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div className="mt-auto flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button
                   onClick={() => navigate('history')}
@@ -277,7 +277,7 @@ export default function HomeScreen() {
             </div>
           )}
           {unfinished && !showDismissConfirm && (
-            <div className="flex flex-col gap-3">
+            <div className="mt-auto flex flex-col gap-3">
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button onClick={() => navigate('history')} className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
