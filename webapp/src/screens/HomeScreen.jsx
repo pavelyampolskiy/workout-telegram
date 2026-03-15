@@ -240,7 +240,7 @@ export default function HomeScreen() {
             </>
           ) : (
             <div className="mt-auto flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
+              <div className="grid grid-cols-2 gap-0 min-h-0 grid-rows-2">
                 <button
                   onClick={() => navigate('history')}
                   className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
@@ -278,7 +278,7 @@ export default function HomeScreen() {
           )}
           {unfinished && !showDismissConfirm && (
             <div className="mt-auto flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
+              <div className="grid grid-cols-2 gap-0 min-h-0 grid-rows-2">
                 <button onClick={() => navigate('history')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/65"><HistoryIcon /></span>
                   <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
