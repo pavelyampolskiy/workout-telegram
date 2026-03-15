@@ -18,8 +18,8 @@ const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white';
 const LABEL_STYLE = { letterSpacing: '1.5px' };
 const LABEL_CLASS = 'font-bebas tracking-wider text-xl';
 const LABEL_CLASS_MUTED = 'font-bebas tracking-wider text-base text-white/50 truncate w-full text-center';
-const WorkoutIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+const WorkoutIcon = ({ className, style } = {}) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className={className || 'w-7 h-7'} style={style}>
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
   </svg>
 );
@@ -219,10 +219,10 @@ export default function HomeScreen() {
               <button
                 onClick={handleNewWorkout}
                 className="w-full p-4 flex flex-row justify-between items-center card-press rounded-xl"
-                style={{ background: CARD_BG }}
+                style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
               >
-                <span className={ICON_WRAPPER}><WorkoutIcon /></span>
-                <div className="font-bebas tracking-wider text-base text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
+                <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
+                <div className="font-bebas tracking-wider text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
               </button>
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button
