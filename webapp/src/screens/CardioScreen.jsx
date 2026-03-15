@@ -13,14 +13,8 @@ const ACTIVITIES = [
   { key: 'Swimming', label: 'Swimming' },
   { key: 'Walking', label: 'Walking' },
   { key: 'Rowing', label: 'Rowing' },
+  { key: 'Elliptical', label: 'Elliptical' },
   { key: 'Other', label: 'Other' },
-];
-
-const PRESETS = [
-  { label: 'Running 30 min', activity: 'Running', text: '30 min' },
-  { label: 'Cycling 45 min', activity: 'Cycling', text: '45 min' },
-  { label: 'Walking 1 h', activity: 'Walking', text: '1 h' },
-  { label: 'Swimming', activity: 'Swimming', text: '' },
 ];
 
 export default function CardioScreen() {
@@ -100,12 +94,6 @@ export default function CardioScreen() {
     }
   };
 
-  const applyPreset = (preset) => {
-    setActivityType(preset.activity);
-    setText(preset.text);
-    setDistance('');
-  };
-
   if (error) {
     return <ErrorScreen overlay="bg-black/60" image="/cardio-bg.jpg" onBack={goBack} />;
   }
@@ -173,23 +161,6 @@ export default function CardioScreen() {
                 <div className="text-white/40 text-[10px] font-sans">{durationMin} min</div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* Quick presets */}
-        <div className="mb-4">
-          <p className="font-sans text-white/35 text-[10px] uppercase tracking-wider mb-2">Quick start</p>
-          <div className="flex flex-wrap gap-2">
-            {PRESETS.map((p) => (
-              <button
-                key={p.label}
-                type="button"
-                onClick={() => applyPreset(p)}
-                className="px-3 py-2 rounded-xl font-sans text-sm border border-white/15 bg-white/5 text-white/80 hover:bg-white/10 hover:border-white/25 transition-colors"
-              >
-                {p.label}
-              </button>
-            ))}
           </div>
         </div>
 
