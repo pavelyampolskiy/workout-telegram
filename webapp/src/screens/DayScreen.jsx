@@ -258,8 +258,7 @@ export default function DayScreen() {
           <button
             onClick={handleFinish}
             disabled={saving}
-            className="card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-            style={CARD_BTN_STYLE}
+            className="btn-active-style card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50"
           >
             {saving ? (
               <span className="inline-flex items-center justify-center gap-2">
@@ -428,8 +427,7 @@ export default function DayScreen() {
       <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-4 bg-gradient-to-t from-black via-black/95 to-transparent pt-6 safe-bottom">
         <button
           onClick={handleSave}
-          className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={CARD_BTN_STYLE}
+          className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
         >
           Save Workout
         </button>

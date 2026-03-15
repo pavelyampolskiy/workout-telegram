@@ -103,12 +103,7 @@ export default function CardioScreen() {
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <button
             onClick={handleStart}
-            className="card-press w-full py-4 rounded-2xl font-bebas tracking-wider text-xl"
-            style={{
-              ...CARD_BTN_STYLE,
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 100%)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 0 30px rgba(255,255,255,0.1)',
-            }}
+            className="btn-active-style card-press w-full py-4 rounded-[14px] font-bebas tracking-wider text-xl"
           >
             Start
           </button>
@@ -160,8 +155,7 @@ export default function CardioScreen() {
         <button
           onClick={handleSave}
           disabled={saving || !text.trim() || !workoutId}
-          className="card-press w-full mt-4 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl"
-          style={CARD_BTN_STYLE}
+          className="btn-active-style card-press w-full mt-4 disabled:opacity-40 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
         >
           {saving ? (
             <span className="inline-flex items-center justify-center gap-2">

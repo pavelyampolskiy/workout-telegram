@@ -25,8 +25,7 @@ function DayCard({ day, onPress }) {
   return (
     <button
       onClick={onPress}
-      className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
-      style={CARD_BTN_STYLE}
+      className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
     >
       <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
         <DayIcon />
@@ -141,8 +140,7 @@ export default function WorkoutScreen() {
               </div>
               <button
                 onClick={() => handleDayOrCardioPress('cardio')}
-                className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-4"
-                style={CARD_BTN_STYLE}
+                className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
               >
                 <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
                   <CardioIcon />

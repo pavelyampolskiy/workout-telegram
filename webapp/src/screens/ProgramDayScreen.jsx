@@ -190,8 +190,7 @@ export default function ProgramDayScreen() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-2xl disabled:opacity-50 flex items-center justify-center gap-2"
-          style={CARD_BTN_STYLE}
+          className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {saving ? <><Spinner size={20} /> Saving…</> : 'Save'}
         </button>
@@ -241,7 +240,7 @@ export default function ProgramDayScreen() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <button onClick={handleAdd} disabled={!addName.trim() || adding} className="card-press w-full text-white/90 font-bebas tracking-wider py-3 rounded-xl disabled:opacity-40" style={CARD_BTN_STYLE}>
+              <button onClick={handleAdd} disabled={!addName.trim() || adding} className="btn-active-style card-press w-full text-white/90 font-bebas tracking-wider py-3 rounded-[14px] disabled:opacity-40">
                 {adding ? 'Adding…' : 'Add'}
               </button>
               <button onClick={() => { setShowAdd(false); setAddName(''); }} className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm">
@@ -295,7 +294,7 @@ export default function ProgramDayScreen() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <button onClick={saveEdit} disabled={!editName.trim()} className="card-press w-full text-white/90 font-bebas tracking-wider py-3 rounded-xl disabled:opacity-40" style={CARD_BTN_STYLE}>
+              <button onClick={saveEdit} disabled={!editName.trim()} className="btn-active-style card-press w-full text-white/90 font-bebas tracking-wider py-3 rounded-[14px] disabled:opacity-40">
                 Save
               </button>
               <button onClick={() => setEditingIdx(null)} className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm">

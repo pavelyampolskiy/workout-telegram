@@ -114,8 +114,7 @@ export default function RecoveryCheckScreen() {
           <div className="space-y-3 mt-auto pb-6">
             <button
               onClick={handleContinue}
-              className="card-press w-full rounded-2xl p-4 text-center font-bebas tracking-wider text-white/90"
-              style={CARD_BTN_STYLE}
+              className="btn-active-style card-press w-full rounded-[14px] p-4 text-center font-bebas tracking-wider text-white/90"
             >
               Start Workout
             </button>
@@ -166,8 +165,7 @@ export default function RecoveryCheckScreen() {
             <button
               key={opt.value}
               onClick={() => handleSelect(opt.value)}
-              className="card-press w-full rounded-2xl p-4 text-left"
-              style={CARD_BTN_STYLE}
+              className="btn-active-style card-press w-full rounded-[14px] p-4 text-left"
             >
               <div className="font-bebas tracking-wider text-white/90">{opt.label}</div>
               <div className="text-white/40 text-xs font-sans mt-0.5">{opt.desc}</div>

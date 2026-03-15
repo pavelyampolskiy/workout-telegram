@@ -294,12 +294,7 @@ export default function HomeScreen() {
               <>
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-xl p-4 text-left"
-                  style={{
-                    ...CARD_BTN_STYLE,
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.08)',
-                  }}
+                  className="btn-active-style card-press w-full rounded-[14px] p-4 text-left"
                 >
                   <div className="flex items-center gap-3">
                     <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 bg-white/20 ${TEXT_PRIMARY}`}>
@@ -338,8 +333,7 @@ export default function HomeScreen() {
                   <div className="flex flex-col gap-2">
                     <button
                       onClick={() => setShowDismissConfirm(false)}
-                      className={`card-press w-full font-bebas tracking-wider text-base py-3 rounded-xl ${TEXT_PRIMARY}`}
-                      style={CARD_BTN_STYLE}
+                      className={`btn-active-style card-press w-full font-bebas tracking-wider text-base py-3 rounded-[14px] ${TEXT_PRIMARY}`}
                     >
                       Keep it
                     </button>
@@ -401,8 +395,7 @@ export default function HomeScreen() {
           <div className="grid grid-cols-2 gap-3 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
-              className="card-press rounded-xl p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
-              style={CARD_BTN_STYLE}
+              className="btn-active-style card-press rounded-[14px] p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
@@ -411,8 +404,7 @@ export default function HomeScreen() {
             </button>
             <button
               onClick={() => navigate('stats')}
-              className="card-press rounded-xl p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
-              style={CARD_BTN_STYLE}
+              className="btn-active-style card-press rounded-[14px] p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <StatsIcon />
@@ -431,8 +423,7 @@ export default function HomeScreen() {
             </button>
             <button
               onClick={() => navigate('program')}
-              className="card-press rounded-xl p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
-              style={CARD_BTN_STYLE}
+              className="btn-active-style card-press rounded-[14px] p-3 text-left min-h-0 flex flex-col justify-between min-w-0"
             >
               <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/15 shrink-0 ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
