@@ -172,7 +172,7 @@ export default function HomeScreen() {
                 <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
                   <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                     <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
-                    <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+                    <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
                   </div>
                   <div className="mt-3 w-full flex justify-start">
                     <StatusWidget userId={userId} />
@@ -183,7 +183,7 @@ export default function HomeScreen() {
               <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
                 <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                   <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
-                  <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+                  <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
                 </div>
                 <div className="mt-3 w-full flex justify-start">
                   <StatusWidget userId={userId} />
@@ -194,7 +194,7 @@ export default function HomeScreen() {
                   style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                  <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  <div className="font-bebas text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
                 </button>
               </div>
             )}
@@ -234,7 +234,7 @@ export default function HomeScreen() {
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                  <div className="font-bebas text-white/50 shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  <div className="font-bebas text-white/50 shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
                 </button>
               </div>
             </>
