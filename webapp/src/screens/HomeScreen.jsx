@@ -273,9 +273,9 @@ export default function HomeScreen() {
         <div className="shrink-0 flex flex-col gap-4">
           {/* Headline + status */}
           <div className="pt-6 space-y-0.5 w-full">
-            <div className="font-bebas leading-none w-full min-w-0" style={{ maxWidth: '100%' }}>
-              <div className={TEXT_TERTIARY} style={{ fontSize: 'clamp(14px, 9vw, 28px)', letterSpacing: '0.32em', wordSpacing: '0.5em' }}>Are you</div>
-              <div className="text-gradient-head font-bebas leading-none" style={{ fontSize: 'clamp(24px, 18vw, 52px)', letterSpacing: '0.28em' }}>Ready?</div>
+            <div className="font-bebas leading-none w-full min-w-0 whitespace-nowrap" style={{ maxWidth: '100%', fontSize: 'clamp(22px, 16vw, 48px)', letterSpacing: '0.26em' }}>
+              <span className="text-white/55 font-normal" style={{ letterSpacing: '0.28em' }}>ARE YOU </span>
+              <span className="text-gradient-head font-bold" style={{ letterSpacing: '0.22em' }}>READY?</span>
             </div>
             <StatusWidget userId={userId} />
           </div>
