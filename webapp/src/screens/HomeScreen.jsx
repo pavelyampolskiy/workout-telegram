@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED, PRIMARY_CARD_STYLE } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
@@ -273,7 +273,9 @@ export default function HomeScreen() {
 
           <div className="flex flex-col gap-4 flex-none">
             {/* Weekly goal widget */}
-            <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+            <div className="rounded-xl p-4 w-full" style={PRIMARY_CARD_STYLE}>
+              <WeeklyGoalWidget userId={userId} recoveryScore={recoveryData?.score ?? null} />
+            </div>
 
             {/* Continue workout banner */}
             {unfinished && (
@@ -367,7 +369,7 @@ export default function HomeScreen() {
               background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
             }}
           >
-            <div className="w-full flex flex-col items-center justify-center gap-2 relative z-[1]">
+            <div className="w-full flex flex-col items-center justify-center gap-4 relative z-[1]">
               <span className={`shrink-0 flex items-center justify-center ${unfinished ? 'text-white/40' : 'text-white/50'}`}>
                 <WorkoutIcon />
               </span>
