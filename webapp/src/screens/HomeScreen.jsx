@@ -172,7 +172,7 @@ export default function HomeScreen() {
                 style={{
                   fontSize: '1.95em',
                   letterSpacing: '0.18em',
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.08) 100%)',
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.05) 100%)',
                   WebkitBackgroundClip: 'text',
                   backgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
