@@ -9,34 +9,31 @@ import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import homeBg from '../assets/gym-bg.jpg';
 
+const ICON_STROKE = 1.5;
 const WorkoutIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
   </svg>
 );
-
 const HistoryIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <circle cx="12" cy="12" r="9"/>
     <path d="M12 7v5l3.5 3.5"/>
   </svg>
 );
-
 const StatsIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <path d="M4 20V12M8 20V16M12 20V8M16 20V14M20 20V4"/>
   </svg>
 );
-
 const TrophyIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
     <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
   </svg>
 );
-
 const ProgramIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
   </svg>
 );
@@ -380,7 +377,7 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center justify-center gap-3 relative z-[1]">
-              <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/15'} ${TEXT_PRIMARY}`}>
+              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <WorkoutIcon />
               </span>
               <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
@@ -393,7 +390,7 @@ export default function HomeScreen() {
               className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>History</div>
@@ -403,7 +400,7 @@ export default function HomeScreen() {
               className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <StatsIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Statistics</div>
@@ -413,7 +410,7 @@ export default function HomeScreen() {
               className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <TrophyIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
@@ -423,7 +420,7 @@ export default function HomeScreen() {
               className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.04)' }}
             >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center bg-white/10 shrink-0 ${TEXT_PRIMARY}`}>
+              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
               </span>
               <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>My program</div>
