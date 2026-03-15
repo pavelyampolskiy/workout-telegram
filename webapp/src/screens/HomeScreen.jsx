@@ -163,14 +163,16 @@ export default function HomeScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto">
         {/* Header + widget — compact, no scroll */}
         <div className="shrink-0 flex flex-col gap-4">
-          {/* Headline + status — без плашки */}
+          {/* Headline + status — в плашке */}
           <div className="pt-12 w-full">
-            <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-              <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
-              <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
-            </div>
-            <div className="mt-0 w-full flex justify-start">
-              <StatusWidget userId={userId} />
+            <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
+              <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                <span className="text-white/25 shrink-0" style={{ letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
+                <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></span>
+              </div>
+              <div className="mt-3 w-full flex justify-start">
+                <StatusWidget userId={userId} />
+              </div>
             </div>
           </div>
         </div>
