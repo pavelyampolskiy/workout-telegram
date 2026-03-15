@@ -381,7 +381,6 @@ export default function HomeScreen() {
                 <WorkoutIcon />
               </span>
               <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
-              <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
           </button>
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
