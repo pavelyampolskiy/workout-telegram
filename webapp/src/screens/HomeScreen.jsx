@@ -374,18 +374,16 @@ export default function HomeScreen() {
         <div className="flex-1 min-h-0 flex flex-col gap-3 pt-4">
           <button
             onClick={handleNewWorkout}
-            className={`w-full p-4 text-left flex-1 min-h-0 flex flex-col justify-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
+            className={`w-full p-4 flex-1 min-h-0 flex flex-col justify-center items-center card-press ${unfinished ? 'opacity-50' : ''} rounded-xl`}
             style={{
               background: unfinished ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.06)',
             }}
           >
-            <div className="flex items-center gap-3 relative z-[1]">
+            <div className="flex items-center justify-center gap-3 relative z-[1]">
               <span className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${unfinished ? 'bg-white/10' : 'bg-white/15'} ${TEXT_PRIMARY}`}>
                 <WorkoutIcon />
               </span>
-              <div className="flex-1">
-                <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
-              </div>
+              <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
           </button>
