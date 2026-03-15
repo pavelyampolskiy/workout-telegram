@@ -93,7 +93,7 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-0.5 flex flex-nowrap items-center justify-center gap-x-2 w-full overflow-x-auto min-w-0">
+    <div className="mt-0.5 flex flex-nowrap items-center justify-center gap-x-4 w-full overflow-x-auto min-w-0">
       {parts.map((p, i) => (
         <span key={i} className="font-bebas text-white/15 shrink-0" style={{ fontSize: '0.8125rem', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
       ))}
