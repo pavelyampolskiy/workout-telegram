@@ -85,8 +85,8 @@ function StatRing({ progress, value, label, sublabel, gradientId }) {
         </div>
       </div>
       <div className="mt-2 text-center">
-        <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.2em]">{label}</div>
-        <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.2em]">{sublabel ?? '—'}</div>
+        <div className="font-bebas text-[10px] uppercase text-white/50 tracking-[0.2em]">{label}</div>
+        <div className="text-xs font-bebas mt-0.5 text-white/50 tracking-[0.2em]">{sublabel ?? '—'}</div>
       </div>
     </div>
   );
@@ -151,13 +151,13 @@ function WeeklyGoalWidget({ userId, recoveryScore }) {
                 <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={RING_STROKE}/>
                 <circle cx={RING_SIZE/2} cy={RING_SIZE/2} r={(RING_SIZE-RING_STROKE)/2} fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth={RING_STROKE} strokeLinecap="round"/>
               </svg>
-              <div className={`absolute inset-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
+              <div className="absolute inset-0 flex items-center justify-center text-white/50">
                 {ACHIEVEMENT_CATEGORY_ICONS[lastAchievement.type || 'workouts']}
               </div>
             </div>
             <div className="mt-2 text-center">
-              <div className="font-bebas text-[10px] uppercase text-white/40 tracking-[0.2em]">Last Achievement</div>
-              <div className="text-xs font-bebas mt-0.5 text-white/40 tracking-[0.2em]">{lastAchievement.name}</div>
+              <div className="font-bebas text-[10px] uppercase text-white/50 tracking-[0.2em]">Last Achievement</div>
+              <div className="text-xs font-bebas mt-0.5 text-white/50 tracking-[0.2em]">{lastAchievement.name}</div>
             </div>
           </div>
         )}
@@ -195,7 +195,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-0.5 flex items-center justify-between w-full gap-2">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas tracking-wider text-sm text-white/30">{p}</span>
+        <span key={i} className="font-bebas tracking-wider text-sm text-white/50">{p}</span>
       ))}
     </div>
   );
@@ -263,7 +263,7 @@ export default function HomeScreen() {
           {/* Headline + status */}
           <div className="pt-6 space-y-0.5 w-full">
             <div className="font-bebas leading-none w-full min-w-0 whitespace-nowrap" style={{ maxWidth: '100%', fontSize: 'clamp(17px, 10vw, 42px)', letterSpacing: '0.24em' }}>
-              <span className="text-white/55 font-normal" style={{ letterSpacing: '0.26em' }}>ARE YOU </span>
+              <span className="text-white/50 font-normal" style={{ letterSpacing: '0.26em' }}>ARE YOU </span>
               <span className="text-white font-bold" style={{ letterSpacing: '0.20em' }}>READY</span><span className="text-white font-bold" style={{ marginLeft: '0.06em' }}>?</span>
             </div>
             <StatusWidget userId={userId} />
@@ -366,7 +366,7 @@ export default function HomeScreen() {
             }}
           >
             <div className="w-full flex items-center justify-between px-4 relative z-[1]">
-              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
+              <span className={`shrink-0 flex items-center justify-center ${unfinished ? 'text-white/40' : 'text-white/50'}`}>
                 <WorkoutIcon />
               </span>
               <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-white'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
@@ -378,40 +378,40 @@ export default function HomeScreen() {
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.06)' }}
             >
-              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
+              <span className="shrink-0 flex items-center justify-center text-white/50">
                 <HistoryIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>History</div>
+              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.06)' }}
             >
-              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
+              <span className="shrink-0 flex items-center justify-center text-white/50">
                 <StatsIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Statistics</div>
+              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.06)' }}
             >
-              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
+              <span className="shrink-0 flex items-center justify-center text-white/50">
                 <TrophyIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Achievements</div>
+              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
               className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
               style={{ background: 'rgba(255,255,255,0.06)' }}
             >
-              <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
+              <span className="shrink-0 flex items-center justify-center text-white/50">
                 <ProgramIcon />
               </span>
-              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>My program</div>
+              <div className="font-bebas tracking-wider text-white/50 text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>My program</div>
             </button>
           </div>
         </div>
