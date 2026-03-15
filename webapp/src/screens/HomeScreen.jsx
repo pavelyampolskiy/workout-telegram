@@ -191,8 +191,8 @@ export default function HomeScreen() {
                     </svg>
                   </span>
                   <div className="flex flex-col items-end shrink-0 text-right">
-                    <span className="font-bebas tracking-wider text-white" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Continue Workout</span>
-                    <span className={`font-bebas tracking-wider ${TEXT_MUTED}`} style={{ ...LABEL_STYLE, letterSpacing: '0.18em', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                    <span className="font-bebas text-white" style={{ letterSpacing: 'normal' }}>Continue Workout</span>
+                    <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                   </div>
                 </button>
                 <button
@@ -208,7 +208,7 @@ export default function HomeScreen() {
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                  <div className="font-bebas tracking-wider text-white/50 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>New Workout</div>
+                  <div className="font-bebas text-white/50 shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
                 </button>
               </div>
             </>
@@ -220,7 +220,7 @@ export default function HomeScreen() {
                 style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
               >
                 <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                <div className="font-bebas tracking-wider text-white shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>New Workout</div>
+                <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
               </button>
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button
@@ -229,7 +229,7 @@ export default function HomeScreen() {
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/65"><HistoryIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
                 </button>
                 <button
                   onClick={() => navigate('stats')}
@@ -237,7 +237,7 @@ export default function HomeScreen() {
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/65"><StatsIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
                 </button>
                 <button
                   onClick={() => navigate('achievements')}
@@ -245,7 +245,7 @@ export default function HomeScreen() {
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/65"><TrophyIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
                 </button>
                 <button
                   onClick={() => navigate('program')}
@@ -253,7 +253,7 @@ export default function HomeScreen() {
                   style={{ background: CARD_BG }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/65"><ProgramIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
                 </button>
               </div>
             </div>
@@ -263,19 +263,19 @@ export default function HomeScreen() {
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button onClick={() => navigate('history')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/65"><HistoryIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>History</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
                 </button>
                 <button onClick={() => navigate('stats')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/65"><StatsIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Statistics</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
                 </button>
                 <button onClick={() => navigate('achievements')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/65"><TrophyIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Achievements</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
                 </button>
                 <button onClick={() => navigate('program')} className="card-press py-12 px-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: CARD_BG }}>
                   <span className="shrink-0 flex items-center justify-center text-white/65"><ProgramIcon /></span>
-                  <div className="font-bebas tracking-wider text-base text-white/65 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>My program</div>
+                  <div className="font-bebas text-base text-white/65 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
                 </button>
               </div>
             </div>
