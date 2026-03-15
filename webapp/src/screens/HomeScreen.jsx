@@ -387,43 +387,43 @@ export default function HomeScreen() {
           <div className="grid grid-cols-2 gap-4 flex-1 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
             >
               <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <HistoryIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>History</div>
+              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
             >
               <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <StatsIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Statistics</div>
+              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
             >
               <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <TrophyIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>Achievements</div>
+              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
-              className="card-press p-3 text-left min-h-0 flex flex-col justify-between min-w-0 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.04)' }}
+              className="card-press p-4 min-h-0 flex flex-col justify-between items-center min-w-0 rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.06)' }}
             >
               <span className={`shrink-0 flex items-center justify-center ${TEXT_PRIMARY}`}>
                 <ProgramIcon />
               </span>
-              <div className={`font-bebas tracking-wider text-sm truncate ${TEXT_SECONDARY}`}>My program</div>
+              <div className="font-bebas tracking-wider text-white text-base truncate w-full text-center" style={{ letterSpacing: '1.5px' }}>My program</div>
             </button>
           </div>
         </div>
