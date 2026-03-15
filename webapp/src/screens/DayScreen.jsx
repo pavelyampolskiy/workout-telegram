@@ -310,10 +310,10 @@ export default function DayScreen() {
             <button
               key={idx}
               onClick={() => handleExerciseTap(idx)}
-              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              className="card-press w-full rounded-2xl p-4 text-left flex items-start gap-3 transition-colors"
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
             >
-              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+              <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 {idx + 1}
               </span>
               <div className="flex-1 min-w-0">
@@ -366,10 +366,10 @@ export default function DayScreen() {
             <button
               key={`custom_${ex.id}`}
               onClick={() => handleCustomExerciseTap(ex)}
-              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              className="card-press w-full rounded-2xl p-4 text-left flex items-start gap-3 transition-colors"
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
             >
-              <span className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-white/40 text-xs font-bebas tracking-wider shrink-0">
+              <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 +
               </span>
               <div className="flex-1 min-w-0">

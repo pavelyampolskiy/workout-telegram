@@ -194,6 +194,13 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
+                  className={`w-full text-center text-xs font-bebas tracking-wider py-2 shrink-0 ${TEXT_FADED}`}
+                  type="button"
+                >
+                  Cancel workout
+                </button>
+                <button
+                  onClick={() => setShowDismissConfirm(true)}
                   className="w-full p-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
                   style={{ background: CARD_BG }}
                 >
