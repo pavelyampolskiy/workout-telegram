@@ -278,32 +278,32 @@ export default function HomeScreen() {
               className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
-              <span className={ICON_WRAPPER}><HistoryIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>History</div>
+              <span className="shrink-0 flex items-center justify-center text-white/75"><HistoryIcon /></span>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
               className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
-              <span className={ICON_WRAPPER}><StatsIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>Statistics</div>
+              <span className="shrink-0 flex items-center justify-center text-white/75"><StatsIcon /></span>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
               className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
-              <span className={ICON_WRAPPER}><TrophyIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>Achievements</div>
+              <span className="shrink-0 flex items-center justify-center text-white/75"><TrophyIcon /></span>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
               className="card-press p-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
               style={{ background: CARD_BG }}
             >
-              <span className={ICON_WRAPPER}><ProgramIcon /></span>
-              <div className="font-bebas tracking-wider text-base text-white shrink-0" style={LABEL_STYLE}>My program</div>
+              <span className="shrink-0 flex items-center justify-center text-white/75"><ProgramIcon /></span>
+              <div className="font-bebas tracking-wider text-base text-white/75 shrink-0" style={LABEL_STYLE}>My program</div>
             </button>
           </div>
         </div>
