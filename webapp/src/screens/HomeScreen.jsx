@@ -155,8 +155,8 @@ export default function HomeScreen() {
           {/* Headline + status */}
           <div className="pt-6 w-full">
             <div className="font-bebas leading-none w-full min-w-0 whitespace-nowrap" style={{ maxWidth: '100%', fontSize: 'clamp(17px, 10vw, 42px)' }}>
-              <span className="text-white/50 font-normal" style={{ letterSpacing: '0.31em', fontSize: '0.9em' }}>ARE YOU </span>
-              <span className="text-white font-bold" style={{ letterSpacing: '0.25em', fontSize: '1.08em' }}>READY</span><span className="text-white font-bold" style={{ marginLeft: '0.06em', fontSize: '1.08em' }}>?</span>
+              <span className="text-white/50 font-normal" style={{ letterSpacing: '0.46em', fontSize: '0.9em' }}>ARE YOU </span>
+              <span className="text-white font-bold" style={{ letterSpacing: '0.40em', fontSize: '1.08em' }}>READY</span><span className="text-white font-bold" style={{ marginLeft: '0.06em', fontSize: '1.08em' }}>?</span>
             </div>
             <div className="mt-4">
               <StatusWidget userId={userId} />
