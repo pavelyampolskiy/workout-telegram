@@ -184,7 +184,7 @@ export default function ProgressScreen() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by name or muscle group…"
-                  className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 border-0 outline-none focus:ring-1 focus:ring-white/20"
+                  className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 border-0 outline-none focus:ring-0"
                 />
               </div>
               <div className="overflow-y-auto flex-1 min-h-0">
