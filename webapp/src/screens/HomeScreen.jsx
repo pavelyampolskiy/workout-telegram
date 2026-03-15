@@ -182,17 +182,17 @@ export default function HomeScreen() {
               <div className="flex-1 min-h-0 flex flex-col gap-3">
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-xl py-12 px-4 flex-1 min-h-0 flex flex-col justify-between items-center"
-                  style={{ background: CARD_BG }}
+                  className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center"
+                  style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
                       <path d="M5 3l14 9-14 9V3z"/>
                     </svg>
                   </span>
-                  <div className="flex items-center justify-center gap-2 shrink-0 flex-wrap">
-                    <span className={`${LABEL_CLASS} text-white`} style={LABEL_STYLE}>Continue Workout </span>
-                    <span className={`${LABEL_CLASS} ${TEXT_MUTED}`} style={LABEL_STYLE}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                  <div className="flex flex-col items-end shrink-0 text-right">
+                    <span className="font-bebas tracking-wider text-white" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>Continue Workout</span>
+                    <span className={`font-bebas tracking-wider ${TEXT_MUTED}`} style={{ ...LABEL_STYLE, letterSpacing: '0.18em', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                   </div>
                 </button>
                 <button
@@ -204,13 +204,11 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
-                  className="w-full py-12 px-4 flex-1 min-h-0 flex flex-col justify-between items-center card-press opacity-50 rounded-xl"
-                  style={{ background: CARD_BG }}
+                  className="w-full py-12 px-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl"
+                  style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/40">
-                    <WorkoutIcon />
-                  </span>
-                  <span className={`${LABEL_CLASS} shrink-0 ${TEXT_MUTED}`} style={LABEL_STYLE}>New Workout</span>
+                  <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
+                  <div className="font-bebas tracking-wider text-white/50 shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>New Workout</div>
                 </button>
               </div>
             </>
@@ -222,7 +220,7 @@ export default function HomeScreen() {
                 style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
               >
                 <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                <div className="font-bebas tracking-wider text-white shrink-0" style={{ letterSpacing: '0.18em' }}>New Workout</div>
+                <div className="font-bebas tracking-wider text-white shrink-0" style={{ ...LABEL_STYLE, letterSpacing: '0.18em' }}>New Workout</div>
               </button>
               <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
                 <button
