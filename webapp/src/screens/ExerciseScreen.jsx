@@ -5,7 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { ExerciseSkeleton } from '../components/Skeleton';
-import { fmtW, fmtTime, DARK_CARD_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { fmtW, fmtTime, DARK_CARD_STYLE, CARD_BTN_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
 const REST_PRESETS = [60, 90, 120];
 const REST_STORAGE_KEY = 'workout_rest_duration';
@@ -523,12 +523,8 @@ export default function ExerciseScreen() {
         <button
           onClick={handleSaveSet}
           disabled={saving || !weight || !reps}
-          className="card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:bg-white/5 disabled:border-white/5 disabled:text-white/25 border"
-          style={
-            weight && reps
-              ? { background: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.30)', color: 'rgba(255,255,255,1)' }
-              : { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.4)' }
-          }
+          className="btn-active-style card-press w-full rounded-xl py-3 font-bebas tracking-wider text-lg transition-all disabled:opacity-40 border border-white/20"
+          style={weight && reps ? { ...CARD_BTN_STYLE, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.95)' } : { ...CARD_BTN_STYLE, color: 'rgba(255,255,255,0.4)' }}
         >
           {saving ? (
             <span className="inline-flex items-center justify-center gap-2">
@@ -554,7 +550,8 @@ export default function ExerciseScreen() {
           <button
             onClick={handleDeleteLast}
             disabled={!sets.length}
-            className={`flex-1 bg-white/6 active:bg-white/12 border border-white/8 disabled:opacity-20 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5 ${TEXT_MUTED} active:text-white/80`}
+            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40 text-white/80 border border-white/20"
+            style={CARD_BTN_STYLE}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
               <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
@@ -563,8 +560,8 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className={`card-press flex-1 border font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center ${TEXT_PRIMARY}`}
-            style={{ background: 'rgba(255,255,255,0.14)', borderColor: 'rgba(255,255,255,0.22)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)' }}
+            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center text-white/90 border border-white/20"
+            style={CARD_BTN_STYLE}
           >
             Finish Exercise
           </button>

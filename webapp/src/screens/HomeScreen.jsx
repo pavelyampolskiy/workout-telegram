@@ -166,7 +166,7 @@ export default function HomeScreen() {
           {/* Headline + status — две строки, тонкое начертание, воздух сверху и снизу */}
           <div className="pt-12 w-full">
             <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)' }}>
-              <div className="text-white/50" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
+              <div className="text-white/15" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
               <div className="text-white" style={{ fontSize: '1.95em', letterSpacing: '0.52em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
             <div className="mt-10">
