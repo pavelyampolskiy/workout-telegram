@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -93,9 +94,9 @@ function StatusWidget({ userId }) {
   ].filter(Boolean);
 
   return (
-    <div className="mt-0 flex flex-wrap items-center justify-start gap-x-6 gap-y-1 w-full min-w-0">
+    <div className="mt-0 flex flex-nowrap items-center justify-start gap-x-4 w-full min-w-0 overflow-x-auto overflow-y-hidden">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas text-white/25 shrink-0" style={{ fontSize: '0.9375rem', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
+        <span key={i} className="font-bebas text-white/25 shrink-0 whitespace-nowrap" style={{ fontSize: '0.875rem', letterSpacing: '0.18em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
       ))}
     </div>
   );
@@ -106,6 +107,8 @@ export default function HomeScreen() {
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
+  const dismissModalRef = useRef(null);
+  useFocusTrap(dismissModalRef, !!(unfinished && showDismissConfirm));
 
   useEffect(() => {
     if (!userId) return;
@@ -283,8 +286,9 @@ export default function HomeScreen() {
             </div>
           )}
           {unfinished && showDismissConfirm && createPortal(
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} aria-modal="true" role="dialog">
-              <div 
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
+              <div
+                ref={dismissModalRef}
                 className="w-full max-w-sm rounded-2xl p-5"
                 style={{
                   background: 'rgba(0, 0, 0, 0.92)',

@@ -2,28 +2,10 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { Skeleton, SkeletonCard } from '../components/Skeleton';
+import { AchievementsSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { PAGE_HEADING_STYLE } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
-
-function AchievementsSkeleton() {
-  return (
-    <div className="space-y-3">
-      {[1, 2, 3, 4].map(i => (
-        <SkeletonCard key={i} className="p-4">
-          <div className="flex items-center gap-4">
-            <Skeleton className="w-12 h-12 rounded-xl" />
-            <div className="flex-1">
-              <Skeleton className="h-4 w-24 mb-2" />
-              <Skeleton className="h-3 w-40" />
-            </div>
-          </div>
-        </SkeletonCard>
-      ))}
-    </div>
-  );
-}
 
 function Badge({ achievement, locked = false }) {
   const { type = 'workouts', name, desc, progress, earned } = achievement;

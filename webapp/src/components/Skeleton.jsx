@@ -242,3 +242,49 @@ export function CardioSkeleton() {
     </div>
   );
 }
+
+/** Progress screen: content block only (chart + sessions list) — used when loading program data */
+export function ProgressContentSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-4 w-32" />
+      </div>
+      <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.04)' }}>
+        <Skeleton className="h-3 w-40 mb-3" />
+        <Skeleton className="h-32 w-full rounded-xl" />
+      </div>
+      <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.04)' }}>
+        <Skeleton className="h-3 w-24 mb-3" />
+        <div className="space-y-2">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="flex justify-between">
+              <Skeleton className="h-3 w-20" />
+              <Skeleton className="h-3 w-12" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Achievements screen: list of achievement cards */
+export function AchievementsSkeleton() {
+  return (
+    <div className="space-y-3">
+      {[1, 2, 3, 4].map(i => (
+        <SkeletonCard key={i} className="p-4">
+          <div className="flex items-center gap-4">
+            <Skeleton className="w-12 h-12 rounded-xl" />
+            <div className="flex-1">
+              <Skeleton className="h-4 w-24 mb-2" />
+              <Skeleton className="h-3 w-40" />
+            </div>
+          </div>
+        </SkeletonCard>
+      ))}
+    </div>
+  );
+}

@@ -98,27 +98,37 @@ export default function ExerciseScreen() {
     setCustomRestInput('');
   };
 
-  // Rest timer - uses endTime to survive app minimize
+  // Rest timer: remaining is always computed from restEndTime vs Date.now() (no local countdown).
+  // Survives app minimize/background; when user returns, visibilitychange fires and we re-tick immediately.
   useEffect(() => {
     if (restEndTime === null) {
       setRestTimer(null);
       return;
     }
-    
+
     const tick = () => {
       const remaining = Math.max(0, Math.round((restEndTime - Date.now()) / 1000));
       setRestTimer(remaining);
-      
+
       if (remaining <= 0) {
         playTimerSound();
         window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
         setRestEndTime(null);
       }
     };
-    
+
     tick(); // Initial tick
     const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') tick();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, [restEndTime]);
 
   useEffect(() => {

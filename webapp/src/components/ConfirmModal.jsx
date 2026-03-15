@@ -1,7 +1,10 @@
+import { useRef } from 'react';
 import { CARD_BTN_STYLE } from '../shared';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 /**
  * Reusable confirmation modal: title, description, primary + secondary actions.
+ * Focus is moved into the modal and trapped; on close, focus returns to the trigger.
  */
 export function ConfirmModal({
   visible,
@@ -14,12 +17,15 @@ export function ConfirmModal({
   loading = false,
   secondaryLoading = false,
 }) {
+  const contentRef = useRef(null);
+  useFocusTrap(contentRef, visible);
+
   if (!visible) return null;
 
   return (
-    <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm">
-      <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6">
-        <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-1">{title}</h3>
+    <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm" role="presentation">
+      <div ref={contentRef} className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+        <h3 id="confirm-modal-title" className="font-bebas text-lg tracking-wider text-white/90 mb-1">{title}</h3>
         {description && <p className="text-sm text-white/40 mb-6 font-sans">{description}</p>}
         <div className="flex flex-col gap-2">
           <button

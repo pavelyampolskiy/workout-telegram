@@ -3,7 +3,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { ProgressSkeleton } from '../components/Skeleton';
+import { ProgressSkeleton, ProgressContentSkeleton } from '../components/Skeleton';
 import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE } from '../shared';
 
 function LineChart({ data }) {
@@ -213,7 +213,7 @@ export default function ProgressScreen() {
 
         {/* Progress data */}
         {loadingProg && (
-          <div className="text-center text-white/40 py-12 font-bebas tracking-wider">Loading data…</div>
+          <ProgressContentSkeleton />
         )}
 
         {!loadingProg && selected && progress && (

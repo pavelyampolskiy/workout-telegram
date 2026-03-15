@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -86,10 +86,12 @@ export default function HistoryScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
+  const scrollContainerRef = useRef(null);
+  const loadMoreSentinelRef = useRef(null);
 
-  const PAGE = 10;
+  const PAGE = 15;
 
-  const load = async (off = 0, append = false, filterKey = activeFilter) => {
+  const load = useCallback(async (off = 0, append = false, filterKey = activeFilter) => {
     const type = FILTER_TABS.find(f => f.key === filterKey)?.apiValue ?? null;
     try {
       const data = await api.getHistory(userId, off, PAGE, type);
@@ -104,7 +106,7 @@ export default function HistoryScreen() {
       setError(e.message);
       showToast(e.message);
     }
-  };
+  }, [userId, activeFilter, showToast]);
 
   useEffect(() => {
     load(0).finally(() => setLoading(false));
@@ -116,11 +118,27 @@ export default function HistoryScreen() {
     load(0, false, key).finally(() => setFilterLoading(false));
   };
 
-  const handleMore = async () => {
+  const handleMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
     setLoadingMore(true);
     await load(offset, true);
     setLoadingMore(false);
-  };
+  }, [load, loadingMore, hasMore, offset]);
+
+  // Infinite scroll: load more when sentinel enters view
+  useEffect(() => {
+    const el = loadMoreSentinelRef.current;
+    const root = scrollContainerRef.current;
+    if (!el || !root || !hasMore || loadingMore) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) handleMore();
+      },
+      { root, rootMargin: '200px', threshold: 0 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [hasMore, loadingMore, handleMore]);
 
   if (loading) {
     return (
@@ -147,7 +165,7 @@ export default function HistoryScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+      <div ref={scrollContainerRef} className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         <h1 className="font-bebas text-white/85 pt-6 mb-4" style={PAGE_HEADING_STYLE}>
           History
         </h1>
@@ -200,7 +218,7 @@ export default function HistoryScreen() {
         })()}
 
         {filterLoading ? (
-          <div className="text-center text-white/30 py-10 text-sm font-bebas tracking-wider">Loading…</div>
+          <HistorySkeleton />
         ) : items.length === 0 ? (
           <div className="text-center py-16 px-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
@@ -252,15 +270,18 @@ export default function HistoryScreen() {
             })}
 
             {hasMore && (
-              <div className="mt-1">
-                <button
-                  onClick={handleMore}
-                  disabled={loadingMore}
-                  className="text-white/35 font-sans text-sm py-2"
-                >
-                  {loadingMore ? 'Loading…' : 'Load more'}
-                </button>
-              </div>
+              <>
+                <div ref={loadMoreSentinelRef} className="h-4 flex-shrink-0" aria-hidden="true" />
+                <div className="mt-1">
+                  <button
+                    onClick={handleMore}
+                    disabled={loadingMore}
+                    className="text-white/35 font-sans text-sm py-2"
+                  >
+                    {loadingMore ? 'Loading…' : 'Load more'}
+                  </button>
+                </div>
+              </>
             )}
           </div>
         )}
