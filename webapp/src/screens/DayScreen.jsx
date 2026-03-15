@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
@@ -423,15 +424,21 @@ export default function DayScreen() {
         </button>
       </div>
 
-      {/* Fixed bottom button — сплошной фон, без градиента внизу, чтобы при скролле не было артефактов */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 max-w-lg mx-auto px-4 pt-6 pb-[max(1rem,env(safe-area-inset-bottom))] bg-black">
-        <button
-          onClick={handleSave}
-          className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
+      {/* Fixed bottom button — рендер в body, чтобы не обрезалось при скролле */}
+      {createPortal(
+        <div
+          className="fixed bottom-0 left-0 right-0 z-[100] max-w-lg mx-auto px-4 pt-6 bg-black"
+          style={{ paddingBottom: 'max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1rem))' }}
         >
-          Save Workout
-        </button>
-      </div>
+          <button
+            onClick={handleSave}
+            className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
+          >
+            Save Workout
+          </button>
+        </div>,
+        document.body
+      )}
 
       <ConfirmModal
         visible={showCancelConfirm}
