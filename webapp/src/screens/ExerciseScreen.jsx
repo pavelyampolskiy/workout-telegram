@@ -419,7 +419,7 @@ export default function ExerciseScreen() {
           <div className="space-y-2">
             {sets.map((s, i) => (
               <div key={s.id} className={`flex items-center gap-3 ${i === sets.length - 1 ? 'row-in' : ''}`}>
-                <span className={`w-5 h-5 rounded-full border border-white/20 flex items-center justify-center text-xs font-bebas tracking-wider shrink-0 ${TEXT_MUTED}`}>
+                <span className={`text-xs font-bebas tracking-wider shrink-0 ${TEXT_MUTED}`}>
                   {i + 1}
                 </span>
                 <span className={`font-bebas text-sm ${TEXT_SECONDARY}`}>
