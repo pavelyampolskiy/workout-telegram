@@ -152,13 +152,13 @@ export default function HomeScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto">
         {/* Header + widget — compact, no scroll */}
         <div className="shrink-0 flex flex-col gap-4">
-          {/* Headline + status */}
-          <div className="pt-6 w-full">
-            <div className="font-bebas leading-none w-full min-w-0 whitespace-nowrap" style={{ maxWidth: '100%', fontSize: 'clamp(17px, 10vw, 42px)' }}>
-              <span className="text-white/50 font-normal" style={{ letterSpacing: '0.46em', fontSize: '0.9em' }}>ARE YOU </span>
-              <span className="text-white font-bold" style={{ letterSpacing: '0.40em', fontSize: '1.08em' }}>READY</span><span className="text-white font-bold" style={{ marginLeft: '0.06em', fontSize: '1.08em' }}>?</span>
+          {/* Headline + status — две строки, тонкое начертание, воздух сверху и снизу */}
+          <div className="pt-12 w-full">
+            <div className="font-bebas font-light leading-tight w-full min-w-0" style={{ fontSize: 'clamp(15px, 8.5vw, 36px)', letterSpacing: '0.42em' }}>
+              <div className="text-white/50" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
+              <div className="text-white" style={{ letterSpacing: '0.40em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
-            <div className="mt-4">
+            <div className="mt-10">
               <StatusWidget userId={userId} />
             </div>
           </div>
