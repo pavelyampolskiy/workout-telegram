@@ -2,7 +2,7 @@
  * Design tokens — single source of truth for UI consistency.
  * Use these in components; avoid hardcoding colors, radii, or card styles.
  *
- * Typography: Bebas Neue (headings), Roboto (secondary) — see tailwind.config.js and index.css.
+ * Typography: Bebas Neue only. Hierarchy: заголовки/цифры — крупнее, ярче; подписи/даты — мельче, opacity ниже (Heavy & Light).
  */
 
 // ─── Palette (text) ─────────────────────────────────────────────────────────

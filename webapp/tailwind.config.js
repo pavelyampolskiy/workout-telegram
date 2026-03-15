@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Roboto', 'system-ui', 'sans-serif'],
+        sans: ['"Bebas Neue"', 'cursive'],
         bebas: ['"Bebas Neue"', 'cursive'],
       },
     },
