@@ -385,7 +385,6 @@ export default function HomeScreen() {
               </span>
               <div className="flex-1">
                 <span className={`font-bebas tracking-wider text-xl ${unfinished ? TEXT_MUTED : 'text-gradient-head'}`} style={{ letterSpacing: '1.5px' }}>New Workout</span>
-                <div className={`text-[10px] font-sans mt-0.5 ${TEXT_MUTED}`}>Start your training session</div>
               </div>
               <span className={`text-xl ${TEXT_FADED}`}>›</span>
             </div>
