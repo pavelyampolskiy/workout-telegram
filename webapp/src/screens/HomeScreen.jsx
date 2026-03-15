@@ -95,7 +95,7 @@ function StatusWidget({ userId }) {
   return (
     <div className="mt-0.5 flex flex-nowrap items-center justify-center gap-x-2 w-full overflow-x-auto min-w-0">
       {parts.map((p, i) => (
-        <span key={i} className="font-bebas text-xs text-white/15 shrink-0" style={{ letterSpacing: '0.2em' }}>{p}</span>
+        <span key={i} className="font-bebas text-xs text-white/15 shrink-0" style={{ letterSpacing: '0.2em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{p}</span>
       ))}
     </div>
   );
@@ -153,7 +153,7 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image={homeBg} overlay="bg-black/65" blur={2} scale={1} />
+      <ScreenBg image={homeBg} overlay="bg-black/72" blur={2} scale={1} />
       {/* Top gradient — absorbs Telegram header, keeps photo visible */}
       <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" style={{ zIndex: 0 }} />
       {/* Bottom gradient — grounds the cards */}
@@ -165,7 +165,7 @@ export default function HomeScreen() {
         <div className="shrink-0 flex flex-col gap-4">
           {/* Headline + status — две строки, тонкое начертание, воздух сверху и снизу */}
           <div className="pt-12 w-full">
-            <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)' }}>
+            <div className="font-bebas font-light leading-tight w-full min-w-0 overflow-hidden" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
               <div className="text-white/15" style={{ letterSpacing: '0.46em' }}>ARE YOU</div>
               <div className="text-white" style={{ fontSize: '1.95em', letterSpacing: '0.52em' }}>READY<span style={{ marginLeft: '0.06em' }}>?</span></div>
             </div>
