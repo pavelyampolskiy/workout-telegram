@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '../App';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE } from '../shared';
+import { CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
 
 const QUESTIONS = [
   {

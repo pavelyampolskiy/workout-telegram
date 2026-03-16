@@ -7,7 +7,7 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { DaySkeleton } from '../components/Skeleton';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, fmtTime } from '../shared';
+import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE, fmtTime } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 import { ConfirmModal } from '../components/ConfirmModal';
 

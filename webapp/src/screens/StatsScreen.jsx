@@ -5,6 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { StatsSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
+import { PAGE_HEADING_STYLE } from '../shared';
 
 const CARD = {
   className: 'bg-white/5 rounded-2xl p-5',
