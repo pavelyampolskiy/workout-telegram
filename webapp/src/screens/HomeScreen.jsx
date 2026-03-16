@@ -168,57 +168,54 @@ export default function HomeScreen() {
       {/* Bottom gradient — grounds the cards */}
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent" style={{ zIndex: 0 }} />
 
-      {/* Content: empty top, all buttons tied to bottom */}
-      <div className="relative z-10 flex flex-col min-h-screen safe-top max-w-lg mx-auto w-full">
-        {/* Empty space on top */}
-        <div className="flex-1 min-h-0" />
-
-        {/* Bottom block: ready card + main button(s) + four buttons */}
-        <div className="shrink-0 p-5 safe-bottom flex flex-col gap-3">
-          {unfinished && !showDismissConfirm ? (
-            <>
-              <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
-                <div className="font-bebas font-light leading-none w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                  <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
-                  <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
+      {/* Content: главная кнопка сверху, четыре кнопки внизу */}
+      <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto w-full">
+        {/* Верх: ARE YOU READY? + главная кнопка (New Workout / Continue) */}
+        <div className="shrink-0 flex flex-col gap-4">
+          <div className="pt-2 w-full">
+            {unfinished && !showDismissConfirm ? (
+              <>
+                <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
+                  <div className="font-bebas font-light leading-none w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                    <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
+                    <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
+                  </div>
+                  <div className="mt-3 w-full flex justify-start">
+                    <StatusWidget userId={userId} />
+                  </div>
                 </div>
-                <div className="mt-3 w-full flex justify-start">
-                  <StatusWidget userId={userId} />
-                </div>
-              </div>
-              <button
-                onClick={handleContinue}
-                className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center"
-                style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
-              >
-                <span className={ICON_WRAPPER}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                    <path d="M5 3l14 9-14 9V3z"/>
-                  </svg>
-                </span>
-                <div className="flex flex-col items-end shrink-0 text-right">
-                  <span className="font-bebas text-white" style={{ letterSpacing: 'normal' }}>Continue Workout</span>
-                  <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
-                </div>
-              </button>
-              <button
-                onClick={() => setShowDismissConfirm(true)}
-                className={`w-full text-center text-xs font-bebas tracking-wider py-2 shrink-0 ${TEXT_FADED}`}
-                type="button"
-              >
-                Cancel workout
-              </button>
-              <button
-                onClick={() => setShowDismissConfirm(true)}
-                className="w-full py-12 px-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl"
-                style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
-              >
-                <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                <div className="font-bebas text-white/50 shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
-              </button>
-            </>
-          ) : (
-            <>
+                <button
+                  onClick={handleContinue}
+                  className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center mt-4"
+                  style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
+                >
+                  <span className={ICON_WRAPPER}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
+                      <path d="M5 3l14 9-14 9V3z"/>
+                    </svg>
+                  </span>
+                  <div className="flex flex-col items-end shrink-0 text-right">
+                    <span className="font-bebas text-white" style={{ letterSpacing: 'normal' }}>Continue Workout</span>
+                    <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setShowDismissConfirm(true)}
+                  className={`w-full text-center text-xs font-bebas tracking-wider py-2 shrink-0 ${TEXT_FADED}`}
+                  type="button"
+                >
+                  Cancel workout
+                </button>
+                <button
+                  onClick={() => setShowDismissConfirm(true)}
+                  className="w-full py-12 px-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl mt-2"
+                  style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
+                >
+                  <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
+                  <div className="font-bebas text-white/50 shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                </button>
+              </>
+            ) : (
               <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
                 <div className="font-bebas font-light leading-none w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                   <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
@@ -236,8 +233,15 @@ export default function HomeScreen() {
                   <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
                 </button>
               </div>
-            </>
-          )}
+            )}
+          </div>
+        </div>
+
+        {/* Пустое место */}
+        <div className="flex-1 min-h-0" />
+
+        {/* Низ: только четыре кнопки */}
+        <div className="shrink-0 pt-4">
           <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
