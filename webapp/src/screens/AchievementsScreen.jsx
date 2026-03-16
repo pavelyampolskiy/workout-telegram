@@ -13,51 +13,46 @@ function Badge({ achievement, locked = false }) {
 
   return (
     <div 
-      className={`rounded-2xl p-2 ${locked ? 'opacity-50' : ''}`}
+      className={`rounded-2xl p-4 ${locked ? 'opacity-50' : ''}`}
       style={{
         background: earned 
           ? 'rgba(255,255,255,0.06)'
           : 'rgba(255,255,255,0.04)',
       }}
     >
-      <div 
-        className="rounded-xl p-4"
-        style={{ background: 'rgba(0,0,0,0.25)' }}
-      >
-        <div className="flex items-center gap-4">
-          <span 
-            className="shrink-0 flex items-center justify-center"
-            style={{
-              color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
-              filter: earned ? undefined : 'blur(1.5px)',
-            }}
-          >
-            {IconComponent}
-          </span>
-          <div className="flex-1 min-w-0">
-            <div className="font-bebas tracking-wider text-base text-white/90">{name}</div>
-            <div className="text-xs text-white/40 font-sans">{desc}</div>
-            {!earned && progress > 0 && (
-              <div className="mt-2">
-                <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
-                  <div 
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${progress * 100}%`,
-                      background: 'linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%)',
-                    }}
-                  />
-                </div>
-                <div className="text-[10px] text-white/30 mt-1 font-sans">{Math.round(progress * 100)}%</div>
+      <div className="flex items-center gap-4">
+        <span 
+          className="shrink-0 flex items-center justify-center"
+          style={{
+            color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
+            filter: earned ? undefined : 'blur(1.5px)',
+          }}
+        >
+          {IconComponent}
+        </span>
+        <div className="flex-1 min-w-0">
+          <div className="font-bebas tracking-wider text-base text-white/90">{name}</div>
+          <div className="text-xs text-white/40 font-sans">{desc}</div>
+          {!earned && progress > 0 && (
+            <div className="mt-2">
+              <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div 
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${progress * 100}%`,
+                    background: 'linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%)',
+                  }}
+                />
               </div>
-            )}
-          </div>
-          {earned && (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
+              <div className="text-[10px] text-white/30 mt-1 font-sans">{Math.round(progress * 100)}%</div>
+            </div>
           )}
         </div>
+        {earned && (
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        )}
       </div>
     </div>
   );
