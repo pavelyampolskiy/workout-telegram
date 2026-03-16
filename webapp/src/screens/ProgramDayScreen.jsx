@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE } from '../shared';
+import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { ProgramDaySkeleton } from '../components/Skeleton';
@@ -116,7 +116,7 @@ export default function ProgramDayScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-          <h1 className="font-bebas text-white/90 pt-2 pb-1 text-xl tracking-wider">{dayLabel || dayKey}</h1>
+          <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>{dayLabel || dayKey}</h1>
           <p className="text-white/40 text-xs font-sans mb-5">Add, remove, or reorder exercises. Tap to rename.</p>
           <ProgramDaySkeleton />
         </div>
@@ -128,7 +128,7 @@ export default function ProgramDayScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto pb-28">
-        <h1 className="font-bebas text-white/90 pt-2 pb-1 text-xl tracking-wider">{dayLabel || dayKey}</h1>
+        <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>{dayLabel || dayKey}</h1>
         <p className="text-white/40 text-xs font-sans mb-5">Add, remove, or reorder exercises. Tap to rename.</p>
 
         <div className="space-y-2">

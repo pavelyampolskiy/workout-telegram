@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgressSkeleton, ProgressContentSkeleton } from '../components/Skeleton';
-import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE } from '../shared';
+import { formatDate as fmtDate, fmtW, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
 
 function LineChart({ data }) {
   if (!data || data.length < 2) return null;
@@ -121,7 +121,7 @@ export default function ProgressScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-          <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Progress</h1>
+          <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Progress</h1>
           <ProgressSkeleton />
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function ProgressScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5">Progress</h1>
+        <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Progress</h1>
 
         {/* Exercise selector */}
         <div className="relative mb-5">

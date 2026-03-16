@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE } from '../shared';
+import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
 
@@ -127,7 +127,7 @@ export default function ProgramScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-          <h1 className="font-bebas text-white/90 pt-2 pb-4 text-xl tracking-wider">Program</h1>
+          <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>Program</h1>
           <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
           <ProgramSkeleton />
         </div>
@@ -148,7 +148,7 @@ export default function ProgramScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-        <h1 className="font-bebas text-white/90 pt-2 pb-4 text-xl tracking-wider">Program</h1>
+        <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>Program</h1>
         <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
 
         {/* Плашка в плашке для списка дней программы */}

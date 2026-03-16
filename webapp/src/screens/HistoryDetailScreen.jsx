@@ -6,7 +6,7 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { HistoryDetailSkeleton } from '../components/Skeleton';
 import { Spinner } from '../components/Spinner';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { formatDate, fmtW, fmtWorkoutType, DARK_CARD_STYLE, CARD_BTN_STYLE, SECONDARY_CARD_STYLE } from '../shared';
+import { formatDate, fmtW, fmtWorkoutType, DARK_CARD_STYLE, CARD_BTN_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 
 export default function HistoryDetailScreen() {
@@ -164,7 +164,7 @@ export default function HistoryDetailScreen() {
           <div className="font-sans text-white/35 text-sm mb-0.5">{formatDate(workout.date)}</div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="font-bebas tracking-wider" style={{ fontSize: '7vw', letterSpacing: '0.08em' }}>{fmtWorkoutType(workout.type)}</h1>
+              <h1 className="font-bebas text-white" style={PAGE_HEADING_STYLE}>{fmtWorkoutType(workout.type)}</h1>
               {(workout.rating || editMode) && (
                 <div className="flex items-center gap-0.5 mt-1">
                   {[1, 2, 3, 4, 5].map(star => {

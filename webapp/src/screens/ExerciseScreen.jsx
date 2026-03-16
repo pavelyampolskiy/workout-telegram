@@ -5,7 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { ExerciseSkeleton } from '../components/Skeleton';
-import { fmtW, fmtTime, DARK_CARD_STYLE, CARD_BTN_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { fmtW, fmtTime, DARK_CARD_STYLE, CARD_BTN_STYLE, PAGE_HEADING_STYLE, TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 
 const REST_PRESETS = [60, 90, 120];
 const REST_STORAGE_KEY = 'workout_rest_duration';
@@ -313,7 +313,7 @@ export default function ExerciseScreen() {
           </svg>
           <span className={`text-xs font-bebas uppercase tracking-wide ${TEXT_MUTED}`}>{ex?.group}</span>
         </div>
-        <h1 className={`text-xl font-bebas tracking-wider leading-tight ${TEXT_PRIMARY}`}>{ex?.name}</h1>
+        <h1 className={`font-bebas text-white leading-tight`} style={PAGE_HEADING_STYLE}>{ex?.name}</h1>
 
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
