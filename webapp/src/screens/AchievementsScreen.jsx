@@ -12,24 +12,16 @@ function Badge({ achievement, locked = false }) {
   const IconComponent = ACHIEVEMENT_CATEGORY_ICONS[type] || ACHIEVEMENT_CATEGORY_ICONS.workouts;
 
   return (
-    <div className={`py-3 ${locked ? 'opacity-50' : ''}`}>
+    <div className={locked ? 'opacity-70' : ''}>
       <div className="flex items-center gap-4">
-        <span 
+        <span
           className="shrink-0 flex items-center justify-center"
-          style={{
-            color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.4)',
-            filter: earned ? undefined : 'blur(1.5px)',
-          }}
+          style={{ color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }}
         >
           {IconComponent}
         </span>
         <div className="flex-1 min-w-0">
-          <div
-            className="font-bebas tracking-wider text-base text-white"
-            style={locked ? { filter: 'blur(4px)', userSelect: 'none' } : undefined}
-          >
-            {name}
-          </div>
+          <div className="font-bebas tracking-wider text-base text-white">{name}</div>
           <div className="text-xs text-white/40 font-sans">{desc}</div>
           {!earned && (
             <div className="mt-2">
@@ -125,33 +117,37 @@ export default function AchievementsScreen() {
               Achievements
             </h1>
 
-            {/* Unlocked — подпись над плашкой */}
+            {/* Unlocked — каждая цель отдельной плашкой */}
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">Unlocked</div>
-            <div className="rounded-xl p-4 mb-4" style={DARK_CARD_STYLE}>
-              {unlocked.length > 0 ? (
-                <div className="space-y-3">
-                  {unlocked.map(ach => (
-                    <Badge key={ach.id} achievement={ach} />
-                  ))}
-                </div>
-              ) : (
+            {unlocked.length > 0 ? (
+              <div className="space-y-2 mb-4">
+                {unlocked.map(ach => (
+                  <div key={ach.id} className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                    <Badge achievement={ach} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl p-4 mb-4" style={DARK_CARD_STYLE}>
                 <p className="text-white/30 text-sm font-sans">None yet</p>
-              )}
-            </div>
+              </div>
+            )}
 
-            {/* In Progress — подпись над плашкой, плашка прозрачнее на 50% */}
+            {/* In Progress — каждая цель отдельной плашкой */}
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">In Progress</div>
-            <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.025)' }}>
-              {locked.length > 0 ? (
-                <div className="space-y-3">
-                  {locked.map(ach => (
-                    <Badge key={ach.id} achievement={ach} locked />
-                  ))}
-                </div>
-              ) : (
+            {locked.length > 0 ? (
+              <div className="space-y-2">
+                {locked.map(ach => (
+                  <div key={ach.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.025)' }}>
+                    <Badge achievement={ach} locked />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.025)' }}>
                 <p className="text-white/30 text-sm font-sans">None</p>
-              )}
-            </div>
+              </div>
+            )}
           </>
         )}
 
