@@ -316,19 +316,19 @@ export default function StatsScreen() {
       const d = data[amountPeriod];
       if (!d) return null;
       return (
-        <>
-          <div className="mb-2">
+        <div className={CARD.className}>
+          <div className="mb-4">
             <Tabs tabs={PERIOD_OPTIONS} activeKey={amountPeriod} onSelect={setAmountPeriod} />
           </div>
-          {renderAmountContent(d)}
-        </>
+          {renderAmountContentInner(d)}
+        </div>
       );
     }
 
     return null;
   };
 
-  const renderAmountContent = (d) => {
+  const renderAmountContentInner = (d) => {
     const { total, by_type } = d;
     const a = by_type?.DAY_A || 0;
     const b = by_type?.DAY_B || 0;
@@ -337,23 +337,21 @@ export default function StatsScreen() {
     const maxV = Math.max(a, b, c, cardio, 1);
 
     return (
-      <div className="space-y-4">
-        <div className={CARD.className}>
-          <div className="text-[10px] uppercase tracking-widest font-bebas mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
-          <div className="space-y-4">
-            <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
-            <Bar label="Day B" value={b} max={maxV} mounted={barMounted} />
-            <Bar label="Day C" value={c} max={maxV} mounted={barMounted} />
-            {cardio > 0 && (
-              <Bar label="Cardio" value={cardio} max={maxV} mounted={barMounted} />
-            )}
-          </div>
-          <div className="text-center mt-6 pt-4 border-t border-white/10">
-            <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
-          </div>
+      <>
+        <div className="text-center mb-5">
+          <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
+          <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
         </div>
-      </div>
+        <div className="text-[10px] uppercase tracking-widest font-bebas mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
+        <div className="space-y-4">
+          <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
+          <Bar label="Day B" value={b} max={maxV} mounted={barMounted} />
+          <Bar label="Day C" value={c} max={maxV} mounted={barMounted} />
+          {cardio > 0 && (
+            <Bar label="Cardio" value={cardio} max={maxV} mounted={barMounted} />
+          )}
+        </div>
+      </>
     );
   };
 
