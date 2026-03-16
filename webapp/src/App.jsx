@@ -107,17 +107,13 @@ export default function App() {
       const tg = window.Telegram?.WebApp;
       if (tg) {
         tg.ready();
+        // DPPoI: respect user/device preference, only expand to available height.
         const doExpand = () => { try { tg.expand(); } catch (_) {} };
-        const doFullscreen = () => {
-          if (typeof tg.requestFullscreen === 'function') {
-            try { tg.requestFullscreen(); } catch (_) {}
-          }
-        };
         doExpand();
-        doFullscreen();
         try { tg.setHeaderColor('#000000'); } catch (_) {}
         try { tg.setBackgroundColor('#000000'); } catch (_) {}
-        try { tg.onEvent('viewportChanged', () => { doExpand(); doFullscreen(); }); } catch (_) {}
+        // On viewport change (rotation, keyboard), just re‑expand instead of forcing fullscreen.
+        try { tg.onEvent('viewportChanged', () => { doExpand(); }); } catch (_) {}
         const uid = tg.initDataUnsafe?.user?.id;
         if (uid) {
           setUserId(Number(uid));
