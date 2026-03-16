@@ -123,9 +123,9 @@ export default function AchievementsScreen() {
               {unlocked.length} of {total} unlocked
             </div>
 
-            {/* Unlocked: same card structure as In Progress */}
+            {/* Unlocked — подпись над плашкой */}
+            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">Unlocked</div>
             <div className="rounded-xl p-4 mb-4" style={DARK_CARD_STYLE}>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">Unlocked</div>
               {unlocked.length > 0 ? (
                 <div className="space-y-3">
                   {unlocked.map(ach => (
@@ -137,9 +137,9 @@ export default function AchievementsScreen() {
               )}
             </div>
 
-            {/* In Progress: same card structure as Unlocked */}
+            {/* In Progress — подпись над плашкой */}
+            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">In Progress</div>
             <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">In Progress</div>
               {locked.length > 0 ? (
                 <div className="space-y-3">
                   {locked.map(ach => (

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import { CARD_BTN_STYLE, PAGE_HEADING_STYLE, DARK_CARD_STYLE } from '../shared';
 import { WorkoutSkeleton } from '../components/Skeleton';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { CardioIcon } from '../components/Icons';
@@ -111,44 +111,40 @@ export default function WorkoutScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
       <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg">
-        <div className="flex items-center justify-between pt-6 mb-2">
-          <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>New Workout</h1>
-        </div>
-
-        <div className="flex-1 min-h-0 flex flex-col">
-          <div className="flex-1 min-h-0" />
-          <div className="pb-6 safe-bottom shrink-0">
+        <div className="flex-1 min-h-0" />
+        <div className="pb-6 safe-bottom shrink-0">
           {loading ? (
             <WorkoutSkeleton />
           ) : (
             <>
-              <div className="space-y-3">
-                {days?.map(day => (
-                  <DayCard
-                    key={day.id}
-                    day={day}
-                    onPress={() => (String(day.key).toUpperCase() === 'CARDIO' ? navigate('cardio') : handleDayOrCardioPress('day', { day: day.key, dayLabel: day.label }))}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3 my-4">
-                <div className="flex-1 h-px bg-white/8" />
-                <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
-                <div className="flex-1 h-px bg-white/8" />
-              </div>
-              <button
-                onClick={() => handleDayOrCardioPress('cardio')}
-                className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
-              >
-                <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
-                  <CardioIcon />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="font-bebas tracking-wider text-lg text-white">Cardio</div>
+              <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                <h1 className="font-bebas text-white mb-4" style={PAGE_HEADING_STYLE}>New Workout</h1>
+                <div className="space-y-2">
+                  {days?.map(day => (
+                    <DayCard
+                      key={day.id}
+                      day={day}
+                      onPress={() => (String(day.key).toUpperCase() === 'CARDIO' ? navigate('cardio') : handleDayOrCardioPress('day', { day: day.key, dayLabel: day.label }))}
+                    />
+                  ))}
                 </div>
-              </button>
-
+                <div className="flex items-center gap-3 my-3">
+                  <div className="flex-1 h-px bg-white/8" />
+                  <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
+                  <div className="flex-1 h-px bg-white/8" />
+                </div>
+                <button
+                  onClick={() => handleDayOrCardioPress('cardio')}
+                  className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
+                >
+                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                    <CardioIcon />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bebas tracking-wider text-lg text-white">Cardio</div>
+                  </div>
+                </button>
+              </div>
               <ConfirmModal
                 visible={!!activeWorkoutModal}
                 title="Active workout"
