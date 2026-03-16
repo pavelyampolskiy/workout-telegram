@@ -12,17 +12,17 @@ function Badge({ achievement, locked = false }) {
   const IconComponent = ACHIEVEMENT_CATEGORY_ICONS[type] || ACHIEVEMENT_CATEGORY_ICONS.workouts;
 
   return (
-    <div className={locked ? 'opacity-70' : ''}>
+    <div>
       <div className="flex items-center gap-4">
         <span
           className="shrink-0 flex items-center justify-center"
-          style={{ color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)' }}
+          style={{ color: earned ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.45)' }}
         >
           {IconComponent}
         </span>
         <div className="flex-1 min-w-0">
-          <div className="font-bebas tracking-wider text-base text-white">{name}</div>
-          <div className="text-xs text-white/40 font-sans">{desc}</div>
+          <div className={`font-bebas tracking-wider text-base ${locked ? 'text-white/50' : 'text-white'}`}>{name}</div>
+          <div className={`text-xs font-sans ${locked ? 'text-white/20' : 'text-white/40'}`}>{desc}</div>
           {!earned && (
             <div className="mt-2">
               <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
@@ -34,7 +34,7 @@ function Badge({ achievement, locked = false }) {
                   }}
                 />
               </div>
-              <div className="text-[10px] text-white/30 mt-1 font-sans">{Math.round(progress * 100)}%</div>
+              <div className={`text-[10px] mt-1 font-sans ${locked ? 'text-white/15' : 'text-white/30'}`}>{Math.round(progress * 100)}%</div>
             </div>
           )}
         </div>
