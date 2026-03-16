@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Post-commit hook: run deploy after every commit so you don't have to run deploy.sh manually.
+# Install: ./scripts/install-deploy-hook.sh
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+./deploy.sh "Auto deploy after commit"
+# If deploy had nothing to commit (e.g. no dist changes), push the commit we just made
+git push origin main 2>/dev/null || true
