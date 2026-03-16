@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, PAGE_HEADING_STYLE, DARK_CARD_STYLE } from '../shared';
+import { CARD_BTN_STYLE, DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { WorkoutSkeleton } from '../components/Skeleton';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { CardioIcon } from '../components/Icons';
@@ -111,14 +111,16 @@ export default function WorkoutScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
       <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg">
-        <div className="flex-1 min-h-0" />
-        <div className="pb-6 safe-bottom shrink-0">
+        <div className="flex-1 min-h-0 flex flex-col">
+          <div className="flex-1 min-h-0" />
+          <div className="pt-6 pb-6 safe-bottom shrink-0">
           {loading ? (
             <WorkoutSkeleton />
           ) : (
             <>
-              <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
-                <h1 className="font-bebas text-white mb-4" style={PAGE_HEADING_STYLE}>New Workout</h1>
+              {/* Всё в одной плашке: заголовок + Day A/B/C + or + Cardio */}
+              <div className="rounded-xl p-4 space-y-3" style={DARK_CARD_STYLE}>
+                <h1 className="font-bebas text-white mb-1" style={PAGE_HEADING_STYLE}>New Workout</h1>
                 <div className="space-y-2">
                   {days?.map(day => (
                     <DayCard
@@ -145,6 +147,7 @@ export default function WorkoutScreen() {
                   </div>
                 </button>
               </div>
+
               <ConfirmModal
                 visible={!!activeWorkoutModal}
                 title="Active workout"

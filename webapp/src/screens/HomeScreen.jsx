@@ -13,8 +13,6 @@ import homeBg from '../assets/gym-bg.jpg';
 const ICON_STROKE = 1;
 /** Фон всех карточек/плашек на главном экране (без границ). */
 const CARD_BG = 'rgba(255,255,255,0.03)';
-/** Фон главной кнопки и четырёх нижних плашек (чуть ярче). */
-const TILE_BG = 'rgba(255,255,255,0.08)';
 /** Стиль обёртки иконки в карточке. */
 const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white';
 /** Стиль подписи в карточке (иконка + текст). */
@@ -171,10 +169,10 @@ export default function HomeScreen() {
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent" style={{ zIndex: 0 }} />
 
       {/* Content: главная кнопка сверху, четыре кнопки внизу */}
-      <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
+      <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Верх: ARE YOU READY? + главная кнопка (New Workout / Continue) */}
         <div className="shrink-0 flex flex-col gap-4">
-          <div className="pt-4 w-full">
+          <div className="pt-2 w-full">
             {unfinished && !showDismissConfirm ? (
               <>
                 <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
@@ -248,7 +246,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: TILE_BG }}
+              style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white"><HistoryIcon /></span>
               <div className="font-bebas text-base text-white shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
@@ -256,7 +254,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('stats')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: TILE_BG }}
+              style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white"><StatsIcon /></span>
               <div className="font-bebas text-base text-white shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
@@ -264,7 +262,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('achievements')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: TILE_BG }}
+              style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white"><TrophyIcon /></span>
               <div className="font-bebas text-base text-white shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
@@ -272,7 +270,7 @@ export default function HomeScreen() {
             <button
               onClick={() => navigate('program')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: TILE_BG }}
+              style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white"><ProgramIcon /></span>
               <div className="font-bebas text-base text-white shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
