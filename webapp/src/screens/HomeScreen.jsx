@@ -172,7 +172,7 @@ export default function HomeScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Верх: ARE YOU READY? + главная кнопка (New Workout / Continue) */}
         <div className="shrink-0 flex flex-col gap-4">
-          <div className="pt-2 w-full">
+          <div className="pt-8 w-full">
             {unfinished && !showDismissConfirm ? (
               <>
                 <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
@@ -180,13 +180,13 @@ export default function HomeScreen() {
                     <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
                     <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
                   </div>
-                  <div className="mt-3 w-full flex justify-start">
+                  <div className="mt-6 w-full flex justify-start">
                     <StatusWidget userId={userId} />
                   </div>
                 </div>
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center mt-4"
+                  className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center mt-8"
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}>
@@ -221,12 +221,12 @@ export default function HomeScreen() {
                   <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
                   <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
                 </div>
-                <div className="mt-3 w-full flex justify-start">
+                <div className="mt-6 w-full flex justify-start">
                   <StatusWidget userId={userId} />
                 </div>
                 <button
                   onClick={handleNewWorkout}
-                  className="card-press w-full mt-4 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
+                  className="card-press w-full mt-8 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
