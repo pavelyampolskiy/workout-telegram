@@ -118,7 +118,7 @@ export default function CardioScreen() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-white/60 mb-4">
             <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
           </svg>
-          <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>Cardio</h1>
+          <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Cardio</h1>
           <p className="font-sans text-white/40 text-xs text-center max-w-[260px]">
             Track time and add notes. Choose activity type and optional distance when you finish.
           </p>
@@ -153,7 +153,7 @@ export default function CardioScreen() {
                   <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
                 </svg>
               </div>
-              <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>Cardio</h1>
+              <h1 className="font-bebas text-white" style={PAGE_HEADING_STYLE}>Cardio</h1>
             </div>
             <div className="text-right">
               <div className="text-3xl font-bebas tracking-wider text-white/90">{fmtTime(elapsed)}</div>

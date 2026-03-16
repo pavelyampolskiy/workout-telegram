@@ -313,7 +313,7 @@ export default function ExerciseScreen() {
           </svg>
           <span className={`text-xs font-bebas uppercase tracking-wide ${TEXT_MUTED}`}>{ex?.group}</span>
         </div>
-        <h1 className={`font-bebas text-white leading-tight`} style={PAGE_HEADING_STYLE}>{ex?.name}</h1>
+        <h1 className="font-bebas text-white leading-tight" style={PAGE_HEADING_STYLE}>{ex?.name}</h1>
 
         <div className="mt-3 flex items-center gap-3">
           <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
