@@ -87,7 +87,7 @@ export default function RecoveryCheckScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg flex flex-col overflow-y-auto">
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg flex flex-col overflow-y-auto pb-36">
           <h1 className="font-bebas text-white pt-6 mb-6" style={PAGE_HEADING_STYLE}>
             Recovery Score
           </h1>
@@ -108,8 +108,11 @@ export default function RecoveryCheckScreen() {
               </p>
             )}
           </div>
+        </div>
 
-          <div className="space-y-3 mt-auto pt-4 pb-4 safe-bottom">
+        {/* Кнопки прикреплены к нижнему краю */}
+        <div className="fixed bottom-0 left-0 right-0 z-20 p-5 safe-bottom max-w-lg mx-auto bg-gradient-to-t from-black/90 via-black/70 to-transparent pt-8">
+          <div className="space-y-3">
             <button
               onClick={handleContinue}
               className="btn-active-style card-press w-full rounded-[14px] py-4 px-4 text-center font-bebas tracking-wider text-white/90 text-xl"
