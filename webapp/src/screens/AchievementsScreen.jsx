@@ -81,7 +81,7 @@ export default function AchievementsScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-          <h1 className="font-bebas text-white/85 pt-6 mb-5" style={PAGE_HEADING_STYLE}>
+          <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>
             Achievements
           </h1>
           <AchievementsSkeleton />
@@ -113,7 +113,7 @@ export default function AchievementsScreen() {
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto pb-10">
         {isEmpty ? (
           <>
-            <h1 className="font-bebas text-white/85 pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
+            <h1 className="font-bebas text-white pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
               Achievements
             </h1>
             <div className="text-center py-16 px-4">
@@ -130,7 +130,7 @@ export default function AchievementsScreen() {
             {/* Unlocked block: page title + counter + unlocked list in card-in-card */}
             <div className="rounded-2xl p-2 mb-6" style={CARD_BTN_STYLE}>
               <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
-                <h1 className="font-bebas text-white/85 mb-0.5" style={PAGE_HEADING_STYLE}>
+                <h1 className="font-bebas text-white mb-0.5" style={PAGE_HEADING_STYLE}>
                   Achievements
                 </h1>
                 <div className="text-white/40 text-sm font-sans mb-4">

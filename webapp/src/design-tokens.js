@@ -47,5 +47,11 @@ export const SECONDARY_CARD_STYLE = {
 
 // ─── Typography (inline styles) ────────────────────────────────────────────
 
-/** Page title — list screens (History, Achievements). */
-export const PAGE_HEADING_STYLE = { fontSize: '6vw', letterSpacing: '0.1em' };
+/** Page title — list screens (History, Achievements).
+ *  Совмещаем с кеглем кнопки NEW WORKOUT на главном:
+ *  единый clamp по ширине и без избыточного трекинга.
+ */
+export const PAGE_HEADING_STYLE = {
+  fontSize: 'clamp(14px, 7.5vw, 32px)',
+  letterSpacing: 'normal',
+};

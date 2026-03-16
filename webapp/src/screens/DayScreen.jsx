@@ -287,7 +287,7 @@ export default function DayScreen() {
       <div className="relative z-10 flex flex-col flex-1 min-h-0">
       {/* Header */}
       <div className="flex items-center justify-between p-5 safe-top-lg flex-shrink-0">
-        <h1 className="text-xl font-bebas text-white/85 shrink-0" style={{ letterSpacing: '0.08em' }}>{dayLabel}</h1>
+        <h1 className="font-bebas text-white shrink-0" style={PAGE_HEADING_STYLE}>{dayLabel}</h1>
         {activeWorkout?.startedAt != null && (
           <div className="flex-1 flex justify-center">
             <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsedSec)}</span>
