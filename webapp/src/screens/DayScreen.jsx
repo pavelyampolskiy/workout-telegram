@@ -219,18 +219,13 @@ export default function DayScreen() {
 
   if (showNote) {
     return (
-      <div className="min-h-screen relative">
+      <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-        <div className="relative z-10 p-5 safe-top-xl">
-          <div className="pt-4 mb-2">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white/60">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
-            <h2 className="text-xl font-bebas tracking-wider mt-2">Workout saved!</h2>
-            {durationMin !== null && durationMin > 0 && (
-              <p className="text-white/55 text-sm mt-1 font-bebas tracking-wider">{durationMin} min</p>
-            )}
-          </div>
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto pb-36">
+          <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Workout saved!</h1>
+          {durationMin !== null && durationMin > 0 && (
+            <p className="text-white/55 text-sm mb-5 font-bebas tracking-wider">{durationMin} min</p>
+          )}
 
           {/* Star rating */}
           <div className="mb-5">
@@ -256,10 +251,14 @@ export default function DayScreen() {
             placeholder="E.g. Felt strong today…"
             className="w-full appearance-none bg-black/50 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
           />
+        </div>
+
+        {/* Кнопки прикреплены к нижнему краю */}
+        <div className="fixed bottom-0 left-0 right-0 z-20 p-5 safe-bottom max-w-lg mx-auto bg-gradient-to-t from-black/90 via-black/70 to-transparent pt-8">
           <button
             onClick={handleFinish}
             disabled={saving}
-            className="btn-active-style card-press w-full mt-3 text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50"
+            className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50"
           >
             {saving ? (
               <span className="inline-flex items-center justify-center gap-2">
