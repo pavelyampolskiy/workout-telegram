@@ -243,19 +243,13 @@ export default function StatsScreen() {
 
   const renderContent = () => {
     if (tab === 'freq') {
-      const { total, avg, dates = [] } = data.freq;
+      const { avg, dates = [] } = data.freq;
       return (
         <div className="space-y-4">
           <div className={CARD.className}>
-            <div className="flex">
-              <div className="flex-1 text-center pr-4">
-                <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
-              </div>
-              <div className="flex-1 text-center pl-4">
-                <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
-                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
-              </div>
+            <div className="text-center">
+              <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
             </div>
           </div>
           <div className={CARD.className}>
@@ -340,7 +334,6 @@ export default function StatsScreen() {
       <>
         <div className="text-center mb-5">
           <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
-          <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
         </div>
         <div className="space-y-4">
           <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
