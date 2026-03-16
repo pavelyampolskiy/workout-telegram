@@ -151,7 +151,7 @@ export function ProgramDaySkeleton() {
     <div className="space-y-2">
       <Skeleton className="h-3 w-full mb-5" />
       {[1, 2, 3, 4].map(i => (
-        <div key={i} className="rounded-xl p-4 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.05)' }}>
+        <div key={i} className="rounded-xl p-4 flex items-center gap-3" style={{ background: 'rgba(255,255,255,0.025)' }}>
           <div className="flex flex-col gap-1 shrink-0">
             <Skeleton className="h-5 w-5 rounded" />
             <Skeleton className="h-5 w-5 rounded" />

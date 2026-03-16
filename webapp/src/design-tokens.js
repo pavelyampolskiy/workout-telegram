@@ -25,9 +25,9 @@ export const ACCENT_COLOR = '#C9A96E';
 
 // ─── Card styles (inline style objects) ──────────────────────────────────────
 
-/** Glass card button — main tappable cards (nav tiles, primary actions). Minimal: no border, subtle bg. */
+/** Glass card button — main tappable cards (nav tiles, primary actions). Same transparency as History planks. */
 export const CARD_BTN_STYLE = {
-  background: 'rgba(255,255,255,0.05)',
+  background: 'rgba(255,255,255,0.025)',
 };
 
 /** Primary CTA card (e.g. "New Workout", "Continue Workout") — slightly brighter. */
@@ -35,14 +35,14 @@ export const PRIMARY_CARD_STYLE = {
   background: 'rgba(255,255,255,0.06)',
 };
 
-/** Dark glass panel — data blocks (exercise sets, history detail). */
+/** Dark glass panel — data blocks (exercise sets, history detail). Same transparency as History planks. */
 export const DARK_CARD_STYLE = {
-  background: 'rgba(255,255,255,0.05)',
+  background: 'rgba(255,255,255,0.025)',
 };
 
 /** Secondary / add-action card (e.g. "Add Exercise"). */
 export const SECONDARY_CARD_STYLE = {
-  background: 'rgba(255,255,255,0.04)',
+  background: 'rgba(255,255,255,0.02)',
 };
 
 // ─── Typography (inline styles) ────────────────────────────────────────────

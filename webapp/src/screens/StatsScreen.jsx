@@ -8,7 +8,8 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { PAGE_HEADING_STYLE } from '../shared';
 
 const CARD = {
-  className: 'bg-white/5 rounded-2xl p-5',
+  className: 'rounded-2xl p-5',
+  style: { background: 'rgba(255,255,255,0.025)' },
 };
 
 const GRADIENT_TEXT = {
@@ -246,13 +247,13 @@ export default function StatsScreen() {
       const { avg, dates = [] } = data.freq;
       return (
         <div className="space-y-4">
-          <div className={CARD.className}>
+          <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
               <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
             </div>
           </div>
-          <div className={CARD.className}>
+          <div className={CARD.className} style={CARD.style}>
             <ActivityHeatmap
               dates={dates}
               displayYear={data.freq.year}
@@ -310,7 +311,7 @@ export default function StatsScreen() {
       const d = data[amountPeriod];
       if (!d) return null;
       return (
-        <div className={CARD.className}>
+        <div className={CARD.className} style={CARD.style}>
           <div className="mb-4">
             <Tabs tabs={PERIOD_OPTIONS} activeKey={amountPeriod} onSelect={setAmountPeriod} />
           </div>
