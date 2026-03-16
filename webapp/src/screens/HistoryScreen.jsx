@@ -212,7 +212,7 @@ export default function HistoryScreen() {
               const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
 
               return (
-                <div key={monthKey} className="rounded-2xl p-2" style={CARD_BTN_STYLE}>
+                <div key={monthKey}>
                   <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
                     {/* Month summary header */}
                     <button

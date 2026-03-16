@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { AchievementsSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { PAGE_HEADING_STYLE } from '../shared';
+import { PAGE_HEADING_STYLE, CARD_BTN_STYLE, DARK_CARD_STYLE } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 
 function Badge({ achievement, locked = false }) {
@@ -111,51 +111,61 @@ export default function AchievementsScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto pb-10">
-        <h1 className="font-bebas text-white/85 pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
-          Achievements
-        </h1>
-        {!isEmpty && (
-          <div className="text-white/40 text-sm font-sans mb-5">
-            {unlocked.length} of {total} unlocked
-          </div>
-        )}
-
         {isEmpty ? (
-          <div className="text-center py-16 px-4">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
-              <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
-              <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
-            </svg>
-            <p className="font-bebas tracking-wider text-white/80 text-base">No achievements yet</p>
-            <p className="font-sans text-white/40 text-sm mt-1.5">Complete workouts to unlock achievements.</p>
-          </div>
+          <>
+            <h1 className="font-bebas text-white/85 pt-6 mb-0.5" style={PAGE_HEADING_STYLE}>
+              Achievements
+            </h1>
+            <div className="text-center py-16 px-4">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
+                <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
+                <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
+              </svg>
+              <p className="font-bebas tracking-wider text-white/80 text-base">No achievements yet</p>
+              <p className="font-sans text-white/40 text-sm mt-1.5">Complete workouts to unlock achievements.</p>
+            </div>
+          </>
         ) : (
           <>
-        {/* Unlocked */}
-        {unlocked.length > 0 && (
-          <div className="mb-6">
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">Unlocked</div>
-            <div className="space-y-3">
-              {unlocked.map(ach => (
-                <Badge key={ach.id} achievement={ach} />
-              ))}
-            </div>
-          </div>
-        )}
+            {/* Unlocked block: page title + counter + unlocked list in card-in-card */}
+            <div className="rounded-2xl p-2 mb-6" style={CARD_BTN_STYLE}>
+              <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                <h1 className="font-bebas text-white/85 mb-0.5" style={PAGE_HEADING_STYLE}>
+                  Achievements
+                </h1>
+                <div className="text-white/40 text-sm font-sans mb-4">
+                  {unlocked.length} of {total} unlocked
+                </div>
 
-        {/* Locked */}
-        {locked.length > 0 && (
-          <div>
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">In Progress</div>
-            <div className="space-y-3">
-              {locked.map(ach => (
-                <Badge key={ach.id} achievement={ach} locked />
-              ))}
+                {unlocked.length > 0 && (
+                  <>
+                    <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">Unlocked</div>
+                    <div className="space-y-3">
+                      {unlocked.map(ach => (
+                        <Badge key={ach.id} achievement={ach} />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+
+            {/* Locked block: отдельная плашка в плашке */}
+            {locked.length > 0 && (
+              <div className="rounded-2xl p-2" style={CARD_BTN_STYLE}>
+                <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                  <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">In Progress</div>
+                  <div className="space-y-3">
+                    {locked.map(ach => (
+                      <Badge key={ach.id} achievement={ach} locked />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
+
       </div>
     </div>
   );
