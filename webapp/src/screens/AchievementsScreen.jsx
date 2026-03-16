@@ -115,11 +115,11 @@ export default function AchievementsScreen() {
           </>
         ) : (
           <>
-            {/* Page title + counter above both sections */}
-            <h1 className="font-bebas text-white mb-0.5" style={PAGE_HEADING_STYLE}>
+            {/* Page title + counter — тот же уровень, что History/Statistics */}
+            <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>
               Achievements
             </h1>
-            <div className="text-white/40 text-sm font-sans mb-4">
+            <div className="text-white/40 text-sm font-sans mt-0 mb-4">
               {unlocked.length} of {total} unlocked
             </div>
 
