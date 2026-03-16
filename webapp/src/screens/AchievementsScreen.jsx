@@ -122,38 +122,41 @@ export default function AchievementsScreen() {
           </>
         ) : (
           <>
-            {/* Unlocked block: заголовок + счётчик + список без внешней рамки */}
-            <div className="rounded-xl p-4 mb-6" style={DARK_CARD_STYLE}>
-              <h1 className="font-bebas text-white mb-0.5" style={PAGE_HEADING_STYLE}>
-                Achievements
-              </h1>
-              <div className="text-white/40 text-sm font-sans mb-4">
-                {unlocked.length} of {total} unlocked
-              </div>
+            {/* Page title + counter above both sections */}
+            <h1 className="font-bebas text-white mb-0.5" style={PAGE_HEADING_STYLE}>
+              Achievements
+            </h1>
+            <div className="text-white/40 text-sm font-sans mb-4">
+              {unlocked.length} of {total} unlocked
+            </div>
 
-              {unlocked.length > 0 && (
-                <>
-                  <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">Unlocked</div>
-                  <div className="space-y-3">
-                    {unlocked.map(ach => (
-                      <Badge key={ach.id} achievement={ach} />
-                    ))}
-                  </div>
-                </>
+            {/* Unlocked: same card structure as In Progress */}
+            <div className="rounded-xl p-4 mb-4" style={DARK_CARD_STYLE}>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">Unlocked</div>
+              {unlocked.length > 0 ? (
+                <div className="space-y-3">
+                  {unlocked.map(ach => (
+                    <Badge key={ach.id} achievement={ach} />
+                  ))}
+                </div>
+              ) : (
+                <p className="text-white/30 text-sm font-sans">None yet</p>
               )}
             </div>
 
-            {/* Locked block: отдельная тёмная плашка без внешней рамки */}
-            {locked.length > 0 && (
-              <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
-                <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">In Progress</div>
+            {/* In Progress: same card structure as Unlocked */}
+            <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-3">In Progress</div>
+              {locked.length > 0 ? (
                 <div className="space-y-3">
                   {locked.map(ach => (
                     <Badge key={ach.id} achievement={ach} locked />
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <p className="text-white/30 text-sm font-sans">None</p>
+              )}
+            </div>
           </>
         )}
 
