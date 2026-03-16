@@ -169,10 +169,10 @@ export default function HomeScreen() {
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent" style={{ zIndex: 0 }} />
 
       {/* Content: главная кнопка сверху, четыре кнопки внизу */}
-      <div className="relative z-10 flex flex-col min-h-screen safe-top safe-bottom p-5 max-w-lg mx-auto w-full">
+      <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Верх: ARE YOU READY? + главная кнопка (New Workout / Continue) */}
         <div className="shrink-0 flex flex-col gap-4">
-          <div className="pt-8 w-full">
+          <div className="pt-6 w-full">
             {unfinished && !showDismissConfirm ? (
               <>
                 <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
