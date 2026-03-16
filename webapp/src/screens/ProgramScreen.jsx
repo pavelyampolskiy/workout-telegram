@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE } from '../shared';
+import { CARD_BTN_STYLE, DARK_CARD_STYLE, SECONDARY_CARD_STYLE } from '../shared';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
 
