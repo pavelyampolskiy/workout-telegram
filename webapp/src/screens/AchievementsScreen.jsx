@@ -12,14 +12,7 @@ function Badge({ achievement, locked = false }) {
   const IconComponent = ACHIEVEMENT_CATEGORY_ICONS[type] || ACHIEVEMENT_CATEGORY_ICONS.workouts;
 
   return (
-    <div 
-      className={`rounded-2xl p-4 ${locked ? 'opacity-50' : ''}`}
-      style={{
-        background: earned 
-          ? 'rgba(255,255,255,0.06)'
-          : 'rgba(255,255,255,0.04)',
-      }}
-    >
+    <div className={`py-3 border-b border-white/10 last:border-b-0 ${locked ? 'opacity-50' : ''}`}>
       <div className="flex items-center gap-4">
         <span 
           className="shrink-0 flex items-center justify-center"
