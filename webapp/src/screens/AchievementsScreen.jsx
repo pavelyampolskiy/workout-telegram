@@ -24,7 +24,7 @@ function Badge({ achievement, locked = false }) {
           {IconComponent}
         </span>
         <div className="flex-1 min-w-0">
-          <div className="font-bebas tracking-wider text-base text-white/90">{name}</div>
+          <div className="font-bebas tracking-wider text-base text-white">{name}</div>
           <div className="text-xs text-white/40 font-sans">{desc}</div>
           {!earned && progress > 0 && (
             <div className="mt-2">

@@ -179,10 +179,10 @@ export default function ProgramDayScreen() {
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors mt-4"
           style={SECONDARY_CARD_STYLE}
         >
-          <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
-            +
-          </span>
-          <div className="font-bebas tracking-wider text-base text-white/50">
+<span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
+                +
+              </span>
+              <div className="font-bebas tracking-wider text-base text-white">
             Add Exercise
           </div>
         </button>

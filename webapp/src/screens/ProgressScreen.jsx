@@ -160,10 +160,10 @@ export default function ProgressScreen() {
             className="card-press w-full rounded-2xl p-4 text-left flex items-center justify-between"
             style={CARD_BTN_STYLE}
           >
-            <span className={selected ? 'text-white font-bebas tracking-wider' : 'text-white/40 font-bebas tracking-wider'}>
+            <span className="text-white font-bebas tracking-wider">
               {selected ? selected.name : 'Select exercise…'}
             </span>
-            <span className="text-white/35 shrink-0">
+            <span className="text-white shrink-0">
               {open ? (
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" className="w-5 h-5">
                   <path d="M12 6L20 18H4z"/>

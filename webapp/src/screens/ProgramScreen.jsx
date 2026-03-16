@@ -164,18 +164,18 @@ export default function ProgramScreen() {
                   onClick={() => navigate('program-day', { dayKey: day.key, dayLabel: day.label })}
                   className="card-press flex-1 min-w-0 flex items-center gap-4 text-left"
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/50">
-                    <DayIcon />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="font-bebas tracking-wider text-base text-white/90">{day.label}</div>
-                    <div className="text-xs text-white/40 font-sans mt-0.5">{count} exercise{count !== 1 ? 's' : ''}</div>
+<span className="shrink-0 flex items-center justify-center text-white">
+                      <DayIcon />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bebas tracking-wider text-base text-white">{day.label}</div>
+                      <div className="text-xs text-white/40 font-sans mt-0.5">{count} exercise{count !== 1 ? 's' : ''}</div>
                   </div>
                 </button>
                 <button
                   type="button"
                   onClick={(e) => openRename(e, day)}
-                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/50 hover:text-white/80 active:text-white transition-colors"
+                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white hover:text-white/80 active:text-white transition-colors"
                   aria-label="Rename day"
                 >
                   <PencilIcon />
@@ -183,7 +183,7 @@ export default function ProgramScreen() {
                 <button
                   type="button"
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
-                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
+                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white hover:text-red-400/80 active:text-red-400 transition-colors"
                   aria-label="Delete day"
                 >
                   <TrashIcon />
@@ -197,10 +197,10 @@ export default function ProgramScreen() {
             onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
             className="card-press w-full py-3 flex items-center gap-3 text-left border-b border-white/10 last:border-b-0"
           >
-            <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
+            <span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
               +
             </span>
-            <div className="font-bebas tracking-wider text-base text-white/50">Add day</div>
+            <div className="font-bebas tracking-wider text-base text-white">Add day</div>
           </button>
         </div>
       </div>

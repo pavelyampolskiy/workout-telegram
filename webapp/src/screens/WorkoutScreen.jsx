@@ -27,11 +27,11 @@ function DayCard({ day, onPress }) {
       onClick={onPress}
       className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
     >
-      <span className="shrink-0 flex items-center justify-center text-white/50">
+      <span className="shrink-0 flex items-center justify-center text-white">
         <DayIcon />
       </span>
       <div className="min-w-0 flex-1">
-        <div className="font-bebas tracking-wider text-lg text-white/65">{day.label}</div>
+        <div className="font-bebas tracking-wider text-lg text-white">{day.label}</div>
       </div>
     </button>
   );
@@ -145,7 +145,7 @@ export default function WorkoutScreen() {
                   <CardioIcon />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="font-bebas tracking-wider text-lg text-white/65">Cardio</div>
+                  <div className="font-bebas tracking-wider text-lg text-white">Cardio</div>
                 </div>
               </button>
 
