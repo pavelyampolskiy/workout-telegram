@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { AchievementsSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { PAGE_HEADING_STYLE, CARD_BTN_STYLE, DARK_CARD_STYLE } from '../shared';
+import { PAGE_HEADING_STYLE } from '../shared';
 import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 
 function Badge({ achievement, locked = false }) {
@@ -117,18 +117,18 @@ export default function AchievementsScreen() {
               Achievements
             </h1>
 
-            {/* Unlocked — каждая цель отдельной плашкой */}
+            {/* Unlocked — каждая цель отдельной плашкой, яркость +25% к базовой */}
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">Unlocked</div>
             {unlocked.length > 0 ? (
               <div className="space-y-2 mb-4">
                 {unlocked.map(ach => (
-                  <div key={ach.id} className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                  <div key={ach.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03125)' }}>
                     <Badge achievement={ach} />
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl p-4 mb-4" style={DARK_CARD_STYLE}>
+              <div className="rounded-xl p-4 mb-4" style={{ background: 'rgba(255,255,255,0.03125)' }}>
                 <p className="text-white/30 text-sm font-sans">None yet</p>
               </div>
             )}
