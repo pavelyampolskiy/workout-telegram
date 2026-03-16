@@ -212,7 +212,7 @@ export default function StatsScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-          <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Statistics</h1>
+          <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Statistics</h1>
           <StatsSkeleton />
         </div>
       </div>
@@ -363,10 +363,9 @@ export default function StatsScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <h1 className="text-xl font-bebas tracking-wider pt-6 mb-5 text-white/85">Statistics</h1>
-
-        {/* Tabs */}
-        <div className="mb-2">
+        {/* Header + main tabs в плашке */}
+        <div className="mb-4 rounded-xl p-4" style={DARK_CARD_STYLE}>
+          <h1 className="font-bebas text-white mb-2" style={PAGE_HEADING_STYLE}>Statistics</h1>
           <Tabs tabs={STATS_TABS} activeKey={tab} onSelect={handleTabSelect} />
         </div>
 
