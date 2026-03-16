@@ -342,7 +342,6 @@ export default function StatsScreen() {
           <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{total}</div>
           <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Workout{total !== 1 ? 's' : ''}</div>
         </div>
-        <div className="text-[10px] uppercase tracking-widest font-bebas mb-4" style={{ color: 'rgba(255,255,255,0.55)' }}>By type</div>
         <div className="space-y-4">
           <Bar label="Day A" value={a} max={maxV} mounted={barMounted} />
           <Bar label="Day B" value={b} max={maxV} mounted={barMounted} />
