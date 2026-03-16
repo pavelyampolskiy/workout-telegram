@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, PAGE_HEADING_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
@@ -215,7 +215,7 @@ export default function HistoryScreen() {
                   <div className="font-sans text-[11px] text-white/60 uppercase tracking-widest mb-2">
                     {monthLabel}
                   </div>
-                  <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                  <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.025)' }}>
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       <div className={cardStyle}>
                         <span className={valueStyle}>{group.length}</span>
@@ -238,7 +238,7 @@ export default function HistoryScreen() {
                           key={w.id}
                           onClick={() => navigate('history-detail', { workoutId: w.id })}
                           className="card-press w-full rounded-xl p-4 text-left"
-                          style={CARD_BTN_STYLE}
+                          style={{ background: 'rgba(255,255,255,0.025)' }}
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0 space-y-1">
