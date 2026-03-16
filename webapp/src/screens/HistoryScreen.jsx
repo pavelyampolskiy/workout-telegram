@@ -175,17 +175,18 @@ export default function HistoryScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
       <div ref={scrollContainerRef} className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>
-          History
-        </h1>
-
-        {/* Filter tabs */}
-        <div className="mb-5">
-          <Tabs
-            tabs={FILTER_TABS.map(f => ({ key: f.key, label: f.label }))}
-            activeKey={activeFilter}
-            onSelect={handleFilter}
-          />
+        {/* Header + filter tabs в одной плашке */}
+        <div className="mb-5 rounded-xl p-4" style={DARK_CARD_STYLE}>
+          <h1 className="font-bebas text-white mb-1" style={PAGE_HEADING_STYLE}>
+            History
+          </h1>
+          <div className="mt-2">
+            <Tabs
+              tabs={FILTER_TABS.map(f => ({ key: f.key, label: f.label }))}
+              activeKey={activeFilter}
+              onSelect={handleFilter}
+            />
+          </div>
         </div>
 
         {filterLoading ? (
