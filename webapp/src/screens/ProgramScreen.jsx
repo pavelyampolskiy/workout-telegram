@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { PAGE_HEADING_STYLE } from '../shared';
+import { DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
 
@@ -127,9 +127,11 @@ export default function ProgramScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-          <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>Program</h1>
-          <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
-          <ProgramSkeleton />
+          <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Program</h1>
+          <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+            <p className="text-white/40 text-xs font-sans mb-4">Edit exercises for each day. Changes apply to new workouts.</p>
+            <ProgramSkeleton />
+          </div>
         </div>
       </div>
     );
@@ -148,11 +150,11 @@ export default function ProgramScreen() {
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-        <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>Program</h1>
-        <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
+        <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Program</h1>
 
-        {/* Список дней без плашек */}
-        <div className="space-y-0">
+        <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+          <p className="text-white/40 text-xs font-sans mb-4">Edit exercises for each day. Changes apply to new workouts.</p>
+          <div className="space-y-0">
           {days?.map(day => {
             const count = program?.[day.key]?.length ?? 0;
             return (
@@ -202,6 +204,7 @@ export default function ProgramScreen() {
             </span>
             <div className="font-bebas tracking-wider text-base text-white">Add day</div>
           </button>
+          </div>
         </div>
       </div>
 
