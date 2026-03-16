@@ -144,7 +144,7 @@ export default function HistoryScreen() {
     return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
           <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>
             History
           </h1>
@@ -174,9 +174,9 @@ export default function HistoryScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
-      <div ref={scrollContainerRef} className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+      <div ref={scrollContainerRef} className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         {/* Заголовок и фильтры без плашки */}
-        <h1 className="font-bebas text-white mb-1" style={PAGE_HEADING_STYLE}>
+        <h1 className="font-bebas text-white pt-6 mb-1" style={PAGE_HEADING_STYLE}>
           History
         </h1>
         <div className="mt-2 mb-5">

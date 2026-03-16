@@ -110,7 +110,7 @@ export default function WorkoutScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top">
+      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg">
         <div className="flex items-center justify-between pt-6 mb-2">
           <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>New Workout</h1>
         </div>

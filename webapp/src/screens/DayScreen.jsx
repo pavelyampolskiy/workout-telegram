@@ -43,7 +43,7 @@ export default function DayScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
           <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Cardio</h1>
           <DaySkeleton />
         </div>
@@ -198,7 +198,7 @@ export default function DayScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
           <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>{dayLabel || 'Workout'}</h1>
           <DaySkeleton />
         </div>

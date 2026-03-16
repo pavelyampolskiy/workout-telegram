@@ -120,7 +120,7 @@ export default function ProgressScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/workout-bg.jpg" />
-        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+        <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
           <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Progress</h1>
           <ProgressSkeleton />
         </div>
@@ -150,7 +150,7 @@ export default function ProgressScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" />
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top overflow-y-auto">
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Progress</h1>
 
         {/* Exercise selector */}
