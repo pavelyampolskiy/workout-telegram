@@ -124,9 +124,6 @@ export default function AchievementsScreen() {
             <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>
               Achievements
             </h1>
-            <div className="text-white/40 text-sm font-sans mt-0 mb-4">
-              {unlocked.length} of {total} unlocked
-            </div>
 
             {/* Unlocked — подпись над плашкой */}
             <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">Unlocked</div>

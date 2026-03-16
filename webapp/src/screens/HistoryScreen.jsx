@@ -212,18 +212,10 @@ export default function HistoryScreen() {
 
               return (
                 <div key={monthKey}>
+                  <div className="font-sans text-[11px] text-white/60 uppercase tracking-widest mb-2">
+                    {monthLabel}
+                  </div>
                   <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
-                    {/* Month summary header */}
-                    <button
-                      type="button"
-                      onClick={() => {}}
-                      className="inline-flex items-center justify-center gap-1.5 font-sans text-[11px] text-white/60 hover:text-white/80 active:opacity-80 uppercase tracking-widest mb-3 w-full"
-                    >
-                      {monthLabel}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
-                        <path d="M6 9l6 6 6-6"/>
-                      </svg>
-                    </button>
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       <div className={cardStyle}>
                         <span className={valueStyle}>{group.length}</span>
@@ -269,7 +261,6 @@ export default function HistoryScreen() {
                                 )}
                               </div>
                             </div>
-                            <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
                           </div>
                         </button>
                       ))}
