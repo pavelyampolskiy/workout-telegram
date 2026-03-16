@@ -151,57 +151,61 @@ export default function ProgramScreen() {
         <h1 className="font-bebas text-white/90 pt-2 pb-4 text-xl tracking-wider">Program</h1>
         <p className="text-white/40 text-xs font-sans mb-5">Edit exercises for each day. Changes apply to new workouts.</p>
 
-        <div className="space-y-2">
-          {days?.map(day => {
-            const count = program?.[day.key]?.length ?? 0;
-            return (
-              <div
-                key={day.id}
-                className="rounded-xl p-4 flex items-center gap-4"
-                style={CARD_BTN_STYLE}
-              >
-                <button
-                  onClick={() => navigate('program-day', { dayKey: day.key, dayLabel: day.label })}
-                  className="card-press flex-1 min-w-0 flex items-center gap-4 text-left"
+        {/* Плашка в плашке для списка дней программы */}
+        <div className="rounded-2xl p-2" style={CARD_BTN_STYLE}>
+          <div className="rounded-xl p-4 space-y-2" style={DARK_CARD_STYLE}>
+            {days?.map(day => {
+              const count = program?.[day.key]?.length ?? 0;
+              return (
+                <div
+                  key={day.id}
+                  className="rounded-xl p-4 flex items-center gap-4"
+                  style={CARD_BTN_STYLE}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/50">
-                    <DayIcon />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="font-bebas tracking-wider text-base text-white/90">{day.label}</div>
-                    <div className="text-xs text-white/40 font-sans mt-0.5">{count} exercise{count !== 1 ? 's' : ''}</div>
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => openRename(e, day)}
-                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/50 hover:text-white/80 active:text-white transition-colors"
-                  aria-label="Rename day"
-                >
-                  <PencilIcon />
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
-                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
-                  aria-label="Delete day"
-                >
-                  <TrashIcon />
-                </button>
-              </div>
-            );
-          })}
-          <button
-            type="button"
-            onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
-            className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-            style={SECONDARY_CARD_STYLE}
-          >
-            <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
-              +
-            </span>
-            <div className="font-bebas tracking-wider text-base text-white/50">Add day</div>
-          </button>
+                  <button
+                    onClick={() => navigate('program-day', { dayKey: day.key, dayLabel: day.label })}
+                    className="card-press flex-1 min-w-0 flex items-center gap-4 text-left"
+                  >
+                    <span className="shrink-0 flex items-center justify-center text-white/50">
+                      <DayIcon />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bebas tracking-wider text-base text-white/90">{day.label}</div>
+                      <div className="text-xs text-white/40 font-sans mt-0.5">{count} exercise{count !== 1 ? 's' : ''}</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => openRename(e, day)}
+                    className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/50 hover:text-white/80 active:text-white transition-colors"
+                    aria-label="Rename day"
+                  >
+                    <PencilIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
+                    className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
+                    aria-label="Delete day"
+                  >
+                    <TrashIcon />
+                  </button>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
+              className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+              style={SECONDARY_CARD_STYLE}
+            >
+              <span className="w-7 h-7 rounded-full flex items-center justify-center text-white/40 text-lg shrink-0 bg-white/10">
+                +
+              </span>
+              <div className="font-bebas tracking-wider text-base text-white/50">Add day</div>
+            </button>
+          </div>
         </div>
       </div>
 
