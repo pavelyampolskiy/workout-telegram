@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { Tabs } from '../components/Tabs';
 import { ErrorScreen } from '../components/ErrorScreen';
-import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import { formatDate, formatMonthLabel, fmtWorkoutType, fmtVol, CARD_BTN_STYLE, DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { HistorySkeleton } from '../components/Skeleton';
 
 function getMonthKey(dateStr) { return dateStr.slice(0, 7); }
@@ -162,6 +162,15 @@ export default function HistoryScreen() {
     );
   }
 
+  // Сгруппировать тренировки по месяцам (YYYY-MM)
+  const monthGroups = items.reduce((acc, w) => {
+    const key = getMonthKey(w.date);
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(w);
+    return acc;
+  }, {});
+  const monthKeys = Object.keys(monthGroups);
+
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/workout-bg.jpg" overlay="bg-black/70" />
@@ -179,44 +188,6 @@ export default function HistoryScreen() {
           />
         </div>
 
-        {/* Summary: period + three dashboard cards */}
-        {!filterLoading && items.length > 0 && (() => {
-          const totalVolume = items.reduce((s, w) => s + (w.total_volume || 0), 0);
-          const totalMin = items.reduce((s, w) => s + (w.duration_min || 0), 0);
-          const periodLabel = formatMonthLabel(items[0].date).toUpperCase();
-          const cardStyle = 'py-2 px-2 flex flex-col items-center justify-center';
-          const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
-          const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
-          return (
-            <div className="mb-4 rounded-2xl p-4" style={CARD_BTN_STYLE}>
-              <button
-                type="button"
-                onClick={() => {}}
-                className="inline-flex items-center justify-center gap-1.5 font-sans text-[11px] text-white/60 hover:text-white/80 active:opacity-80 uppercase tracking-widest mb-3 mx-auto w-full"
-              >
-                {periodLabel}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
-                  <path d="M6 9l6 6 6-6"/>
-                </svg>
-              </button>
-              <div className="grid grid-cols-3 gap-2">
-                <div className={cardStyle}>
-                  <span className={valueStyle}>{items.length}</span>
-                  <span className={labelStyle}>Workouts</span>
-                </div>
-                <div className={cardStyle}>
-                  <span className={valueStyle}>{totalVolume > 0 ? `${(totalVolume / 1000).toFixed(1)}t` : '—'}</span>
-                  <span className={labelStyle}>Total Weight</span>
-                </div>
-                <div className={cardStyle}>
-                  <span className={valueStyle}>{formatDurationCompact(totalMin)}</span>
-                  <span className={labelStyle}>Duration</span>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
-
         {filterLoading ? (
           <HistorySkeleton />
         ) : items.length === 0 ? (
@@ -230,41 +201,81 @@ export default function HistoryScreen() {
             <p className="font-sans text-white/50 text-sm mt-1.5">New month, new goals. Start your first workout!</p>
           </div>
         ) : (
-          <div className="space-y-2">
-            {items.map((w, idx) => {
-              const isNewMonth = idx === 0 || getMonthKey(w.date) !== getMonthKey(items[idx - 1].date);
+          <div className="space-y-4">
+            {monthKeys.map((monthKey) => {
+              const group = monthGroups[monthKey];
+              const monthLabel = formatMonthLabel(group[0].date).toUpperCase();
+              const totalVolume = group.reduce((s, w) => s + (w.total_volume || 0), 0);
+              const totalMin = group.reduce((s, w) => s + (w.duration_min || 0), 0);
+              const cardStyle = 'py-2 px-2 flex flex-col items-center justify-center';
+              const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
+              const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
 
               return (
-                <div key={w.id} className={isNewMonth && idx > 0 ? 'mt-5' : ''}>
-                  <button
-                    onClick={() => navigate('history-detail', { workoutId: w.id })}
-                    className="card-press w-full rounded-2xl p-4 text-left"
-                    style={CARD_BTN_STYLE}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 space-y-1">
-                        <div className="flex items-baseline gap-2 flex-wrap">
-                          <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
-                            {fmtWorkoutType(w.type)}
-                          </span>
-                          <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
-                        </div>
-                        <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
-                          {w.duration_min > 0 && <span>{w.duration_min} min</span>}
-                          {w.total_sets > 0 && (
-                            <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
-                          )}
-                          {w.total_volume > 0 && (
-                            <span className="inline-flex items-center gap-1.5">
-                              <span>{fmtVol(w.total_volume)}</span>
-                              <VolumeChange items={items} index={idx} totalVolume={w.total_volume} />
-                            </span>
-                          )}
-                        </div>
+                <div key={monthKey} className="rounded-2xl p-2" style={CARD_BTN_STYLE}>
+                  <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
+                    {/* Month summary header */}
+                    <button
+                      type="button"
+                      onClick={() => {}}
+                      className="inline-flex items-center justify-center gap-1.5 font-sans text-[11px] text-white/60 hover:text-white/80 active:opacity-80 uppercase tracking-widest mb-3 w-full"
+                    >
+                      {monthLabel}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+                        <path d="M6 9l6 6 6-6"/>
+                      </svg>
+                    </button>
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      <div className={cardStyle}>
+                        <span className={valueStyle}>{group.length}</span>
+                        <span className={labelStyle}>Workouts</span>
                       </div>
-                      <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
+                      <div className={cardStyle}>
+                        <span className={valueStyle}>{totalVolume > 0 ? `${(totalVolume / 1000).toFixed(1)}t` : '—'}</span>
+                        <span className={labelStyle}>Total Weight</span>
+                      </div>
+                      <div className={cardStyle}>
+                        <span className={valueStyle}>{formatDurationCompact(totalMin)}</span>
+                        <span className={labelStyle}>Duration</span>
+                      </div>
                     </div>
-                  </button>
+
+                    {/* Workouts inside this month */}
+                    <div className="space-y-2">
+                      {group.map((w, idxInGroup) => (
+                        <button
+                          key={w.id}
+                          onClick={() => navigate('history-detail', { workoutId: w.id })}
+                          className="card-press w-full rounded-xl p-4 text-left"
+                          style={CARD_BTN_STYLE}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0 space-y-1">
+                              <div className="flex items-baseline gap-2 flex-wrap">
+                                <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
+                                  {fmtWorkoutType(w.type)}
+                                </span>
+                                <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
+                              </div>
+                              <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
+                                {w.duration_min > 0 && <span>{w.duration_min} min</span>}
+                                {w.total_sets > 0 && (
+                                  <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                                )}
+                                {w.total_volume > 0 && (
+                                  <span className="inline-flex items-center gap-1.5">
+                                    <span>{fmtVol(w.total_volume)}</span>
+                                    <VolumeChange items={items} index={items.indexOf(w)} totalVolume={w.total_volume} />
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <span className="text-white/35 text-base shrink-0 mt-0.5">›</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               );
             })}
