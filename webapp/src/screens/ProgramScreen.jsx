@@ -7,7 +7,6 @@ import { DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
 import { Spinner } from '../components/Spinner';
-import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 
 const DayIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -32,7 +31,6 @@ export default function ProgramScreen() {
   const { userId, navigate, showToast } = useApp();
   const [days, setDays] = useState(null);
   const [program, setProgram] = useState(null);
-  const [latestUnlocked, setLatestUnlocked] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [renameDay, setRenameDay] = useState(null); // { id, label }
@@ -46,12 +44,10 @@ export default function ProgramScreen() {
 
   useEffect(() => {
     if (!userId) return;
-    Promise.all([api.getDays(userId), api.getProgram(userId), api.getAchievements(userId)])
-      .then(([daysList, prog, ach]) => {
+    Promise.all([api.getDays(userId), api.getProgram(userId)])
+      .then(([daysList, prog]) => {
         setDays(daysList.filter(d => String(d.key).toUpperCase() !== 'CARDIO'));
         setProgram(prog);
-        const last = ach?.unlocked?.length ? ach.unlocked[ach.unlocked.length - 1] : null;
-        setLatestUnlocked(last);
       })
       .catch(e => {
         setError(e.message);
@@ -162,9 +158,6 @@ export default function ProgramScreen() {
           <div className="space-y-2">
           {days?.map(day => {
             const count = program?.[day.key]?.length ?? 0;
-            const AchIcon = latestUnlocked
-              ? (ACHIEVEMENT_CATEGORY_ICONS[latestUnlocked.type] || ACHIEVEMENT_CATEGORY_ICONS.workouts)
-              : null;
             return (
               <div
                 key={day.id}
@@ -183,17 +176,6 @@ export default function ProgramScreen() {
                       <div className="text-xs text-white/40 font-sans mt-0.5">{count} exercise{count !== 1 ? 's' : ''}</div>
                   </div>
                 </button>
-
-                {latestUnlocked && (
-                  <div className="shrink-0 flex items-center gap-2 min-w-0">
-                    <span className="text-white/35 shrink-0" aria-hidden>
-                      {AchIcon}
-                    </span>
-                    <span className="text-[10px] uppercase tracking-widest text-white/35 font-bebas truncate max-w-[96px]">
-                      {latestUnlocked.name}
-                    </span>
-                  </div>
-                )}
                 <button
                   type="button"
                   onClick={(e) => openRename(e, day)}
