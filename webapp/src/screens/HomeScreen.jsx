@@ -250,7 +250,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: '0.08em' }}>History</div>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
             </button>
             <button
               onClick={() => navigate('stats')}
@@ -258,7 +258,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: '0.08em' }}>Statistics</div>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
@@ -266,7 +266,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: '0.08em' }}>Achievements</div>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
             </button>
             <button
               onClick={() => navigate('program')}
@@ -274,7 +274,7 @@ export default function HomeScreen() {
               style={{ background: CARD_BG }}
             >
               <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: '0.08em' }}>My program</div>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
             </button>
           </div>
         </div>
