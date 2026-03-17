@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '../App';
 import ScreenBg from '../ScreenBg';
-import { CARD_BTN_STYLE, PAGE_HEADING_STYLE } from '../shared';
+import { CARD_BTN_STYLE, DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 
 const QUESTIONS = [
   {
@@ -92,21 +92,24 @@ export default function RecoveryCheckScreen() {
             Recovery Score
           </h1>
 
-          <div className="flex-1 flex flex-col items-center justify-center -mt-20">
-            <div 
-              className="text-7xl font-bebas mb-2"
-              style={{ color: rec.color }}
-            >
-              {score}%
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="rounded-xl p-5 w-full max-w-md text-center" style={DARK_CARD_STYLE}>
+              <div 
+                className="text-7xl font-bebas mb-2"
+                style={{ color: rec.color }}
+              >
+                {score}%
+              </div>
+              <div className="text-white/50 text-sm font-sans text-center max-w-xs mx-auto">
+                {rec.text}
+              </div>
+              {rec.modifier < 1 && (
+                <p className="mt-4 text-white/70 text-xs font-sans text-center">
+                  Suggested weight adjustment:{' '}
+                  <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
+                </p>
+              )}
             </div>
-            <div className="text-white/50 text-sm font-sans text-center max-w-xs">
-              {rec.text}
-            </div>
-            {rec.modifier < 1 && (
-              <p className="mt-4 text-white/70 text-xs font-sans text-center">
-                Suggested weight adjustment: <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
-              </p>
-            )}
           </div>
         </div>
 
