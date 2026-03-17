@@ -30,7 +30,10 @@ export default function CardioScreen() {
   const [startedAt, setStartedAt] = useState(null);
   const [elapsed, setElapsed] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [starting, setStarting] = useState(false);
+  const [countdown, setCountdown] = useState(null); // 3..2..1 (pre-start)
   const intervalRef = useRef(null);
+  const countdownRef = useRef(null);
 
   useEffect(() => {
     api.getUnfinishedWorkout(userId)
@@ -62,14 +65,37 @@ export default function CardioScreen() {
 
   const handleStart = async () => {
     try {
+      if (starting || countdown != null) return;
+      setStarting(true);
       const { id } = await api.createWorkout(userId, 'CARDIO');
       setWorkoutId(id);
-      setStartedAt(Date.now());
-      setStarted(true);
+      setCountdown(3);
+      let n = 3;
+      countdownRef.current = setInterval(() => {
+        n -= 1;
+        if (n <= 0) {
+          clearInterval(countdownRef.current);
+          countdownRef.current = null;
+          setCountdown(null);
+          setStartedAt(Date.now());
+          setStarted(true);
+          setStarting(false);
+        } else {
+          setCountdown(n);
+        }
+      }, 900);
     } catch (e) {
       showToast(e.message);
+      setStarting(false);
+      setCountdown(null);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (countdownRef.current) clearInterval(countdownRef.current);
+    };
+  }, []);
 
   const buildSaveText = () => {
     const durationMin = Math.floor(elapsed / 60);
@@ -116,10 +142,12 @@ export default function CardioScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/70" scale={1} position="top" lockViewport />
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-5 safe-top-lg pb-40">
-          <div className="text-white/60 mb-4" aria-hidden>
-            <CardioIcon className="w-12 h-12" />
+          <div className="flex items-center justify-center gap-3 text-white/80 pt-6 mb-3">
+            <span className="text-white/70 shrink-0" aria-hidden>
+              <CardioIcon className="w-9 h-9" />
+            </span>
+            <h1 className="font-bebas text-white leading-none" style={PAGE_HEADING_STYLE}>Cardio</h1>
           </div>
-          <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Cardio</h1>
           <p className="font-sans text-white/40 text-xs text-center max-w-[260px]">
             Track time and add notes. Choose activity type and optional distance when you finish.
           </p>
@@ -128,11 +156,20 @@ export default function CardioScreen() {
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <button
             onClick={handleStart}
-            className="btn-active-style card-press w-full py-4 rounded-[14px] font-bebas tracking-wider text-xl"
+            disabled={starting || countdown != null}
+            className="btn-active-style card-press w-full py-4 rounded-[14px] font-bebas tracking-wider text-xl disabled:opacity-50"
           >
             Start
           </button>
         </div>
+
+        {countdown != null && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" aria-hidden>
+            <div className="countdown-zoom font-bebas text-white" style={{ fontSize: 'clamp(72px, 18vw, 140px)', letterSpacing: '0.02em', textShadow: '0 6px 24px rgba(0,0,0,0.6)' }}>
+              {countdown}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -148,11 +185,11 @@ export default function CardioScreen() {
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         <div className="pt-6 mb-4">
           <div className="flex items-center justify-between">
-            <div>
-              <div className="mb-2 text-white">
+            <div className="flex items-center gap-3 text-white">
+              <span className="text-white/70 shrink-0" aria-hidden>
                 <CardioIcon className="w-9 h-9" />
-              </div>
-              <h1 className="font-bebas text-white" style={PAGE_HEADING_STYLE}>Cardio</h1>
+              </span>
+              <h1 className="font-bebas text-white leading-none" style={PAGE_HEADING_STYLE}>Cardio</h1>
             </div>
             <div className="text-right">
               <div className="text-3xl font-bebas tracking-wider text-white/90">{fmtTime(elapsed)}</div>
