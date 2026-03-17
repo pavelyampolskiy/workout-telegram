@@ -6,6 +6,7 @@ import { Spinner } from '../components/Spinner';
 import { CardioSkeleton } from '../components/Skeleton';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { fmtTime, PAGE_HEADING_STYLE } from '../shared';
+import { CardioIcon } from '../components/Icons';
 
 const ACTIVITIES = [
   { key: 'Running', label: 'Running' },
@@ -115,9 +116,9 @@ export default function CardioScreen() {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/70" scale={1} position="top" lockViewport />
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-5 safe-top-lg pb-40">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 text-white/60 mb-4">
-            <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
-          </svg>
+          <div className="text-white/60 mb-4" aria-hidden>
+            <CardioIcon className="w-12 h-12" />
+          </div>
           <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Cardio</h1>
           <p className="font-sans text-white/40 text-xs text-center max-w-[260px]">
             Track time and add notes. Choose activity type and optional distance when you finish.
@@ -149,9 +150,7 @@ export default function CardioScreen() {
           <div className="flex items-center justify-between">
             <div>
               <div className="mb-2 text-white">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9">
-                  <polyline points="2,12 6,12 8,6 10,18 12,12 14,12 16,9 18,12 22,12"/>
-                </svg>
+                <CardioIcon className="w-9 h-9" />
               </div>
               <h1 className="font-bebas text-white" style={PAGE_HEADING_STYLE}>Cardio</h1>
             </div>
