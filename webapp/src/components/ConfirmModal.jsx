@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { CARD_BTN_STYLE } from '../shared';
 import { useFocusTrap } from '../hooks/useFocusTrap';
+import { Spinner } from './Spinner';
 
 /**
  * Reusable confirmation modal: title, description, primary + secondary actions.
@@ -30,17 +31,32 @@ export function ConfirmModal({
         <div className="flex flex-col gap-2">
           <button
             onClick={primaryOnClick}
+            disabled={loading}
             className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2"
             style={CARD_BTN_STYLE}
           >
-            {loading ? '…' : primaryLabel}
+            {loading ? (
+              <>
+                <Spinner size={18} />
+                …
+              </>
+            ) : (
+              primaryLabel
+            )}
           </button>
           <button
             onClick={secondaryOnClick}
             disabled={secondaryLoading}
-            className="w-full py-3 font-bebas tracking-wider text-sm text-white/50 active:text-white/80 disabled:opacity-40 transition-colors"
+            className="w-full py-3 font-bebas tracking-wider text-sm text-white/50 active:text-white/80 disabled:opacity-40 transition-colors flex items-center justify-center gap-2"
           >
-            {secondaryLoading ? '…' : secondaryLabel}
+            {secondaryLoading ? (
+              <>
+                <Spinner size={16} />
+                …
+              </>
+            ) : (
+              secondaryLabel
+            )}
           </button>
         </div>
       </div>

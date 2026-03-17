@@ -74,6 +74,7 @@ export default function ExerciseScreen() {
   const [weight, setWeight] = useState('');
   const [reps, setReps] = useState('');
   const [saving, setSaving] = useState(false);
+  const [finishing, setFinishing] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
   const [inputError, setInputError] = useState('');
   const [restEndTime, setRestEndTime] = useState(null);
@@ -263,12 +264,18 @@ export default function ExerciseScreen() {
     }
   };
 
-  const handleFinish = () => {
-    // Cancel pending notification when leaving
-    if (userId > 0 && restEndTime) {
-      api.cancelRestTimer(userId).catch(() => {});
+  const handleFinish = async () => {
+    setFinishing(true);
+    try {
+      if (userId > 0 && restEndTime) {
+        await api.cancelRestTimer(userId);
+      }
+      goBack();
+    } catch {
+      goBack();
+    } finally {
+      setFinishing(false);
     }
-    goBack();
   };
 
   if (loading) {
@@ -560,10 +567,18 @@ export default function ExerciseScreen() {
           </button>
           <button
             onClick={handleFinish}
-            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center text-white/90"
+            disabled={finishing}
+            className="btn-active-style card-press flex-1 font-bebas tracking-wider py-3 rounded-xl text-base transition-colors flex items-center justify-center gap-2 text-white/90 disabled:opacity-50"
             style={CARD_BTN_STYLE}
           >
-            Finish Exercise
+            {finishing ? (
+              <>
+                <Spinner size={18} />
+                Finishing…
+              </>
+            ) : (
+              'Finish Exercise'
+            )}
           </button>
         </div>
       </div>

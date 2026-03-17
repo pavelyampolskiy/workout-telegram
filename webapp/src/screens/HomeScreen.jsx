@@ -72,7 +72,7 @@ function StatusWidget({ userId }) {
   useEffect(() => {
     Promise.all([
       api.getHistory(userId, 0, 1),
-      api.getStats(userId, 7),
+      api.getStats(userId, 7, true), // true = current calendar week (Mon–today)
       api.getFrequency(userId),
     ]).then(([hist, week, freq]) => {
       setStats({

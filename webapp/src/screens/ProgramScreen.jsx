@@ -6,6 +6,7 @@ import ScreenBg from '../ScreenBg';
 import { DARK_CARD_STYLE, PAGE_HEADING_STYLE } from '../shared';
 import { ErrorScreen } from '../components/ErrorScreen';
 import { ProgramSkeleton } from '../components/Skeleton';
+import { Spinner } from '../components/Spinner';
 
 const DayIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -239,9 +240,16 @@ export default function ProgramScreen() {
                 type="button"
                 onClick={submitAddDay}
                 disabled={!newDayLabel.trim() || adding}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {adding ? '…' : 'Add'}
+                {adding ? (
+                  <>
+                    <Spinner size={18} />
+                    Adding…
+                  </>
+                ) : (
+                  'Add'
+                )}
               </button>
             </div>
           </div>
@@ -280,9 +288,16 @@ export default function ProgramScreen() {
                 type="button"
                 onClick={submitRename}
                 disabled={!renameValue.trim() || renaming}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {renaming ? '…' : 'Save'}
+                {renaming ? (
+                  <>
+                    <Spinner size={18} />
+                    Saving…
+                  </>
+                ) : (
+                  'Save'
+                )}
               </button>
             </div>
           </div>
@@ -313,9 +328,16 @@ export default function ProgramScreen() {
                 type="button"
                 onClick={submitDeleteDay}
                 disabled={deleting}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-red-500/20 text-red-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-red-500/20 text-red-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {deleting ? '…' : 'Delete'}
+                {deleting ? (
+                  <>
+                    <Spinner size={18} />
+                    Deleting…
+                  </>
+                ) : (
+                  'Delete'
+                )}
               </button>
             </div>
           </div>

@@ -373,8 +373,13 @@ def update_note(workout_id: int, body: TextBody):
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/stats")
-def get_stats(user_id: int, days: int = 7):
-    since = date.today() - timedelta(days=days)
+def get_stats(user_id: int, days: int = 7, calendar_week: bool = False):
+    today = date.today()
+    if calendar_week:
+        # Current calendar week (Monday = start of week)
+        since = today - timedelta(days=today.weekday())
+    else:
+        since = today - timedelta(days=days)
     total, by_type = db_ops.stats_period(user_id, since)
     return {"total": total, "by_type": by_type}
 

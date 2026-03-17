@@ -31,6 +31,7 @@ export default function DayScreen() {
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [customExercises, setCustomExercises] = useState([]);
   const [addingEx, setAddingEx] = useState(false);
+  const [savingWorkout, setSavingWorkout] = useState(false); // for "Save Workout" → note screen
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [elapsedSec, setElapsedSec] = useState(0);
 
@@ -125,13 +126,24 @@ export default function DayScreen() {
     navigate('exercise', { exIdx: idx, exDbId, workoutId, day, userId });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const mins = activeWorkout?.startedAt
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    if (workoutId) api.finishWorkout(workoutId).catch(e => showToast(e.message));
-    setShowNote(true);
+    if (!workoutId) {
+      setShowNote(true);
+      return;
+    }
+    setSavingWorkout(true);
+    try {
+      await api.finishWorkout(workoutId);
+      setShowNote(true);
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setSavingWorkout(false);
+    }
   };
 
   const handleFinish = async () => {
@@ -427,9 +439,17 @@ export default function DayScreen() {
         >
           <button
             onClick={handleSave}
-            className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
+            disabled={savingWorkout}
+            className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            Save Workout
+            {savingWorkout ? (
+              <>
+                <Spinner size={20} />
+                Saving…
+              </>
+            ) : (
+              'Save Workout'
+            )}
           </button>
         </div>,
         document.body
