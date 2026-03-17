@@ -249,7 +249,12 @@ export default function HistoryScreen() {
                                 <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
                                   {fmtWorkoutType(w.type)}
                                 </span>
-                                <span className="font-sans text-white/35 text-xs">{formatDate(w.date)}</span>
+                                <span
+                                  className="font-bebas text-white/25 shrink-0 whitespace-nowrap"
+                                  style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+                                >
+                                  {formatDate(w.date).toUpperCase()}
+                                </span>
                               </div>
                               <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
                                 {w.duration_min > 0 && <span>{w.duration_min} min</span>}
