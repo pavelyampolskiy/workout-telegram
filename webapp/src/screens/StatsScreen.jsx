@@ -254,7 +254,7 @@ export default function StatsScreen() {
           <div className={CARD.className} style={CARD.style}>
             <div className="text-center">
               <div className="text-5xl font-bebas leading-none" style={GRADIENT_TEXT}>{avg}</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Avg / Week</div>
+              <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mt-1">Average per week</div>
             </div>
           </div>
           <div className={CARD.className} style={CARD.style}>
