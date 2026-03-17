@@ -301,12 +301,6 @@ export default function ExerciseScreen() {
 
       {/* Exercise header */}
       <div className="pt-6 mb-5">
-        <button onClick={handleFinish} className="flex items-center gap-1 mb-3 -ml-0.5">
-          <span className={`${TEXT_MUTED} text-base leading-none`}>‹</span>
-          <span className={`font-bebas tracking-wider ${TEXT_MUTED} text-sm`}>
-            {day?.startsWith?.('CUSTOM') ? 'Custom' : (day || 'Workout').replace('DAY_', 'Day ')}
-          </span>
-        </button>
         <div className="flex items-center gap-2 mb-1">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className={`w-4 h-4 ${TEXT_MUTED} shrink-0`}>
             <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
