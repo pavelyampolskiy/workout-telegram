@@ -173,10 +173,7 @@ export default function ProgramScreen() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="font-bebas tracking-wider text-base text-white">{day.label}</div>
-                    <div
-                      className="font-bebas text-white/25 shrink-0 whitespace-nowrap mt-0.5"
-                      style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
-                    >
+                    <div className="text-white/40 text-xs font-sans shrink-0 whitespace-nowrap mt-0.5">
                       {count} EXERCISE{count !== 1 ? 'S' : ''}
                     </div>
                   </div>
