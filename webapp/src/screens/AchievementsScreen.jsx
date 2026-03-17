@@ -118,7 +118,12 @@ export default function AchievementsScreen() {
             </h1>
 
             {/* Unlocked — каждая цель отдельной плашкой, яркость +25% к базовой */}
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">Unlocked</div>
+            <div
+              className="font-bebas text-white/25 shrink-0 whitespace-nowrap mb-2"
+              style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+            >
+              UNLOCKED
+            </div>
             {unlocked.length > 0 ? (
               <div className="space-y-2 mb-4">
                 {unlocked.map(ach => (
@@ -134,7 +139,12 @@ export default function AchievementsScreen() {
             )}
 
             {/* In Progress — каждая цель отдельной плашкой */}
-            <div className="text-[10px] uppercase tracking-widest text-white/50 font-bebas mb-2">In Progress</div>
+            <div
+              className="font-bebas text-white/25 shrink-0 whitespace-nowrap mb-2"
+              style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+            >
+              IN PROGRESS
+            </div>
             {locked.length > 0 ? (
               <div className="space-y-2">
                 {locked.map(ach => (
