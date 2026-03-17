@@ -212,7 +212,10 @@ export default function HistoryScreen() {
 
               return (
                 <div key={monthKey}>
-                  <div className="font-sans text-[11px] text-white/60 uppercase tracking-widest mb-2">
+                  <div
+                    className="font-bebas text-white/25 shrink-0 whitespace-nowrap mb-2"
+                    style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+                  >
                     {monthLabel}
                   </div>
                   <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.025)' }}>
