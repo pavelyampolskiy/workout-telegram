@@ -83,7 +83,11 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
     <div className="w-full">
       <div className="grid grid-cols-7 gap-1.5 items-center w-full">
         {DAY_LABELS.map((label) => (
-          <div key={label} className="min-w-0 flex items-center justify-center text-[10px] font-sans text-white/40 uppercase tracking-wide">
+          <div
+            key={label}
+            className="min-w-0 flex items-center justify-center font-bebas text-white/25 shrink-0 whitespace-nowrap"
+            style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+          >
             {label}
           </div>
         ))}
@@ -264,7 +268,8 @@ export default function StatsScreen() {
                 <button
                   type="button"
                   onClick={() => setMonthPickerOpen((o) => !o)}
-                  className="font-sans text-[10px] text-white/50 hover:text-white/70 uppercase tracking-wider flex items-center gap-1"
+                  className="font-bebas text-white/25 hover:text-white/35 uppercase flex items-center gap-1 shrink-0 whitespace-nowrap"
+                  style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
                 >
                   {data.freq.year != null
                     ? getMonthLabel(`${data.freq.year}-${String(data.freq.month).padStart(2, '0')}-01`)
