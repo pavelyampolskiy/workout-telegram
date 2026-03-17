@@ -192,10 +192,8 @@ export default function CardioScreen() {
               <h1 className="font-bebas text-white leading-none" style={PAGE_HEADING_STYLE}>Cardio</h1>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bebas tracking-wider text-white/90">{fmtTime(elapsed)}</div>
-              {durationMin > 0 && (
-                <div className="text-white/40 text-[10px] font-sans">{durationMin} min</div>
-              )}
+              {/* Match strength workout timer style (Day A/B/C) */}
+              <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsed)}</span>
             </div>
           </div>
         </div>
