@@ -110,10 +110,8 @@ export default function WorkoutScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg">
-        <div className="flex-1 min-h-0 flex flex-col">
-          <div className="flex-1 min-h-0" />
-          <div className="pt-6 pb-6 safe-bottom shrink-0">
+      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+        <div className="pt-6 pb-6 safe-bottom shrink-0">
           {loading ? (
             <WorkoutSkeleton />
           ) : (
@@ -160,7 +158,6 @@ export default function WorkoutScreen() {
               />
             </>
           )}
-          </div>
         </div>
       </div>
     </div>
