@@ -208,7 +208,7 @@ export default function HistoryScreen() {
               const totalMin = group.reduce((s, w) => s + (w.duration_min || 0), 0);
               const cardStyle = 'py-2 px-2 flex flex-col items-center justify-center';
               const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
-              const labelStyle = 'font-sans text-[10px] text-white/40 mt-1 uppercase tracking-wider';
+              const labelStyle = 'font-bebas text-white/25 shrink-0 whitespace-nowrap mt-1';
 
               return (
                 <div key={monthKey}>
@@ -222,15 +222,15 @@ export default function HistoryScreen() {
                     <div className="grid grid-cols-3 gap-2 mb-3">
                       <div className={cardStyle}>
                         <span className={valueStyle}>{group.length}</span>
-                        <span className={labelStyle}>Workouts</span>
+                        <span className={labelStyle} style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>WORKOUTS</span>
                       </div>
                       <div className={cardStyle}>
                         <span className={valueStyle}>{totalVolume > 0 ? `${(totalVolume / 1000).toFixed(1)}t` : '—'}</span>
-                        <span className={labelStyle}>Total Weight</span>
+                        <span className={labelStyle} style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>TOTAL WEIGHT</span>
                       </div>
                       <div className={cardStyle}>
                         <span className={valueStyle}>{formatDurationCompact(totalMin)}</span>
-                        <span className={labelStyle}>Duration</span>
+                        <span className={labelStyle} style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>DURATION</span>
                       </div>
                     </div>
 
