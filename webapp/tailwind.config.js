@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        bebas: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        bebas: ['"Bebas Neue"', 'cursive'],
       },
     },
   },
