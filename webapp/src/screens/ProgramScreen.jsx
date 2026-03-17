@@ -169,16 +169,16 @@ export default function ProgramScreen() {
                   className="card-press flex-1 min-w-0 flex items-center gap-4 text-left"
                 >
                   <span className="shrink-0 flex items-center justify-center text-white">
-                      <DayIcon />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="font-bebas tracking-wider text-base text-white">{day.label}</div>
-                      <div
-                        className="font-bebas text-white/25 shrink-0 whitespace-nowrap mt-0.5"
-                        style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
-                      >
-                        {count} EXERCISE{count !== 1 ? 'S' : ''}
-                      </div>
+                    <DayIcon />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bebas tracking-wider text-base text-white">{day.label}</div>
+                    <div
+                      className="font-bebas text-white/25 shrink-0 whitespace-nowrap mt-0.5"
+                      style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
+                    >
+                      {count} EXERCISE{count !== 1 ? 'S' : ''}
+                    </div>
                   </div>
                 </button>
                 <button
@@ -201,6 +201,13 @@ export default function ProgramScreen() {
             );
           })}
 
+          {days && days.length > 0 && (
+            <div className="flex items-center gap-3 my-2">
+              <div className="flex-1 h-px bg-white/8" />
+              <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
+              <div className="flex-1 h-px bg-white/8" />
+            </div>
+          )}
           <button
             type="button"
             onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
