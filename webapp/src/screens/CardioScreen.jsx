@@ -31,7 +31,7 @@ export default function CardioScreen() {
   const [elapsed, setElapsed] = useState(0);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
-  const [countdown, setCountdown] = useState(null); // 3..2..1 (pre-start)
+  const [countdownStep, setCountdownStep] = useState(null); // 0..4 (READY? 1 2 3 GO!)
   const intervalRef = useRef(null);
   const countdownRef = useRef(null);
 
@@ -65,31 +65,48 @@ export default function CardioScreen() {
 
   const handleStart = async () => {
     try {
-      if (starting || countdown != null) return;
+      if (starting || countdownStep != null) return;
       setStarting(true);
       const { id } = await api.createWorkout(userId, 'CARDIO');
       setWorkoutId(id);
-      setCountdown(3);
-      let n = 3;
-      countdownRef.current = setInterval(() => {
-        n -= 1;
-        if (n <= 0) {
-          clearInterval(countdownRef.current);
-          countdownRef.current = null;
-          setCountdown(null);
-          setStartedAt(Date.now());
-          setStarted(true);
-          setStarting(false);
-        } else {
-          setCountdown(n);
-        }
-      }, 900);
+      setCountdownStep(0);
     } catch (e) {
       showToast(e.message);
       setStarting(false);
-      setCountdown(null);
+      setCountdownStep(null);
     }
   };
+
+  // Pre-start countdown (match strength countdown style)
+  useEffect(() => {
+    if (countdownStep == null) return;
+
+    const STEPS = ['READY?', '1', '2', '3', 'GO!'];
+
+    // Finished → start session
+    if (countdownStep >= STEPS.length) {
+      setCountdownStep(null);
+      setStartedAt(Date.now());
+      setStarted(true);
+      setStarting(false);
+      return;
+    }
+
+    // Haptic each tick
+    try {
+      const style =
+        countdownStep === 0
+          ? 'light'
+          : countdownStep === STEPS.length - 1
+          ? 'heavy'
+          : 'medium';
+      window.Telegram?.WebApp?.HapticFeedback?.impactOccurred(style);
+    } catch (_) {}
+
+    const delay = countdownStep === 0 ? 700 : 650;
+    const t = setTimeout(() => setCountdownStep((s) => (s == null ? s : s + 1)), delay);
+    return () => clearTimeout(t);
+  }, [countdownStep]);
 
   useEffect(() => {
     return () => {
@@ -156,20 +173,32 @@ export default function CardioScreen() {
         <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
           <button
             onClick={handleStart}
-            disabled={starting || countdown != null}
+            disabled={starting || countdownStep != null}
             className="btn-active-style card-press w-full py-4 rounded-[14px] font-bebas tracking-wider text-xl disabled:opacity-50"
           >
             Start
           </button>
         </div>
 
-        {countdown != null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" aria-hidden>
-            <div className="countdown-zoom font-bebas text-white" style={{ fontSize: 'clamp(72px, 18vw, 140px)', letterSpacing: '0.02em', textShadow: '0 6px 24px rgba(0,0,0,0.6)' }}>
-              {countdown}
+        {countdownStep != null && (() => {
+          const labels = ['READY?', '1', '2', '3', 'GO!'];
+          const label = labels[Math.min(countdownStep, 4)];
+          const isWord = label.length > 1;
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm pointer-events-none" aria-hidden>
+              <div className="relative">
+                <div
+                  key={label}
+                  className={`relative font-bebas leading-none text-white text-center countdown-zoom ${
+                    isWord ? 'text-[96px] tracking-[0.14em]' : 'text-[144px] tracking-[0.20em]'
+                  }`}
+                >
+                  {label}
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     );
   }
