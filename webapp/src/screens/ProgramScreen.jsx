@@ -155,19 +155,20 @@ export default function ProgramScreen() {
 
         <div className="rounded-xl p-4" style={DARK_CARD_STYLE}>
           <p className="text-white/40 text-xs font-sans mb-4">Edit exercises for each day. Changes apply to new workouts.</p>
-          <div className="space-y-0">
+          <div className="space-y-2">
           {days?.map(day => {
             const count = program?.[day.key]?.length ?? 0;
             return (
               <div
                 key={day.id}
-                className="py-3 border-b border-white/10 flex items-center gap-4 last:border-b-0"
+                className="rounded-xl p-4 flex items-center gap-4"
+                style={{ background: 'rgba(255,255,255,0.02)' }}
               >
                 <button
                   onClick={() => navigate('program-day', { dayKey: day.key, dayLabel: day.label })}
                   className="card-press flex-1 min-w-0 flex items-center gap-4 text-left"
                 >
-<span className="shrink-0 flex items-center justify-center text-white">
+                  <span className="shrink-0 flex items-center justify-center text-white">
                       <DayIcon />
                     </span>
                     <div className="min-w-0 flex-1">
@@ -198,7 +199,8 @@ export default function ProgramScreen() {
           <button
             type="button"
             onClick={() => { setShowAddDay(true); setNewDayLabel(''); }}
-            className="card-press w-full py-3 flex items-center gap-3 text-left border-b border-white/10 last:border-b-0"
+            className="card-press w-full rounded-xl p-4 flex items-center gap-3 text-left"
+            style={{ background: 'rgba(255,255,255,0.02)' }}
           >
             <span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
               +
