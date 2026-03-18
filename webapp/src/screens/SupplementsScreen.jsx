@@ -4,7 +4,7 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED } from '../shared';
+import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, PAGE_HEADING_STYLE } from '../shared';
 import { Spinner } from '../components/Spinner';
 import supplementsBg from '../assets/gym-bg.jpg';
 
@@ -216,7 +216,7 @@ export default function SupplementsScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className={`font-bebas text-2xl tracking-wider ${TEXT_PRIMARY}`}>Supplements</h1>
+          <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Supplements</h1>
           <button
             onClick={handleAdd}
             className="card-press p-2 rounded-lg"
