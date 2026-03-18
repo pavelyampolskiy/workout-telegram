@@ -190,7 +190,11 @@ export default function MetricsScreen() {
                   <div className="text-xs text-white/60">
                     {metrics.slice().reverse().slice(0, 3).map(metric => (
                       <div key={metric.id} className="flex justify-between items-center">
-                        <span>{new Date(metric.date).toLocaleDateString()}: {metric.weight}kg</span>
+                        <span>{new Date(metric.date).toLocaleDateString('ru-RU', { 
+                          day: 'numeric', 
+                          month: 'short', 
+                          year: 'numeric' 
+                        })}: {metric.weight}kg</span>
                       </div>
                     ))}
                     {metrics.length > 3 && (

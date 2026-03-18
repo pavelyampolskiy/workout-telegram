@@ -128,13 +128,22 @@ export default function BodyMetricsWidget() {
       </div>
       
       <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-        <div className="text-xs text-white/92 whitespace-pre-line">
+        <div className="text-xs text-white whitespace-pre-line">
           {latestMetrics?.weight && (
             <div className="text-xs text-white/40 mb-1">Last measurement</div>
           )}
           {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
           {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
           {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
+          {latestMetrics?.date && (
+            <div className="text-xs text-white/40 mt-1">
+              {new Date(latestMetrics.date).toLocaleDateString('ru-RU', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+              })}
+            </div>
+          )}
           {!latestMetrics?.weight && 'No data'}
         </div>
       </div>
