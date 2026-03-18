@@ -222,9 +222,11 @@ export default function SupplementsScreen() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
                         <h3 className={`font-bebas text-base tracking-wider ${TEXT_PRIMARY} truncate`}>{supplement.name}</h3>
-                        <div className={`text-sm ${TEXT_MUTED} mt-1`}>{supplement.dosage} • {supplement.intake_time}</div>
+                        <div className="font-bebas font-light leading-none mt-2" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                          <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{supplement.dosage}</span>
+                        </div>
                         {supplement.duration_days && (
-                          <div className={`text-xs ${TEXT_TERTIARY} mt-1`}>Course: {supplement.duration_days} days</div>
+                          <div className={`text-xs ${TEXT_TERTIARY} mt-2`}>Course: {supplement.duration_days} days</div>
                         )}
                       </div>
                       <div className="flex items-center gap-2 ml-3">
@@ -291,12 +293,11 @@ export default function SupplementsScreen() {
                             {supplement.name}
                           </span>
                         </div>
-                        <div className="text-sm text-white/55">
-                          {supplement.dosage && <>{supplement.dosage} • </>}
-                          {supplement.intake_time}
+                        <div className="font-bebas font-light leading-none" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                          <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{supplement.dosage}</span>
                         </div>
                         {supplement.duration_days && (
-                          <div className="text-xs text-white/35">
+                          <div className="text-xs text-white/35 mt-2">
                             Course: {supplement.duration_days} days
                           </div>
                         )}
@@ -380,18 +381,7 @@ export default function SupplementsScreen() {
                   value={formData.dosage}
                   onChange={(e) => setFormData({...formData, dosage: e.target.value})}
                   className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="e.g: 30g"
-                />
-              </div>
-              
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Intake Time</label>
-                <input
-                  type="text"
-                  value={formData.intake_time}
-                  onChange={(e) => setFormData({...formData, intake_time: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="e.g: After workout"
+                  placeholder="e.g: 5g"
                 />
               </div>
               
