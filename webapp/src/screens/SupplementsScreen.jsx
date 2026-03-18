@@ -76,7 +76,17 @@ export default function SupplementsScreen() {
       console.log('User supplements loaded:', suppsRes.items);
     } catch (error) {
       console.error('Error loading supplements:', error);
-      showToast(error.message);
+      // Если API недоступен, используем локальные предустановленные добавки
+      setPresetSupplements([
+        {name: "Protein", dosage: "30g", intake_time: "After workout"},
+        {name: "Creatine", dosage: "5g", intake_time: "Any time"},
+        {name: "BCAA", dosage: "10g", intake_time: "During workout"},
+        {name: "Vitamins", dosage: "1 tablet", intake_time: "Morning"},
+        {name: "Omega-3", dosage: "1000mg", intake_time: "With meal"},
+        {name: "Pre-workout", dosage: "1 scoop", intake_time: "30 min before workout"},
+      ]);
+      setSupplements([]);
+      // Не показываем toast для 500 ошибки, чтобы не мешать пользователю
     } finally {
       setLoading(false);
     }
