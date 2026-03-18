@@ -258,7 +258,7 @@ export default function SupplementsScreen() {
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My Supplements</div>
                   <div className="text-xs text-white/25 mt-1">
                     {customSupplements.length > 0 
-                      ? `${customSupplements.length} supplement${customSupplements.length === 1 ? '' : 's'}`
+                      ? customSupplements.slice(0, 2).map(s => s.name).join(', ')
                       : 'No supplements yet'
                     }
                   </div>
