@@ -232,8 +232,8 @@ export default function MetricsScreen() {
 
       {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5" role="dialog" aria-modal="true">
-          <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black" role="dialog" aria-modal="true">
+          <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: 'rgba(0, 0, 0, 0.95)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
             <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Add Measurement</h3>
             
             <div className="space-y-3">
