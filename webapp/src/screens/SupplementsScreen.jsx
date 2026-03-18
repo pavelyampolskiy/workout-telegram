@@ -36,7 +36,6 @@ export default function SupplementsScreen() {
   const [formData, setFormData] = useState({
     name: '',
     dosage: '',
-    intake_time: '',
     duration_days: '',
     is_preset: false,
     category: 'custom'
@@ -103,10 +102,10 @@ export default function SupplementsScreen() {
   };
 
   const handleAdd = () => {
+    setEditingSupplement(null);
     setFormData({
       name: '',
       dosage: '',
-      intake_time: '',
       duration_days: '',
       is_preset: false,
       category: 'custom'
@@ -193,7 +192,6 @@ export default function SupplementsScreen() {
     setFormData({
       name: supplement.name,
       dosage: supplement.dosage,
-      intake_time: supplement.intake_time || '',
       duration_days: supplement.duration_days || '',
       is_preset: supplement.is_preset,
       category: supplement.category
@@ -205,7 +203,6 @@ export default function SupplementsScreen() {
     setFormData({
       name: preset.name,
       dosage: preset.dosage,
-      intake_time: preset.intake_time,
       duration_days: '',
       is_preset: true,
       category: 'popular'
