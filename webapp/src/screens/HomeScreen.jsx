@@ -287,14 +287,7 @@ export default function HomeScreen() {
           </div>
           
           {/* Кнопка добавок под сеткой */}
-          <button
-            onClick={() => navigate('supplements')}
-            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full mt-4"
-            style={{ background: CARD_BG }}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><SupplementsIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Supplements</div>
-          </button>
+          <SupplementsWidget />
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">

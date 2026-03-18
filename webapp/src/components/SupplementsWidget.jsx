@@ -47,20 +47,26 @@ export default function SupplementsWidget() {
         style={{ background: 'rgba(255,255,255,0.03)' }}
         disabled
       >
-        <span className="shrink-0 flex items-center justify-center text-white/25">
-          <SupplementsIcon />
-        </span>
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-          Loading...
+          Current supplements
+        </div>
+        <div className="px-3 py-1 rounded-lg bg-white/10 border border-white/20">
+          <div className="text-xs text-white/40">Loading...</div>
         </div>
       </button>
     );
   }
 
   const hasSupplements = activeSupplements.length > 0;
-  const displayText = hasSupplements 
-    ? activeSupplements.slice(0, 3).join(', ')
-    : 'Supplements';
+  let displayText = 'None';
+  
+  if (hasSupplements) {
+    if (activeSupplements.length <= 3) {
+      displayText = activeSupplements.join(', ');
+    } else {
+      displayText = `${activeSupplements.slice(0, 2).join(', ')}, +${activeSupplements.length - 2}`;
+    }
+  }
 
   return (
     <button
@@ -68,11 +74,13 @@ export default function SupplementsWidget() {
       className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full mt-4"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      <span className="shrink-0 flex items-center justify-center text-white/25">
-        <SupplementsIcon />
-      </span>
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-        {hasSupplements ? activeSupplements.slice(0, 3).join(', ') : 'Supplements'}
+        Current supplements
+      </div>
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 min-w-0 flex-1 text-right">
+        <div className="text-xs text-white/60 truncate">
+          {displayText}
+        </div>
       </div>
     </button>
   );
