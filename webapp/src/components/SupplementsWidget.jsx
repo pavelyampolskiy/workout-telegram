@@ -32,18 +32,18 @@ export default function SupplementsWidget() {
 
   if (loading) {
     return (
-      <div className="rounded-xl p-4 w-full mt-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="shrink-0 flex items-center justify-center text-white/20">
-              <SupplementsIcon />
-            </div>
-            <span className="font-bebas text-white/20 text-sm" style={{ letterSpacing: '0.08em' }}>
-              Loading...
-            </span>
-          </div>
+      <button
+        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full mt-4"
+        style={{ background: 'rgba(255,255,255,0.03)' }}
+        disabled
+      >
+        <span className="shrink-0 flex items-center justify-center text-white/25">
+          <SupplementsIcon />
+        </span>
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+          Loading...
         </div>
-      </div>
+      </button>
     );
   }
 
@@ -55,37 +55,14 @@ export default function SupplementsWidget() {
   return (
     <button
       onClick={() => navigate('supplements')}
-      className="card-press rounded-xl p-4 w-full mt-4 text-left"
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full mt-4"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          <div className="shrink-0 flex items-center justify-center text-white/25">
-            <SupplementsIcon />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div 
-              className={`font-bebas truncate ${hasSupplements ? 'text-white/60' : TEXT_MUTED}`}
-              style={{ 
-                fontSize: hasSupplements ? '0.9rem' : '0.85rem', 
-                letterSpacing: '0.08em',
-                textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-              }}
-            >
-              {displayText}
-            </div>
-            {hasSupplements && (
-              <div className={`font-bebas text-xs ${TEXT_MUTED} mt-1`} style={{ letterSpacing: '0.05em' }}>
-                Active supplements
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="shrink-0 text-white/20">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-            <path d="M9 18l6-6-6-6"/>
-          </svg>
-        </div>
+      <span className="shrink-0 flex items-center justify-center text-white/25">
+        <SupplementsIcon />
+      </span>
+      <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        {hasSupplements ? activeSupplements.slice(0, 3).join(', ') : 'Supplements'}
       </div>
     </button>
   );
