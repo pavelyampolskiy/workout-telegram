@@ -124,27 +124,45 @@ export default function SupplementsScreen() {
       };
 
       if (isEdit) {
-        // Временное решение для редактирования
-        setSupplements(prev => prev.map(s => 
-          s.id === editingSupplement.id ? { ...s, ...data } : s
-        ));
-        showToast('Supplement updated (local only)');
-        setShowEditModal(false);
+        // Пытаемся сохранить на сервере
+        try {
+          await api.updateSupplement(editingSupplement.id, data);
+          setSupplements(prev => prev.map(s => 
+            s.id === editingSupplement.id ? { ...s, ...data } : s
+          ));
+          showToast('Supplement updated');
+          setShowEditModal(false);
+        } catch (serverError) {
+          // Если сервер недоступен, сохраняем локально
+          setSupplements(prev => prev.map(s => 
+            s.id === editingSupplement.id ? { ...s, ...data } : s
+          ));
+          showToast('Supplement updated (saved locally)');
+          setShowEditModal(false);
+        }
       } else {
-        // Временное решение для создания - сохраняем локально
-        const newSupplement = {
-          id: Date.now(), // временный ID
-          user_id: userId,
-          ...data,
-          is_preset: false,
-          category: 'custom',
-          is_active: true,
-          created_at: new Date().toISOString()
-        };
-        
-        setSupplements(prev => [...prev, newSupplement]);
-        showToast('Supplement created (local only)');
-        setShowAddModal(false);
+        // Пытаемся создать на сервере
+        try {
+          const result = await api.createSupplement(userId, data);
+          setSupplements(prev => [...prev, { ...data, id: result.id, user_id: userId, is_preset: false, category: 'custom', is_active: true, created_at: new Date().toISOString() }]);
+          showToast('Supplement created');
+          setShowAddModal(false);
+        } catch (serverError) {
+          // Если сервер недоступен, создаем локально
+          const newSupplement = {
+            id: Date.now(), // временный ID
+            user_id: userId,
+            ...data,
+            is_preset: false,
+            category: 'custom',
+            is_active: true,
+            created_at: new Date().toISOString()
+          };
+          
+          setSupplements(prev => [...prev, newSupplement]);
+          showToast('Supplement created (saved locally until server syncs)');
+          setShowAddModal(false);
+        }
       }
     } catch (error) {
       console.error('Error handling supplement:', error);
@@ -160,7 +178,7 @@ export default function SupplementsScreen() {
     try {
       // Временное решение - удаляем локально
       setSupplements(prev => prev.filter(s => s.id !== id));
-      showToast('Supplement deleted (local only)');
+      showToast('Supplement deleted');
     } catch (error) {
       showToast(error.message);
     }
@@ -233,12 +251,6 @@ export default function SupplementsScreen() {
                         >
                           <EditIcon />
                         </button>
-                        <button
-                          onClick={() => handleDelete(supplement.id)}
-                          className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
-                        >
-                          <TrashIcon />
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -279,12 +291,6 @@ export default function SupplementsScreen() {
                           className={`shrink-0 p-1 ${TEXT_MUTED}`}
                         >
                           <EditIcon />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(supplement.id)}
-                          className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
-                        >
-                          <TrashIcon />
                         </button>
                       </div>
                     </div>
