@@ -50,7 +50,7 @@ export default function SupplementsWidget() {
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
           Current supplements
         </div>
-        <div className="px-3 py-1 rounded-lg bg-white/10 border border-white/20">
+        <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent">
           <div className="text-xs text-white/40">Loading...</div>
         </div>
       </button>
@@ -82,7 +82,7 @@ export default function SupplementsWidget() {
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
         Current supplements
       </div>
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 min-w-0 flex-1 text-right">
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
         <div className="text-xs text-white/60 truncate">
           {displayText}
         </div>
