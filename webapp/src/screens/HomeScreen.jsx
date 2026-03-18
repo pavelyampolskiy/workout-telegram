@@ -58,9 +58,10 @@ const ProgramIcon = () => (
 
 const MetricsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <path d="M12 2v2M12 20v2M4 12h2M16 12h2"/>
-    <circle cx="12" cy="12" r="8"/>
-    <path d="M12 6v6l4 2"/>
+    <rect x="3" y="13" width="18" height="8" rx="2"/>
+    <path d="M6 13V8a6 6 0 0112 0v5"/>
+    <circle cx="12" cy="17" r="1"/>
+    <path d="M8 17h8"/>
   </svg>
 );
 
