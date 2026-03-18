@@ -106,19 +106,6 @@ export default function SupplementsScreen() {
     setShowAddModal(true);
   };
 
-  const handleEdit = (supplement) => {
-    setEditingSupplement(supplement);
-    setFormData({
-      name: supplement.name,
-      dosage: supplement.dosage,
-      intake_time: supplement.intake_time,
-      duration_days: supplement.duration_days || '',
-      is_preset: supplement.is_preset,
-      category: supplement.category
-    });
-    setShowEditModal(true);
-  };
-
   const handleSubmit = async (isEdit = false) => {
     if (!formData.name || !formData.dosage || !formData.intake_time) {
       showToast('Please fill all required fields');
@@ -132,49 +119,33 @@ export default function SupplementsScreen() {
         duration_days: formData.duration_days ? parseInt(formData.duration_days) : null
       };
 
-      if (isEdit) {
-        // Пытаемся сохранить на сервере
-        try {
-          await api.updateSupplement(editingSupplement.id, data);
-          setSupplements(prev => prev.map(s => 
-            s.id === editingSupplement.id ? { ...s, ...data } : s
-          ));
-          showToast('Supplement updated');
-          setShowEditModal(false);
-        } catch (serverError) {
-          // Если сервер недоступен, сохраняем локально
-          setSupplements(prev => prev.map(s => 
-            s.id === editingSupplement.id ? { ...s, ...data } : s
-          ));
-          showToast('Supplement updated (saved locally)');
-          setShowEditModal(false);
-        }
-      } else {
-        // Пытаемся создать на сервере
-        try {
-          const result = await api.createSupplement(userId, data);
-          setSupplements(prev => [...prev, { ...data, id: result.id, user_id: userId, is_preset: false, category: 'custom', is_active: true, created_at: new Date().toISOString() }]);
-          showToast('Supplement created');
-          setShowAddModal(false);
-        } catch (serverError) {
-          // Если сервер недоступен, создаем локально
-          const newSupplement = {
-            id: Date.now(), // временный ID
-            user_id: userId,
-            ...data,
-            is_preset: false,
-            category: 'custom',
-            is_active: true,
-            created_at: new Date().toISOString()
-          };
-          
-          const newSupplements = [...supplements, newSupplement];
-          setSupplements(newSupplements);
-          // Сохраняем в localStorage
-          localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
-          showToast('Supplement created');
-          setShowAddModal(false);
-        }
+      // Пытаемся создать на сервере
+      try {
+        const result = await api.createSupplement(userId, data);
+        const newSupplements = [...supplements, { ...data, id: result.id, user_id: userId, is_preset: false, category: 'custom', is_active: true, created_at: new Date().toISOString() }];
+        setSupplements(newSupplements);
+        // Сохраняем в localStorage
+        localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
+        showToast('Supplement created');
+        setShowAddModal(false);
+      } catch (serverError) {
+        // Если сервер недоступен, создаем локально
+        const newSupplement = {
+          id: Date.now(), // временный ID
+          user_id: userId,
+          ...data,
+          is_preset: false,
+          category: 'custom',
+          is_active: true,
+          created_at: new Date().toISOString()
+        };
+        
+        const newSupplements = [...supplements, newSupplement];
+        setSupplements(newSupplements);
+        // Сохраняем в localStorage
+        localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
+        showToast('Supplement created');
+        setShowAddModal(false);
       }
     } catch (error) {
       console.error('Error handling supplement:', error);
@@ -449,83 +420,6 @@ export default function SupplementsScreen() {
         document.body
       )}
 
-      {/* Edit Modal */}
-      {showEditModal && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" role="dialog" aria-modal="true">
-          <div
-            ref={editModalRef}
-            className="w-full max-w-sm rounded-2xl p-5"
-            style={{
-              background: 'rgba(0, 0, 0, 0.92)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-            }}
-          >
-            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Edit Supplement</h3>
-            
-            <div className="space-y-3">
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Dosage</label>
-                <input
-                  type="text"
-                  value={formData.dosage}
-                  onChange={(e) => setFormData({...formData, dosage: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Intake Time</label>
-                <input
-                  type="text"
-                  value={formData.intake_time}
-                  onChange={(e) => setFormData({...formData, intake_time: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Course Duration (days)</label>
-                <input
-                  type="number"
-                  value={formData.duration_days}
-                  onChange={(e) => setFormData({...formData, duration_days: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="Leave empty for infinite"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-2 mt-4">
-              <button
-                onClick={() => handleSubmit(true)}
-                disabled={submitting}
-                className={`flex-1 card-press font-bebas tracking-wider text-sm py-3 rounded-[14px] ${TEXT_PRIMARY} disabled:opacity-50`}
-              >
-                {submitting ? <Spinner size={16} /> : 'Save'}
-              </button>
-              <button
-                onClick={() => setShowEditModal(false)}
-                className={`flex-1 py-3 font-bebas tracking-wider text-sm rounded-[14px] ${TEXT_TERTIARY}`}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
-    </div>
+      </div>
   );
 }
