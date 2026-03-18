@@ -12,7 +12,8 @@ import homeBg from '../assets/gym-bg.jpg';
 
 const SupplementsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <path d="M12 2v2M8 6h8M8 6v10a2 2 0 002 2h4a2 2 0 002-2V6M8 6l-1 2h10l-1-2"/>
+    <ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(15 12 12)"/>
+    <path d="M12 7v10M8 9l8 0M8 15l8 0"/>
   </svg>
 );
 
@@ -54,12 +55,13 @@ const ProgramIcon = () => (
   </svg>
 );
 
-const ITEMS = [
-  { screen: 'workout', icon: <WorkoutIcon />, title: 'New Workout', primary: true },
-  { screen: 'history', icon: <HistoryIcon />, title: 'History' },
-  { screen: 'stats',   icon: <StatsIcon />,   title: 'Statistics' },
-  { screen: 'achievements', icon: <TrophyIcon />, title: 'Achievements' },
-];
+const BUTTON_CONFIG = {
+  history: { screen: 'history', icon: <HistoryIcon />, title: 'History' },
+  stats: { screen: 'stats', icon: <StatsIcon />, title: 'Statistics' },
+  achievements: { screen: 'achievements', icon: <TrophyIcon />, title: 'Achievements' },
+  program: { screen: 'program', icon: <ProgramIcon />, title: 'My program' },
+  supplements: { screen: 'supplements', icon: <SupplementsIcon />, title: 'Current supplements', component: <SupplementsWidget /> }
+};
 
 function daysAgoLabel(dateStr) {
   const today = new Date();

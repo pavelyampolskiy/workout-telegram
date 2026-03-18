@@ -5,7 +5,8 @@ import { TEXT_MUTED } from '../shared';
 
 const SupplementsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <path d="M8 2v2M16 2v2M7 4h10M7 4v12a2 2 0 002 2h2a2 2 0 002-2V4M7 4l-1 3h12l-1-3"/>
+    <ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(15 12 12)"/>
+    <path d="M12 7v10M8 9l8 0M8 15l8 0"/>
   </svg>
 );
 
@@ -79,8 +80,13 @@ export default function SupplementsWidget() {
       className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-        Current supplements
+      <div className="flex items-center gap-3">
+        <span className="shrink-0 flex items-center justify-center text-white/25">
+          <SupplementsIcon />
+        </span>
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+          Current supplements
+        </div>
       </div>
       <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
         <div className="text-xs text-white/60 whitespace-pre-line">
