@@ -248,11 +248,20 @@ export default function SupplementsScreen() {
 
           {/* Custom supplements */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className={`font-bebas text-lg tracking-wider ${TEXT_SECONDARY}`}>My Supplements</h2>
+            {/* Плашка My Supplements с описанием */}
+            <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 mb-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div className="flex-1 min-w-0">
+                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My Supplements</div>
+                <div className="text-xs text-white/25 mt-1">
+                  {customSupplements.length > 0 
+                    ? `${customSupplements.length} supplement${customSupplements.length === 1 ? '' : 's'}`
+                    : 'No supplements yet'
+                  }
+                </div>
+              </div>
               <button
                 onClick={handleAdd}
-                className="card-press p-2 rounded-lg"
+                className="card-press p-2 rounded-lg shrink-0"
                 style={{ background: 'rgba(255,255,255,0.1)' }}
               >
                 <PlusIcon />
