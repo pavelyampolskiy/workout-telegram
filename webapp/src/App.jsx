@@ -16,6 +16,7 @@ import RecoveryCheckScreen from './screens/RecoveryCheckScreen';
 import ProgramScreen from './screens/ProgramScreen';
 import ProgramDayScreen from './screens/ProgramDayScreen';
 import SupplementsScreen from './screens/SupplementsScreen';
+import MetricsScreen from './screens/MetricsScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -35,6 +36,7 @@ const SCREENS = {
   program: ProgramScreen,
   'program-day': ProgramDayScreen,
   supplements: SupplementsScreen,
+  metrics: MetricsScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen

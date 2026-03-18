@@ -89,4 +89,9 @@ export const api = {
     req('POST', `/api/rest-timer/cancel?user_id=${user_id}`),
   
   getSmartReminder: (user_id) => req('GET', `/api/smart-reminder?user_id=${user_id}`),
+
+  // Body Metrics
+  getBodyMetrics: (user_id) => req('GET', `/api/body-metrics?user_id=${user_id}`),
+  createBodyMetric: (user_id, data) => req('POST', `/api/body-metrics`, { user_id, ...data }),
+  deleteBodyMetric: (id) => req('DELETE', `/api/body-metrics/${id}`),
 };

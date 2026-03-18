@@ -8,6 +8,7 @@ import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } f
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import SupplementsWidget from '../components/SupplementsWidget';
+import BodyMetricsWidget from '../components/BodyMetricsWidget';
 import homeBg from '../assets/gym-bg.jpg';
 
 const SupplementsIcon = () => (
@@ -55,12 +56,21 @@ const ProgramIcon = () => (
   </svg>
 );
 
+const MetricsIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+    <path d="M12 2v2M12 20v2M4 12h2M16 12h2"/>
+    <circle cx="12" cy="12" r="8"/>
+    <path d="M12 6v6l4 2"/>
+  </svg>
+);
+
 const BUTTON_CONFIG = {
   history: { screen: 'history', icon: <HistoryIcon />, title: 'History' },
   stats: { screen: 'stats', icon: <StatsIcon />, title: 'Statistics' },
   achievements: { screen: 'achievements', icon: <TrophyIcon />, title: 'Achievements' },
   program: { screen: 'program', icon: <ProgramIcon />, title: 'My program' },
-  supplements: { screen: 'supplements', icon: <SupplementsIcon />, title: 'Current supplements', component: <SupplementsWidget /> }
+  supplements: { screen: 'supplements', icon: <SupplementsIcon />, title: 'Current supplements', component: <SupplementsWidget /> },
+  metrics: { screen: 'metrics', icon: <MetricsIcon />, title: 'Body Metrics', component: <BodyMetricsWidget /> }
 };
 
 function daysAgoLabel(dateStr) {
@@ -250,9 +260,9 @@ export default function HomeScreen() {
         {/* Пустое место */}
         <div className="flex-1 min-h-0" />
 
-        {/* Низ: сетка из 4 кнопок */}
+        {/* Низ: сетка из 6 кнопок */}
         <div className="shrink-0 pt-4">
-          {/* Сетка из 4 кнопок + supplements */}
+          {/* Сетка из 6 кнопок (3x2) */}
           <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-3">
             <button
               onClick={() => navigate('history')}
@@ -288,6 +298,9 @@ export default function HomeScreen() {
             </button>
             <div className="col-span-2">
               <SupplementsWidget />
+            </div>
+            <div className="col-span-2">
+              <BodyMetricsWidget />
             </div>
           </div>
         </div>
