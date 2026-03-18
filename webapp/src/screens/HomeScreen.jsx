@@ -7,6 +7,7 @@ import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
+import SupplementsWidget from '../components/SupplementsWidget';
 import homeBg from '../assets/gym-bg.jpg';
 
 /** Единая толщина контура всех иконок. */
@@ -236,6 +237,9 @@ export default function HomeScreen() {
               </div>
             )}
           </div>
+          
+          {/* Supplements Widget */}
+          <SupplementsWidget />
         </div>
 
         {/* Пустое место */}

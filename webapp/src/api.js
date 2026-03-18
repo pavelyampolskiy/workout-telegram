@@ -48,7 +48,15 @@ export const api = {
     req('GET', `/api/exercises/search?user_id=${user_id}&limit=${limit}${q ? `&q=${encodeURIComponent(q)}` : ''}`),
   deleteExercise: (ex_id) => req('DELETE', `/api/exercises/${ex_id}`),
   getLastExercise: (ex_id, user_id, exclude_wid) =>
-    req('GET', `/api/exercises/${ex_id}/last?user_id=${user_id}&exclude_wid=${exclude_wid}`),
+    req('GET', `/api/exercises/${ex_id}/last?user_id=${user_id}${exclude_wid ? `&exclude_wid=${exclude_wid}` : ''}`),
+
+  // Supplements API
+  getSupplements: (user_id) => req('GET', `/api/supplements?user_id=${user_id}`),
+  getActiveSupplements: (user_id) => req('GET', `/api/supplements/active?user_id=${user_id}`),
+  createSupplement: (user_id, data) => req('POST', '/api/supplements', { user_id, ...data }),
+  updateSupplement: (supplement_id, data) => req('PUT', `/api/supplements/${supplement_id}`, data),
+  deleteSupplement: (supplement_id) => req('DELETE', `/api/supplements/${supplement_id}`),
+  getPresetSupplements: () => req('GET', '/api/supplements/preset'),
 
   getSets: (ex_id) => req('GET', `/api/exercises/${ex_id}/sets`),
   addSet: (ex_id, weight, reps) => req('POST', `/api/exercises/${ex_id}/sets`, { weight, reps }),

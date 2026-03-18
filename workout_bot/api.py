@@ -624,6 +624,79 @@ def get_smart_reminder(user_id: int):
     }
 
 
+# ── Supplements API ────────────────────────────────────────────────────────
+
+@app.get("/api/supplements")
+async def get_supplements(user_id: int):
+    supplements = database.get_supplements(user_id)
+    return {
+        "items": [
+            {
+                "id": s["id"],
+                "name": s["name"],
+                "dosage": s["dosage"],
+                "intake_time": s["intake_time"],
+                "duration_days": s["duration_days"],
+                "is_preset": bool(s["is_preset"]),
+                "category": s["category"],
+                "is_active": bool(s["is_active"]),
+                "created_at": s["created_at"],
+            }
+            for s in supplements
+        ]
+    }
+
+
+@app.get("/api/supplements/active")
+async def get_active_supplements(user_id: int):
+    active = database.get_active_supplements(user_id)
+    return {
+        "names": [s["name"] for s in active]
+    }
+
+
+@app.post("/api/supplements")
+async def create_supplement(user_id: int, data: dict):
+    try:
+        supplement_id = database.create_supplement(
+            user_id=user_id,
+            name=data["name"],
+            dosage=data["dosage"],
+            intake_time=data["intake_time"],
+            duration_days=data.get("duration_days"),
+            is_preset=data.get("is_preset", False),
+            category=data.get("category", "custom"),
+        )
+        return {"id": supplement_id}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.put("/api/supplements/{supplement_id}")
+async def update_supplement(supplement_id: int, data: dict):
+    try:
+        database.update_supplement(supplement_id, **data)
+        return {"success": True}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.delete("/api/supplements/{supplement_id}")
+async def delete_supplement(supplement_id: int):
+    try:
+        database.delete_supplement(supplement_id)
+        return {"success": True}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/api/supplements/preset")
+async def get_preset_supplements():
+    return {
+        "items": database.get_preset_supplements()
+    }
+
+
 # ── Serve frontend SPA ────────────────────────────────────────────────────────
 
 if DIST_DIR.is_dir():

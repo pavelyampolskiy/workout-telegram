@@ -115,6 +115,19 @@ def init_db():
                 sort_order INTEGER NOT NULL DEFAULT 0,
                 UNIQUE(user_id, key)
             );
+
+            CREATE TABLE IF NOT EXISTS supplements (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                name TEXT NOT NULL,
+                dosage TEXT NOT NULL,
+                intake_time TEXT NOT NULL,
+                duration_days INTEGER,
+                is_preset INTEGER NOT NULL DEFAULT 0,
+                category TEXT NOT NULL DEFAULT 'custom',
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
         """)
         # Migration: ensure workout_sets.weight is REAL (decimal weights like 145.7)
         try:
@@ -737,15 +750,99 @@ def get_workout_patterns(user_id: int, weeks: int = 8):
             """,
             (user_id, since.isoformat()),
         ).fetchall()
-    
-    # Count workouts per day of week (0=Monday, 6=Sunday)
-    day_counts = [0] * 7
+
+    if not rows:
+        return {}
+
+    day_counts = defaultdict(int)
     for row in rows:
         d = date.fromisoformat(row["date"])
         day_counts[d.weekday()] += 1
+
+    return dict(day_counts)
+
+
+# Supplements functions
+def get_supplements(user_id: int):
+    """Get all supplements for user"""
+    with db() as conn:
+        return conn.execute(
+            """
+            SELECT id, name, dosage, intake_time, duration_days, is_preset, category, is_active, created_at
+            FROM supplements 
+            WHERE user_id = ? 
+            ORDER BY is_active DESC, created_at DESC
+            """,
+            (user_id,),
+        ).fetchall()
+
+
+def get_active_supplements(user_id: int):
+    """Get only active supplements for widget display"""
+    with db() as conn:
+        return conn.execute(
+            """
+            SELECT name FROM supplements 
+            WHERE user_id = ? AND is_active = 1
+            ORDER BY created_at DESC
+            LIMIT 3
+            """,
+            (user_id,),
+        ).fetchall()
+
+
+def create_supplement(user_id: int, name: str, dosage: str, intake_time: str, 
+                     duration_days: int = None, is_preset: bool = False, 
+                     category: str = 'custom'):
+    """Create new supplement"""
+    with db() as conn:
+        cursor = conn.execute(
+            """
+            INSERT INTO supplements (user_id, name, dosage, intake_time, duration_days, is_preset, category)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (user_id, name, dosage, intake_time, duration_days, int(is_preset), category),
+        )
+        return cursor.lastrowid
+
+
+def update_supplement(supplement_id: int, **kwargs):
+    """Update supplement fields"""
+    if not kwargs:
+        return
     
-    return {
-        "day_counts": day_counts,
-        "total": len(rows),
-        "weeks_analyzed": weeks,
-    }
+    fields = []
+    values = []
+    for key, value in kwargs.items():
+        if key in ['name', 'dosage', 'intake_time', 'duration_days', 'is_active']:
+            fields.append(f"{key} = ?")
+            values.append(value)
+    
+    if not fields:
+        return
+    
+    values.append(supplement_id)
+    
+    with db() as conn:
+        conn.execute(
+            f"UPDATE supplements SET {', '.join(fields)} WHERE id = ?",
+            values,
+        )
+
+
+def delete_supplement(supplement_id: int):
+    """Delete supplement"""
+    with db() as conn:
+        conn.execute("DELETE FROM supplements WHERE id = ?", (supplement_id,))
+
+
+def get_preset_supplements():
+    """Get preset supplements list"""
+    return [
+        {"name": "Протеин", "dosage": "30г", "intake_time": "После тренировки"},
+        {"name": "Креатин", "dosage": "5г", "intake_time": "Любое время"},
+        {"name": "BCAA", "dosage": "10г", "intake_time": "Во время тренировки"},
+        {"name": "Витамины", "dosage": "1 таблетка", "intake_time": "Утром"},
+        {"name": "Омега-3", "dosage": "1000мг", "intake_time": "Во время еды"},
+        {"name": "Предтренировочный", "dosage": "1 мерная ложка", "intake_time": "За 30 мин до тренировки"},
+    ]
