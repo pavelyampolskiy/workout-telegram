@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
-import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED } from '../shared';
+import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, formatDate } from '../shared';
 import { Spinner } from '../components/Spinner';
 import metricsBg from '../assets/body-metrics-bg.jpg';
 
@@ -234,11 +234,7 @@ export default function MetricsScreen() {
                   <div className="text-xs text-white/60">
                     {metrics.slice().reverse().slice(0, 3).map(metric => (
                       <div key={metric.id} className="flex justify-between items-center">
-                        <span>{new Date(metric.date).toLocaleDateString('en-US', { 
-                          day: 'numeric', 
-                          month: 'short', 
-                          year: 'numeric' 
-                        })}: {metric.weight}kg</span>
+                        <span>{formatDate(metric.date.split('T')[0])}: {metric.weight}kg</span>
                       </div>
                     ))}
                     {metrics.length > 3 && (
@@ -281,11 +277,7 @@ export default function MetricsScreen() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="font-bebas text-base tracking-wider text-white/92 truncate">
-                        {new Date(metric.date).toLocaleDateString('en-US', { 
-                          day: 'numeric', 
-                          month: 'short', 
-                          year: 'numeric' 
-                        })}
+                        {formatDate(metric.date.split('T')[0]).toUpperCase()}
                       </div>
                       <div className="text-sm text-white/60 mt-1">
                         {metric.weight && <div>Weight: {metric.weight}kg</div>}

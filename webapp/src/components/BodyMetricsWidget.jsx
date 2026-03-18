@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { api } from '../api';
+import { TEXT_MUTED, formatDate } from '../shared';
 
 const MetricsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
@@ -137,11 +138,7 @@ export default function BodyMetricsWidget() {
           {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
           {latestMetrics?.date && (
             <div className="text-xs text-white/40 mt-1 text-right">
-              {new Date(latestMetrics.date).toLocaleDateString('en-US', { 
-                day: 'numeric', 
-                month: 'short', 
-                year: 'numeric' 
-              })}
+              {formatDate(latestMetrics.date.split('T')[0])}
             </div>
           )}
           {!latestMetrics?.weight && 'No data'}
