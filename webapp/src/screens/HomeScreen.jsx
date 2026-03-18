@@ -12,7 +12,7 @@ import homeBg from '../assets/gym-bg.jpg';
 
 const SupplementsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <path d="M7 4h10M7 4v12a2 2 0 002 2h2a2 2 0 002-2V4M7 4l-1 3h12l-1-3M9 2v2M15 2v2"/>
+    <path d="M12 2v2M8 6h8M8 6v10a2 2 0 002 2h4a2 2 0 002-2V6M8 6l-1 2h10l-1-2"/>
   </svg>
 );
 
@@ -248,20 +248,10 @@ export default function HomeScreen() {
         {/* Пустое место */}
         <div className="flex-1 min-h-0" />
 
-        {/* Низ: кнопка добавок и сетка из 4 кнопок */}
+        {/* Низ: сетка из 4 кнопок и кнопка добавок */}
         <div className="shrink-0 pt-4">
-          {/* Кнопка добавок */}
-          <button
-            onClick={() => navigate('supplements')}
-            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-            style={{ background: CARD_BG }}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><SupplementsIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Supplements</div>
-          </button>
-          
           {/* Сетка из 4 кнопок */}
-          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2 mt-4">
+          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
@@ -295,6 +285,16 @@ export default function HomeScreen() {
               <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
             </button>
           </div>
+          
+          {/* Кнопка добавок под сеткой */}
+          <button
+            onClick={() => navigate('supplements')}
+            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full mt-4"
+            style={{ background: CARD_BG }}
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><SupplementsIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Supplements</div>
+          </button>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
