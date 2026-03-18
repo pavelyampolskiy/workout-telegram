@@ -75,11 +75,8 @@ export default function SupplementsWidget() {
   }
 
   return (
-    <button
-      onClick={() => navigate('supplements')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
-    >
+    <div className="space-y-2">
+      {/* Заголовок */}
       <div className="flex items-center gap-3">
         <span className="shrink-0 flex items-center justify-center text-white/25">
           <SupplementsIcon />
@@ -88,11 +85,17 @@ export default function SupplementsWidget() {
           Current supplements
         </div>
       </div>
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+      
+      {/* Плашка с добавками */}
+      <button
+        onClick={() => navigate('supplements')}
+        className="card-press w-full px-4 py-3 rounded-xl text-left"
+        style={{ background: 'rgba(255,255,255,0.03)' }}
+      >
         <div className="text-xs text-white/60 whitespace-pre-line">
           {displayText}
         </div>
-      </div>
-    </button>
+      </button>
+    </div>
   );
 }
