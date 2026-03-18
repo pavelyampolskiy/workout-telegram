@@ -14,6 +14,13 @@ const PlusIcon = () => (
   </svg>
 );
 
+const EditIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+  </svg>
+);
+
 const TrashIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
     <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14zM10 11v6M14 11v6"/>
@@ -25,6 +32,7 @@ export default function MetricsScreen() {
   const [metrics, setMetrics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingMetric, setEditingMetric] = useState(null);
   const [formData, setFormData] = useState({
     weight: '',
     body_fat: '',
@@ -60,6 +68,7 @@ export default function MetricsScreen() {
   }, [userId]);
 
   const handleAdd = () => {
+    setEditingMetric(null);
     setFormData({
       weight: '',
       body_fat: '',
@@ -68,6 +77,20 @@ export default function MetricsScreen() {
       waist: '',
       arms: '',
       hips: ''
+    });
+    setShowAddModal(true);
+  };
+
+  const handleEdit = (metric) => {
+    setEditingMetric(metric);
+    setFormData({
+      weight: metric.weight || '',
+      body_fat: metric.body_fat || '',
+      muscle_mass: metric.muscle_mass || '',
+      chest: metric.chest || '',
+      waist: metric.waist || '',
+      arms: metric.arms || '',
+      hips: metric.hips || ''
     });
     setShowAddModal(true);
   };
@@ -92,28 +115,49 @@ export default function MetricsScreen() {
         date: new Date().toISOString()
       };
 
-      // Пытаемся создать на сервере
-      try {
-        const result = await api.createBodyMetric(userId, data);
-        const newMetrics = [...metrics, { ...data, id: result.id, user_id: userId }];
-        setMetrics(newMetrics);
-        localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
-        setShowAddModal(false);
-      } catch (serverError) {
-        // Если сервер недоступен, создаем локально
-        const newMetric = {
-          id: Date.now(),
-          user_id: userId,
-          ...data
-        };
-        
-        const newMetrics = [...metrics, newMetric];
-        setMetrics(newMetrics);
-        localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
-        setShowAddModal(false);
+      if (editingMetric) {
+        // Редактирование существующего измерения
+        try {
+          const result = await api.updateBodyMetric(editingMetric.id, data);
+          const newMetrics = metrics.map(m => m.id === editingMetric.id ? { ...data, id: editingMetric.id, user_id: userId } : m);
+          setMetrics(newMetrics);
+          localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
+          setShowAddModal(false);
+        } catch (serverError) {
+          // Если сервер недоступен, редактируем локально
+          const updatedMetric = {
+            ...editingMetric,
+            ...data
+          };
+          const newMetrics = metrics.map(m => m.id === editingMetric.id ? updatedMetric : m);
+          setMetrics(newMetrics);
+          localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
+          setShowAddModal(false);
+        }
+      } else {
+        // Создание нового измерения
+        try {
+          const result = await api.createBodyMetric(userId, data);
+          const newMetrics = [...metrics, { ...data, id: result.id, user_id: userId }];
+          setMetrics(newMetrics);
+          localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
+          setShowAddModal(false);
+        } catch (serverError) {
+          // Если сервер недоступен, создаем локально
+          const newMetric = {
+            id: Date.now(),
+            user_id: userId,
+            ...data
+          };
+          
+          const newMetrics = [...metrics, newMetric];
+          setMetrics(newMetrics);
+          localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
+          setShowAddModal(false);
+        }
       }
     } catch (error) {
-      showToast('Error saving metrics');
+      showToast('Error saving measurement');
     } finally {
       setSubmitting(false);
     }
@@ -227,6 +271,47 @@ export default function MetricsScreen() {
               </div>
             )}
           </div>
+
+          {/* Full Metrics List */}
+          {metrics.length > 0 && (
+            <div className="space-y-3">
+              <h3 className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>All Measurements</h3>
+              {metrics.slice().reverse().map(metric => (
+                <div key={metric.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bebas text-base tracking-wider text-white/92 truncate">
+                        {new Date(metric.date).toLocaleDateString('en-US', { 
+                          day: 'numeric', 
+                          month: 'short', 
+                          year: 'numeric' 
+                        })}
+                      </div>
+                      <div className="text-sm text-white/60 mt-1">
+                        {metric.weight && <div>Weight: {metric.weight}kg</div>}
+                        {metric.body_fat && <div>Body Fat: {metric.body_fat}%</div>}
+                        {metric.muscle_mass && <div>Muscle Mass: {metric.muscle_mass}kg</div>}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 ml-3">
+                      <button
+                        onClick={() => handleEdit(metric)}
+                        className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
+                      >
+                        <EditIcon />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(metric.id)}
+                        className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
+                      >
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -234,7 +319,9 @@ export default function MetricsScreen() {
       {showAddModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black" role="dialog" aria-modal="true">
           <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: 'rgba(0, 0, 0, 0.95)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
-            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Add Measurement</h3>
+            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>
+  {editingMetric ? 'Edit Measurement' : 'Add Measurement'}
+</h3>
             
             <div className="space-y-3">
               <div>

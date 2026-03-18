@@ -93,5 +93,6 @@ export const api = {
   // Body Metrics
   getBodyMetrics: (user_id) => req('GET', `/api/body-metrics?user_id=${user_id}`),
   createBodyMetric: (user_id, data) => req('POST', `/api/body-metrics`, { user_id, ...data }),
+  updateBodyMetric: (id, data) => req('PUT', `/api/body-metrics/${id}`, data),
   deleteBodyMetric: (id) => req('DELETE', `/api/body-metrics/${id}`),
 };
