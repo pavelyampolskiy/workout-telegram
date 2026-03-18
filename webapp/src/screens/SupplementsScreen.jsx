@@ -20,6 +20,13 @@ const TrashIcon = () => (
   </svg>
 );
 
+const EditIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+  </svg>
+);
+
 export default function SupplementsScreen() {
   const { navigate, userId, showToast, goBack } = useApp();
   const [supplements, setSupplements] = useState([]);
@@ -35,6 +42,7 @@ export default function SupplementsScreen() {
     category: 'custom'
   });
   const [submitting, setSubmitting] = useState(false);
+  const [editingSupplement, setEditingSupplement] = useState(null);
   const addModalRef = useRef(null);
   
   useFocusTrap(addModalRef, showAddModal);
@@ -174,6 +182,19 @@ export default function SupplementsScreen() {
     }
   };
 
+  const handleEdit = (supplement) => {
+    setEditingSupplement(supplement);
+    setFormData({
+      name: supplement.name,
+      dosage: supplement.dosage,
+      intake_time: supplement.intake_time || '',
+      duration_days: supplement.duration_days || '',
+      is_preset: supplement.is_preset,
+      category: supplement.category
+    });
+    setShowAddModal(true);
+  };
+
   const selectPreset = (preset) => {
     setFormData({
       name: preset.name,
@@ -286,6 +307,15 @@ export default function SupplementsScreen() {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              handleEdit(supplement);
+                            }}
+                            className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
+                          >
+                            <EditIcon />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
                               handleDelete(supplement.id);
                             }}
                             className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
@@ -320,7 +350,9 @@ export default function SupplementsScreen() {
               boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
             }}
           >
-            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Add Supplement</h3>
+            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>
+  {editingSupplement ? 'Edit Supplement' : 'Add Supplement'}
+</h3>
             
             {/* Preset selection */}
             <div className="mb-4">
