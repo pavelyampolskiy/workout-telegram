@@ -120,11 +120,8 @@ export default function BodyMetricsWidget() {
       <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
         <div className="text-xs text-white whitespace-pre-line text-right">
           {latestMetrics?.weight && (
-            <div className="text-xs text-white/40 mb-1 text-right">Last measurement</div>
-          )}
-          {latestMetrics?.date && (
             <div className="text-xs text-white/40 mb-1 text-right">
-              {formatDate(latestMetrics.date.split('T')[0])}
+              Last measurement {formatDate(latestMetrics.date.split('T')[0])}
             </div>
           )}
           {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
