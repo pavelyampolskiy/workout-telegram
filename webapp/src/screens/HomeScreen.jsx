@@ -263,7 +263,7 @@ export default function HomeScreen() {
         {/* Низ: сетка из 6 кнопок */}
         <div className="shrink-0 pt-4">
           {/* Сетка из 6 кнопок (3x2) */}
-          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-3">
+          <div className="grid grid-cols-2 gap-4 min-h-0">
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"

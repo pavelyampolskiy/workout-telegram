@@ -61,9 +61,47 @@ export default function BodyMetricsWidget() {
     );
   }
 
-  // Если нет метрик, не показываем виджет
+  // Если нет метрик, показываем виджет с призывом к действию
   if (!latestMetrics) {
-    return null;
+    return (
+      <button
+        onClick={() => navigate('metrics')}
+        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+        style={{ background: 'rgba(255,255,255,0.03)' }}
+      >
+        {/* Заголовок с иконкой */}
+        <div className="flex items-center gap-3 w-full">
+          <span className="shrink-0 flex items-center justify-center text-white/25">
+            <MetricsIcon />
+          </span>
+          <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+            Body Metrics
+          </div>
+        </div>
+        
+        {/* Внутренняя карточка с призывом */}
+        <div className="w-full">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('metrics');
+            }}
+            className="w-full px-3 py-2 rounded-lg text-left"
+            style={{ background: 'rgba(255,255,255,0.05)' }}
+          >
+            <div className="text-xs text-white/60">
+              <div className="flex justify-between items-center">
+                <span>No measurements yet</span>
+                <span style={{ color: '#6b7280' }}>📊</span>
+              </div>
+              <div className="text-xs text-white/40 mt-1">
+                Tap to add first measurement
+              </div>
+            </div>
+          </button>
+        </div>
+      </button>
+    );
   }
 
   const formatDate = (dateStr) => {
