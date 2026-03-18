@@ -26,12 +26,6 @@ const EditIcon = () => (
   </svg>
 );
 
-const ToggleIcon = ({ isActive }) => (
-  <div className={`w-12 h-6 rounded-full transition-colors ${isActive ? 'bg-blue-500' : 'bg-gray-600'} relative`}>
-    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${isActive ? 'translate-x-7' : 'translate-x-1'}`}/>
-  </div>
-);
-
 export default function SupplementsScreen() {
   const { navigate, userId, showToast, goBack } = useApp();
   const [supplements, setSupplements] = useState([]);
@@ -172,17 +166,6 @@ export default function SupplementsScreen() {
     }
   };
 
-  const handleToggleActive = async (supplement) => {
-    try {
-      // Временное решение - переключаем локально
-      setSupplements(prev => prev.map(s => 
-        s.id === supplement.id ? { ...s, is_active: !s.is_active } : s
-      ));
-    } catch (error) {
-      showToast(error.message);
-    }
-  };
-
   const selectPreset = (preset) => {
     setFormData({
       name: preset.name,
@@ -245,12 +228,6 @@ export default function SupplementsScreen() {
                       </div>
                       <div className="flex items-center gap-2 ml-3">
                         <button
-                          onClick={() => handleToggleActive(supplement)}
-                          className="shrink-0"
-                        >
-                          <ToggleIcon isActive={supplement.is_active} />
-                        </button>
-                        <button
                           onClick={() => handleEdit(supplement)}
                           className={`shrink-0 p-1 ${TEXT_MUTED}`}
                         >
@@ -297,12 +274,6 @@ export default function SupplementsScreen() {
                         )}
                       </div>
                       <div className="flex items-center gap-2 ml-3">
-                        <button
-                          onClick={() => handleToggleActive(supplement)}
-                          className="shrink-0"
-                        >
-                          <ToggleIcon isActive={supplement.is_active} />
-                        </button>
                         <button
                           onClick={() => handleEdit(supplement)}
                           className={`shrink-0 p-1 ${TEXT_MUTED}`}
