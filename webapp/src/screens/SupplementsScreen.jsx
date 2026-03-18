@@ -68,7 +68,14 @@ export default function SupplementsScreen() {
         {name: "Omega-3", dosage: "", intake_time: "With meal"},
         {name: "Pre-workout", dosage: "", intake_time: "30 min before workout"},
       ]);
-      setSupplements([]);
+      
+      // Загружаем добавки из localStorage если сервер недоступен
+      const localSupplements = localStorage.getItem(`supplements_${userId}`);
+      if (localSupplements) {
+        setSupplements(JSON.parse(localSupplements));
+      } else {
+        setSupplements([]);
+      }
       // Не показываем toast для 500 ошибки, чтобы не мешать пользователю
     } finally {
       setLoading(false);
@@ -149,8 +156,11 @@ export default function SupplementsScreen() {
             created_at: new Date().toISOString()
           };
           
-          setSupplements(prev => [...prev, newSupplement]);
-          showToast('Supplement created (saved locally until server syncs)');
+          const newSupplements = [...supplements, newSupplement];
+          setSupplements(newSupplements);
+          // Сохраняем в localStorage
+          localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
+          showToast('Supplement created');
           setShowAddModal(false);
         }
       }
@@ -163,12 +173,23 @@ export default function SupplementsScreen() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Delete this supplement?')) return;
-    
     try {
-      // Временное решение - удаляем локально
-      setSupplements(prev => prev.filter(s => s.id !== id));
-      showToast('Supplement deleted');
+      // Пытаемся удалить с сервера
+      try {
+        await api.deleteSupplement(id);
+        const newSupplements = supplements.filter(s => s.id !== id);
+        setSupplements(newSupplements);
+        // Сохраняем в localStorage
+        localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
+        showToast('Supplement deleted');
+      } catch (serverError) {
+        // Если сервер недоступен, удаляем локально
+        const newSupplements = supplements.filter(s => s.id !== id);
+        setSupplements(newSupplements);
+        // Сохраняем в localStorage
+        localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
+        showToast('Supplement deleted');
+      }
     } catch (error) {
       showToast(error.message);
     }
