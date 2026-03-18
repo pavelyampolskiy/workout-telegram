@@ -216,15 +216,8 @@ export default function SupplementsScreen() {
 
       <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6">
           <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Supplements</h1>
-          <button
-            onClick={handleAdd}
-            className="card-press p-2 rounded-lg"
-            style={{ background: 'rgba(255,255,255,0.1)' }}
-          >
-            <PlusIcon />
-          </button>
         </div>
 
         {/* Content */}
@@ -261,7 +254,16 @@ export default function SupplementsScreen() {
 
           {/* Custom supplements */}
           <div>
-            <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>My Supplements</h2>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className={`font-bebas text-lg tracking-wider ${TEXT_SECONDARY}`}>My Supplements</h2>
+              <button
+                onClick={handleAdd}
+                className="card-press p-2 rounded-lg"
+                style={{ background: 'rgba(255,255,255,0.1)' }}
+              >
+                <PlusIcon />
+              </button>
+            </div>
             {customSupplements.length === 0 ? (
               <div className={`text-center py-8 ${TEXT_MUTED}`}>
                 <div className="text-sm mb-3">No supplements</div>
