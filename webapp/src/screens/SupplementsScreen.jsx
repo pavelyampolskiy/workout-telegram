@@ -266,27 +266,43 @@ export default function SupplementsScreen() {
                 </button>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {customSupplements.map(supplement => (
-                  <div key={supplement.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`font-bebas text-base tracking-wider ${TEXT_PRIMARY} truncate`}>{supplement.name}</h3>
-                        <div className={`text-sm ${TEXT_MUTED} mt-1`}>{supplement.dosage} • {supplement.intake_time}</div>
+                  <button
+                    key={supplement.id}
+                    className="card-press w-full rounded-xl p-4 text-left"
+                    style={{ background: 'rgba(255,255,255,0.025)' }}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 space-y-1">
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
+                            {supplement.name}
+                          </span>
+                        </div>
+                        <div className="text-sm text-white/55">
+                          {supplement.dosage && <>{supplement.dosage} • </>}
+                          {supplement.intake_time}
+                        </div>
                         {supplement.duration_days && (
-                          <div className={`text-xs ${TEXT_TERTIARY} mt-1`}>Course: {supplement.duration_days} days</div>
+                          <div className="text-xs text-white/35">
+                            Course: {supplement.duration_days} days
+                          </div>
                         )}
                       </div>
                       <div className="flex items-center gap-2 ml-3">
                         <button
-                          onClick={() => handleDelete(supplement.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(supplement.id);
+                          }}
                           className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
                         >
                           <TrashIcon />
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
