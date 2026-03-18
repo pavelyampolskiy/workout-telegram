@@ -137,7 +137,7 @@ export default function BodyMetricsWidget() {
           {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
           {latestMetrics?.date && (
             <div className="text-xs text-white/40 mt-1 text-right">
-              {new Date(latestMetrics.date).toLocaleDateString('ru-RU', { 
+              {new Date(latestMetrics.date).toLocaleDateString('en-US', { 
                 day: 'numeric', 
                 month: 'short', 
                 year: 'numeric' 
