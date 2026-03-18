@@ -247,77 +247,62 @@ export default function SupplementsScreen() {
           {/* Custom supplements */}
           <div>
             {/* Плашка My Supplements с добавками внутри */}
-            <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 mb-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleAdd}
-                  className="card-press p-2 rounded-lg shrink-0"
-                  style={{ background: 'rgba(255,255,255,0.1)' }}
-                >
-                  <PlusIcon />
-                </button>
-                <div className="min-w-0">
+            <div className="card-press py-12 pl-8 pr-4 min-h-0 rounded-xl gap-2 mb-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleAdd}
+                    className="card-press p-2 rounded-lg shrink-0"
+                    style={{ background: 'rgba(255,255,255,0.1)' }}
+                  >
+                    <PlusIcon />
+                  </button>
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My Supplements</div>
-                  {customSupplements.length > 0 && (
-                    <div className="text-xs text-white/60 mt-1">
-                      {customSupplements.slice(0, 2).map(s => s.name).join(', ')}
-                      {customSupplements.length > 2 && ` +${customSupplements.length - 2}`}
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
-            {customSupplements.length === 0 ? (
-              <div className={`text-center py-8 ${TEXT_MUTED}`}>
-                <div className="text-sm mb-3">No supplements</div>
-                <button
-                  onClick={handleAdd}
-                  className="card-press px-4 py-2 rounded-lg text-sm"
-                  style={{ background: 'rgba(255,255,255,0.1)' }}
-                >
-                  Add first
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {customSupplements.map(supplement => (
-                  <button
-                    key={supplement.id}
-                    className="card-press w-full rounded-xl p-4 text-left"
-                    style={{ background: 'rgba(255,255,255,0.025)' }}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 space-y-1">
-                        <div className="flex items-baseline gap-2 flex-wrap">
-                          <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
-                            {supplement.name}
-                          </span>
-                        </div>
-                        <div className="font-bebas font-light leading-none" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                          <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{supplement.dosage}</span>
-                        </div>
-                        {supplement.duration_days && (
-                          <div className="text-xs text-white/35 mt-2">
-                            Course: {supplement.duration_days} days
+              
+              {/* Добавки внутри плашки */}
+              {customSupplements.length > 0 ? (
+                <div className="space-y-2">
+                  {customSupplements.map(supplement => (
+                    <button
+                      key={supplement.id}
+                      onClick={() => navigate('supplements')}
+                      className="card-press w-full rounded-lg p-3 text-left"
+                      style={{ background: 'rgba(255,255,255,0.05)' }}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 space-y-1">
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
+                              {supplement.name}
+                            </span>
                           </div>
-                        )}
+                          <div className="font-bebas font-light leading-none" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                            <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{supplement.dosage}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 ml-3">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(supplement.id);
+                            }}
+                            className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
+                          >
+                            <TrashIcon />
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 ml-3">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(supplement.id);
-                          }}
-                          className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
-                        >
-                          <TrashIcon />
-                        </button>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className={`text-center py-4 ${TEXT_MUTED}`}>
+                  <div className="text-sm">No supplements yet</div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
