@@ -250,8 +250,11 @@ export default function HomeScreen() {
 
         {/* Низ: сетка из 4 кнопок и кнопка добавок */}
         <div className="shrink-0 pt-4">
+          {/* Кнопка добавок над сеткой */}
+          <SupplementsWidget />
+          
           {/* Сетка из 4 кнопок */}
-          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
+          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2 mt-4">
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
@@ -285,9 +288,6 @@ export default function HomeScreen() {
               <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
             </button>
           </div>
-          
-          {/* Кнопка добавок под сеткой */}
-          <SupplementsWidget />
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
