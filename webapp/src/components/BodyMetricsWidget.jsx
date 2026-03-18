@@ -120,7 +120,7 @@ export default function BodyMetricsWidget() {
   return (
     <button
       onClick={() => navigate('metrics')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -129,10 +129,13 @@ export default function BodyMetricsWidget() {
       
       <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
         <div className="text-xs text-white/92 whitespace-pre-line">
-          {latestMetrics?.weight 
-            ? `${latestMetrics.weight}kg`
-            : 'No data'
-          }
+          {latestMetrics?.weight && (
+            <div className="text-xs text-white/40 mb-1">Last measurement</div>
+          )}
+          {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
+          {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
+          {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
+          {!latestMetrics?.weight && 'No data'}
         </div>
       </div>
     </button>
