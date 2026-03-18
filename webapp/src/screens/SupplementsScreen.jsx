@@ -20,20 +20,12 @@ const TrashIcon = () => (
   </svg>
 );
 
-const EditIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-  </svg>
-);
-
 export default function SupplementsScreen() {
   const { navigate, userId, showToast, goBack } = useApp();
   const [supplements, setSupplements] = useState([]);
   const [presetSupplements, setPresetSupplements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editingSupplement, setEditingSupplement] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     dosage: '',
@@ -44,10 +36,8 @@ export default function SupplementsScreen() {
   });
   const [submitting, setSubmitting] = useState(false);
   const addModalRef = useRef(null);
-  const editModalRef = useRef(null);
   
   useFocusTrap(addModalRef, showAddModal);
-  useFocusTrap(editModalRef, showEditModal);
 
   useEffect(() => {
     loadData();
@@ -239,10 +229,10 @@ export default function SupplementsScreen() {
                       </div>
                       <div className="flex items-center gap-2 ml-3">
                         <button
-                          onClick={() => handleEdit(supplement)}
-                          className={`shrink-0 p-1 ${TEXT_MUTED}`}
+                          onClick={() => handleDelete(supplement.id)}
+                          className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
                         >
-                          <EditIcon />
+                          <TrashIcon />
                         </button>
                       </div>
                     </div>
@@ -289,10 +279,10 @@ export default function SupplementsScreen() {
                       </div>
                       <div className="flex items-center gap-2 ml-3">
                         <button
-                          onClick={() => handleEdit(supplement)}
-                          className={`shrink-0 p-1 ${TEXT_MUTED}`}
+                          onClick={() => handleDelete(supplement.id)}
+                          className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
                         >
-                          <EditIcon />
+                          <TrashIcon />
                         </button>
                       </div>
                     </div>
