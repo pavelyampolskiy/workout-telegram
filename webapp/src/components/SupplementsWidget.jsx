@@ -62,9 +62,9 @@ export default function SupplementsWidget() {
   
   if (hasSupplements) {
     if (activeSupplements.length <= 3) {
-      displayText = activeSupplements.join(', ');
+      displayText = activeSupplements.join('\n');
     } else {
-      displayText = `${activeSupplements.slice(0, 3).join(', ')} +${activeSupplements.length - 3}`;
+      displayText = `${activeSupplements.slice(0, 3).join('\n')} +${activeSupplements.length - 3}`;
     }
   }
 
@@ -83,7 +83,7 @@ export default function SupplementsWidget() {
         Current supplements
       </div>
       <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-        <div className="text-xs text-white/60 truncate">
+        <div className="text-xs text-white/60 whitespace-pre-line">
           {displayText}
         </div>
       </div>

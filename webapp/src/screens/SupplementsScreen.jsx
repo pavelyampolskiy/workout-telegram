@@ -114,23 +114,17 @@ export default function SupplementsScreen() {
   };
 
   const handleSubmit = async (isEdit = false) => {
-    console.log('handleSubmit called', { formData, isEdit });
-    
     if (!formData.name || !formData.dosage) {
-      console.log('Validation failed', { name: formData.name, dosage: formData.dosage });
       showToast('Please fill all required fields');
       return;
     }
 
-    console.log('Validation passed, submitting...');
     setSubmitting(true);
     try {
       const data = {
         ...formData,
         duration_days: formData.duration_days ? parseInt(formData.duration_days) : null
       };
-
-      console.log('Submitting data:', data);
 
       // Пытаемся создать на сервере
       try {
@@ -419,10 +413,7 @@ export default function SupplementsScreen() {
 
             <div className="flex gap-2 mt-4">
               <button
-                onClick={() => {
-                  console.log('Add button clicked');
-                  handleSubmit(false);
-                }}
+                onClick={() => handleSubmit(false)}
                 disabled={submitting}
                 className={`flex-1 card-press font-bebas tracking-wider text-sm py-3 rounded-[14px] ${TEXT_PRIMARY} disabled:opacity-50`}
               >
