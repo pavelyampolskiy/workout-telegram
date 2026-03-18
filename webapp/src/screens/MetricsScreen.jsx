@@ -163,8 +163,9 @@ export default function MetricsScreen() {
         {/* Content */}
         <div className="flex-1 overflow-y-auto space-y-6">
           {/* Quick Add */}
-          <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2" style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <div className="flex items-center gap-3">
+          <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2" style={{ background: 'rgba(255,255,255,0.03)' }}>
+            {/* Заголовок с иконкой */}
+            <div className="flex items-center gap-3 w-full">
               <button
                 onClick={handleAdd}
                 className="card-press p-2 rounded-lg shrink-0"
@@ -174,48 +175,56 @@ export default function MetricsScreen() {
               </button>
               <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Add Measurement</div>
             </div>
-          </div>
-
-          {/* Metrics List */}
-          {metrics.length === 0 ? (
-            <div className={`text-center py-8 ${TEXT_MUTED}`}>
-              <div className="text-sm mb-3">No measurements yet</div>
-              <button
-                onClick={handleAdd}
-                className="card-press px-4 py-2 rounded-lg text-sm"
-                style={{ background: 'rgba(255,255,255,0.1)' }}
-              >
-                Add first measurement
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {metrics.slice().reverse().map(metric => (
-                <div key={metric.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <div className="font-bebas text-base tracking-wider text-white/92 truncate">
-                        {new Date(metric.date).toLocaleDateString()}
+            
+            {/* Результаты измерений внутри */}
+            {metrics.length > 0 ? (
+              <div className="w-full">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('metrics');
+                  }}
+                  className="w-full px-3 py-2 rounded-lg text-left"
+                  style={{ background: 'rgba(255,255,255,0.05)' }}
+                >
+                  <div className="text-xs text-white/60">
+                    {metrics.slice().reverse().slice(0, 3).map(metric => (
+                      <div key={metric.id} className="flex justify-between items-center">
+                        <span>{new Date(metric.date).toLocaleDateString()}: {metric.weight}kg</span>
+                        <span style={{ color: '#6b7280' }}>→</span>
                       </div>
-                      <div className="text-sm text-white/60 mt-1">
-                        {metric.weight && <div>Weight: {metric.weight}kg</div>}
-                        {metric.body_fat && <div>Body Fat: {metric.body_fat}%</div>}
-                        {metric.muscle_mass && <div>Muscle Mass: {metric.muscle_mass}kg</div>}
+                    ))}
+                    {metrics.length > 3 && (
+                      <div className="text-xs text-white/40 mt-1">
+                        +{metrics.length - 3} more
                       </div>
+                    )}
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <div className="w-full">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate('metrics');
+                  }}
+                  className="w-full px-3 py-2 rounded-lg text-left"
+                  style={{ background: 'rgba(255,255,255,0.05)' }}
+                >
+                  <div className="text-xs text-white/60">
+                    <div className="flex justify-between items-center">
+                      <span>No measurements yet</span>
+                      <span style={{ color: '#6b7280' }}>→</span>
                     </div>
-                    <div className="flex items-center gap-2 ml-3">
-                      <button
-                        onClick={() => handleDelete(metric.id)}
-                        className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
-                      >
-                        <TrashIcon />
-                      </button>
+                    <div className="text-xs text-white/40 mt-1">
+                      Tap to add first measurement
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
