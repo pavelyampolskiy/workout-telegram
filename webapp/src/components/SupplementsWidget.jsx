@@ -39,7 +39,7 @@ export default function SupplementsWidget() {
               <SupplementsIcon />
             </div>
             <span className="font-bebas text-white/20 text-sm" style={{ letterSpacing: '0.08em' }}>
-              Загрузка...
+              Loading...
             </span>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function SupplementsWidget() {
   const hasSupplements = activeSupplements.length > 0;
   const displayText = hasSupplements 
     ? activeSupplements.slice(0, 3).join(', ')
-    : 'Добавки';
+    : 'Supplements';
 
   return (
     <button
@@ -76,7 +76,7 @@ export default function SupplementsWidget() {
             </div>
             {hasSupplements && (
               <div className={`font-bebas text-xs ${TEXT_MUTED} mt-1`} style={{ letterSpacing: '0.05em' }}>
-                Активные добавки
+                Active supplements
               </div>
             )}
           </div>

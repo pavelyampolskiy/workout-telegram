@@ -104,7 +104,7 @@ export default function SupplementsScreen() {
 
   const handleSubmit = async (isEdit = false) => {
     if (!formData.name || !formData.dosage || !formData.intake_time) {
-      showToast('Заполните все обязательные поля');
+      showToast('Please fill all required fields');
       return;
     }
 
@@ -117,10 +117,10 @@ export default function SupplementsScreen() {
 
       if (isEdit) {
         await api.updateSupplement(editingSupplement.id, data);
-        showToast('Добавка обновлена');
+        showToast('Supplement updated');
       } else {
         await api.createSupplement(userId, data);
-        showToast('Добавка создана');
+        showToast('Supplement created');
       }
 
       setShowAddModal(false);
@@ -134,11 +134,11 @@ export default function SupplementsScreen() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Удалить эту добавку?')) return;
+    if (!confirm('Delete this supplement?')) return;
     
     try {
       await api.deleteSupplement(id);
-      showToast('Добавка удалена');
+      showToast('Supplement deleted');
       loadData();
     } catch (error) {
       showToast(error.message);
@@ -187,7 +187,7 @@ export default function SupplementsScreen() {
       <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className={`font-bebas text-2xl tracking-wider ${TEXT_PRIMARY}`}>Добавки</h1>
+          <h1 className={`font-bebas text-2xl tracking-wider ${TEXT_PRIMARY}`}>Supplements</h1>
           <button
             onClick={handleAdd}
             className="card-press p-2 rounded-lg"
@@ -202,7 +202,7 @@ export default function SupplementsScreen() {
           {/* Popular supplements */}
           {popularSupplements.length > 0 && (
             <div>
-              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Популярные</h2>
+              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Popular</h2>
               <div className="space-y-3">
                 {popularSupplements.map(supplement => (
                   <div key={supplement.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
@@ -211,7 +211,7 @@ export default function SupplementsScreen() {
                         <h3 className={`font-bebas text-base tracking-wider ${TEXT_PRIMARY} truncate`}>{supplement.name}</h3>
                         <div className={`text-sm ${TEXT_MUTED} mt-1`}>{supplement.dosage} • {supplement.intake_time}</div>
                         {supplement.duration_days && (
-                          <div className={`text-xs ${TEXT_TERTIARY} mt-1`}>Курс: {supplement.duration_days} дней</div>
+                          <div className={`text-xs ${TEXT_TERTIARY} mt-1`}>Course: {supplement.duration_days} days</div>
                         )}
                       </div>
                       <div className="flex items-center gap-2 ml-3">
@@ -243,16 +243,16 @@ export default function SupplementsScreen() {
 
           {/* Custom supplements */}
           <div>
-            <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Мои добавки</h2>
+            <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>My Supplements</h2>
             {customSupplements.length === 0 ? (
               <div className={`text-center py-8 ${TEXT_MUTED}`}>
-                <div className="text-sm mb-3">Нет добавок</div>
+                <div className="text-sm mb-3">No supplements</div>
                 <button
                   onClick={handleAdd}
                   className="card-press px-4 py-2 rounded-lg text-sm"
                   style={{ background: 'rgba(255,255,255,0.1)' }}
                 >
-                  Добавить первую
+                  Add first
                 </button>
               </div>
             ) : (
@@ -264,7 +264,7 @@ export default function SupplementsScreen() {
                         <h3 className={`font-bebas text-base tracking-wider ${TEXT_PRIMARY} truncate`}>{supplement.name}</h3>
                         <div className={`text-sm ${TEXT_MUTED} mt-1`}>{supplement.dosage} • {supplement.intake_time}</div>
                         {supplement.duration_days && (
-                          <div className={`text-xs ${TEXT_TERTIARY} mt-1`}>Курс: {supplement.duration_days} дней</div>
+                          <div className={`text-xs ${TEXT_TERTIARY} mt-1`}>Course: {supplement.duration_days} days</div>
                         )}
                       </div>
                       <div className="flex items-center gap-2 ml-3">
@@ -309,11 +309,11 @@ export default function SupplementsScreen() {
               boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
             }}
           >
-            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Добавить добавку</h3>
+            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Add Supplement</h3>
             
             {/* Preset selection */}
             <div className="mb-4">
-              <h4 className={`font-bebas text-sm tracking-wider mb-2 ${TEXT_SECONDARY}`}>Выбрать из популярных:</h4>
+              <h4 className={`font-bebas text-sm tracking-wider mb-2 ${TEXT_SECONDARY}`}>Choose from popular:</h4>
               <div className="grid grid-cols-2 gap-2">
                 {presetSupplements.map((preset, index) => (
                   <button
@@ -332,46 +332,46 @@ export default function SupplementsScreen() {
             {/* Custom form */}
             <div className="space-y-3">
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Название</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Name</label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="Название добавки"
+                  placeholder="Supplement name"
                 />
               </div>
               
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Дозировка</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Dosage</label>
                 <input
                   type="text"
                   value={formData.dosage}
                   onChange={(e) => setFormData({...formData, dosage: e.target.value})}
                   className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="Например: 30г"
+                  placeholder="e.g: 30g"
                 />
               </div>
               
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Время приема</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Intake Time</label>
                 <input
                   type="text"
                   value={formData.intake_time}
                   onChange={(e) => setFormData({...formData, intake_time: e.target.value})}
                   className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="Например: После тренировки"
+                  placeholder="e.g: After workout"
                 />
               </div>
               
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Длительность курса (дней)</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Course Duration (days)</label>
                 <input
                   type="number"
                   value={formData.duration_days}
                   onChange={(e) => setFormData({...formData, duration_days: e.target.value})}
                   className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="Оставьте пустым для бесконечного"
+                  placeholder="Leave empty for infinite"
                 />
               </div>
             </div>
@@ -382,13 +382,13 @@ export default function SupplementsScreen() {
                 disabled={submitting}
                 className={`flex-1 card-press font-bebas tracking-wider text-sm py-3 rounded-[14px] ${TEXT_PRIMARY} disabled:opacity-50`}
               >
-                {submitting ? <Spinner size={16} /> : 'Добавить'}
+                {submitting ? <Spinner size={16} /> : 'Add'}
               </button>
               <button
                 onClick={() => setShowAddModal(false)}
                 className={`flex-1 py-3 font-bebas tracking-wider text-sm rounded-[14px] ${TEXT_TERTIARY}`}
               >
-                Отмена
+                Cancel
               </button>
             </div>
           </div>
@@ -409,11 +409,11 @@ export default function SupplementsScreen() {
               boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
             }}
           >
-            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Редактировать добавку</h3>
+            <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>Edit Supplement</h3>
             
             <div className="space-y-3">
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Название</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Name</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -423,7 +423,7 @@ export default function SupplementsScreen() {
               </div>
               
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Дозировка</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Dosage</label>
                 <input
                   type="text"
                   value={formData.dosage}
@@ -433,7 +433,7 @@ export default function SupplementsScreen() {
               </div>
               
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Время приема</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Intake Time</label>
                 <input
                   type="text"
                   value={formData.intake_time}
@@ -443,13 +443,13 @@ export default function SupplementsScreen() {
               </div>
               
               <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Длительность курса (дней)</label>
+                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Course Duration (days)</label>
                 <input
                   type="number"
                   value={formData.duration_days}
                   onChange={(e) => setFormData({...formData, duration_days: e.target.value})}
                   className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
-                  placeholder="Оставьте пустым для бесконечного"
+                  placeholder="Leave empty for infinite"
                 />
               </div>
             </div>
@@ -460,13 +460,13 @@ export default function SupplementsScreen() {
                 disabled={submitting}
                 className={`flex-1 card-press font-bebas tracking-wider text-sm py-3 rounded-[14px] ${TEXT_PRIMARY} disabled:opacity-50`}
               >
-                {submitting ? <Spinner size={16} /> : 'Сохранить'}
+                {submitting ? <Spinner size={16} /> : 'Save'}
               </button>
               <button
                 onClick={() => setShowEditModal(false)}
                 className={`flex-1 py-3 font-bebas tracking-wider text-sm rounded-[14px] ${TEXT_TERTIARY}`}
               >
-                Отмена
+                Cancel
               </button>
             </div>
           </div>
