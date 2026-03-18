@@ -226,8 +226,8 @@ export default function SupplementsScreen() {
     );
   }
 
-  const customSupplements = supplements.filter(s => !s.is_preset);
-  const popularSupplements = supplements.filter(s => s.is_preset);
+  const popularSupplements = Array.isArray(supplements) ? supplements.filter(s => s.is_preset) : [];
+  const customSupplements = Array.isArray(supplements) ? supplements.filter(s => !s.is_preset) : [];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
