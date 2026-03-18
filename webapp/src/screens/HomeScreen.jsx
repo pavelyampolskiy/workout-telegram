@@ -248,13 +248,10 @@ export default function HomeScreen() {
         {/* Пустое место */}
         <div className="flex-1 min-h-0" />
 
-        {/* Низ: сетка из 4 кнопок и кнопка добавок */}
+        {/* Низ: сетка из 4 кнопок */}
         <div className="shrink-0 pt-4">
-          {/* Кнопка добавок над сеткой */}
-          <SupplementsWidget />
-          
-          {/* Сетка из 4 кнопок */}
-          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2 mt-4">
+          {/* Сетка из 4 кнопок + supplements */}
+          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-3">
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
@@ -287,6 +284,9 @@ export default function HomeScreen() {
               <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
               <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
             </button>
+            <div className="col-span-2">
+              <SupplementsWidget />
+            </div>
           </div>
         </div>
           {unfinished && showDismissConfirm && createPortal(
