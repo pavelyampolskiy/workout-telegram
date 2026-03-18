@@ -4,7 +4,7 @@ import { api } from '../api';
 import { TEXT_MUTED } from '../shared';
 
 const SupplementsIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(15 12 12)"/>
     <path d="M12 7v10M8 9l8 0M8 15l8 0"/>
   </svg>
@@ -75,9 +75,13 @@ export default function SupplementsWidget() {
   }
 
   return (
-    <div className="space-y-2">
-      {/* Заголовок */}
-      <div className="flex items-center gap-3">
+    <button
+      onClick={() => navigate('supplements')}
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+      style={{ background: 'rgba(255,255,255,0.03)' }}
+    >
+      {/* Заголовок с иконкой */}
+      <div className="flex items-center gap-3 w-full">
         <span className="shrink-0 flex items-center justify-center text-white/25">
           <SupplementsIcon />
         </span>
@@ -86,16 +90,21 @@ export default function SupplementsWidget() {
         </div>
       </div>
       
-      {/* Плашка с добавками */}
-      <button
-        onClick={() => navigate('supplements')}
-        className="card-press w-full px-4 py-3 rounded-xl text-left"
-        style={{ background: 'rgba(255,255,255,0.03)' }}
-      >
-        <div className="text-xs text-white/60 whitespace-pre-line">
-          {displayText}
-        </div>
-      </button>
-    </div>
+      {/* Внутренняя кнопка с добавками */}
+      <div className="w-full">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('supplements');
+          }}
+          className="w-full px-3 py-2 rounded-lg text-left"
+          style={{ background: 'rgba(255,255,255,0.05)' }}
+        >
+          <div className="text-xs text-white/60 whitespace-pre-line">
+            {displayText}
+          </div>
+        </button>
+      </div>
+    </button>
   );
 }
