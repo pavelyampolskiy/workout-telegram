@@ -10,6 +10,12 @@ import { HomeStatsSkeleton } from '../components/Skeleton';
 import SupplementsWidget from '../components/SupplementsWidget';
 import homeBg from '../assets/gym-bg.jpg';
 
+const SupplementsIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+    <path d="M8 2v2M16 2v2M7 4h10M7 4v12a2 2 0 002 2h2a2 2 0 002-2V4M7 4l-1 3h12l-1-3"/>
+  </svg>
+);
+
 /** Единая толщина контура всех иконок. */
 const ICON_STROKE = 1;
 /** Фон всех карточек/плашек на главном экране (без границ). */
@@ -237,17 +243,14 @@ export default function HomeScreen() {
               </div>
             )}
           </div>
-          
-          {/* Supplements Widget */}
-          <SupplementsWidget />
         </div>
 
         {/* Пустое место */}
         <div className="flex-1 min-h-0" />
 
-        {/* Низ: только четыре кнопки */}
+        {/* Низ: пять кнопок в сетке */}
         <div className="shrink-0 pt-4">
-          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2">
+          <div className="grid grid-cols-3 gap-4 min-h-0">
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
@@ -263,6 +266,14 @@ export default function HomeScreen() {
             >
               <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
               <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+            </button>
+            <button
+              onClick={() => navigate('supplements')}
+              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
+              style={{ background: CARD_BG }}
+            >
+              <span className="shrink-0 flex items-center justify-center text-white/25"><SupplementsIcon /></span>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Supplements</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
