@@ -52,12 +52,16 @@ export default function SupplementsScreen() {
         api.getPresetSupplements()
       ]);
       
-      setSupplements(suppsRes.items || []);
-      setPresetSupplements(presetRes.items || []);
+      // Правильно обрабатываем ответ API
+      const userSupplements = suppsRes?.items || suppsRes || [];
+      const presetSupplementsList = presetRes?.items || presetRes || [];
+      
+      setSupplements(userSupplements);
+      setPresetSupplements(presetSupplementsList);
       
       // Debug: проверяем что загрузилось
-      console.log('Preset supplements loaded:', presetRes.items);
-      console.log('User supplements loaded:', suppsRes.items);
+      console.log('Preset supplements loaded:', presetSupplementsList);
+      console.log('User supplements loaded:', userSupplements);
     } catch (error) {
       console.error('Error loading supplements:', error);
       // Если API недоступен, используем локальные предустановленные добавки
