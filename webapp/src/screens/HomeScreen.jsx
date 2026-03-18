@@ -249,9 +249,20 @@ export default function HomeScreen() {
         {/* Пустое место */}
         <div className="flex-1 min-h-0" />
 
-        {/* Низ: пять кнопок в сетке */}
+        {/* Низ: кнопка добавок и сетка из 4 кнопок */}
         <div className="shrink-0 pt-4">
-          <div className="grid grid-cols-3 gap-4 min-h-0">
+          {/* Кнопка добавок */}
+          <button
+            onClick={() => navigate('supplements')}
+            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+            style={{ background: CARD_BG }}
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><SupplementsIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Supplements</div>
+          </button>
+          
+          {/* Сетка из 4 кнопок */}
+          <div className="grid grid-cols-2 gap-4 min-h-0 grid-rows-2 mt-4">
             <button
               onClick={() => navigate('history')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
@@ -267,14 +278,6 @@ export default function HomeScreen() {
             >
               <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
               <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
-            </button>
-            <button
-              onClick={() => navigate('supplements')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/25"><SupplementsIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Supplements</div>
             </button>
             <button
               onClick={() => navigate('achievements')}
