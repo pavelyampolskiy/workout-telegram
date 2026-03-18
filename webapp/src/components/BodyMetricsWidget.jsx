@@ -133,14 +133,14 @@ export default function BodyMetricsWidget() {
           {latestMetrics?.weight && (
             <div className="text-xs text-white/40 mb-1 text-right">Last measurement</div>
           )}
-          {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
-          {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
-          {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
           {latestMetrics?.date && (
-            <div className="text-xs text-white/40 mt-1 text-right">
+            <div className="text-xs text-white/40 mb-1 text-right">
               {formatDate(latestMetrics.date.split('T')[0])}
             </div>
           )}
+          {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
+          {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
+          {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
           {!latestMetrics?.weight && 'No data'}
         </div>
       </div>
