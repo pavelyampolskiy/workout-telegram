@@ -191,7 +191,6 @@ export default function MetricsScreen() {
                     {metrics.slice().reverse().slice(0, 3).map(metric => (
                       <div key={metric.id} className="flex justify-between items-center">
                         <span>{new Date(metric.date).toLocaleDateString()}: {metric.weight}kg</span>
-                        <span style={{ color: '#6b7280' }}>→</span>
                       </div>
                     ))}
                     {metrics.length > 3 && (
@@ -215,7 +214,6 @@ export default function MetricsScreen() {
                   <div className="text-xs text-white/60">
                     <div className="flex justify-between items-center">
                       <span>No measurements yet</span>
-                      <span style={{ color: '#6b7280' }}>→</span>
                     </div>
                     <div className="text-xs text-white/40 mt-1">
                       Tap to add first measurement
