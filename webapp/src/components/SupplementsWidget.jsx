@@ -18,12 +18,22 @@ export default function SupplementsWidget() {
     if (!userId) return;
     
     setLoading(true);
+    
+    // Сначала пробуем загрузить с сервера
     api.getActiveSupplements(userId)
       .then(data => {
         setActiveSupplements(data.names || []);
       })
       .catch(() => {
-        setActiveSupplements([]);
+        // Если сервер недоступен, загружаем из localStorage
+        const localSupplements = localStorage.getItem(`supplements_${userId}`);
+        if (localSupplements) {
+          const supplements = JSON.parse(localSupplements);
+          const supplementNames = supplements.map(s => s.name);
+          setActiveSupplements(supplementNames);
+        } else {
+          setActiveSupplements([]);
+        }
       })
       .finally(() => {
         setLoading(false);
