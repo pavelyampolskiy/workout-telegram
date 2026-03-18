@@ -12,8 +12,7 @@ import homeBg from '../assets/gym-bg.jpg';
 
 const SupplementsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <circle cx="12" cy="12" r="8"/>
-    <circle cx="12" cy="12" r="2"/>
+    <path d="M7 4h10M7 4v12a2 2 0 002 2h2a2 2 0 002-2V4M7 4l-1 3h12l-1-3M9 2v2M15 2v2"/>
   </svg>
 );
 
