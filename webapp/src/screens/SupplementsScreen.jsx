@@ -126,7 +126,6 @@ export default function SupplementsScreen() {
         setSupplements(newSupplements);
         // Сохраняем в localStorage
         localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
-        showToast('Supplement created');
         setShowAddModal(false);
       } catch (serverError) {
         // Если сервер недоступен, создаем локально
@@ -144,7 +143,6 @@ export default function SupplementsScreen() {
         setSupplements(newSupplements);
         // Сохраняем в localStorage
         localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
-        showToast('Supplement created');
         setShowAddModal(false);
       }
     } catch (error) {
@@ -164,14 +162,12 @@ export default function SupplementsScreen() {
         setSupplements(newSupplements);
         // Сохраняем в localStorage
         localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
-        showToast('Supplement deleted');
       } catch (serverError) {
         // Если сервер недоступен, удаляем локально
         const newSupplements = supplements.filter(s => s.id !== id);
         setSupplements(newSupplements);
         // Сохраняем в localStorage
         localStorage.setItem(`supplements_${userId}`, JSON.stringify(newSupplements));
-        showToast('Supplement deleted');
       }
     } catch (error) {
       showToast(error.message);
