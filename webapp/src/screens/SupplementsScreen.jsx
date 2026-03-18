@@ -47,14 +47,20 @@ export default function SupplementsScreen() {
     if (!userId) return;
     
     try {
+      console.log('Loading supplements for user:', userId);
+      
       const [suppsRes, presetRes] = await Promise.all([
         api.getSupplements(userId),
         api.getPresetSupplements()
       ]);
       
+      console.log('API responses:', { suppsRes, presetRes });
+      
       // Правильно обрабатываем ответ API
-      const userSupplements = suppsRes?.items || suppsRes || [];
-      const presetSupplementsList = presetRes?.items || presetRes || [];
+      const userSupplements = Array.isArray(suppsRes?.items) ? suppsRes.items : Array.isArray(suppsRes) ? suppsRes : [];
+      const presetSupplementsList = Array.isArray(presetRes?.items) ? presetRes.items : Array.isArray(presetRes) ? presetRes : [];
+      
+      console.log('Processed supplements:', { userSupplements, presetSupplementsList });
       
       setSupplements(userSupplements);
       setPresetSupplements(presetSupplementsList);
@@ -64,6 +70,8 @@ export default function SupplementsScreen() {
       console.log('User supplements loaded:', userSupplements);
     } catch (error) {
       console.error('Error loading supplements:', error);
+      console.log('Using fallback data');
+      
       // Если API недоступен, используем локальные предустановленные добавки
       setPresetSupplements([
         {name: "Protein", dosage: "", intake_time: "After workout"},
