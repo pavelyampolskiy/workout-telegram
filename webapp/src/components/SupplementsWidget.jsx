@@ -5,7 +5,7 @@ import { TEXT_MUTED } from '../shared';
 
 const SupplementsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <path d="M10 2v20M14 2v20M4 7h16M4 17h16M6 12h12"/>
+    <path d="M9 2v6M15 2v6M7 8h10M7 8v10a2 2 0 002 2h2a2 2 0 002-2V8M7 8l-2 4h14l-2-4"/>
   </svg>
 );
 
