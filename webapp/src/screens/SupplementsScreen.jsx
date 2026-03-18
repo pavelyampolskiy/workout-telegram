@@ -246,7 +246,7 @@ export default function SupplementsScreen() {
 
           {/* Custom supplements */}
           <div>
-            {/* Плашка My Supplements с описанием */}
+            {/* Плашка My Supplements с добавками внутри */}
             <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 mb-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
               <div className="flex items-center gap-3">
                 <button
@@ -258,12 +258,12 @@ export default function SupplementsScreen() {
                 </button>
                 <div className="min-w-0">
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My Supplements</div>
-                  <div className="text-xs text-white/25 mt-1">
-                    {customSupplements.length > 0 
-                      ? customSupplements.slice(0, 2).map(s => s.name).join(', ')
-                      : 'No supplements yet'
-                    }
-                  </div>
+                  {customSupplements.length > 0 && (
+                    <div className="text-xs text-white/60 mt-1">
+                      {customSupplements.slice(0, 2).map(s => s.name).join(', ')}
+                      {customSupplements.length > 2 && ` +${customSupplements.length - 2}`}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
