@@ -131,18 +131,31 @@ export default function SupplementsScreen() {
       };
 
       if (isEdit) {
-        await api.updateSupplement(editingSupplement.id, data);
-        showToast('Supplement updated');
+        // Временное решение для редактирования
+        setSupplements(prev => prev.map(s => 
+          s.id === editingSupplement.id ? { ...s, ...data } : s
+        ));
+        showToast('Supplement updated (local only)');
+        setShowEditModal(false);
       } else {
-        await api.createSupplement(userId, data);
-        showToast('Supplement created');
+        // Временное решение для создания - сохраняем локально
+        const newSupplement = {
+          id: Date.now(), // временный ID
+          user_id: userId,
+          ...data,
+          is_preset: false,
+          category: 'custom',
+          is_active: true,
+          created_at: new Date().toISOString()
+        };
+        
+        setSupplements(prev => [...prev, newSupplement]);
+        showToast('Supplement created (local only)');
+        setShowAddModal(false);
       }
-
-      setShowAddModal(false);
-      setShowEditModal(false);
-      loadData();
     } catch (error) {
-      showToast(error.message);
+      console.error('Error handling supplement:', error);
+      showToast('Error saving supplement');
     } finally {
       setSubmitting(false);
     }
@@ -152,9 +165,9 @@ export default function SupplementsScreen() {
     if (!confirm('Delete this supplement?')) return;
     
     try {
-      await api.deleteSupplement(id);
-      showToast('Supplement deleted');
-      loadData();
+      // Временное решение - удаляем локально
+      setSupplements(prev => prev.filter(s => s.id !== id));
+      showToast('Supplement deleted (local only)');
     } catch (error) {
       showToast(error.message);
     }
@@ -162,8 +175,10 @@ export default function SupplementsScreen() {
 
   const handleToggleActive = async (supplement) => {
     try {
-      await api.updateSupplement(supplement.id, { is_active: !supplement.is_active });
-      loadData();
+      // Временное решение - переключаем локально
+      setSupplements(prev => prev.map(s => 
+        s.id === supplement.id ? { ...s, is_active: !s.is_active } : s
+      ));
     } catch (error) {
       showToast(error.message);
     }
