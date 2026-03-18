@@ -148,7 +148,7 @@ export default function MetricsScreen() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <ScreenBg image={metricsBg} overlay="bg-black/80" blur={3} scale={1} />
+      <ScreenBg image={metricsBg} overlay="bg-black/85" blur={3} scale={1} />
       
       {/* Top gradient */}
       <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" style={{ zIndex: 0 }} />
