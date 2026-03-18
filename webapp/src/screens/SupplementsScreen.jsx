@@ -115,7 +115,7 @@ export default function SupplementsScreen() {
   };
 
   const handleSubmit = async (isEdit = false) => {
-    if (!formData.name || !formData.dosage || !formData.intake_time) {
+    if (!formData.name || !formData.dosage) {
       showToast('Please fill all required fields');
       return;
     }
