@@ -4,7 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED } from '../shared';
 import { Spinner } from '../components/Spinner';
-import metricsBg from '../assets/gym-bg.jpg';
+import metricsBg from '../assets/body-metrics-bg.jpg';
 
 const PAGE_HEADING_STYLE = { fontSize: 'clamp(24px, 8vw, 48px)', letterSpacing: '0.05em' };
 
