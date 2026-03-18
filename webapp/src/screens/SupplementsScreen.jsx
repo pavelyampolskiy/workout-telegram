@@ -336,15 +336,15 @@ export default function SupplementsScreen() {
 
       {/* Add Modal */}
       {showAddModal && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5" role="dialog" aria-modal="true">
           <div
             ref={addModalRef}
             className="w-full max-w-sm rounded-2xl p-5"
             style={{
-              background: 'rgba(0, 0, 0, 0.92)',
+              background: 'rgba(0, 0, 0, 0.85)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
             }}
           >
             <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>
