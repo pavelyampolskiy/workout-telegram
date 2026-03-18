@@ -70,7 +70,12 @@ export default function SupplementsScreen() {
       
       setSupplements(suppsRes.items || []);
       setPresetSupplements(presetRes.items || []);
+      
+      // Debug: проверяем что загрузилось
+      console.log('Preset supplements loaded:', presetRes.items);
+      console.log('User supplements loaded:', suppsRes.items);
     } catch (error) {
+      console.error('Error loading supplements:', error);
       showToast(error.message);
     } finally {
       setLoading(false);
@@ -314,19 +319,25 @@ export default function SupplementsScreen() {
             {/* Preset selection */}
             <div className="mb-4">
               <h4 className={`font-bebas text-sm tracking-wider mb-2 ${TEXT_SECONDARY}`}>Choose from popular:</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {presetSupplements.map((preset, index) => (
-                  <button
-                    key={index}
-                    onClick={() => selectPreset(preset)}
-                    className={`card-press p-2 rounded-lg text-xs text-left ${TEXT_MUTED}`}
-                    style={{ background: 'rgba(255,255,255,0.05)' }}
-                  >
-                    <div className={`font-bebas ${TEXT_PRIMARY}`}>{preset.name}</div>
-                    <div className="text-xs mt-1">{preset.dosage}</div>
-                  </button>
-                ))}
-              </div>
+              {presetSupplements.length === 0 ? (
+                <div className={`text-sm ${TEXT_MUTED} text-center py-4`}>
+                  Loading popular supplements...
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  {presetSupplements.map((preset, index) => (
+                    <button
+                      key={index}
+                      onClick={() => selectPreset(preset)}
+                      className={`card-press p-2 rounded-lg text-xs text-left ${TEXT_MUTED}`}
+                      style={{ background: 'rgba(255,255,255,0.05)' }}
+                    >
+                      <div className={`font-bebas ${TEXT_PRIMARY}`}>{preset.name}</div>
+                      <div className="text-xs mt-1">{preset.dosage}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Custom form */}
