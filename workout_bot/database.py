@@ -839,10 +839,9 @@ def delete_supplement(supplement_id: int):
 def get_preset_supplements():
     """Get preset supplements list"""
     return [
-        {"name": "Protein", "dosage": "30g", "intake_time": "After workout"},
-        {"name": "Creatine", "dosage": "5g", "intake_time": "Any time"},
-        {"name": "BCAA", "dosage": "10g", "intake_time": "During workout"},
-        {"name": "Vitamins", "dosage": "1 tablet", "intake_time": "Morning"},
-        {"name": "Omega-3", "dosage": "1000mg", "intake_time": "With meal"},
-        {"name": "Pre-workout", "dosage": "1 scoop", "intake_time": "30 min before workout"},
+        {"name": "Protein", "dosage": "", "intake_time": "After workout"},
+        {"name": "Creatine", "dosage": "", "intake_time": "Any time"},
+        {"name": "BCAA", "dosage": "", "intake_time": "During workout"},
+        {"name": "Omega-3", "dosage": "", "intake_time": "With meal"},
+        {"name": "Pre-workout", "dosage": "", "intake_time": "30 min before workout"},
     ]

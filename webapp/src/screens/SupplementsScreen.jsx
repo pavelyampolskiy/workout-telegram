@@ -78,12 +78,11 @@ export default function SupplementsScreen() {
       console.error('Error loading supplements:', error);
       // Если API недоступен, используем локальные предустановленные добавки
       setPresetSupplements([
-        {name: "Protein", dosage: "30g", intake_time: "After workout"},
-        {name: "Creatine", dosage: "5g", intake_time: "Any time"},
-        {name: "BCAA", dosage: "10g", intake_time: "During workout"},
-        {name: "Vitamins", dosage: "1 tablet", intake_time: "Morning"},
-        {name: "Omega-3", dosage: "1000mg", intake_time: "With meal"},
-        {name: "Pre-workout", dosage: "1 scoop", intake_time: "30 min before workout"},
+        {name: "Protein", dosage: "", intake_time: "After workout"},
+        {name: "Creatine", dosage: "", intake_time: "Any time"},
+        {name: "BCAA", dosage: "", intake_time: "During workout"},
+        {name: "Omega-3", dosage: "", intake_time: "With meal"},
+        {name: "Pre-workout", dosage: "", intake_time: "30 min before workout"},
       ]);
       setSupplements([]);
       // Не показываем toast для 500 ошибки, чтобы не мешать пользователю
@@ -358,7 +357,7 @@ export default function SupplementsScreen() {
                       style={{ background: 'rgba(255,255,255,0.05)' }}
                     >
                       <div className={`font-bebas ${TEXT_PRIMARY}`}>{preset.name}</div>
-                      <div className="text-xs mt-1">{preset.dosage}</div>
+                      {preset.dosage && <div className="text-xs mt-1">{preset.dosage}</div>}
                     </button>
                   ))}
                 </div>
