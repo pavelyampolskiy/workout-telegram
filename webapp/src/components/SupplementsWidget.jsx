@@ -58,14 +58,19 @@ export default function SupplementsWidget() {
   }
 
   const hasSupplements = activeSupplements.length > 0;
-  let displayText = 'None';
+  let displayText = '';
   
   if (hasSupplements) {
     if (activeSupplements.length <= 3) {
       displayText = activeSupplements.join(', ');
     } else {
-      displayText = `${activeSupplements.slice(0, 2).join(', ')}, +${activeSupplements.length - 2}`;
+      displayText = `${activeSupplements.slice(0, 3).join(', ')} +${activeSupplements.length - 3}`;
     }
+  }
+
+  // Если нет добавок, не показываем кнопку совсем
+  if (!hasSupplements) {
+    return null;
   }
 
   return (
