@@ -117,55 +117,23 @@ export default function BodyMetricsWidget() {
   };
 
   const displayText = latestMetrics.weight 
-    ? `Weight: ${latestMetrics.weight}kg <TrendIcon trend={latestMetrics.weight_trend} />`
-    : 'No data';
-
   return (
     <button
       onClick={() => navigate('metrics')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      {/* Заголовок с иконкой */}
-      <div className="flex items-center gap-3 w-full">
-        <span className="shrink-0 flex items-center justify-center text-white/25">
-          <MetricsIcon />
-        </span>
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-          Body Metrics
-        </div>
+      <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        Body Metrics
       </div>
       
-      {/* Внутренняя карточка с метриками */}
-      <div className="w-full">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate('metrics');
-          }}
-          className="w-full px-3 py-2 rounded-lg text-left"
-          style={{ background: 'rgba(255,255,255,0.05)' }}
-        >
-          <div className="text-xs text-white/60">
-            {latestMetrics.weight && (
-              <div className="flex justify-between items-center">
-                <span>Weight: {latestMetrics.weight}kg</span>
-                <TrendIcon trend={latestMetrics.weight_trend} />
-              </div>
-            )}
-            {latestMetrics.body_fat && (
-              <div className="flex justify-between items-center mt-1">
-                <span>Body Fat: {latestMetrics.body_fat}%</span>
-                <TrendIcon trend={latestMetrics.body_fat_trend} />
-              </div>
-            )}
-            {latestMetrics.date && (
-              <div className="text-xs text-white/40 mt-1">
-                Last: {formatDate(latestMetrics.date)}
-              </div>
-            )}
-          </div>
-        </button>
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+        <div className="text-xs text-white/60 truncate">
+          {latestMetrics?.weight 
+            ? `${latestMetrics.weight}kg <TrendIcon trend={latestMetrics.weight_trend} />`
+            : 'No data'
+          }
+        </div>
       </div>
     </button>
   );
