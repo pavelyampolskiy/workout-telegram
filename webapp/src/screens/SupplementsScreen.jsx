@@ -6,7 +6,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, PAGE_HEADING_STYLE } from '../shared';
 import { Spinner } from '../components/Spinner';
-import supplementsBg from '../assets/gym-bg.jpg';
+import supplementsBg from '../assets/supplements-bg.jpg';
 
 const PlusIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
