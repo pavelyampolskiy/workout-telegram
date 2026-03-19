@@ -28,28 +28,47 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
     
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
+    
+    // Начинаем с понедельника (1 = понедельник в JS)
+    let startDay = firstDay.getDay() - 1;
+    if (startDay === -1) startDay = 6; // Воскресенье становится 6
+    
     const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
+    startDate.setDate(startDate.getDate() - startDay);
     
     const days = [];
     const current = new Date(startDate);
     const maxDt = new Date(maxDate);
     const minDt = new Date(minDate);
     
-    for (let i = 0; i < 42; i++) {
-      const isCurrentMonth = current.getMonth() === month;
-      const isDisabled = current > maxDt || current < minDt;
-      const isSelected = current.toISOString().split('T')[0] === selectedDate;
+    // Показываем только дни текущего месяца
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const currentDate = new Date(year, month, day);
+      const isDisabled = currentDate > maxDt || currentDate < minDt;
+      const isSelected = currentDate.toISOString().split('T')[0] === selectedDate;
       
       days.push({
-        date: new Date(current),
-        isCurrentMonth,
+        date: new Date(currentDate),
+        isCurrentMonth: true,
         isDisabled,
         isSelected,
-        dayNumber: current.getDate()
+        dayNumber: day
       });
-      
-      current.setDate(current.getDate() + 1);
+    }
+    
+    // Добавляем пустые ячейки для выравнивания по неделям
+    const totalCells = days.length;
+    const remainingCells = totalCells % 7;
+    if (remainingCells > 0) {
+      for (let i = 0; i < 7 - remainingCells; i++) {
+        days.push({
+          date: null,
+          isCurrentMonth: false,
+          isDisabled: true,
+          isSelected: false,
+          dayNumber: ''
+        });
+      }
     }
     
     return days;
@@ -127,7 +146,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
 
             {/* Дни недели */}
             <div className="grid grid-cols-7 gap-1 mb-2">
-              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+              {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
                 <div key={i} className="text-center text-xs text-white/40 font-bebas tracking-wider py-1">
                   {day}
                 </div>
@@ -140,13 +159,13 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
                 <button
                   key={i}
                   onClick={() => handleDayClick(day)}
-                  disabled={day.isDisabled}
+                  disabled={day.isDisabled || !day.date}
                   className={`
                     aspect-square rounded-lg text-xs font-bebas tracking-wider transition-all
+                    ${!day.date ? 'invisible cursor-default' : ''}
                     ${day.isDisabled ? 'text-white/20 cursor-not-allowed' : ''}
-                    ${day.isSelected ? 'bg-white text-black' : ''}
-                    ${!day.isDisabled && !day.isSelected && day.isCurrentMonth ? 'text-white hover:bg-white/10 cursor-pointer' : ''}
-                    ${!day.isDisabled && !day.isSelected && !day.isCurrentMonth ? 'text-white/30 hover:bg-white/5 cursor-pointer' : ''}
+                    ${day.isSelected ? 'bg-white/20 text-white border border-white/30' : ''}
+                    ${!day.isDisabled && !day.isSelected && day.date ? 'text-white hover:bg-white/10 cursor-pointer' : ''}
                   `}
                 >
                   {day.dayNumber}
