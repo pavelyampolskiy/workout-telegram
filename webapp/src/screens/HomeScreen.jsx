@@ -142,29 +142,35 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
-    console.log('HomeScreen mounted, checking saved layout...');
+    console.log('HomeScreen mounted, loading saved layout...');
     
-    // Тестовая проверка localStorage
-    const testCheck = localStorage.getItem('test_order');
-    console.log('TEST: Found test_order in localStorage:', testCheck);
-    
-    // Сначала пробуем загрузить сохраненный порядок
+    // Пытаемся загрузить сохраненный порядок
     try {
       const saved = localStorage.getItem('grid_layout');
-      console.log('Raw saved data:', saved);
-      
       if (saved) {
         const parsed = JSON.parse(saved);
-        console.log('Parsed saved layout:', parsed);
-        
         if (parsed && parsed.length > 0) {
-          // Восстанавливаем полный порядок из сохраненных данных
-          const restoredItems = restoreLayoutFromSaved(parsed, false, navigate); // Всегда с editMode = false
-          console.log('Restored items:', restoredItems.map(item => item.id));
+          console.log('Found saved layout:', parsed.map(item => item.id));
+          
+          // Создаем все элементы в сохраненном порядке
+          const allItems = createGridItems(editMode, navigate);
+          const itemMap = {};
+          allItems.forEach(item => {
+            itemMap[item.id] = item;
+          });
+          
+          // Восстанавливаем порядок
+          const restoredItems = parsed.map(savedItem => {
+            const fullItem = itemMap[savedItem.id];
+            if (fullItem) {
+              return fullItem;
+            }
+            return null;
+          }).filter(item => item !== null);
           
           if (restoredItems.length > 0) {
             setGridItems(restoredItems);
-            console.log('Successfully loaded saved layout');
+            console.log('Layout restored successfully');
             return;
           }
         }
@@ -173,76 +179,10 @@ export default function HomeScreen() {
       console.error('Failed to load saved layout:', error);
     }
     
-    // Если нет сохраненного или ошибка, создаем стандартный
-    console.log('No saved layout found, creating default');
-    const defaultItems = createGridItems(false, navigate);
-    setGridItems(defaultItems);
-    
-    // Сразу сохраняем стандартный порядок
-    const defaultOrder = defaultItems.map(item => ({
-      id: item.id,
-      type: item.type,
-      size: item.size,
-      draggable: item.draggable
-    }));
-    localStorage.setItem('grid_layout', JSON.stringify(defaultOrder));
-    console.log('Saved default layout');
-  }, []); // Выполняется только при монтировании
-
-  // Принудительное восстановление порядка при изменении gridItems
-  useEffect(() => {
-    if (gridItems.length > 0) {
-      const saved = localStorage.getItem('grid_layout');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (parsed && parsed.length > 0) {
-            const currentOrder = gridItems.map(item => item.id);
-            const savedOrder = parsed.map(item => item.id);
-            
-            console.log('Current order:', currentOrder);
-            console.log('Saved order:', savedOrder);
-            
-            // Восстанавливаем только если это стандартный порядок (первая загрузка)
-            const standardOrder = ['history', 'stats', 'achievements', 'program', 'supplements', 'body-metrics'];
-            if (JSON.stringify(currentOrder) === JSON.stringify(standardOrder) && 
-                JSON.stringify(savedOrder) !== JSON.stringify(standardOrder)) {
-              console.log('Standard order detected, restoring saved order...');
-              const restoredItems = restoreLayoutFromSaved(parsed, false, navigate);
-              if (restoredItems.length > 0) {
-                setGridItems(restoredItems);
-              }
-            }
-          }
-        } catch (error) {
-          console.error('Error checking order:', error);
-        }
-      }
-    }
-  }, [gridItems.length]); // Только при изменении количества элементов
-
-  // Обновление контента при смене editMode
-  useEffect(() => {
-    if (gridItems.length > 0) {
-      console.log('Updating content for editMode:', editMode);
-      // Обновляем только контент, сохраняя порядок
-      const updatedItems = gridItems.map(item => {
-        if (item.type === 'button') {
-          return {
-            ...item,
-            content: createButtonContent(item.id, editMode, navigate)
-          };
-        } else if (item.type === 'widget') {
-          return {
-            ...item,
-            content: createWidgetContent(item.id, editMode)
-          };
-        }
-        return item;
-      });
-      setGridItems(updatedItems);
-    }
-  }, [editMode]); // При смене editMode
+    // Если нет сохраненного, создаем стандартный
+    console.log('No saved layout, creating default');
+    setGridItems(createGridItems(editMode, navigate));
+  }, []); // Только при монтировании
 
   // УБРАЛИ useEffect который пересоздавал элементы при смене editMode
 
