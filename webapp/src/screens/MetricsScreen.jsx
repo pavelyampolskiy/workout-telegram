@@ -268,6 +268,8 @@ export default function MetricsScreen() {
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+              maxHeight: '80vh',
+              overflowY: 'auto',
             }}
           >
             <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>
