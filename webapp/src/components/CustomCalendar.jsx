@@ -15,8 +15,8 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
   const formatDateDisplay = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', { 
-      month: 'short', 
       day: 'numeric', 
+      month: 'short', 
       year: 'numeric' 
     });
   };
@@ -97,13 +97,13 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2.5 rounded-lg text-white text-sm flex items-center justify-center gap-2 mx-auto"
+        className="px-4 py-2.5 rounded-lg text-white text-base flex items-center justify-center gap-2 mx-auto"
         style={{ 
           background: 'rgba(255,255,255,0.03)',
           border: 'none',
-          fontSize: '14px',
+          fontSize: '16px',
           height: '40px',
-          width: '160px'
+          width: '180px'
         }}
       >
         <CalendarIcon />
