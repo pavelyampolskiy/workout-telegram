@@ -13,7 +13,7 @@ import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function DayScreen() {
   const { params, userId, navigate, replace, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
-  const { day, dayLabel: paramLabel, isBackdated, isRepeat, repeatFromWorkout } = params;
+  const { day, dayLabel: paramLabel, isBackdated, isRepeat, repeatFromWorkout, dayProgram: passedDayProgram } = params;
   const dayLabel = paramLabel || day.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom Workout');
   const isCardio = day && String(day).toUpperCase() === 'CARDIO';
 
@@ -59,8 +59,12 @@ export default function DayScreen() {
   useEffect(() => {
     async function init() {
       try {
-        const prog = await api.getProgram(userId);
-        const dayProgram = prog[day] || [];
+        // Если передана программа (из backdate/repeat), используем ее, иначе загружаем обычную
+        let dayProgram = passedDayProgram;
+        if (!dayProgram) {
+          const prog = await api.getProgram(userId);
+          dayProgram = prog[day] || [];
+        }
         setProgram(dayProgram);
 
         if (!activeWorkout || activeWorkout.day !== day) {
@@ -134,7 +138,7 @@ export default function DayScreen() {
       }
     }
     init();
-  }, [userId, day, activeWorkout, dayProgram, isRepeat, repeatFromWorkout]);
+  }, [userId, day, activeWorkout, passedDayProgram, isRepeat, repeatFromWorkout]);
 
   // Workout duration timer — updates every second (keeps counting when app is closed)
   useEffect(() => {

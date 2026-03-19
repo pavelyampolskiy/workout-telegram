@@ -74,17 +74,22 @@ export default function BackdateWorkoutScreen() {
 
   const createBackdateWorkout = async (type, params) => {
     try {
+      // Загружаем программу тренировок для этого дня
+      const program = await api.getProgram(userId);
+      const dayProgram = program[type] || [];
+      
       // Создаем тренировку с указанной датой
       const { id } = await api.createWorkout(userId, type, selectedDate);
       
-      // Устанавливаем активную тренировку
+      // Устанавливаем активную тренировку с программой
       setActiveWorkout({ 
         id, 
         day: type, 
         exerciseMap: {}, 
         startedAt: Date.now(),
         isBackdated: true,
-        backdateDate: selectedDate
+        backdateDate: selectedDate,
+        dayProgram: dayProgram // Сохраняем программу для DayScreen
       });
       
       // Переходим к экрану тренировки
@@ -92,7 +97,12 @@ export default function BackdateWorkoutScreen() {
         navigate('cardio');
       } else {
         const label = formatActiveDayLabel(type, days);
-        navigate('day', { day: type, dayLabel: label, isBackdated: true });
+        navigate('day', { 
+          day: type, 
+          dayLabel: label, 
+          isBackdated: true,
+          dayProgram: dayProgram // Передаем программу
+        });
       }
     } catch (e) {
       showToast(e.message);

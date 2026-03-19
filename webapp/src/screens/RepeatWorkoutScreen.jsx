@@ -103,18 +103,23 @@ export default function RepeatWorkoutScreen() {
 
   const handleRepeatWorkout = async (workoutToRepeat) => {
     try {
+      // Загружаем программу тренировок для этого дня
+      const program = await api.getProgram(userId);
+      const dayProgram = program[workoutToRepeat.type] || [];
+      
       // Создаем новую тренировку с датой = сегодня
       const today = new Date().toISOString().split('T')[0];
       const { id } = await api.createWorkout(userId, workoutToRepeat.type);
       
-      // Устанавливаем активную тренировку с флагом repeat
+      // Устанавливаем активную тренировку с флагом repeat и программой
       setActiveWorkout({ 
         id, 
         day: workoutToRepeat.type, 
         exerciseMap: {}, 
         startedAt: Date.now(),
         isRepeat: true,
-        repeatFromWorkout: workoutToRepeat
+        repeatFromWorkout: workoutToRepeat,
+        dayProgram: dayProgram // Сохраняем программу для DayScreen
       });
       
       // Переходим к экрану тренировки
@@ -126,7 +131,8 @@ export default function RepeatWorkoutScreen() {
           day: workoutToRepeat.type, 
           dayLabel: label, 
           isRepeat: true,
-          repeatFromWorkout: workoutToRepeat
+          repeatFromWorkout: workoutToRepeat,
+          dayProgram: dayProgram // Передаем программу
         });
       }
     } catch (e) {
