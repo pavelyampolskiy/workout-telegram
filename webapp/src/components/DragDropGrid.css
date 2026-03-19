@@ -15,7 +15,7 @@
 .grid-item.edit-mode {
   cursor: grab;
   touch-action: pan-y; /* Разрешаем вертикальный скролл когда не drag */
-  animation: wiggle 2s ease-in-out infinite;
+  animation: wiggle 3s ease-in-out infinite;
 }
 
 .grid-item.edit-mode::after {
@@ -49,32 +49,35 @@
 
 /* Apple-style wiggle animation */
 @keyframes wiggle {
-  0%, 7% {
+  0%, 100% {
     transform: rotateZ(0deg);
   }
-  15% {
-    transform: rotateZ(-3deg);
+  10% {
+    transform: rotateZ(-2deg);
   }
   20% {
-    transform: rotateZ(3deg);
-  }
-  25% {
-    transform: rotateZ(-3deg);
-  }
-  30% {
     transform: rotateZ(2deg);
   }
-  35% {
+  30% {
     transform: rotateZ(-2deg);
   }
   40% {
+    transform: rotateZ(1.5deg);
+  }
+  50% {
+    transform: rotateZ(-1.5deg);
+  }
+  60% {
     transform: rotateZ(1deg);
   }
-  45% {
+  70% {
     transform: rotateZ(-1deg);
   }
-  50%, 100% {
-    transform: rotateZ(0deg);
+  80% {
+    transform: rotateZ(0.5deg);
+  }
+  90% {
+    transform: rotateZ(-0.5deg);
   }
 }
 
