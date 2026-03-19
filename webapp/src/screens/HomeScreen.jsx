@@ -142,6 +142,19 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    // Загружаем сохраненную расстановку
+    const saved = localStorage.getItem('grid_layout');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          setGridItems(parsed);
+          return;
+        }
+      } catch (e) {
+        // Если ошибка, используем стандартную
+      }
+    }
     setGridItems(getDefaultGridItems());
   }, []);
 

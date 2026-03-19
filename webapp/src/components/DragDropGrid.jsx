@@ -76,7 +76,14 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
     
-    // Перестановка уже происходит в handleTouchMove, здесь только очистка
+    // Сохраняем layout если были изменения
+    if (items.length > 0) {
+      try {
+        localStorage.setItem('grid_layout', JSON.stringify(items));
+      } catch (error) {
+        console.error('Failed to save layout:', error);
+      }
+    }
     
     // Clean up
     setDraggedItem(null);
