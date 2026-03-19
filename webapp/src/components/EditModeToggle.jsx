@@ -2,15 +2,19 @@ import { useState } from 'react';
 
 export default function EditModeToggle({ enabled, onToggle }) {
   return (
-    <div
+    <button
       onClick={onToggle}
-      className="font-bebas text-sm tracking-wider cursor-pointer transition-all duration-200 text-center"
+      className={`px-6 py-3 rounded-xl font-bebas text-sm tracking-wider transition-all duration-200 ${
+        enabled 
+          ? 'bg-white text-black shadow-lg shadow-white/20' 
+          : 'bg-white/10 text-white'
+      }`}
       style={{
-        color: enabled ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-        textShadow: enabled ? '0 0 10px rgba(255, 255, 255, 0.5)' : 'none'
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)'
       }}
     >
       {enabled ? 'Done' : 'Edit Dashboard'}
-    </div>
+    </button>
   );
 }
