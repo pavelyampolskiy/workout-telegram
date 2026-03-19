@@ -8,24 +8,20 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
   const [touchStart, setTouchStart] = useState(null);
   const gridRef = useRef(null);
 
-  // Touch event handlers - упрощенные как у Apple
+  // Touch event handlers - сразу drag без long press
   const handleTouchStart = (e, item, index) => {
     if (!editMode || item.draggable === false) return;
     
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY, time: Date.now() });
     
-    // Long press detection для включения режима drag - 1 секунда как у Apple
-    const timer = setTimeout(() => {
-      setDraggedItem({ ...item, originalIndex: index });
-      e.target.classList.add('dragging');
-      
-      // Блокируем скролл только когда drag начался
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
-    }, 1000); // 1 секунда как у Apple
+    // Сразу включаем drag режим без задержки
+    setDraggedItem({ ...item, originalIndex: index });
+    e.target.classList.add('dragging');
     
-    setLongPressTimer(timer);
+    // Блокируем скролл
+    document.body.style.overflow = 'hidden';
+    document.body.style.touchAction = 'none';
   };
 
   const handleTouchMove = (e) => {
@@ -55,11 +51,6 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     // Возвращаем скролл
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
-    
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      setLongPressTimer(null);
-    }
     
     if (draggedItem && dragOverIndex !== null && dragOverIndex !== draggedItem.originalIndex) {
       // Простая перестановка элементов
