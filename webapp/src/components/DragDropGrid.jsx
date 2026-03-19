@@ -18,7 +18,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
 
   // Touch event handlers - упрощенные как у Apple
   const handleTouchStart = (e, item, index) => {
-    if (!editMode) return;
+    if (!editMode || item.draggable === false) return;
     
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY, time: Date.now() });
@@ -118,7 +118,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
   const getGridItemClass = (item, index) => {
     let baseClass = 'grid-item card-press rounded-xl transition-all duration-200';
     
-    if (editMode) {
+    if (editMode && item.draggable !== false) {
       baseClass += ' edit-mode';
     }
     
