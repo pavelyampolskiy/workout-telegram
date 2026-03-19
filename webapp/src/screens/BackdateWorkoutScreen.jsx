@@ -223,12 +223,12 @@ export default function BackdateWorkoutScreen() {
                 onChange={(e) => setSelectedDate(e.target.value)}
                 max={getMaxDate()}
                 min={getMinDate()}
-                className="w-full px-2 py-1.5 rounded-lg text-white text-xs"
+                className="w-32 px-2 py-1.5 rounded-lg text-white text-xs"
                 style={{ 
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.03)',
+                  border: 'none',
                   fontSize: '12px',
-                  height: '36px'
+                  height: '32px'
                 }}
               />
             </div>
