@@ -143,7 +143,7 @@ export default function HomeScreen() {
   // Initialize grid items after component mount
   useEffect(() => {
     setGridItems(createGridItems(editMode, navigate));
-  }, []);
+  }, [editMode, navigate]);
 
   // Exit edit mode when clicking on empty space
   const handleEmptySpaceClick = () => {
