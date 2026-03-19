@@ -23,7 +23,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY, time: Date.now() });
     
-    // Long press detection для включения режима drag
+    // Long press detection для включения режима drag - 1 секунда как у Apple
     const timer = setTimeout(() => {
       setDraggedItem({ ...item, originalIndex: index });
       e.target.classList.add('dragging');
@@ -31,7 +31,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
       // Блокируем скролл только когда drag начался
       document.body.style.overflow = 'hidden';
       document.body.style.touchAction = 'none';
-    }, 300); // 300ms для long press
+    }, 1000); // 1 секунда как у Apple
     
     setLongPressTimer(timer);
   };
