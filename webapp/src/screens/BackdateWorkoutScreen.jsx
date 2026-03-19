@@ -185,7 +185,7 @@ export default function BackdateWorkoutScreen() {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-        <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+        <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top overflow-y-auto">
           <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Add Past Workout</h1>
           <WorkoutSkeleton />
         </div>
@@ -196,7 +196,7 @@ export default function BackdateWorkoutScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top overflow-y-auto">
         <div className="pt-6 pb-6 safe-bottom shrink-0">
           {/* Заголовок */}
           <div className="rounded-xl p-4 space-y-4" style={DARK_CARD_STYLE}>
