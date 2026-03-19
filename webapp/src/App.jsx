@@ -18,7 +18,6 @@ import ProgramDayScreen from './screens/ProgramDayScreen';
 import SupplementsScreen from './screens/SupplementsScreen';
 import MetricsScreen from './screens/MetricsScreen';
 import BackdateWorkoutScreen from './screens/BackdateWorkoutScreen';
-import RepeatWorkoutScreen from './screens/RepeatWorkoutScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -40,7 +39,6 @@ const SCREENS = {
   supplements: SupplementsScreen,
   metrics: MetricsScreen,
   'backdate-workout': BackdateWorkoutScreen,
-  'repeat-workout': RepeatWorkoutScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen

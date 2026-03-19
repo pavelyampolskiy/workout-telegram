@@ -13,7 +13,7 @@ import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function DayScreen() {
   const { params, userId, navigate, replace, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
-  const { day, dayLabel: paramLabel, isBackdated, isRepeat, repeatFromWorkout, dayProgram: passedDayProgram } = params;
+  const { day, dayLabel: paramLabel, isBackdated, dayProgram: passedDayProgram } = params;
   const dayLabel = paramLabel || day.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom Workout');
   const isCardio = day && String(day).toUpperCase() === 'CARDIO';
 
@@ -59,7 +59,7 @@ export default function DayScreen() {
   useEffect(() => {
     async function init() {
       try {
-        // Если передана программа (из backdate/repeat), используем ее, иначе загружаем обычную
+        // Если передана программа (из backdate), используем ее, иначе загружаем обычную
         let dayProgram = passedDayProgram;
         if (!dayProgram) {
           const prog = await api.getProgram(userId);
@@ -96,40 +96,6 @@ export default function DayScreen() {
             setCustomExercises(restoredCustom);
           }
         }
-
-        // Если это повторение тренировки, загружаем упражнения из предыдущей тренировки
-        if (isRepeat && repeatFromWorkout && activeWorkout) {
-          try {
-            const previousExercises = await api.getWorkoutExercises(repeatFromWorkout.id);
-            if (previousExercises?.length > 0) {
-              // Создаем упражнения на основе предыдущей тренировки
-              for (const prevEx of previousExercises) {
-                const { id } = await api.createExercise(activeWorkout.id, prevEx.grp, prevEx.name, prevEx.target_sets);
-                
-                // Добавляем подходы с теми же весами
-                if (prevEx.sets?.length > 0) {
-                  for (const set of prevEx.sets) {
-                    await api.addSet(id, set.weight, set.reps);
-                  }
-                }
-
-                // Обновляем exerciseMap
-                const progIdx = dayProgram?.findIndex(p => p.name === prevEx.name && p.group === prevEx.grp);
-                if (progIdx >= 0) {
-                  setActiveWorkout(prev => ({
-                    ...prev,
-                    exerciseMap: {
-                      ...prev.exerciseMap,
-                      [progIdx]: { dbId: id, setsCount: prevEx.sets?.length || 0 }
-                    }
-                  }));
-                }
-              }
-            }
-          } catch (e) {
-            showToast('Failed to load previous workout exercises');
-          }
-        }
       } catch (e) {
         setError(e.message);
         showToast(e.message);
@@ -138,7 +104,7 @@ export default function DayScreen() {
       }
     }
     init();
-  }, [userId, day, activeWorkout, passedDayProgram, isRepeat, repeatFromWorkout]);
+  }, [userId, day, activeWorkout, passedDayProgram]);
 
   // Workout duration timer — updates every second (keeps counting when app is closed)
   useEffect(() => {
