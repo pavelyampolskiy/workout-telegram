@@ -56,7 +56,7 @@ export default function BodyMetricsWidget() {
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
           Body Metrics
         </div>
-        <div className="px-3 py-1 rounded-lg border border-transparent" style={{ background: 'rgba(255,255,255,0.05)' }}>
+        <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent">
           <div className="text-xs text-white/40">Loading...</div>
         </div>
       </button>
@@ -91,12 +91,12 @@ export default function BodyMetricsWidget() {
             className="w-full px-3 py-2 rounded-lg text-left"
             style={{ background: 'rgba(255,255,255,0.05)' }}
           >
-            <div className="text-xs text-white/40">
+            <div className="text-xs text-white/60">
               <div className="flex justify-between items-center">
                 <span>No measurements yet</span>
                 <span style={{ color: '#6b7280' }}>📊</span>
               </div>
-              <div className="text-xs text-white/25 mt-1">
+              <div className="text-xs text-white/40 mt-1">
                 Tap to add first measurement
               </div>
             </div>
@@ -117,10 +117,10 @@ export default function BodyMetricsWidget() {
         Body Metrics
       </div>
       
-      <div className="px-3 py-1 rounded-lg border border-transparent min-w-0 flex-1 text-right" style={{ background: 'rgba(255,255,255,0.05)' }}>
-        <div className="text-xs text-white/40 whitespace-pre-line text-right">
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+        <div className="text-xs text-white whitespace-pre-line text-right">
           {latestMetrics?.weight && (
-            <div className="text-xs text-white/25 mb-1 text-right">
+            <div className="text-xs text-white/40 mb-1 text-right">
               Last measurement {formatDate(latestMetrics.date.split('T')[0])}
             </div>
           )}

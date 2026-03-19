@@ -51,7 +51,7 @@ export default function SupplementsWidget() {
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
           Current supplements
         </div>
-        <div className="px-3 py-1 rounded-lg border border-transparent" style={{ background: 'rgba(255,255,255,0.05)' }}>
+        <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent">
           <div className="text-xs text-white/40">Loading...</div>
         </div>
       </button>
@@ -84,8 +84,8 @@ export default function SupplementsWidget() {
         Current supplements
       </div>
       
-      <div className="px-3 py-1 rounded-lg border border-transparent min-w-0 flex-1 text-right" style={{ background: 'rgba(255,255,255,0.05)' }}>
-        <div className="text-xs text-white/40 whitespace-pre-line">
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+        <div className="text-xs text-white/92 whitespace-pre-line">
           {displayText}
         </div>
       </div>
