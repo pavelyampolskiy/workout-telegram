@@ -184,29 +184,6 @@ export default function HomeScreen() {
     setGridItems(createGridItems(editMode, navigate));
   }, []); // Только при монтировании
 
-  // Обновляем блокировку при смене editMode
-  useEffect(() => {
-    if (gridItems.length > 0) {
-      console.log('Updating block state for editMode:', editMode);
-      // Обновляем только блокировку, сохраняя порядок
-      const updatedItems = gridItems.map(item => {
-        if (item.type === 'button') {
-          return {
-            ...item,
-            content: createButtonContent(item.id, editMode, navigate)
-          };
-        } else if (item.type === 'widget') {
-          return {
-            ...item,
-            content: createWidgetContent(item.id, editMode)
-          };
-        }
-        return item;
-      });
-      setGridItems(updatedItems);
-    }
-  }, [editMode]); // Только при смене editMode
-
   // УБРАЛИ useEffect который пересоздавал элементы при смене editMode
 
   // Exit edit mode when clicking on empty space

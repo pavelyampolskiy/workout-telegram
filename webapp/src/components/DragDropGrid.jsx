@@ -37,33 +37,32 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
       
       // Определяем над каким элементом находимся
       const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-      if (elementBelow) {
-        const gridItem = elementBelow.closest('.grid-item');
-        if (gridItem) {
-          const index = parseInt(gridItem.dataset.index);
-          if (index !== undefined && index !== dragOverIndex) {
-            setDragOverIndex(index);
+      const gridItem = elementBelow?.closest('.grid-item');
+      
+      if (gridItem) {
+        const index = parseInt(gridItem.dataset.index);
+        if (index !== undefined && index !== dragOverIndex) {
+          setDragOverIndex(index);
+          const newItems = [...items];
+          const draggedIndex = draggedItem.originalIndex;
+          if (index !== draggedIndex) {
+            const [removed] = newItems.splice(draggedIndex, 1);
+            newItems.splice(index, 0, removed);
+            setDraggedItem({ ...removed, originalIndex: index });
+            onLayoutChange(newItems);
             
-            // Сразу переставляем элементы как на iPhone
-            const newItems = [...items];
-            const draggedIndex = draggedItem.originalIndex;
-            
-            if (index !== draggedIndex) {
-              // Убираем dragged элемент
-              const [removed] = newItems.splice(draggedIndex, 1);
-              
-              // Вставляем на новую позицию
-              if (index < draggedIndex) {
-                // Двигаем вверх
-                newItems.splice(index, 0, removed);
-              } else {
-                // Двигаем вниз
-                newItems.splice(index, 0, removed);
-              }
-              
-              // Обновляем draggedItem с новым индексом
-              setDraggedItem({ ...removed, originalIndex: index });
-              onLayoutChange(newItems);
+            // Сохраняем порядок сразу при перемещении
+            try {
+              const itemsToSave = newItems.map(item => ({
+                id: item.id,
+                type: item.type,
+                size: item.size,
+                draggable: item.draggable
+              }));
+              localStorage.setItem('grid_layout', JSON.stringify(itemsToSave));
+              console.log('Layout saved during drag');
+            } catch (error) {
+              console.error('Failed to save layout during drag:', error);
             }
           }
         }
