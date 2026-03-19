@@ -3,9 +3,9 @@ import './DragDropGrid.css';
 
 export default function DragDropGrid({ items, onLayoutChange, editMode = false }) {
   const [draggedItem, setDraggedItem] = useState(null);
-  const [dragOverItem, setDragOverItem] = useState(null);
-  const [touchStart, setTouchStart] = useState(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
   const [longPressTimer, setLongPressTimer] = useState(null);
+  const [touchStart, setTouchStart] = useState(null);
   const gridRef = useRef(null);
 
   // Загрузка сохраненной расстановки
@@ -16,26 +16,22 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     }
   }, []);
 
-  // Touch event handlers
-  const handleTouchStart = (e, item) => {
+  // Touch event handlers - упрощенные как у Apple
+  const handleTouchStart = (e, item, index) => {
     if (!editMode) return;
     
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY, time: Date.now() });
     
-    // Предотвращаем скролл при начале drag
-    e.preventDefault();
-    
-    // Long press detection
+    // Long press detection для включения режима drag
     const timer = setTimeout(() => {
-      setDraggedItem(item);
+      setDraggedItem({ ...item, originalIndex: index });
       e.target.classList.add('dragging');
       
-      // Блокируем скролл на всем документе
+      // Блокируем скролл только когда drag начался
       document.body.style.overflow = 'hidden';
       document.body.style.touchAction = 'none';
-      document.body.classList.add('no-scroll');
-    }, 300); // 300ms for long press
+    }, 300); // 300ms для long press
     
     setLongPressTimer(timer);
   };
@@ -44,18 +40,21 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     if (!editMode || !draggedItem) return;
     
     e.preventDefault();
-    e.stopPropagation();
-    
     const touch = e.touches[0];
     
-    // Find drop target
-    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-    const gridItem = elementBelow?.closest('[data-grid-item]');
-    
-    if (gridItem) {
-      const itemId = gridItem.dataset.gridItem;
-      if (itemId !== draggedItem.id) {
-        setDragOverItem(itemId);
+    // Определяем направление движения
+    if (touchStart) {
+      const deltaY = touch.clientY - touchStart.y;
+      
+      // Находим элемент под пальцем
+      const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+      const gridItem = elementBelow?.closest('[data-grid-item]');
+      
+      if (gridItem) {
+        const targetIndex = parseInt(gridItem.dataset.gridIndex);
+        if (!isNaN(targetIndex) && targetIndex !== draggedItem.originalIndex) {
+          setDragOverIndex(targetIndex);
+        }
       }
     }
   };
@@ -64,42 +63,31 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     // Возвращаем скролл
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
-    document.body.classList.remove('no-scroll');
     
     if (longPressTimer) {
       clearTimeout(longPressTimer);
       setLongPressTimer(null);
     }
     
-    if (draggedItem && dragOverItem) {
-      // Reorder items
-      const newLayout = reorderItems(items, draggedItem.id, dragOverItem);
-      onLayoutChange(newLayout);
-      saveGridLayout(newLayout);
+    if (draggedItem && dragOverIndex !== null && dragOverIndex !== draggedItem.originalIndex) {
+      // Простая перестановка элементов
+      const newItems = [...items];
+      const [removed] = newItems.splice(draggedItem.originalIndex, 1);
+      newItems.splice(dragOverIndex, 0, removed);
+      
+      onLayoutChange(newItems);
+      saveGridLayout(newItems);
     }
     
     // Clean up
     setDraggedItem(null);
-    setDragOverItem(null);
+    setDragOverIndex(null);
     setTouchStart(null);
     
     // Remove dragging class
     document.querySelectorAll('.dragging').forEach(el => {
       el.classList.remove('dragging');
     });
-  };
-
-  const reorderItems = (items, draggedId, targetId) => {
-    const draggedIndex = items.findIndex(item => item.id === draggedId);
-    const targetIndex = items.findIndex(item => item.id === targetId);
-    
-    if (draggedIndex === -1 || targetIndex === -1) return items;
-    
-    const newItems = [...items];
-    const [draggedItem] = newItems.splice(draggedIndex, 1);
-    newItems.splice(targetIndex, 0, draggedItem);
-    
-    return newItems;
   };
 
   const saveGridLayout = (layout) => {
@@ -127,7 +115,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     return null;
   };
 
-  const getGridItemClass = (item) => {
+  const getGridItemClass = (item, index) => {
     let baseClass = 'grid-item card-press rounded-xl transition-all duration-200';
     
     if (editMode) {
@@ -138,7 +126,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
       baseClass += ' dragging';
     }
     
-    if (dragOverItem === item.id && draggedItem?.id !== item.id) {
+    if (dragOverIndex === index && draggedItem?.id !== item.id) {
       baseClass += ' drop-target';
     }
     
@@ -157,7 +145,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     const baseStyle = {
       background: 'rgba(255,255,255,0.03)',
       minHeight: '80px',
-      touchAction: editMode ? 'none' : 'auto'
+      touchAction: editMode ? 'pan-y' : 'auto'
     };
     
     // Custom sizing
@@ -185,13 +173,14 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
         overflowY: editMode ? 'auto' : 'visible'
       }}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <div
           key={item.id}
           data-grid-item={item.id}
-          className={getGridItemClass(item)}
+          data-grid-index={index}
+          className={getGridItemClass(item, index)}
           style={getItemStyle(item)}
-          onTouchStart={(e) => handleTouchStart(e, item)}
+          onTouchStart={(e) => handleTouchStart(e, item, index)}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
@@ -204,15 +193,15 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
           .edit-mode::after {
             content: '⋮⋮';
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 8px;
+            right: 8px;
             color: rgba(255,255,255,0.3);
             font-size: 12px;
             pointer-events: none;
           }
           
           .dragging {
-            opacity: 0.5;
+            opacity: 0.8;
             transform: scale(1.05);
             z-index: 1000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -220,7 +209,6 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
           
           .drop-target {
             background: rgba(255,255,255,0.1) !important;
-            border: 2px dashed rgba(255,255,255,0.3);
             transform: scale(0.95);
           }
         `}</style>
