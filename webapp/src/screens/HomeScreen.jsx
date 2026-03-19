@@ -360,6 +360,7 @@ export default function HomeScreen() {
             items={gridItems}
             onLayoutChange={setGridItems}
             editMode={editMode}
+            userId={userId}
           />
           
           {/* Edit Dashboard */}

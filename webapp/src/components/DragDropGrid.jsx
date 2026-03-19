@@ -1,20 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import './DragDropGrid.css';
 
-export default function DragDropGrid({ items, onLayoutChange, editMode = false }) {
+export default function DragDropGrid({ items, onLayoutChange, editMode = false, userId = null }) {
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [longPressTimer, setLongPressTimer] = useState(null);
   const [touchStart, setTouchStart] = useState(null);
   const gridRef = useRef(null);
 
-  // Загрузка сохраненной расстановки
+  // Загрузка сохраненной расстановки при изменении userId или если items пустые
   useEffect(() => {
-    const savedLayout = loadGridLayout();
-    if (savedLayout) {
-      onLayoutChange(savedLayout);
+    if (userId && items.length === 0) {
+      const savedLayout = loadGridLayout();
+      if (savedLayout && savedLayout.length > 0) {
+        onLayoutChange(savedLayout);
+      }
     }
-  }, []);
+  }, [userId, items.length, onLayoutChange]);
 
   // Touch event handlers - упрощенные как у Apple
   const handleTouchStart = (e, item, index) => {
@@ -92,7 +94,8 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
 
   const saveGridLayout = (layout) => {
     try {
-      localStorage.setItem('grid_layout', JSON.stringify({
+      const key = userId ? `grid_layout_${userId}` : 'grid_layout';
+      localStorage.setItem(key, JSON.stringify({
         layout,
         timestamp: Date.now(),
         version: '1.0'
@@ -104,7 +107,8 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
 
   const loadGridLayout = () => {
     try {
-      const saved = localStorage.getItem('grid_layout');
+      const key = userId ? `grid_layout_${userId}` : 'grid_layout';
+      const saved = localStorage.getItem(key);
       if (saved) {
         const { layout } = JSON.parse(saved);
         return layout;
