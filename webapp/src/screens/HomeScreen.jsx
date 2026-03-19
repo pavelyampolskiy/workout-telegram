@@ -215,6 +215,17 @@ export default function HomeScreen() {
         type: 'widget',
         size: { cols: 2, rows: 1 },
         content: <BodyMetricsWidget />
+      },
+      {
+        id: 'edit-dashboard',
+        type: 'control',
+        size: { cols: 2, rows: 1 },
+        content: (
+          <EditModeToggle 
+            enabled={editMode}
+            onToggle={() => setEditMode(!editMode)}
+          />
+        )
       }
     ];
   }
@@ -351,14 +362,6 @@ export default function HomeScreen() {
             onLayoutChange={setGridItems}
             editMode={editMode}
           />
-          
-          {/* Edit Dashboard Button */}
-          <div className="mt-4">
-            <EditModeToggle 
-              enabled={editMode}
-              onToggle={() => setEditMode(!editMode)}
-            />
-          </div>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
