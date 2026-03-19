@@ -142,31 +142,44 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
-    // Пытаемся загрузить сохраненную расстановку
-    try {
-      const saved = localStorage.getItem('grid_layout');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) {
-          setGridItems(parsed);
-          return;
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load saved layout:', error);
+    setGridItems(createGridItems(editMode, navigate));
+  }, []);
+
+  // Update grid items when editMode changes
+  useEffect(() => {
+    setGridItems(createGridItems(editMode, navigate));
+  }, [editMode]);
+
+  // Exit edit mode when clicking on empty space
+  const handleEmptySpaceClick = () => {
+    if (editMode) {
+      setEditMode(false);
+      saveLayout();
     }
-    
-    // Если нет сохраненной, используем стандартную
-    setGridItems([
+  };
+
+  // Сохранение расстановки
+  const saveLayout = () => {
+    try {
+      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
+      console.log('Layout saved successfully');
+    } catch (error) {
+      console.error('Failed to save layout:', error);
+    }
+  };
+
+  // Функция создания элементов сетки
+  const createGridItems = (isEditMode, navigateFn) => {
+    return [
       {
         id: 'history',
         type: 'button',
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('history')}
+            onClick={() => !isEditMode && navigateFn('history')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
@@ -179,9 +192,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('stats')}
+            onClick={() => !isEditMode && navigateFn('stats')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
@@ -194,9 +207,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('achievements')}
+            onClick={() => !isEditMode && navigateFn('achievements')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
@@ -209,9 +222,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('program')}
+            onClick={() => !isEditMode && navigateFn('program')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
@@ -230,25 +243,7 @@ export default function HomeScreen() {
         size: { cols: 2, rows: 1 },
         content: <BodyMetricsWidget />
       }
-    ]);
-  }, []);
-
-  // Exit edit mode when clicking on empty space
-  const handleEmptySpaceClick = () => {
-    if (editMode) {
-      setEditMode(false);
-      saveLayout();
-    }
-  };
-
-  // Сохранение расстановки
-  const saveLayout = () => {
-    try {
-      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
-      console.log('Layout saved successfully');
-    } catch (error) {
-      console.error('Failed to save layout:', error);
-    }
+    ];
   };
 
   // Default grid items configuration
