@@ -13,7 +13,7 @@ import { ConfirmModal } from '../components/ConfirmModal';
 
 export default function DayScreen() {
   const { params, userId, navigate, replace, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
-  const { day, dayLabel: paramLabel } = params;
+  const { day, dayLabel: paramLabel, isBackdated } = params;
   const dayLabel = paramLabel || day.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom Workout');
   const isCardio = day && String(day).toUpperCase() === 'CARDIO';
 
@@ -64,7 +64,7 @@ export default function DayScreen() {
         setProgram(dayProgram);
 
         if (!activeWorkout || activeWorkout.day !== day) {
-          const { id } = await api.createWorkout(userId, day);
+          const { id } = await api.createWorkout(userId, day); // Без даты для обычных тренировок
           setActiveWorkout({ id, day, exerciseMap: {}, startedAt: Date.now() });
         } else if (activeWorkout && Object.keys(activeWorkout.exerciseMap || {}).length === 0) {
           // Resuming a workout — load existing exercises from backend
@@ -126,7 +126,7 @@ export default function DayScreen() {
     navigate('exercise', { exIdx: idx, exDbId, workoutId, day, userId });
   };
 
-  const handleSave = async () => {
+  const handleSaveWorkout = async () => {
     const mins = activeWorkout?.startedAt
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
@@ -137,7 +137,12 @@ export default function DayScreen() {
     }
     setSavingWorkout(true);
     try {
-      await api.finishWorkout(workoutId);
+      // Если это backdated тренировка, используем сохраненную дату
+      const completionDate = isBackdated && activeWorkout?.backdateDate 
+        ? activeWorkout.backdateDate 
+        : undefined;
+      
+      await api.finishWorkout(workoutId, completionDate);
       setShowNote(true);
     } catch (e) {
       showToast(e.message);

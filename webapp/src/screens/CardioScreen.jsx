@@ -19,7 +19,7 @@ const ACTIVITIES = [
 ];
 
 export default function CardioScreen() {
-  const { userId, resetTo, goBack, showToast } = useApp();
+  const { userId, resetTo, goBack, showToast, activeWorkout } = useApp();
   const [workoutId, setWorkoutId] = useState(null);
   const [text, setText] = useState('');
   const [activityType, setActivityType] = useState('');
@@ -34,6 +34,9 @@ export default function CardioScreen() {
   const [countdownStep, setCountdownStep] = useState(null); // 0..4 (READY? 1 2 3 GO!)
   const intervalRef = useRef(null);
   const countdownRef = useRef(null);
+  
+  // Проверяем если это backdated workout
+  const isBackdated = activeWorkout?.isBackdated || false;
 
   useEffect(() => {
     api.getUnfinishedWorkout(userId)
@@ -67,7 +70,7 @@ export default function CardioScreen() {
     try {
       if (starting || countdownStep != null) return;
       setStarting(true);
-      const { id } = await api.createWorkout(userId, 'CARDIO');
+      const { id } = await api.createWorkout(userId, 'CARDIO'); // Без даты для обычных тренировок
       setWorkoutId(id);
       setCountdownStep(0);
     } catch (e) {
@@ -130,10 +133,17 @@ export default function CardioScreen() {
     setSaving(true);
     try {
       await api.addCardio(workoutId, toSave.trim());
-      await api.finishWorkout(workoutId);
+      
+      // Если это backdated тренировка, используем сохраненную дату
+      const completionDate = isBackdated && activeWorkout?.backdateDate 
+        ? activeWorkout.backdateDate 
+        : undefined;
+      
+      await api.finishWorkout(workoutId, completionDate);
       resetTo('home');
     } catch (e) {
       showToast(e.message);
+    } finally {
       setSaving(false);
     }
   };

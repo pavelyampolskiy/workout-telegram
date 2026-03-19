@@ -15,6 +15,15 @@ function formatActiveDayLabel(dayKey, days) {
   return dayKey.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom');
 }
 
+const CalendarIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+);
+
 const DayIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
     <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
@@ -142,6 +151,25 @@ export default function WorkoutScreen() {
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="font-bebas tracking-wider text-lg text-white">Cardio</div>
+                  </div>
+                </button>
+
+                <div className="flex items-center gap-3 my-3">
+                  <div className="flex-1 h-px bg-white/8" />
+                  <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
+                  <div className="flex-1 h-px bg-white/8" />
+                </div>
+
+                <button
+                  onClick={() => navigate('backdate-workout')}
+                  className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
+                >
+                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white/60">
+                    <CalendarIcon />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bebas tracking-wider text-lg text-white/60">Add Past Workout</div>
+                    <div className="text-xs text-white/40">Record a workout from a previous date</div>
                   </div>
                 </button>
               </div>

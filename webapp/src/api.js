@@ -34,7 +34,8 @@ export const api = {
   renameDay: (day_id, label) => req('PUT', `/api/days/${day_id}`, { label }),
   deleteDay: (day_id) => req('DELETE', `/api/days/${day_id}`),
 
-  createWorkout: (user_id, type) => req('POST', '/api/workouts', { user_id, type }),
+  createWorkout: (user_id, type, date) => 
+    req('POST', '/api/workouts', { user_id, type, date }),
   deleteWorkout: (id) => req('DELETE', `/api/workouts/${id}`),
   getWorkout: (id) => req('GET', `/api/workouts/${id}`),
   getHistory: (user_id, offset = 0, limit = 10, type = null) =>
@@ -64,7 +65,8 @@ export const api = {
   deleteSet: (set_id) => req('DELETE', `/api/sets/${set_id}`),
 
   addCardio: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/cardio`, { text }),
-  finishWorkout: (id) => req('PATCH', `/api/workouts/${id}/finish`),
+  finishWorkout: (id, completion_date) => 
+    req('PATCH', `/api/workouts/${id}/finish`, { completion_date }),
   saveRating: (workout_id, rating) => req('PATCH', `/api/workouts/${workout_id}/rating`, { rating }),
   addNote: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/note`, { text }),
   updateNote: (workout_id, text) => req('PUT', `/api/workouts/${workout_id}/note`, { text }),
