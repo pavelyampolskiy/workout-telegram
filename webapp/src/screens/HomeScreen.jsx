@@ -155,7 +155,78 @@ export default function HomeScreen() {
         // Если ошибка, используем стандартную
       }
     }
-    setGridItems(getDefaultGridItems());
+    
+    // Используем стандартную расстановку без вызова функции
+    setGridItems([
+      {
+        id: 'history',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('history')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
+          </button>
+        )
+      },
+      {
+        id: 'stats',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('stats')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+          </button>
+        )
+      },
+      {
+        id: 'achievements',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('achievements')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
+          </button>
+        )
+      },
+      {
+        id: 'program',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('program')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
+          </button>
+        )
+      },
+      {
+        id: 'supplements',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: <SupplementsWidget />
+      },
+      {
+        id: 'body-metrics',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: <BodyMetricsWidget />
+      }
+    ]);
   }, []);
 
   // Exit edit mode when clicking on empty space
