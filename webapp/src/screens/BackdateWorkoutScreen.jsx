@@ -58,6 +58,64 @@ export default function BackdateWorkoutScreen() {
   });
   const [selectedWorkoutType, setSelectedWorkoutType] = useState(null);
 
+  // Добавляем глобальные стили для календаря
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Стили для календаря в черных тонах */
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+      }
+      
+      /* Затемнение фона при открытом календаре */
+      body.date-picker-open::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        pointer-events: none;
+      }
+      
+      /* Стили для календаря Chrome */
+      input[type="date"]::-webkit-datetime-edit-text-field,
+      input[type="date"]::-webkit-datetime-edit-month-field,
+      input[type="date"]::-webkit-datetime-edit-day-field,
+      input[type="date"]::-webkit-datetime-edit-year-field {
+        color: white !important;
+        background: transparent !important;
+      }
+      
+      input[type="date"]:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Обработчики для затемнения фона
+    const handleFocus = () => document.body.classList.add('date-picker-open');
+    const handleBlur = () => document.body.classList.remove('date-picker-open');
+    
+    const dateInput = document.querySelector('input[type="date"]');
+    if (dateInput) {
+      dateInput.addEventListener('focus', handleFocus);
+      dateInput.addEventListener('blur', handleBlur);
+    }
+    
+    return () => {
+      document.head.removeChild(style);
+      document.body.classList.remove('date-picker-open');
+      if (dateInput) {
+        dateInput.removeEventListener('focus', handleFocus);
+        dateInput.removeEventListener('blur', handleBlur);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     api.getDays(userId)
       .then(setDays)
@@ -165,11 +223,12 @@ export default function BackdateWorkoutScreen() {
                 onChange={(e) => setSelectedDate(e.target.value)}
                 max={getMaxDate()}
                 min={getMinDate()}
-                className="w-full px-3 py-2 rounded-lg text-white text-sm"
+                className="w-full px-2 py-1.5 rounded-lg text-white text-xs"
                 style={{ 
                   background: 'rgba(255,255,255,0.05)',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  fontSize: '14px'
+                  fontSize: '12px',
+                  height: '36px'
                 }}
               />
             </div>
