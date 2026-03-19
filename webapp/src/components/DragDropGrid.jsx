@@ -23,10 +23,18 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY, time: Date.now() });
     
+    // Предотвращаем скролл при начале drag
+    e.preventDefault();
+    
     // Long press detection
     const timer = setTimeout(() => {
       setDraggedItem(item);
       e.target.classList.add('dragging');
+      
+      // Блокируем скролл на всем документе
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+      document.body.classList.add('no-scroll');
     }, 300); // 300ms for long press
     
     setLongPressTimer(timer);
@@ -36,6 +44,8 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     if (!editMode || !draggedItem) return;
     
     e.preventDefault();
+    e.stopPropagation();
+    
     const touch = e.touches[0];
     
     // Find drop target
@@ -51,6 +61,11 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
   };
 
   const handleTouchEnd = (e) => {
+    // Возвращаем скролл
+    document.body.style.overflow = '';
+    document.body.style.touchAction = '';
+    document.body.classList.remove('no-scroll');
+    
     if (longPressTimer) {
       clearTimeout(longPressTimer);
       setLongPressTimer(null);
