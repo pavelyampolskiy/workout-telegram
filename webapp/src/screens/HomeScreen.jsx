@@ -155,7 +155,7 @@ export default function HomeScreen() {
         
         if (parsed && parsed.length > 0) {
           // Восстанавливаем полный порядок из сохраненных данных
-          const restoredItems = restoreLayoutFromSaved(parsed, editMode, navigate);
+          const restoredItems = restoreLayoutFromSaved(parsed, false, navigate); // Всегда с editMode = false
           console.log('Restored items:', restoredItems.map(item => item.id));
           
           if (restoredItems.length > 0) {
@@ -171,30 +171,10 @@ export default function HomeScreen() {
     
     // Если нет сохраненного или ошибка, создаем стандартный
     console.log('No saved layout found, creating default');
-    setGridItems(createGridItems(editMode, navigate));
+    setGridItems(createGridItems(false, navigate)); // Всегда с editMode = false
   }, []); // Выполняется только при монтировании
 
-  // Update content when editMode changes (без сброса порядка)
-  useEffect(() => {
-    if (gridItems.length > 0) {
-      // Обновляем только контент, сохраняя порядок
-      const updatedItems = gridItems.map(item => {
-        if (item.type === 'button') {
-          return {
-            ...item,
-            content: createButtonContent(item.id, editMode, navigate)
-          };
-        } else if (item.type === 'widget') {
-          return {
-            ...item,
-            content: createWidgetContent(item.id, editMode)
-          };
-        }
-        return item;
-      });
-      setGridItems(updatedItems);
-    }
-  }, [editMode]);
+  // УБРАЛИ useEffect который пересоздавал элементы при смене editMode
 
   // Exit edit mode when clicking on empty space
   const handleEmptySpaceClick = () => {
