@@ -162,7 +162,29 @@ export default function HomeScreen() {
     
     // Если нет сохраненного или ошибка, создаем стандартный
     setGridItems(createGridItems(editMode, navigate));
-  }, [editMode, navigate]);
+  }, []); // Убрали зависимости чтобы не пересоздавать при смене editMode
+
+  // Update content when editMode changes (без сброса порядка)
+  useEffect(() => {
+    if (gridItems.length > 0) {
+      // Обновляем только контент, сохраняя порядок
+      const updatedItems = gridItems.map(item => {
+        if (item.type === 'button') {
+          return {
+            ...item,
+            content: createButtonContent(item.id, editMode, navigate)
+          };
+        } else if (item.type === 'widget') {
+          return {
+            ...item,
+            content: createWidgetContent(item.id, editMode)
+          };
+        }
+        return item;
+      });
+      setGridItems(updatedItems);
+    }
+  }, [editMode]);
 
   // Exit edit mode when clicking on empty space
   const handleEmptySpaceClick = () => {
@@ -208,6 +230,45 @@ export default function HomeScreen() {
       }
       return null;
     }).filter(item => item !== null);
+  };
+
+  // Функции создания контента
+  const createButtonContent = (id, isEditMode, navigateFn) => {
+    const buttonConfig = {
+      history: { icon: <HistoryIcon />, label: 'History', navigate: 'history' },
+      stats: { icon: <StatsIcon />, label: 'Statistics', navigate: 'stats' },
+      achievements: { icon: <TrophyIcon />, label: 'Achievements', navigate: 'achievements' },
+      program: { icon: <ProgramIcon />, label: 'My program', navigate: 'program' }
+    };
+    
+    const config = buttonConfig[id];
+    return (
+      <button
+        onClick={() => !isEditMode && navigateFn(config.navigate)}
+        className="w-full h-full flex flex-row justify-between items-center p-4"
+        disabled={isEditMode}
+      >
+        <span className="shrink-0 flex items-center justify-center text-white/25">{config.icon}</span>
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>{config.label}</div>
+      </button>
+    );
+  };
+
+  const createWidgetContent = (id, isEditMode) => {
+    if (id === 'supplements') {
+      return (
+        <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+          <SupplementsWidget />
+        </div>
+      );
+    } else if (id === 'body-metrics') {
+      return (
+        <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+          <BodyMetricsWidget />
+        </div>
+      );
+    }
+    return null;
   };
 
   // Функция создания элементов сетки
