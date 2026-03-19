@@ -270,21 +270,20 @@ export default function MetricsScreen() {
             )}
           </div>
 
-          {/* Full Metrics List - только если нужно показать все */}
-          {false && metrics.length > 0 && (
+          {/* Full Metrics List */}
+          {metrics.length > 0 && (
             <div className="space-y-3">
               <h3 className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>All Measurements</h3>
               {metrics.slice().reverse().map(metric => (
                 <div key={metric.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <div className="font-bebas text-base tracking-wider text-white/92 truncate">
-                        {formatDate(metric.date.split('T')[0]).toUpperCase()}
-                      </div>
-                      <div className="text-sm text-white/60 mt-1">
-                        {metric.weight && <div>Weight: {metric.weight}kg</div>}
-                        {metric.body_fat && <div>Body Fat: {metric.body_fat}%</div>}
-                        {metric.muscle_mass && <div>Muscle Mass: {metric.muscle_mass}kg</div>}
+                      <h3 className={`font-bebas text-base tracking-wider ${TEXT_PRIMARY} truncate`}>
+                        {formatDate(metric.date.split('T')[0]).toUpperCase()}: {metric.weight}kg
+                      </h3>
+                      <div className="font-bebas font-light leading-none mt-2" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
+                        {metric.body_fat && <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>Body Fat: {metric.body_fat}%</span>}
+                        {metric.muscle_mass && <span className="text-white/25 shrink-0 ml-2" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>Muscle Mass: {metric.muscle_mass}kg</span>}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 ml-3">
