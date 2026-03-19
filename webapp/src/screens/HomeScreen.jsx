@@ -164,7 +164,7 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('history')}
+            onClick={() => !editMode && navigate('history')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
@@ -178,7 +178,7 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('stats')}
+            onClick={() => !editMode && navigate('stats')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
@@ -192,7 +192,7 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('achievements')}
+            onClick={() => !editMode && navigate('achievements')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
@@ -206,7 +206,7 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('program')}
+            onClick={() => !editMode && navigate('program')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
