@@ -189,7 +189,7 @@ export default function HomeScreen() {
     console.log('Saved default layout');
   }, []); // Выполняется только при монтировании
 
-  // Принудительное восстановление порядка при каждом рендере
+  // Принудительное восстановление порядка при изменении gridItems
   useEffect(() => {
     if (gridItems.length > 0) {
       const saved = localStorage.getItem('grid_layout');
@@ -203,9 +203,11 @@ export default function HomeScreen() {
             console.log('Current order:', currentOrder);
             console.log('Saved order:', savedOrder);
             
-            // Если порядки не совпадают, восстанавливаем сохраненный
-            if (JSON.stringify(currentOrder) !== JSON.stringify(savedOrder)) {
-              console.log('Order mismatch, restoring saved order...');
+            // Восстанавливаем только если это стандартный порядок (первая загрузка)
+            const standardOrder = ['history', 'stats', 'achievements', 'program', 'supplements', 'body-metrics'];
+            if (JSON.stringify(currentOrder) === JSON.stringify(standardOrder) && 
+                JSON.stringify(savedOrder) !== JSON.stringify(standardOrder)) {
+              console.log('Standard order detected, restoring saved order...');
               const restoredItems = restoreLayoutFromSaved(parsed, false, navigate);
               if (restoredItems.length > 0) {
                 setGridItems(restoredItems);
@@ -217,7 +219,7 @@ export default function HomeScreen() {
         }
       }
     }
-  }); // Без зависимостей - проверяет при каждом рендере
+  }, [gridItems.length]); // Только при изменении количества элементов
 
   // УБРАЛИ useEffect который пересоздавал элементы при смене editMode
 
