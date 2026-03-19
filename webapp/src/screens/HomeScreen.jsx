@@ -142,21 +142,6 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
-    // Пробуем загрузить сохраненную расстановку
-    try {
-      const saved = localStorage.getItem('grid_layout');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) {
-          setGridItems(parsed);
-          return;
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load saved layout:', error);
-    }
-    
-    // Если нет сохраненной или ошибка, используем стандартную
     setGridItems(getDefaultGridItems());
   }, []);
 

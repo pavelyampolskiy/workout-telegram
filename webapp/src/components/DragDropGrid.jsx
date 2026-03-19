@@ -8,17 +8,6 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
   const [touchStart, setTouchStart] = useState(null);
   const gridRef = useRef(null);
 
-  // Сохранение при изменении layout
-  useEffect(() => {
-    if (items.length > 0) {
-      try {
-        localStorage.setItem('grid_layout', JSON.stringify(items));
-      } catch (error) {
-        console.error('Failed to save layout:', error);
-      }
-    }
-  }, [items]);
-
   // Touch event handlers - сразу drag без long press
   const handleTouchStart = (e, item, index) => {
     if (!editMode || item.draggable === false) return;
