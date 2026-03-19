@@ -142,18 +142,25 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    console.log('HomeScreen mounted, checking saved layout...');
+    
     // Сначала пробуем загрузить сохраненный порядок
     try {
       const saved = localStorage.getItem('grid_layout');
+      console.log('Raw saved data:', saved);
+      
       if (saved) {
         const parsed = JSON.parse(saved);
+        console.log('Parsed saved layout:', parsed);
+        
         if (parsed && parsed.length > 0) {
-          console.log('Loading saved layout:', parsed);
           // Восстанавливаем полный порядок из сохраненных данных
           const restoredItems = restoreLayoutFromSaved(parsed, editMode, navigate);
+          console.log('Restored items:', restoredItems.map(item => item.id));
+          
           if (restoredItems.length > 0) {
-            console.log('Restored items:', restoredItems.map(item => item.id));
             setGridItems(restoredItems);
+            console.log('Successfully loaded saved layout');
             return;
           }
         }
@@ -163,9 +170,9 @@ export default function HomeScreen() {
     }
     
     // Если нет сохраненного или ошибка, создаем стандартный
-    console.log('Creating default layout');
+    console.log('No saved layout found, creating default');
     setGridItems(createGridItems(editMode, navigate));
-  }, []); // Убрали зависимости чтобы не пересоздавать при смене editMode
+  }, []); // Выполняется только при монтировании
 
   // Update content when editMode changes (без сброса порядка)
   useEffect(() => {
