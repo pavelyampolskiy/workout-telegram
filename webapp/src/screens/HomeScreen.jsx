@@ -144,6 +144,10 @@ export default function HomeScreen() {
   useEffect(() => {
     console.log('HomeScreen mounted, checking saved layout...');
     
+    // Тестовая проверка localStorage
+    const testCheck = localStorage.getItem('test_order');
+    console.log('TEST: Found test_order in localStorage:', testCheck);
+    
     // Сначала пробуем загрузить сохраненный порядок
     try {
       const saved = localStorage.getItem('grid_layout');
@@ -181,6 +185,14 @@ export default function HomeScreen() {
     if (editMode) {
       setEditMode(false);
       saveLayout();
+      
+      // Тестовое сохранение для проверки
+      const testOrder = gridItems.map(item => item.id);
+      console.log('TEST: Saving order to localStorage:', testOrder);
+      localStorage.setItem('test_order', JSON.stringify(testOrder));
+      console.log('TEST: Saved. Now checking...');
+      const check = localStorage.getItem('test_order');
+      console.log('TEST: Retrieved from localStorage:', check);
     }
   };
 
