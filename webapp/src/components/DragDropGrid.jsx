@@ -76,15 +76,6 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
     
-    // Сохраняем layout если были изменения
-    if (items.length > 0) {
-      try {
-        localStorage.setItem('grid_layout', JSON.stringify(items));
-      } catch (error) {
-        console.error('Failed to save layout:', error);
-      }
-    }
-    
     // Clean up
     setDraggedItem(null);
     setDragOverIndex(null);
