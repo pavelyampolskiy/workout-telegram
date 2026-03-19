@@ -145,6 +145,13 @@ export default function HomeScreen() {
     setGridItems(getDefaultGridItems());
   }, []);
 
+  // Exit edit mode when clicking on empty space
+  const handleEmptySpaceClick = () => {
+    if (editMode) {
+      setEditMode(false);
+    }
+  };
+
   // Default grid items configuration
   function getDefaultGridItems() {
     return [
@@ -215,18 +222,6 @@ export default function HomeScreen() {
         type: 'widget',
         size: { cols: 2, rows: 1 },
         content: <BodyMetricsWidget />
-      },
-      {
-        id: 'edit-dashboard',
-        type: 'control',
-        size: { cols: 2, rows: 1 },
-        draggable: false, // Запрещаем перетаскивание
-        content: (
-          <EditModeToggle 
-            enabled={editMode}
-            onToggle={() => setEditMode(!editMode)}
-          />
-        )
       }
     ];
   }
@@ -354,7 +349,10 @@ export default function HomeScreen() {
         </div>
 
         {/* Пустое место */}
-        <div className="flex-1 min-h-0" />
+        <div 
+          className="flex-1 min-h-0" 
+          onClick={handleEmptySpaceClick}
+        />
 
         {/* Низ: адаптивная сетка */}
         <div className="shrink-0 pt-4">
@@ -363,6 +361,14 @@ export default function HomeScreen() {
             onLayoutChange={setGridItems}
             editMode={editMode}
           />
+          
+          {/* Edit Dashboard */}
+          <div className="mt-4 text-center">
+            <EditModeToggle 
+              enabled={editMode}
+              onToggle={() => setEditMode(!editMode)}
+            />
+          </div>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
