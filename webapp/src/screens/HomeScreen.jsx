@@ -142,14 +142,63 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
-    setGridItems(getDefaultGridItems());
-  }, []);
+    // Сначала загружаем сохраненную расстановку
+    if (userId) {
+      const savedLayout = loadGridLayout();
+      if (savedLayout && savedLayout.length > 0) {
+        console.log('Loading saved layout in HomeScreen:', savedLayout);
+        setGridItems(savedLayout);
+      } else {
+        // Если нет сохраненной, используем стандартную
+        setGridItems(getDefaultGridItems());
+      }
+    } else {
+      setGridItems(getDefaultGridItems());
+    }
+  }, [userId]);
+
+  // Сохраняем при изменении gridItems
+  useEffect(() => {
+    if (userId && gridItems.length > 0) {
+      saveGridLayout(gridItems);
+    }
+  }, [gridItems, userId]);
 
   // Exit edit mode when clicking on empty space
   const handleEmptySpaceClick = () => {
     if (editMode) {
       setEditMode(false);
     }
+  };
+
+  // Функции сохранения/загрузки
+  const saveGridLayout = (layout) => {
+    try {
+      const key = userId ? `grid_layout_${userId}` : 'grid_layout';
+      console.log('Saving layout to key:', key, layout);
+      localStorage.setItem(key, JSON.stringify({
+        layout,
+        timestamp: Date.now(),
+        version: '1.0'
+      }));
+    } catch (error) {
+      console.error('Failed to save grid layout:', error);
+    }
+  };
+
+  const loadGridLayout = () => {
+    try {
+      const key = userId ? `grid_layout_${userId}` : 'grid_layout';
+      const saved = localStorage.getItem(key);
+      console.log('Loading from key:', key, saved);
+      if (saved) {
+        const { layout } = JSON.parse(saved);
+        return layout;
+      }
+    } catch (error) {
+      console.error('Failed to load grid layout:', error);
+    }
+    return null;
   };
 
   // Default grid items configuration
@@ -360,7 +409,6 @@ export default function HomeScreen() {
             items={gridItems}
             onLayoutChange={setGridItems}
             editMode={editMode}
-            userId={userId}
           />
           
           {/* Edit Dashboard */}

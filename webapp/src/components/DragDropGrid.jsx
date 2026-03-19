@@ -1,23 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import './DragDropGrid.css';
 
-export default function DragDropGrid({ items, onLayoutChange, editMode = false, userId = null }) {
+export default function DragDropGrid({ items, onLayoutChange, editMode = false }) {
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [longPressTimer, setLongPressTimer] = useState(null);
   const [touchStart, setTouchStart] = useState(null);
   const gridRef = useRef(null);
-
-  // Загрузка сохраненной расстановки
-  useEffect(() => {
-    if (userId) {
-      const savedLayout = loadGridLayout();
-      if (savedLayout && savedLayout.length > 0) {
-        console.log('Loading saved layout:', savedLayout);
-        onLayoutChange(savedLayout);
-      }
-    }
-  }, [userId]);
 
   // Touch event handlers - упрощенные как у Apple
   const handleTouchStart = (e, item, index) => {
@@ -79,7 +68,6 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false, 
       newItems.splice(dragOverIndex, 0, removed);
       
       onLayoutChange(newItems);
-      saveGridLayout(newItems);
     }
     
     // Clean up
@@ -91,35 +79,6 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false, 
     document.querySelectorAll('.dragging').forEach(el => {
       el.classList.remove('dragging');
     });
-  };
-
-  const saveGridLayout = (layout) => {
-    try {
-      const key = userId ? `grid_layout_${userId}` : 'grid_layout';
-      console.log('Saving layout to key:', key, layout);
-      localStorage.setItem(key, JSON.stringify({
-        layout,
-        timestamp: Date.now(),
-        version: '1.0'
-      }));
-    } catch (error) {
-      console.error('Failed to save grid layout:', error);
-    }
-  };
-
-  const loadGridLayout = () => {
-    try {
-      const key = userId ? `grid_layout_${userId}` : 'grid_layout';
-      const saved = localStorage.getItem(key);
-      console.log('Loading from key:', key, saved);
-      if (saved) {
-        const { layout } = JSON.parse(saved);
-        return layout;
-      }
-    } catch (error) {
-      console.error('Failed to load grid layout:', error);
-    }
-    return null;
   };
 
   const getGridItemClass = (item, index) => {
