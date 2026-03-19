@@ -142,6 +142,25 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    // Сначала пробуем загрузить сохраненный порядок
+    try {
+      const saved = localStorage.getItem('grid_layout');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          // Восстанавливаем полный порядок из сохраненных данных
+          const restoredItems = restoreLayoutFromSaved(parsed, editMode, navigate);
+          if (restoredItems.length > 0) {
+            setGridItems(restoredItems);
+            return;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load saved layout:', error);
+    }
+    
+    // Если нет сохраненного или ошибка, создаем стандартный
     setGridItems(createGridItems(editMode, navigate));
   }, [editMode, navigate]);
 
@@ -156,11 +175,39 @@ export default function HomeScreen() {
   // Сохранение расстановки
   const saveLayout = () => {
     try {
-      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
+      // Сохраняем только данные элементов, без JSX контента
+      const itemsToSave = gridItems.map(item => ({
+        id: item.id,
+        type: item.type,
+        size: item.size,
+        draggable: item.draggable
+      }));
+      
+      localStorage.setItem('grid_layout', JSON.stringify(itemsToSave));
       console.log('Layout saved successfully');
     } catch (error) {
       console.error('Failed to save layout:', error);
     }
+  };
+
+  // Восстановление полного порядка из сохраненных данных
+  const restoreLayoutFromSaved = (savedItems, isEditMode, navigateFn) => {
+    const allItems = createGridItems(isEditMode, navigateFn);
+    
+    // Создаем карту всех элементов по id
+    const itemMap = {};
+    allItems.forEach(item => {
+      itemMap[item.id] = item;
+    });
+    
+    // Восстанавливаем порядок из сохраненных данных
+    return savedItems.map(savedItem => {
+      const fullItem = itemMap[savedItem.id];
+      if (fullItem) {
+        return fullItem;
+      }
+      return null;
+    }).filter(item => item !== null);
   };
 
   // Функция создания элементов сетки
