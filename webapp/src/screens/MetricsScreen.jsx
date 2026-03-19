@@ -217,7 +217,7 @@ export default function MetricsScreen() {
               >
                 <PlusIcon />
               </button>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Add Measurement</div>
+              <div className="font-bebas text-base text-white/25 shrink-0 tracking-wider" style={{ letterSpacing: 'normal' }}>Add Measurement</div>
             </div>
             
             {/* All Measurements внутри */}
@@ -231,7 +231,7 @@ export default function MetricsScreen() {
                   className="w-full px-3 py-2 rounded-lg text-left"
                   style={{ background: 'rgba(255,255,255,0.05)' }}
                 >
-                  <div className="text-xs text-white/60">
+                  <div className="text-xs text-white/60 tracking-wide">
                     {metrics.slice().reverse().slice(0, 3).map(metric => (
                       <div key={metric.id} className="flex justify-between items-center">
                         <span>{formatDate(metric.date.split('T')[0])}: {metric.weight}kg</span>
@@ -257,7 +257,7 @@ export default function MetricsScreen() {
                   className="w-full px-3 py-2 rounded-lg text-left"
                   style={{ background: 'rgba(255,255,255,0.05)' }}
                 >
-                  <div className="text-xs text-white/60">
+                  <div className="text-xs text-white/60 tracking-wide">
                     <div className="flex justify-between items-center">
                       <span>No measurements yet</span>
                     </div>
