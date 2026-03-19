@@ -221,6 +221,29 @@ export default function HomeScreen() {
     }
   }, [gridItems.length]); // Только при изменении количества элементов
 
+  // Обновление контента при смене editMode
+  useEffect(() => {
+    if (gridItems.length > 0) {
+      console.log('Updating content for editMode:', editMode);
+      // Обновляем только контент, сохраняя порядок
+      const updatedItems = gridItems.map(item => {
+        if (item.type === 'button') {
+          return {
+            ...item,
+            content: createButtonContent(item.id, editMode, navigate)
+          };
+        } else if (item.type === 'widget') {
+          return {
+            ...item,
+            content: createWidgetContent(item.id, editMode)
+          };
+        }
+        return item;
+      });
+      setGridItems(updatedItems);
+    }
+  }, [editMode]); // При смене editMode
+
   // УБРАЛИ useEffect который пересоздавал элементы при смене editMode
 
   // Exit edit mode when clicking on empty space
