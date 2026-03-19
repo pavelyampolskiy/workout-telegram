@@ -9,6 +9,8 @@ import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import SupplementsWidget from '../components/SupplementsWidget';
 import BodyMetricsWidget from '../components/BodyMetricsWidget';
+import DragDropGrid from '../components/DragDropGrid';
+import EditModeToggle from '../components/EditModeToggle';
 import homeBg from '../assets/gym-bg.jpg';
 
 const SupplementsIcon = () => (
@@ -133,8 +135,84 @@ export default function HomeScreen() {
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [gridItems, setGridItems] = useState(getDefaultGridItems());
   const dismissModalRef = useRef(null);
   useFocusTrap(dismissModalRef, !!(unfinished && showDismissConfirm));
+
+  // Default grid items configuration
+  function getDefaultGridItems() {
+    return [
+      {
+        id: 'history',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('history')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
+          </button>
+        )
+      },
+      {
+        id: 'stats',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('stats')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+          </button>
+        )
+      },
+      {
+        id: 'achievements',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('achievements')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
+          </button>
+        )
+      },
+      {
+        id: 'program',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => navigate('program')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
+          </button>
+        )
+      },
+      {
+        id: 'supplements',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: <SupplementsWidget />
+      },
+      {
+        id: 'body-metrics',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: <BodyMetricsWidget />
+      }
+    ];
+  }
 
   useEffect(() => {
     if (!userId) return;
@@ -261,50 +339,20 @@ export default function HomeScreen() {
         {/* Пустое место */}
         <div className="flex-1 min-h-0" />
 
-        {/* Низ: сетка из 6 кнопок */}
+        {/* Низ: адаптивная сетка */}
         <div className="shrink-0 pt-4">
-          {/* Сетка из 6 кнопок (3x2) */}
-          <div className="grid grid-cols-2 gap-4 min-h-0">
-            <button
-              onClick={() => navigate('history')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
-            </button>
-            <button
-              onClick={() => navigate('stats')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
-            </button>
-            <button
-              onClick={() => navigate('achievements')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
-            </button>
-            <button
-              onClick={() => navigate('program')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2"
-              style={{ background: CARD_BG }}
-            >
-              <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
-            </button>
-            <div className="col-span-2">
-              <SupplementsWidget />
-            </div>
-            <div className="col-span-2">
-              <BodyMetricsWidget />
-            </div>
-          </div>
+          <DragDropGrid 
+            items={gridItems}
+            onLayoutChange={setGridItems}
+            editMode={editMode}
+          />
         </div>
+        
+        {/* Edit Mode Toggle */}
+        <EditModeToggle 
+          enabled={editMode}
+          onToggle={() => setEditMode(!editMode)}
+        />
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
               <div

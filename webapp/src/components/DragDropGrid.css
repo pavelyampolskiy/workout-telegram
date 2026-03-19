@@ -1,0 +1,91 @@
+/* Drag & Drop Grid Styles */
+.grid-container {
+  position: relative;
+}
+
+.grid-item {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.grid-item.edit-mode {
+  cursor: grab;
+}
+
+.grid-item.edit-mode::after {
+  content: '⋮⋮';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.grid-item.dragging {
+  opacity: 0.5;
+  transform: scale(1.05);
+  z-index: 1000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  cursor: grabbing;
+}
+
+.grid-item.drop-target {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  transform: scale(0.95);
+}
+
+/* Grid size classes */
+.col-span-2 {
+  grid-column: span 2;
+}
+
+.row-span-2 {
+  grid-row: span 2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+/* Smooth transitions */
+.grid-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.grid-item:hover {
+  transform: translateY(-2px);
+}
+
+/* Edit mode specific styles */
+.edit-mode .grid-item:hover {
+  transform: scale(1.02);
+}
+
+/* Scrollbar styling for editable grid */
+.grid-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.grid-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.grid-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.grid-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
