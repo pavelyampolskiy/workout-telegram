@@ -142,8 +142,30 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    // Сначала пробуем загрузить сохраненную расстановку
+    const saved = localStorage.getItem('grid_layout');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          setGridItems(parsed);
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to parse saved layout:', error);
+      }
+    }
+    
+    // Если нет сохраненной или ошибка, используем стандартную
     setGridItems(getDefaultGridItems());
   }, []);
+
+  // Сохраняем при изменении gridItems
+  useEffect(() => {
+    if (gridItems.length > 0) {
+      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
+    }
+  }, [gridItems]);
 
   // Exit edit mode when clicking on empty space
   const handleEmptySpaceClick = () => {
