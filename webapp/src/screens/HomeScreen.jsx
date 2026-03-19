@@ -235,13 +235,21 @@ export default function HomeScreen() {
         id: 'supplements',
         type: 'widget',
         size: { cols: 2, rows: 1 },
-        content: <SupplementsWidget />
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <SupplementsWidget />
+          </div>
+        )
       },
       {
         id: 'body-metrics',
         type: 'widget',
         size: { cols: 2, rows: 1 },
-        content: <BodyMetricsWidget />
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <BodyMetricsWidget />
+          </div>
+        )
       }
     ];
   };
