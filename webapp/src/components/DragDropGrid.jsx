@@ -143,10 +143,14 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
 
   const getItemStyle = (item) => {
     const baseStyle = {
-      background: 'rgba(255,255,255,0.03)',
       minHeight: '80px',
       touchAction: editMode ? 'pan-y' : 'auto'
     };
+    
+    // Применяем фон только для обычных элементов, не для control
+    if (item.type !== 'control') {
+      baseStyle.background = 'rgba(255,255,255,0.03)';
+    }
     
     // Custom sizing
     if (item.size) {
