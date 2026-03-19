@@ -140,30 +140,6 @@ export default function HomeScreen() {
   const dismissModalRef = useRef(null);
   useFocusTrap(dismissModalRef, !!(unfinished && showDismissConfirm));
 
-  // Initialize grid items after component mount
-  useEffect(() => {
-    // Сначала загружаем сохраненную расстановку
-    if (userId) {
-      const savedLayout = loadGridLayout();
-      if (savedLayout && savedLayout.length > 0) {
-        console.log('Loading saved layout in HomeScreen:', savedLayout);
-        setGridItems(savedLayout);
-      } else {
-        // Если нет сохраненной, используем стандартную
-        setGridItems(getDefaultGridItems());
-      }
-    } else {
-      setGridItems(getDefaultGridItems());
-    }
-  }, [userId]);
-
-  // Сохраняем при изменении gridItems
-  useEffect(() => {
-    if (userId && gridItems.length > 0) {
-      saveGridLayout(gridItems);
-    }
-  }, [gridItems, userId]);
-
   // Exit edit mode when clicking on empty space
   const handleEmptySpaceClick = () => {
     if (editMode) {
@@ -200,6 +176,30 @@ export default function HomeScreen() {
     }
     return null;
   };
+
+  // Initialize grid items after component mount
+  useEffect(() => {
+    // Сначала загружаем сохраненную расстановку
+    if (userId) {
+      const savedLayout = loadGridLayout();
+      if (savedLayout && savedLayout.length > 0) {
+        console.log('Loading saved layout in HomeScreen:', savedLayout);
+        setGridItems(savedLayout);
+      } else {
+        // Если нет сохраненной, используем стандартную
+        setGridItems(getDefaultGridItems());
+      }
+    } else {
+      setGridItems(getDefaultGridItems());
+    }
+  }, [userId]);
+
+  // Сохраняем при изменении gridItems (без функций в зависимостях)
+  useEffect(() => {
+    if (userId && gridItems.length > 0) {
+      saveGridLayout(gridItems);
+    }
+  }, [userId, gridItems]);
 
   // Default grid items configuration
   function getDefaultGridItems() {
