@@ -40,13 +40,6 @@
   animation: none;
 }
 
-.grid-item.drop-target {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border: 2px dashed rgba(255, 255, 255, 0.4);
-  transform: scale(0.95);
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
 /* Apple-style wiggle animation - dashboard style */
 @keyframes wiggle {
   0%, 100% {

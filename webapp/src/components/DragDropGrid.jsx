@@ -32,16 +32,40 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     
     // Определяем направление движения
     if (touchStart) {
+      const deltaX = touch.clientX - touchStart.x;
       const deltaY = touch.clientY - touchStart.y;
       
-      // Находим элемент под пальцем
+      // Определяем над каким элементом находимся
       const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-      const gridItem = elementBelow?.closest('[data-grid-item]');
-      
-      if (gridItem) {
-        const targetIndex = parseInt(gridItem.dataset.gridIndex);
-        if (!isNaN(targetIndex) && targetIndex !== draggedItem.originalIndex) {
-          setDragOverIndex(targetIndex);
+      if (elementBelow) {
+        const gridItem = elementBelow.closest('.grid-item');
+        if (gridItem) {
+          const index = parseInt(gridItem.dataset.index);
+          if (index !== undefined && index !== dragOverIndex) {
+            setDragOverIndex(index);
+            
+            // Сразу переставляем элементы как на iPhone
+            const newItems = [...items];
+            const draggedIndex = draggedItem.originalIndex;
+            
+            if (index !== draggedIndex) {
+              // Убираем dragged элемент
+              const [removed] = newItems.splice(draggedIndex, 1);
+              
+              // Вставляем на новую позицию
+              if (index < draggedIndex) {
+                // Двигаем вверх
+                newItems.splice(index, 0, removed);
+              } else {
+                // Двигаем вниз
+                newItems.splice(index, 0, removed);
+              }
+              
+              // Обновляем draggedItem с новым индексом
+              setDraggedItem({ ...removed, originalIndex: index });
+              onLayoutChange(newItems);
+            }
+          }
         }
       }
     }
@@ -52,14 +76,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
     document.body.style.overflow = '';
     document.body.style.touchAction = '';
     
-    if (draggedItem && dragOverIndex !== null && dragOverIndex !== draggedItem.originalIndex) {
-      // Простая перестановка элементов
-      const newItems = [...items];
-      const [removed] = newItems.splice(draggedItem.originalIndex, 1);
-      newItems.splice(dragOverIndex, 0, removed);
-      
-      onLayoutChange(newItems);
-    }
+    // Перестановка уже происходит в handleTouchMove, здесь только очистка
     
     // Clean up
     setDraggedItem(null);
