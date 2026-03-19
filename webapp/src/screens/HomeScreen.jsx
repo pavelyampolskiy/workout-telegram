@@ -142,6 +142,21 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    // Пытаемся загрузить сохраненную расстановку
+    try {
+      const saved = localStorage.getItem('grid_layout');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          setGridItems(parsed);
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load saved layout:', error);
+    }
+    
+    // Если нет сохраненной, используем стандартную
     setGridItems([
       {
         id: 'history',
@@ -218,6 +233,17 @@ export default function HomeScreen() {
   const handleEmptySpaceClick = () => {
     if (editMode) {
       setEditMode(false);
+      saveLayout();
+    }
+  };
+
+  // Сохранение расстановки
+  const saveLayout = () => {
+    try {
+      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
+      console.log('Layout saved successfully');
+    } catch (error) {
+      console.error('Failed to save layout:', error);
     }
   };
 
