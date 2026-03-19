@@ -142,6 +142,21 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    // Пытаемся загрузить сохраненную расстановку
+    try {
+      const saved = localStorage.getItem('grid_layout');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          setGridItems(parsed);
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load saved layout:', error);
+    }
+    
+    // Если нет сохраненной, используем стандартную
     setGridItems([
       {
         id: 'history',
@@ -151,6 +166,7 @@ export default function HomeScreen() {
           <button
             onClick={() => !editMode && navigate('history')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
@@ -165,6 +181,7 @@ export default function HomeScreen() {
           <button
             onClick={() => !editMode && navigate('stats')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
@@ -179,6 +196,7 @@ export default function HomeScreen() {
           <button
             onClick={() => !editMode && navigate('achievements')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
@@ -193,6 +211,7 @@ export default function HomeScreen() {
           <button
             onClick={() => !editMode && navigate('program')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
@@ -218,6 +237,17 @@ export default function HomeScreen() {
   const handleEmptySpaceClick = () => {
     if (editMode) {
       setEditMode(false);
+      saveLayout();
+    }
+  };
+
+  // Сохранение расстановки
+  const saveLayout = () => {
+    try {
+      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
+      console.log('Layout saved successfully');
+    } catch (error) {
+      console.error('Failed to save layout:', error);
     }
   };
 
@@ -230,8 +260,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('history')}
+            onClick={() => !editMode && navigate('history')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
@@ -244,8 +275,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('stats')}
+            onClick={() => !editMode && navigate('stats')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
@@ -258,8 +290,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('achievements')}
+            onClick={() => !editMode && navigate('achievements')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
@@ -272,8 +305,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => navigate('program')}
+            onClick={() => !editMode && navigate('program')}
             className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
