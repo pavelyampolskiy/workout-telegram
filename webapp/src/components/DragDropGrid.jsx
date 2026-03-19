@@ -8,15 +8,16 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false, 
   const [touchStart, setTouchStart] = useState(null);
   const gridRef = useRef(null);
 
-  // Загрузка сохраненной расстановки при изменении userId или если items пустые
+  // Загрузка сохраненной расстановки
   useEffect(() => {
-    if (userId && items.length === 0) {
+    if (userId) {
       const savedLayout = loadGridLayout();
       if (savedLayout && savedLayout.length > 0) {
+        console.log('Loading saved layout:', savedLayout);
         onLayoutChange(savedLayout);
       }
     }
-  }, [userId, items.length, onLayoutChange]);
+  }, [userId]);
 
   // Touch event handlers - упрощенные как у Apple
   const handleTouchStart = (e, item, index) => {
@@ -95,6 +96,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false, 
   const saveGridLayout = (layout) => {
     try {
       const key = userId ? `grid_layout_${userId}` : 'grid_layout';
+      console.log('Saving layout to key:', key, layout);
       localStorage.setItem(key, JSON.stringify({
         layout,
         timestamp: Date.now(),
@@ -109,6 +111,7 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false, 
     try {
       const key = userId ? `grid_layout_${userId}` : 'grid_layout';
       const saved = localStorage.getItem(key);
+      console.log('Loading from key:', key, saved);
       if (saved) {
         const { layout } = JSON.parse(saved);
         return layout;
