@@ -175,8 +175,49 @@ export default function HomeScreen() {
     
     // Если нет сохраненного или ошибка, создаем стандартный
     console.log('No saved layout found, creating default');
-    setGridItems(createGridItems(false, navigate)); // Всегда с editMode = false
+    const defaultItems = createGridItems(false, navigate);
+    setGridItems(defaultItems);
+    
+    // Сразу сохраняем стандартный порядок
+    const defaultOrder = defaultItems.map(item => ({
+      id: item.id,
+      type: item.type,
+      size: item.size,
+      draggable: item.draggable
+    }));
+    localStorage.setItem('grid_layout', JSON.stringify(defaultOrder));
+    console.log('Saved default layout');
   }, []); // Выполняется только при монтировании
+
+  // Принудительное восстановление порядка при каждом рендере
+  useEffect(() => {
+    if (gridItems.length > 0) {
+      const saved = localStorage.getItem('grid_layout');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.length > 0) {
+            const currentOrder = gridItems.map(item => item.id);
+            const savedOrder = parsed.map(item => item.id);
+            
+            console.log('Current order:', currentOrder);
+            console.log('Saved order:', savedOrder);
+            
+            // Если порядки не совпадают, восстанавливаем сохраненный
+            if (JSON.stringify(currentOrder) !== JSON.stringify(savedOrder)) {
+              console.log('Order mismatch, restoring saved order...');
+              const restoredItems = restoreLayoutFromSaved(parsed, false, navigate);
+              if (restoredItems.length > 0) {
+                setGridItems(restoredItems);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error checking order:', error);
+        }
+      }
+    }
+  }); // Без зависимостей - проверяет при каждом рендере
 
   // УБРАЛИ useEffect который пересоздавал элементы при смене editMode
 
