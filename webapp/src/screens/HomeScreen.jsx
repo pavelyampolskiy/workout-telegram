@@ -136,9 +136,14 @@ export default function HomeScreen() {
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [gridItems, setGridItems] = useState(getDefaultGridItems());
+  const [gridItems, setGridItems] = useState([]);
   const dismissModalRef = useRef(null);
   useFocusTrap(dismissModalRef, !!(unfinished && showDismissConfirm));
+
+  // Initialize grid items after component mount
+  useEffect(() => {
+    setGridItems(getDefaultGridItems());
+  }, []);
 
   // Default grid items configuration
   function getDefaultGridItems() {
