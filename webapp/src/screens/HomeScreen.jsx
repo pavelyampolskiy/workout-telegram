@@ -148,9 +148,11 @@ export default function HomeScreen() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && parsed.length > 0) {
+          console.log('Loading saved layout:', parsed);
           // Восстанавливаем полный порядок из сохраненных данных
           const restoredItems = restoreLayoutFromSaved(parsed, editMode, navigate);
           if (restoredItems.length > 0) {
+            console.log('Restored items:', restoredItems.map(item => item.id));
             setGridItems(restoredItems);
             return;
           }
@@ -161,6 +163,7 @@ export default function HomeScreen() {
     }
     
     // Если нет сохраненного или ошибка, создаем стандартный
+    console.log('Creating default layout');
     setGridItems(createGridItems(editMode, navigate));
   }, []); // Убрали зависимости чтобы не пересоздавать при смене editMode
 
@@ -205,6 +208,7 @@ export default function HomeScreen() {
         draggable: item.draggable
       }));
       
+      console.log('Saving layout:', itemsToSave.map(item => item.id));
       localStorage.setItem('grid_layout', JSON.stringify(itemsToSave));
       console.log('Layout saved successfully');
     } catch (error) {
