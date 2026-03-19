@@ -142,12 +142,32 @@ export default function HomeScreen() {
 
   // Initialize grid items after component mount
   useEffect(() => {
+    // Сначала пробуем загрузить сохраненную расстановку
+    try {
+      const saved = localStorage.getItem('grid_layout');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.length > 0) {
+          // Восстанавливаем сохраненные элементы с текущим editMode
+          setGridItems(parsed);
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load saved layout:', error);
+    }
+    
+    // Если нет сохраненной, создаем стандартную
     setGridItems(createGridItems(editMode, navigate));
   }, []);
 
-  // Update grid items when editMode changes
+  // Update grid items when editMode changes (только если нет сохраненных)
   useEffect(() => {
-    setGridItems(createGridItems(editMode, navigate));
+    // Обновляем только если у нас еще нет сохраненных элементов
+    const saved = localStorage.getItem('grid_layout');
+    if (!saved) {
+      setGridItems(createGridItems(editMode, navigate));
+    }
   }, [editMode]);
 
   // Exit edit mode when clicking on empty space
@@ -161,11 +181,68 @@ export default function HomeScreen() {
   // Сохранение расстановки
   const saveLayout = () => {
     try {
-      localStorage.setItem('grid_layout', JSON.stringify(gridItems));
+      // Обновляем элементы с текущим состоянием editMode перед сохранением
+      const itemsToSave = gridItems.map(item => {
+        if (item.type === 'button') {
+          // Обновляем кнопки с текущим editMode
+          return {
+            ...item,
+            content: createButtonContent(item.id, editMode, navigate)
+          };
+        } else if (item.type === 'widget') {
+          // Обновляем виджеты с текущим editMode
+          return {
+            ...item,
+            content: createWidgetContent(item.id, editMode)
+          };
+        }
+        return item;
+      });
+      
+      localStorage.setItem('grid_layout', JSON.stringify(itemsToSave));
       console.log('Layout saved successfully');
     } catch (error) {
       console.error('Failed to save layout:', error);
     }
+  };
+
+  // Функции создания контента
+  const createButtonContent = (id, isEditMode, navigateFn) => {
+    const buttonConfig = {
+      history: { icon: <HistoryIcon />, label: 'History', navigate: 'history' },
+      stats: { icon: <StatsIcon />, label: 'Statistics', navigate: 'stats' },
+      achievements: { icon: <TrophyIcon />, label: 'Achievements', navigate: 'achievements' },
+      program: { icon: <ProgramIcon />, label: 'My program', navigate: 'program' }
+    };
+    
+    const config = buttonConfig[id];
+    return (
+      <button
+        onClick={() => !isEditMode && navigateFn(config.navigate)}
+        className="w-full h-full flex flex-row justify-between items-center p-4"
+        disabled={isEditMode}
+      >
+        <span className="shrink-0 flex items-center justify-center text-white/25">{config.icon}</span>
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>{config.label}</div>
+      </button>
+    );
+  };
+
+  const createWidgetContent = (id, isEditMode) => {
+    if (id === 'supplements') {
+      return (
+        <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+          <SupplementsWidget />
+        </div>
+      );
+    } else if (id === 'body-metrics') {
+      return (
+        <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+          <BodyMetricsWidget />
+        </div>
+      );
+    }
+    return null;
   };
 
   // Функция создания элементов сетки
