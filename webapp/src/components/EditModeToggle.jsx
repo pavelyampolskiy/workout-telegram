@@ -4,14 +4,10 @@ export default function EditModeToggle({ enabled, onToggle }) {
   return (
     <div
       onClick={onToggle}
-      className={`w-full py-3 px-4 rounded-xl font-bebas text-sm tracking-wider transition-all duration-200 cursor-pointer ${
-        enabled 
-          ? 'bg-white text-black shadow-lg shadow-white/20' 
-          : 'bg-white/10 text-white'
-      }`}
+      className="font-bebas text-sm tracking-wider cursor-pointer transition-all duration-200 text-center"
       style={{
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)'
+        color: enabled ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
+        textShadow: enabled ? '0 0 10px rgba(255, 255, 255, 0.5)' : 'none'
       }}
     >
       {enabled ? 'Done' : 'Edit Dashboard'}

@@ -215,17 +215,6 @@ export default function HomeScreen() {
         type: 'widget',
         size: { cols: 2, rows: 1 },
         content: <BodyMetricsWidget />
-      },
-      {
-        id: 'edit-dashboard',
-        type: 'control',
-        size: { cols: 2, rows: 1 },
-        content: (
-          <EditModeToggle 
-            enabled={editMode}
-            onToggle={() => setEditMode(!editMode)}
-          />
-        )
       }
     ];
   }
@@ -361,6 +350,14 @@ export default function HomeScreen() {
             items={gridItems}
             onLayoutChange={setGridItems}
             editMode={editMode}
+          />
+        </div>
+        
+        {/* Fixed Edit Dashboard Button */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-20">
+          <EditModeToggle 
+            enabled={editMode}
+            onToggle={() => setEditMode(!editMode)}
           />
         </div>
           {unfinished && showDismissConfirm && createPortal(
