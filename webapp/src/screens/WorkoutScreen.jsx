@@ -15,6 +15,13 @@ function formatActiveDayLabel(dayKey, days) {
   return dayKey.replace('DAY_', 'Day ').replace(/^CUSTOM_\d+$/, 'Custom');
 }
 
+const RepeatIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <path d="M1 4v6h6M23 20v-6h-6"/>
+    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+  </svg>
+);
+
 const CalendarIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -170,6 +177,25 @@ export default function WorkoutScreen() {
                   <div className="min-w-0 flex-1">
                     <div className="font-bebas tracking-wider text-lg text-white/60">Add Past Workout</div>
                     <div className="text-xs text-white/40">Record a workout from a previous date</div>
+                  </div>
+                </button>
+
+                <div className="flex items-center gap-3 my-3">
+                  <div className="flex-1 h-px bg-white/8" />
+                  <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
+                  <div className="flex-1 h-px bg-white/8" />
+                </div>
+
+                <button
+                  onClick={() => navigate('repeat-workout')}
+                  className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
+                >
+                  <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white/60">
+                    <RepeatIcon />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bebas tracking-wider text-lg text-white/60">Repeat Previous Workout</div>
+                    <div className="text-xs text-white/40">Use weights from a previous workout</div>
                   </div>
                 </button>
               </div>

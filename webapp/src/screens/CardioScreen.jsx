@@ -35,8 +35,10 @@ export default function CardioScreen() {
   const intervalRef = useRef(null);
   const countdownRef = useRef(null);
   
-  // Проверяем если это backdated workout
+  // Проверяем если это backdated или repeat workout
   const isBackdated = activeWorkout?.isBackdated || false;
+  const isRepeat = activeWorkout?.isRepeat || false;
+  const repeatFromWorkout = activeWorkout?.repeatFromWorkout || null;
 
   useEffect(() => {
     api.getUnfinishedWorkout(userId)
@@ -55,7 +57,35 @@ export default function CardioScreen() {
       })
       .catch(e => { setError(e.message); showToast(e.message); })
       .finally(() => setLoading(false));
-  }, []);
+  }, [userId, showToast]);
+
+  // Если это повторение тренировки, загружаем данные из предыдущей тренировки
+  useEffect(() => {
+    if (isRepeat && repeatFromWorkout && workoutId) {
+      api.getWorkout(repeatFromWorkout.id)
+        .then(w => {
+          if (w.cardio) {
+            setText(w.cardio);
+            // Парсим activity type и distance из текста если возможно
+            const parts = w.cardio.split(' — ');
+            if (parts.length > 0) {
+              const activityPart = parts[0].trim();
+              const foundActivity = ACTIVITIES.find(a => activityPart.toLowerCase().includes(a.key.toLowerCase()));
+              if (foundActivity) {
+                setActivityType(foundActivity.key);
+              }
+            }
+            if (parts.length > 1) {
+              const distancePart = parts[1].trim();
+              if (distancePart.includes('km')) {
+                setDistance(distancePart);
+              }
+            }
+          }
+        })
+        .catch(e => showToast('Failed to load previous cardio data'));
+    }
+  }, [isRepeat, repeatFromWorkout, workoutId, showToast]);
 
   // Timer tick
   useEffect(() => {
