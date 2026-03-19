@@ -62,25 +62,31 @@ export default function BackdateWorkoutScreen() {
   useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
-      /* Стили для календаря в черных тонах */
+      /* Убираем все синие элементы из календаря */
       input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(1);
+        filter: invert(1) hue-rotate(180deg);
+        opacity: 0.8;
+      }
+      
+      input[type="date"]::-webkit-inner-spin-button,
+      input[type="date"]::-webkit-outer-spin-button {
+        display: none;
       }
       
       /* Затемнение фона при открытом календаре */
-      body.date-picker-open::after {
+      body.date-picker-open::before {
         content: '';
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9998;
         pointer-events: none;
       }
       
-      /* Стили для календаря Chrome */
+      /* Стили для полей даты */
       input[type="date"]::-webkit-datetime-edit-text-field,
       input[type="date"]::-webkit-datetime-edit-month-field,
       input[type="date"]::-webkit-datetime-edit-day-field,
@@ -91,7 +97,14 @@ export default function BackdateWorkoutScreen() {
       
       input[type="date"]:focus {
         outline: none;
-        border-color: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Firefox стили */
+      input[type="date"]::-moz-calendar-picker-indicator {
+        filter: invert(1) hue-rotate(180deg);
+        opacity: 0.8;
       }
     `;
     document.head.appendChild(style);
@@ -99,11 +112,14 @@ export default function BackdateWorkoutScreen() {
     // Обработчики для затемнения фона
     const handleFocus = () => document.body.classList.add('date-picker-open');
     const handleBlur = () => document.body.classList.remove('date-picker-open');
+    const handleChange = () => document.body.classList.remove('date-picker-open');
     
+    // Находим инпут и добавляем обработчики
     const dateInput = document.querySelector('input[type="date"]');
     if (dateInput) {
       dateInput.addEventListener('focus', handleFocus);
       dateInput.addEventListener('blur', handleBlur);
+      dateInput.addEventListener('change', handleChange);
     }
     
     return () => {
@@ -112,6 +128,7 @@ export default function BackdateWorkoutScreen() {
       if (dateInput) {
         dateInput.removeEventListener('focus', handleFocus);
         dateInput.removeEventListener('blur', handleBlur);
+        dateInput.removeEventListener('change', handleChange);
       }
     };
   }, []);
