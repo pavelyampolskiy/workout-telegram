@@ -97,16 +97,15 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2.5 rounded-lg text-white text-base flex items-center justify-center gap-2 mx-auto"
+        className="px-4 py-2.5 rounded-lg text-white text-base flex items-center justify-center mx-auto"
         style={{ 
           background: 'rgba(255,255,255,0.03)',
           border: 'none',
           fontSize: '16px',
           height: '40px',
-          width: '180px'
+          width: '140px'
         }}
       >
-        <CalendarIcon />
         <span>{formatDateDisplay(selectedDate)}</span>
       </button>
 
