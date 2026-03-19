@@ -28,7 +28,7 @@
 }
 
 .grid-item.dragging {
-  opacity: 0.5;
+  opacity: 0.8;
   transform: scale(1.05);
   z-index: 1000;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -42,7 +42,7 @@
   transform: scale(0.95);
 }
 
-/* Grid size classes */
+/* Fixed size classes - без изменений */
 .col-span-2 {
   grid-column: span 2;
 }
