@@ -36,8 +36,12 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
     // Получаем день недели первого числа месяца (0=Sunday, 1=Monday, ...)
     const firstDayOfWeek = firstDay.getDay();
     
+    // Преобразуем в формат где понедельник=0, воскресенье=6
+    let adjustedDay = firstDayOfWeek - 1;
+    if (adjustedDay < 0) adjustedDay = 6; // Воскресенье становится 6
+    
     // Добавляем пустые ячейки для дней до начала месяца
-    for (let i = 0; i < firstDayOfWeek; i++) {
+    for (let i = 0; i < adjustedDay; i++) {
       days.push({
         date: null,
         isCurrentMonth: false,
