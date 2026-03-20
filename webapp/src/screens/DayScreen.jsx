@@ -257,28 +257,28 @@ export default function DayScreen() {
 
           {/* Star rating */}
           <div className="mb-5">
-            <p className="font-bebas text-white/60 text-xs mb-3">How was your workout?</p>
-          <div className="flex justify-start gap-3">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                onClick={() => setRating(star)}
-                className="text-3xl transition-transform active:scale-110"
-                style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
-              >
-                ★
-              </button>
-            ))}
+            <p className="font-sans text-white/60 text-xs mb-3">How was your workout?</p>
+            <div className="flex justify-start gap-3">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className="text-3xl transition-transform active:scale-110"
+                  style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <p className="font-bebas text-white/25 text-xs mb-2">Add a note (optional)</p>
-        <textarea
-          value={note}
-          onChange={e => setNote(e.target.value)}
-          placeholder="E.g. Felt strong today…"
-          className="w-full appearance-none bg-black/50 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-bebas"
-        />
+          <p className="font-sans text-white/25 text-xs mb-2">Add a note (optional)</p>
+          <textarea
+            value={note}
+            onChange={e => setNote(e.target.value)}
+            placeholder="E.g. Felt strong today…"
+            className="w-full appearance-none bg-black/50 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
+          />
         </div>
 
         {/* Кнопки прикреплены к нижнему краю */}
@@ -454,7 +454,7 @@ export default function DayScreen() {
           style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))' }}
         >
           <button
-            onClick={handleSave}
+            onClick={handleSaveWorkout}
             disabled={savingWorkout}
             className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50 flex items-center justify-center gap-2"
           >

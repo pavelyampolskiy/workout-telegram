@@ -298,11 +298,15 @@ def count_finished_workouts_for_day(user_id: int, day_key: str) -> int:
 
 # ── Workouts ─────────────────────────────────────────────────────────────────
 
-def create_workout(user_id: int, workout_type: str) -> int:
+def create_workout(user_id: int, workout_type: str, workout_date: str = None) -> int:
+    # Если дата не передана, используем сегодняшнюю
+    if workout_date is None:
+        workout_date = date.today().isoformat()
+    
     with db() as conn:
         cur = conn.execute(
             "INSERT INTO workouts (user_id, date, type, created_at) VALUES (?, ?, ?, ?)",
-            (user_id, date.today().isoformat(), workout_type, datetime.utcnow().isoformat()),
+            (user_id, workout_date, workout_type, datetime.utcnow().isoformat()),
         )
         return cur.lastrowid
 
@@ -738,7 +742,7 @@ def get_weekly_streak(user_id: int) -> dict:
     return {"current": cur_streak, "max": max_streak}
 
 
-def get_workout_patterns(user_id: int, weeks: int = 8):
+def get_workout_patterns(user_id: int, weeks: int = 2):
     """Analyze which days of the week user typically trains (strength only, no cardio)"""
     since = date.today() - timedelta(weeks=weeks)
     with db() as conn:
@@ -752,14 +756,26 @@ def get_workout_patterns(user_id: int, weeks: int = 8):
         ).fetchall()
 
     if not rows:
-        return {}
+        return {
+            "total": 0,
+            "day_counts": {},
+            "last_workout_date": None
+        }
 
     day_counts = defaultdict(int)
+    last_workout_date = None
+    
     for row in rows:
         d = date.fromisoformat(row["date"])
         day_counts[d.weekday()] += 1
+        if last_workout_date is None:
+            last_workout_date = row["date"]
 
-    return dict(day_counts)
+    return {
+        "total": len(rows),
+        "day_counts": dict(day_counts),
+        "last_workout_date": last_workout_date
+    }
 
 
 # Supplements functions

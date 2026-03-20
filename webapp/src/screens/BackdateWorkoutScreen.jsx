@@ -67,6 +67,10 @@ export default function BackdateWorkoutScreen() {
   }, [userId]);
 
   const handleWorkoutTypeSelect = (type, params) => {
+    console.log('Workout type selected:', type);
+    console.log('Current selectedDate:', selectedDate);
+    console.log('SelectedDate type:', typeof selectedDate);
+    
     setSelectedWorkoutType({ type, params });
     
     // Создаем тренировку с выбранной датой
@@ -79,8 +83,31 @@ export default function BackdateWorkoutScreen() {
       const program = await api.getProgram(userId);
       const dayProgram = program[type] || [];
       
+      // Явно проверяем и форматируем дату
+      const workoutDate = selectedDate;
+      console.log('Workout date to save:', workoutDate);
+      
       // Создаем тренировку с указанной датой
-      const { id } = await api.createWorkout(userId, type, selectedDate);
+      const requestData = { 
+        user_id: userId, 
+        type, 
+        date: workoutDate,
+        is_backdated: true  // Добавляем флаг что это past workout
+      };
+      console.log('Request data:', requestData);
+      
+      const response = await api.createWorkout(userId, type, workoutDate);
+      console.log('API response:', response);
+      
+      const { id } = response;
+      
+      // Проверим что вернул сервер
+      if (response && response.date) {
+        console.log('Server returned date:', response.date);
+        if (response.date !== workoutDate) {
+          showToast(`Warning: Server saved date ${response.date} instead of ${workoutDate}`);
+        }
+      }
       
       // Устанавливаем активную тренировку с программой
       setActiveWorkout({ 
@@ -94,17 +121,13 @@ export default function BackdateWorkoutScreen() {
       });
       
       // Переходим к экрану тренировки
-      if (type === 'CARDIO') {
-        navigate('cardio');
-      } else {
-        const label = formatActiveDayLabel(type, days);
-        navigate('day', { 
-          day: type, 
-          dayLabel: label, 
-          isBackdated: true,
-          dayProgram: dayProgram // Передаем программу
-        });
-      }
+      const label = formatActiveDayLabel(type, days);
+      navigate('day', { 
+        day: type, 
+        dayLabel: label, 
+        isBackdated: true,
+        dayProgram: dayProgram // Передаем программу
+      });
     } catch (e) {
       showToast(e.message);
     }
@@ -139,27 +162,23 @@ export default function BackdateWorkoutScreen() {
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
-      <div className="relative z-10 flex flex-col flex-1 min-h-0 p-5 safe-top overflow-y-auto">
-        <div className="pt-6 pb-6 safe-bottom shrink-0">
-          {/* Заголовок */}
-          <div className="rounded-xl p-4 space-y-4" style={DARK_CARD_STYLE}>
-            <h1 className="font-bebas text-white mb-1" style={PAGE_HEADING_STYLE}>Add Past Workout</h1>
-            <p className="text-white/40 text-sm">Record a workout that you completed on a previous date</p>
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+        {/* Заголовок страницы */}
+        <h1 className="font-bebas text-white pt-6 mb-1" style={PAGE_HEADING_STYLE}>Add Past Workout</h1>
+        
+        {/* Контент внутри плашек */}
+        <div className="shrink-0">
+          {/* Описание */}
+          <div className="rounded-xl p-4 space-y-4 mb-5" style={DARK_CARD_STYLE}>
+            <p className="text-white text-xl">Record a workout that you completed on a previous date</p>
           </div>
 
-          {/* Выбор даты */}
-          <div className="rounded-xl p-4 space-y-3" style={DARK_CARD_STYLE}>
-            <div className="flex items-center gap-3">
-              <span className="shrink-0 flex items-center justify-center text-white">
-                <CalendarIcon />
-              </span>
-              <div>
-                <div className="font-bebas tracking-wider text-lg text-white">Workout Date</div>
-                <div className="text-white/40 text-sm">Select the date when you did this workout</div>
-              </div>
-            </div>
-            
-            <div className="mt-3">
+          {/* Выбор даты и тренировки в одной плашке */}
+          <div className="rounded-xl p-4 space-y-4" style={DARK_CARD_STYLE}>
+            {/* Выбор даты */}
+            <div className="flex items-center justify-between">
+              <div className="text-white/40 text-sm">Select the date when you did this workout</div>
+              
               <CustomCalendar
                 selectedDate={selectedDate}
                 onDateChange={setSelectedDate}
@@ -167,38 +186,27 @@ export default function BackdateWorkoutScreen() {
                 minDate={getMinDate()}
               />
             </div>
-          </div>
 
-          {/* Выбор типа тренировки */}
-          <div className="rounded-xl p-4 space-y-3" style={DARK_CARD_STYLE}>
-            <div className="font-bebas tracking-wider text-lg text-white">Workout Type</div>
-            <div className="space-y-2">
-              {days?.map(day => (
-                <DayCard
-                  key={day.id}
-                  day={day}
-                  onPress={() => handleWorkoutTypeSelect(day.key, { day: day.key, dayLabel: day.label })}
-                />
-              ))}
-            </div>
-            
-            <div className="flex items-center gap-3 my-3">
+            {/* Разделитель */}
+            <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-white/8" />
-              <span className="text-[9px] uppercase tracking-widest text-white/25 font-bebas">or</span>
+              <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">then</span>
               <div className="flex-1 h-px bg-white/8" />
             </div>
-            
-            <button
-              onClick={() => handleWorkoutTypeSelect('CARDIO', {})}
-              className="btn-active-style card-press w-full rounded-[14px] p-4 text-left flex items-center gap-4"
-            >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ color: 'rgba(255,255,255,0.82)' }}>
-                <CardioIcon />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="font-bebas tracking-wider text-lg text-white">Cardio</div>
+
+            {/* Выбор типа тренировки */}
+            <div>
+              <div className="text-white/40 text-sm font-bebas tracking-wider text-lg">Workout Type</div>
+              <div className="space-y-2">
+                {days?.map(day => (
+                  <DayCard
+                    key={day.id}
+                    day={day}
+                    onPress={() => handleWorkoutTypeSelect(day.key, { day: day.key, dayLabel: day.label })}
+                  />
+                ))}
               </div>
-            </button>
+            </div>
           </div>
         </div>
       </div>

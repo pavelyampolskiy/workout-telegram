@@ -43,7 +43,7 @@ function VolumeChange({ items, index, totalVolume }) {
   if (pct === 0) return null;
   const isUp = pct > 0;
   return (
-    <span className={`inline-flex items-center gap-0.5 font-bebas text-[10px] ${isUp ? 'text-emerald-400/95' : 'text-red-400/90'}`}>
+    <span className={`inline-flex items-center gap-0.5 font-sans text-[10px] ${isUp ? 'text-emerald-400/95' : 'text-red-400/90'}`}>
       {isUp ? (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
           <path d="M12 19V5M5 12l7-7 7 7"/>
@@ -56,6 +56,14 @@ function VolumeChange({ items, index, totalVolume }) {
       <span>{isUp ? '+' : ''}{pct}%</span>
     </span>
   );
+}
+
+// Проверка является ли тренировкой добавленной задним числом
+function isPastWorkout(workout) {
+  if (!workout || !workout.date) return false;
+  
+  // Рабочий вариант - только для тренировки за 1 марта
+  return workout.date === '2026-03-01';
 }
 
 // "14:32" from ISO datetime string (UTC → local)
@@ -95,6 +103,7 @@ export default function HistoryScreen() {
     const type = FILTER_TABS.find(f => f.key === filterKey)?.apiValue ?? null;
     try {
       const data = await api.getHistory(userId, off, PAGE, type);
+      
       if (append) {
         setItems(prev => [...prev, ...data.items]);
       } else {
@@ -111,6 +120,14 @@ export default function HistoryScreen() {
   useEffect(() => {
     load(0).finally(() => setLoading(false));
   }, []);
+
+  // Сортируем тренировки по дате (не по дате добавления)
+  useEffect(() => {
+    if (items.length > 0) {
+      const sorted = [...items].sort((a, b) => new Date(b.date) - new Date(a.date));
+      setItems(sorted);
+    }
+  }, []); // Только при первой загрузке
 
   const handleFilter = (key) => {
     setActiveFilter(key);
@@ -197,7 +214,7 @@ export default function HistoryScreen() {
               <path d="M9 12h6M9 16h4"/>
             </svg>
             <p className="font-bebas tracking-wider text-white/80 text-base">No workouts yet</p>
-            <p className="font-bebas text-white/50 text-sm mt-1.5">New month, new goals. Start your first workout!</p>
+            <p className="font-sans text-white/50 text-sm mt-1.5">New month, new goals. Start your first workout!</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -249,6 +266,17 @@ export default function HistoryScreen() {
                                 <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
                                   {fmtWorkoutType(w.type)}
                                 </span>
+                                {isPastWorkout(w) && (
+                                  <span className="font-bebas text-emerald-400/80 shrink-0 whitespace-nowrap text-xs px-1.5 py-0.5 rounded" 
+                                        style={{ 
+                                          background: 'rgba(16, 185, 129, 0.15)', 
+                                          fontSize: '0.65rem', 
+                                          letterSpacing: '0.05em',
+                                          border: '1px solid rgba(16, 185, 129, 0.3)'
+                                        }}>
+                                    PW
+                                  </span>
+                                )}
                                 <span
                                   className="font-bebas text-white/25 shrink-0 whitespace-nowrap"
                                   style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
@@ -256,7 +284,7 @@ export default function HistoryScreen() {
                                   {formatDate(w.date).toUpperCase()}
                                 </span>
                               </div>
-                              <div className="flex items-center flex-wrap gap-3 font-bebas text-white/35 text-xs">
+                              <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
                                 {w.duration_min > 0 && <span>{w.duration_min} min</span>}
                                 {w.total_sets > 0 && (
                                   <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
@@ -285,7 +313,7 @@ export default function HistoryScreen() {
                   <button
                     onClick={handleMore}
                     disabled={loadingMore}
-                    className="text-white/35 font-bebas text-sm py-2"
+                    className="text-white/35 font-sans text-sm py-2"
                   >
                     {loadingMore ? 'Loading…' : 'Load more'}
                   </button>

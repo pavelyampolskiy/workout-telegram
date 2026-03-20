@@ -141,11 +141,12 @@ def delete_day(day_id: int):
 class WorkoutBody(BaseModel):
     user_id: int
     type: str
+    date: Optional[str] = None
 
 
 @app.post("/api/workouts")
 def create_workout(body: WorkoutBody):
-    wid = db_ops.create_workout(body.user_id, body.type)
+    wid = db_ops.create_workout(body.user_id, body.type, body.date)
     return {"id": wid}
 
 
@@ -559,18 +560,19 @@ DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 @app.get("/api/smart-reminder")
 def get_smart_reminder(user_id: int):
     """Get a smart reminder based on user's workout patterns"""
-    patterns = db_ops.get_workout_patterns(user_id, weeks=8)
+    patterns = db_ops.get_workout_patterns(user_id, weeks=2)
     day_counts = patterns["day_counts"]
     total = patterns["total"]
+    last_workout_date = patterns["last_workout_date"]
     
-    # Need at least 4 workouts to detect patterns
-    if total < 4:
+    # Need at least 3 workouts to detect patterns (lowered from 4)
+    if total < 3:
         return {"reminder": None, "reason": "not_enough_data"}
     
     today = date.today().weekday()  # 0=Monday
     
-    # Find user's most common workout days
-    threshold = total / 8  # Average per day over 8 weeks
+    # Find user's most common workout days (more lenient threshold)
+    threshold = max(1, total // 4)  # At least 1 workout on that day
     common_days = [(i, count) for i, count in enumerate(day_counts) if count >= threshold]
     common_days.sort(key=lambda x: x[1], reverse=True)
     
@@ -578,19 +580,14 @@ def get_smart_reminder(user_id: int):
         return {"reminder": None, "reason": "no_pattern"}
     
     # Check if today is a common workout day
-    today_count = day_counts[today]
+    today_count = day_counts.get(today, 0)
     is_workout_day = today_count >= threshold
     
-    # Check last strength workout date (exclude cardio)
-    hist = db_ops.get_history(user_id, 0, 10)  # Get more to find strength workout
-    last_workout_date = None
+    # Calculate days since last workout
     days_since = None
-    for w in hist:
-        if w["type"] in ("DAY_A", "DAY_B", "DAY_C"):
-            last_workout_date = w["date"]
-            last_date = date.fromisoformat(last_workout_date)
-            days_since = (date.today() - last_date).days
-            break
+    if last_workout_date:
+        last_date = date.fromisoformat(last_workout_date)
+        days_since = (date.today() - last_date).days
     
     # Generate reminder message
     reminder = None
@@ -598,30 +595,79 @@ def get_smart_reminder(user_id: int):
     if is_workout_day and (days_since is None or days_since >= 1):
         # Today is a typical workout day
         day_name = DAY_NAMES[today]
-        reminder = f"You usually train on {day_name}s. Ready to go? 💪"
-    elif days_since and days_since >= 3:
-        # Haven't trained in a while
-        next_common = None
-        for i in range(1, 8):
-            check_day = (today + i) % 7
-            if day_counts[check_day] >= threshold:
-                next_common = check_day
-                break
-        
-        if next_common is not None:
-            if next_common == (today + 1) % 7:
-                reminder = f"Tomorrow is your usual {DAY_NAMES[next_common]} workout!"
-            else:
-                reminder = f"Your next typical workout day is {DAY_NAMES[next_common]}."
-        else:
-            reminder = f"It's been {days_since} days since your last workout."
+        reminder = f"Today is your {day_name} workout day! Get ready! 💪"
     
     return {
         "reminder": reminder,
         "is_workout_day": is_workout_day,
         "days_since_last": days_since,
         "common_days": [DAY_NAMES[d[0]] for d in common_days[:3]],
+        "total_workouts": total,
+        "last_workout_date": last_workout_date
     }
+
+
+# ── Daily Workout Reminders ───────────────────────────────────────────────────
+
+# Store reminder tasks
+_daily_reminder_tasks = {}
+
+class DailyReminderRequest(BaseModel):
+    user_id: int
+    time_of_day: str  # "morning" or "evening"
+
+async def send_workout_reminder(user_id: int, time_of_day: str):
+    """Send workout reminder to user"""
+    try:
+        # Get user's smart reminder
+        reminder_data = get_smart_reminder(user_id)
+        
+        if reminder_data.get("reminder") is None:
+            return  # No reminder needed
+        
+        # Different messages for morning/evening
+        if time_of_day == "morning":
+            message = reminder_data["reminder"]
+        else:  # evening
+            message = "Don't forget your workout today! Let's go! 🔥"
+        
+        await bot.send_message(chat_id=user_id, text=message)
+        print(f"Sent {time_of_day} workout reminder to {user_id}")
+        
+    except Exception as e:
+        print(f"Failed to send workout reminder to {user_id}: {e}")
+
+class ReminderRequest(BaseModel):
+    time_of_day: str
+
+@app.post("/api/send-daily-reminders")
+async def send_daily_reminders(request: ReminderRequest):
+    """Send workout reminders to all users with workout patterns"""
+    time_of_day = request.time_of_day
+    # Get all users who have worked out in the last 30 days
+    thirty_days_ago = (date.today() - timedelta(days=30)).isoformat()
+    
+    import database as db_ops
+    with db_ops.db() as conn:
+        users = conn.execute(
+            """
+            SELECT DISTINCT user_id FROM workouts 
+            WHERE date >= ? AND type IN ('DAY_A', 'DAY_B', 'DAY_C')
+            """,
+            (thirty_days_ago,)
+        ).fetchall()
+    
+    # Send reminders to all users
+    tasks = []
+    for user_row in users:
+        user_id = user_row["user_id"]
+        task = asyncio.create_task(send_workout_reminder(user_id, time_of_day))
+        tasks.append(task)
+    
+    if tasks:
+        await asyncio.gather(*tasks, return_exceptions=True)
+    
+    return {"status": "sent", "users_count": len(users)}
 
 
 # ── Supplements API ────────────────────────────────────────────────────────
