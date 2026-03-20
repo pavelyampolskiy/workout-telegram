@@ -69,13 +69,8 @@ const MetricsIcon = () => (
 
 const AICoachIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <rect x="8" y="3" width="8" height="7" rx="1"/>
-    <path d="M8 10v2a2 2 0 002 2h4a2 2 0 002-2v-2"/>
-    <circle cx="12" cy="6" r="1"/>
-    <path d="M8 18l2 2M16 18l-2 2"/>
-    <path d="M12 14v4"/>
-    {/* IN PROGRESS text inside the robot head */}
-    <text x="12" y="6.5" fontSize="2.5" fill="currentColor" textAnchor="middle" className="font-bebas tracking-wider">IP</text>
+    <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
+    <path d="M2 12c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/>
   </svg>
 );
 
@@ -607,21 +602,32 @@ export default function HomeScreen() {
           onClick={handleEmptySpaceClick}
         />
 
-        {/* AI Coach Button */}
+        {/* SthenOS AI Laboratory Button */}
         <div className="shrink-0 px-5">
           <button
             onClick={() => navigate('ai-coach')}
-            className="card-press w-full py-4 px-4 rounded-xl flex items-center justify-center gap-3"
+            className="card-press w-full py-4 px-4 rounded-xl"
             style={{
               background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
             }}
           >
-            <span className={ICON_WRAPPER}>
-              <AICoachIcon />
-            </span>
-            <div className="text-left">
-              <div className="text-white font-bebas tracking-wider text-lg">AI Coach</div>
-              <div className="text-white/60 text-sm font-bebas">Muscle balance & plateau analysis</div>
+            <div className="flex items-center justify-between w-full">
+              {/* Line 1: Icon + Title (left-aligned) */}
+              <div className="flex items-center gap-3">
+                <span className={ICON_WRAPPER}>
+                  <AICoachIcon />
+                </span>
+                <span className="text-white font-bebas tracking-wider text-lg text-left">
+                  SthenOS AI Laboratory
+                </span>
+              </div>
+            </div>
+            
+            {/* Line 2: Status (right-aligned) */}
+            <div className="text-right mt-1">
+              <span className="text-white/40 text-xs font-bebas tracking-wider">
+                in progress...
+              </span>
             </div>
           </button>
         </div>
