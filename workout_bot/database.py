@@ -766,23 +766,23 @@ def get_users_with_inactivity(days_threshold: int):
     threshold_date = (date.today() - timedelta(days=days_threshold)).isoformat()
     
     with db() as conn:
-        # Get users who have worked out before but not since threshold
+        # Simple approach: get all users and check their last workout date
         rows = conn.execute(
             """
-            SELECT DISTINCT w1.user_id, MAX(w1.date) as last_date
-            FROM workouts w1
-            WHERE w1.user_id NOT IN (
-                SELECT DISTINCT user_id 
-                FROM workouts w2 
-                WHERE w2.date >= ?
-            )
-            AND w1.date < ?
-            GROUP BY w1.user_id
+            SELECT DISTINCT user_id, MAX(date) as last_date
+            FROM workouts 
+            GROUP BY user_id
             """,
-            (threshold_date, threshold_date),
         ).fetchall()
     
-    return [{"user_id": row["user_id"], "days_since": (date.today() - date.fromisoformat(row["last_date"])).days} for row in rows]
+    # Filter users who haven't worked out since threshold
+    result = []
+    for row in rows:
+        if row["last_date"] and row["last_date"] < threshold_date:
+            days_since = (date.today() - date.fromisoformat(row["last_date"])).days
+            result.append({"user_id": row["user_id"], "days_since": days_since})
+    
+    return result
 
 
 def get_workout_patterns(user_id: int, weeks: int = 2):
