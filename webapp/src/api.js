@@ -91,6 +91,10 @@ export const api = {
     req('POST', `/api/rest-timer/cancel?user_id=${user_id}`),
   
   getSmartReminder: (user_id) => req('GET', `/api/smart-reminder?user_id=${user_id}`),
+  
+  // AI Coach endpoints
+  getMuscleBalance: (weeks = 4) => req('POST', '/api/ai-coach/muscle-balance', { weeks }),
+  getPlateauDetection: (weeks = 4) => req('POST', '/api/ai-coach/plateau-detection', { weeks }),
 
   // Body Metrics
   getBodyMetrics: (user_id) => req('GET', `/api/body-metrics?user_id=${user_id}`),

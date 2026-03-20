@@ -785,6 +785,127 @@ def get_users_with_inactivity(days_threshold: int):
     return result
 
 
+def get_muscle_group_progress(user_id: int, weeks: int = 4):
+    """Get aggregated progress by muscle groups over specified weeks"""
+    since = (date.today() - timedelta(weeks=weeks)).isoformat()
+    
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT we.grp, MAX(ws.weight) as max_weight, w.date
+            FROM workout_sets ws
+            JOIN workout_exercises we ON ws.workout_exercise_id = we.id
+            JOIN workouts w ON we.workout_id = w.id
+            WHERE w.user_id = ? AND w.date >= ? AND ws.weight > 0
+            GROUP BY we.grp, w.date
+            ORDER BY w.date DESC
+            """,
+            (user_id, since),
+        ).fetchall()
+    
+    # Group by muscle group and calculate progress
+    muscle_progress = {}
+    for row in rows:
+        grp = row["grp"] or "OTHER"
+        if grp not in muscle_progress:
+            muscle_progress[grp] = []
+        muscle_progress[grp].append({
+            "weight": row["max_weight"],
+            "date": row["date"]
+        })
+    
+    # Calculate progress for each muscle group
+    result = {}
+    for grp, progress_list in muscle_progress.items():
+        if len(progress_list) >= 2:
+            # Compare oldest vs newest max weight
+            oldest_weight = progress_list[-1]["weight"]
+            newest_weight = progress_list[0]["weight"]
+            progress_kg = newest_weight - oldest_weight
+            result[grp] = {
+                "progress_kg": progress_kg,
+                "progress_percent": (progress_kg / oldest_weight * 100) if oldest_weight > 0 else 0,
+                "current_weight": newest_weight,
+                "data_points": len(progress_list)
+            }
+    
+    return result
+
+
+def detect_plateaus(user_id: int, weeks: int = 4):
+    """Detect exercises with stalled progress (no weight increase for 2+ weeks)"""
+    since = (date.today() - timedelta(weeks=weeks)).isoformat()
+    
+    with db() as conn:
+        rows = conn.execute(
+            """
+            SELECT we.name, MAX(ws.weight) as max_weight, w.date
+            FROM workout_sets ws
+            JOIN workout_exercises we ON ws.workout_exercise_id = we.id
+            JOIN workouts w ON we.workout_id = w.id
+            WHERE w.user_id = ? AND w.date >= ? AND ws.weight > 0
+            GROUP BY we.name, w.date
+            ORDER BY we.name, w.date DESC
+            """,
+            (user_id, since),
+        ).fetchall()
+    
+    # Group by exercise
+    exercise_progress = {}
+    for row in rows:
+        exercise = row["name"]
+        if exercise not in exercise_progress:
+            exercise_progress[exercise] = []
+        exercise_progress[exercise].append({
+            "weight": row["max_weight"],
+            "date": row["date"]
+        })
+    
+    # Detect plateaus
+    plateaus = []
+    for exercise, progress_list in exercise_progress.items():
+        if len(progress_list) >= 3:  # Need at least 3 data points
+            # Check if weight hasn't increased in recent sessions
+            recent_weights = [p["weight"] for p in progress_list[:3]]  # Last 3 sessions
+            if all(w == recent_weights[0] for w in recent_weights):
+                # Calculate weeks stalled
+                stalled_weeks = 0
+                for i, p in enumerate(progress_list):
+                    if p["weight"] == recent_weights[0]:
+                        stalled_weeks = i
+                    else:
+                        break
+                
+                if stalled_weeks >= 2:  # At least 2 weeks stalled
+                    plateaus.append({
+                        "exercise": exercise,
+                        "stalled_weeks": stalled_weeks,
+                        "current_weight": recent_weights[0],
+                        "recommendation": generate_plateau_recommendation(exercise, stalled_weeks)
+                    })
+    
+    return plateaus
+
+
+def generate_plateau_recommendation(exercise: str, stalled_weeks: int):
+    """Generate recommendation for breaking plateau"""
+    recommendations = [
+        f"Try pause reps (2-3 seconds at bottom) for {exercise}",
+        f"Increase {exercise} frequency to 2x per week",
+        f"Try tempo variations for {exercise} (3-0-3-0)",
+        f"Add drop sets to your {exercise} workout",
+        f"Focus on progressive overload with {exercise}"
+    ]
+    
+    # Select recommendation based on weeks stalled
+    if stalled_weeks <= 2:
+        return recommendations[0]  # Simple technique change
+    elif stalled_weeks <= 4:
+        return recommendations[1]  # Frequency increase
+    else:
+        return recommendations[2]  # Advanced technique
+
+
 def get_workout_patterns(user_id: int, weeks: int = 2):
     since = date.today() - timedelta(weeks=weeks)
     with db() as conn:

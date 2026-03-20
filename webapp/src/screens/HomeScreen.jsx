@@ -595,6 +595,25 @@ export default function HomeScreen() {
           onClick={handleEmptySpaceClick}
         />
 
+        {/* AI Coach Button */}
+        <div className="shrink-0 px-5 pb-4">
+          <button
+            onClick={() => navigate('ai-coach')}
+            className="w-full py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition-all"
+            style={{
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            <span className="text-2xl">🤖</span>
+            <div className="text-left">
+              <div className="text-white font-bebas tracking-wider text-lg">AI Coach</div>
+              <div className="text-white/60 text-xs font-bebas">Muscle balance & plateau analysis</div>
+            </div>
+          </button>
+        </div>
+
         {/* Низ: адаптивная сетка */}
         <div className="shrink-0 pt-4">
           <DragDropGrid 

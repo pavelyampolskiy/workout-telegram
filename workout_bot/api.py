@@ -643,6 +643,73 @@ class ReminderRequest(BaseModel):
 class InactivityRequest(BaseModel):
     pass
 
+class AICoachRequest(BaseModel):
+    weeks: int = 4
+
+@app.post("/api/ai-coach/muscle-balance")
+async def get_muscle_balance(request: AICoachRequest):
+    """Get muscle group balance analysis"""
+    import database as db_ops
+    
+    # For demo, use user_id=1 (should be passed from client in real implementation)
+    user_id = 1
+    muscle_progress = db_ops.get_muscle_group_progress(user_id, request.weeks)
+    
+    if not muscle_progress:
+        return {"status": "no_data", "message": "Not enough workout data for analysis"}
+    
+    # Analyze balance and generate recommendations
+    progress_rates = {}
+    for grp, data in muscle_progress.items():
+        if data["progress_percent"] > 10:
+            progress_rates[grp] = "fast"
+        elif data["progress_percent"] > 5:
+            progress_rates[grp] = "moderate"
+        else:
+            progress_rates[grp] = "slow"
+    
+    # Find fastest and slowest groups
+    if progress_rates:
+        fastest = max(progress_rates, key=lambda k: muscle_progress[k]["progress_percent"])
+        slowest = min(progress_rates, key=lambda k: muscle_progress[k]["progress_percent"])
+        
+        # Generate recommendation
+        if muscle_progress[fastest]["progress_percent"] > muscle_progress[slowest]["progress_percent"] * 1.5:
+            recommendation = f"Your {fastest} progress is {muscle_progress[fastest]['progress_percent']:.1f}% vs {slowest} at {muscle_progress[slowest]['progress_percent']:.1f}% - focus more on {slowest}"
+        else:
+            recommendation = "Good balance across muscle groups - keep up the consistent work!"
+    else:
+        recommendation = "Keep training to see muscle group analysis"
+    
+    return {
+        "status": "success",
+        "muscle_groups": muscle_progress,
+        "progress_rates": progress_rates,
+        "recommendation": recommendation
+    }
+
+@app.post("/api/ai-coach/plateau-detection")
+async def get_plateau_detection(request: AICoachRequest):
+    """Detect training plateaus"""
+    import database as db_ops
+    
+    # For demo, use user_id=1 (should be passed from client in real implementation)
+    user_id = 1
+    plateaus = db_ops.detect_plateaus(user_id, request.weeks)
+    
+    if not plateaus:
+        return {
+            "status": "no_plateaus",
+            "message": "No plateaus detected - keep up the great work!",
+            "plateaus": []
+        }
+    
+    return {
+        "status": "plateaus_found",
+        "plateaus": plateaus,
+        "total_plateaus": len(plateaus)
+    }
+
 @app.post("/api/inactivity-reminders")
 async def send_inactivity_reminders(request: InactivityRequest):
     """Send reminders to users who haven't worked out in 3-7 days"""
