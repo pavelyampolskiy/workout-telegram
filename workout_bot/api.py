@@ -706,6 +706,31 @@ async def send_inactivity_reminders(request: InactivityRequest):
     """Send reminders to users who haven't worked out in 3-7 days"""
     import database as db_ops
     
+    # If custom message provided, send to all users
+    if request.message and request.force_send:
+        with db_ops.db() as conn:
+            users = conn.execute(
+                """
+                SELECT DISTINCT user_id, telegram_id FROM users 
+                WHERE telegram_id IS NOT NULL
+                """
+            ).fetchall()
+        
+        tasks = []
+        for user_row in users:
+            user_id = user_row["user_id"]
+            chat_id = user_row["telegram_id"]
+            task = asyncio.create_task(send_broadcast_message(chat_id, request.message, user_id))
+            tasks.append(task)
+        
+        if tasks:
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            success_count = sum(1 for r in results if isinstance(r, dict) and r.get("status") == "sent")
+            return {"status": "sent", "total_users": len(users), "success_count": success_count}
+        
+        return {"status": "no_users", "total_users": 0}
+    
+    # Original logic for automatic inactivity reminders
     # Get users with 3+ days inactivity
     inactive_users_3_days = db_ops.get_users_with_inactivity(3)
     inactive_users_7_days = db_ops.get_users_with_inactivity(7)
