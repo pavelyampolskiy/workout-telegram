@@ -43,7 +43,7 @@ function VolumeChange({ items, index, totalVolume }) {
   if (pct === 0) return null;
   const isUp = pct > 0;
   return (
-    <span className={`inline-flex items-center gap-0.5 font-sans text-[10px] ${isUp ? 'text-emerald-400/95' : 'text-red-400/90'}`}>
+    <span className={`inline-flex items-center gap-0.5 font-bebas text-[10px] ${isUp ? 'text-emerald-400/95' : 'text-red-400/90'}`}>
       {isUp ? (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
           <path d="M12 19V5M5 12l7-7 7 7"/>
@@ -197,7 +197,7 @@ export default function HistoryScreen() {
               <path d="M9 12h6M9 16h4"/>
             </svg>
             <p className="font-bebas tracking-wider text-white/80 text-base">No workouts yet</p>
-            <p className="font-sans text-white/50 text-sm mt-1.5">New month, new goals. Start your first workout!</p>
+            <p className="font-bebas text-white/50 text-sm mt-1.5">New month, new goals. Start your first workout!</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -256,7 +256,7 @@ export default function HistoryScreen() {
                                   {formatDate(w.date).toUpperCase()}
                                 </span>
                               </div>
-                              <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
+                              <div className="flex items-center flex-wrap gap-3 font-bebas text-white/35 text-xs">
                                 {w.duration_min > 0 && <span>{w.duration_min} min</span>}
                                 {w.total_sets > 0 && (
                                   <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
@@ -285,7 +285,7 @@ export default function HistoryScreen() {
                   <button
                     onClick={handleMore}
                     disabled={loadingMore}
-                    className="text-white/35 font-sans text-sm py-2"
+                    className="text-white/35 font-bebas text-sm py-2"
                   >
                     {loadingMore ? 'Loading…' : 'Load more'}
                   </button>

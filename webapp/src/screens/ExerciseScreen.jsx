@@ -486,7 +486,7 @@ export default function ExerciseScreen() {
               +
             </button>
           </div>
-          <div className={`text-[10px] font-sans mt-1.5 ${TEXT_MUTED}`}>
+          <div className={`text-[10px] font-bebas mt-1.5 ${TEXT_MUTED}`}>
             Use BAR for bar only, BW for bodyweight
           </div>
         </div>
@@ -503,15 +503,12 @@ export default function ExerciseScreen() {
               −
             </button>
             <input
-              type="number"
+              type="text"
               inputMode="numeric"
-              step="1"
-              min="1"
-              max="100"
               value={reps}
-              onChange={e => { setReps(e.target.value); setInputError(''); }}
-              placeholder="0"
-              className="flex-1 min-w-0 h-12 appearance-none bg-black/50 rounded-xl px-3 text-white text-2xl font-bebas tracking-wider text-center outline-none caret-white placeholder-white/20"
+              onChange={e => setReps(e.target.value.replace(/[^0-9]/g, ''))}
+              className={`flex-1 appearance-none bg-black/50 rounded-xl px-3 py-2 text-white text-center text-lg font-bebas outline-none ${TEXT_SECONDARY}`}
+              style={{ background: 'rgba(255,255,255,0.08)' }}
             />
             <button
               onClick={() => setReps(r => String((parseInt(r) || 0) + 1))}
@@ -521,10 +518,13 @@ export default function ExerciseScreen() {
               +
             </button>
           </div>
+          <div className={`text-[10px] font-bebas mt-1.5 ${TEXT_MUTED}`}>
+            Use BAR for bar only, BW for bodyweight
+          </div>
         </div>
 
         {inputError && (
-          <div className="text-[11px] font-sans text-red-400/85 text-center mb-2">{inputError}</div>
+          <div className="text-[11px] font-bebas text-red-400/85 text-center mb-2">{inputError}</div>
         )}
 
         <button

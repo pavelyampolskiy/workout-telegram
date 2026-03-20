@@ -257,28 +257,28 @@ export default function DayScreen() {
 
           {/* Star rating */}
           <div className="mb-5">
-            <p className="font-sans text-white/60 text-xs mb-3">How was your workout?</p>
-            <div className="flex justify-start gap-3">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  onClick={() => setRating(star)}
-                  className="text-3xl transition-transform active:scale-110"
-                  style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
-                >
-                  ★
-                </button>
-              ))}
-            </div>
+            <p className="font-bebas text-white/60 text-xs mb-3">How was your workout?</p>
+          <div className="flex justify-start gap-3">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                onClick={() => setRating(star)}
+                className="text-3xl transition-transform active:scale-110"
+                style={{ color: star <= rating ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.25)' }}
+              >
+                ★
+              </button>
+            ))}
           </div>
+        </div>
 
-          <p className="font-sans text-white/25 text-xs mb-2">Add a note (optional)</p>
-          <textarea
-            value={note}
-            onChange={e => setNote(e.target.value)}
-            placeholder="E.g. Felt strong today…"
-            className="w-full appearance-none bg-black/50 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-sans"
-          />
+        <p className="font-bebas text-white/25 text-xs mb-2">Add a note (optional)</p>
+        <textarea
+          value={note}
+          onChange={e => setNote(e.target.value)}
+          placeholder="E.g. Felt strong today…"
+          className="w-full appearance-none bg-black/50 rounded-xl p-3 text-white placeholder-white/25 resize-none h-28 outline-none mt-4 text-sm font-bebas"
+        />
         </div>
 
         {/* Кнопки прикреплены к нижнему краю */}

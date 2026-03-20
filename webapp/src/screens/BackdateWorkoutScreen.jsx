@@ -184,7 +184,7 @@ export default function BackdateWorkoutScreen() {
             
             <div className="flex items-center gap-3 my-3">
               <div className="flex-1 h-px bg-white/8" />
-              <span className="text-[9px] uppercase tracking-widest text-white/25 font-sans">or</span>
+              <span className="text-[9px] uppercase tracking-widest text-white/25 font-bebas">or</span>
               <div className="flex-1 h-px bg-white/8" />
             </div>
             

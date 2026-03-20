@@ -93,23 +93,21 @@ export default function RecoveryCheckScreen() {
           </h1>
 
           <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="rounded-xl p-5 w-full max-w-md text-center" style={DARK_CARD_STYLE}>
-              <div 
-                className="text-7xl font-bebas mb-2"
-                style={{ color: rec.color }}
-              >
-                {score}%
-              </div>
-              <div className="text-white/50 text-sm font-sans text-center max-w-xs mx-auto">
-                {rec.text}
-              </div>
-              {rec.modifier < 1 && (
-                <p className="mt-4 text-white/70 text-xs font-sans text-center">
-                  Suggested weight adjustment:{' '}
-                  <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
-                </p>
-              )}
+            <div 
+              className="text-7xl font-bebas mb-2"
+              style={{ color: rec.color }}
+            >
+              {score}%
             </div>
+            <div className="text-white/50 text-sm font-bebas tracking-wider text-center max-w-xs mx-auto">
+              {rec.text}
+            </div>
+            {rec.modifier < 1 && (
+              <p className="mt-4 text-white/70 text-xs font-bebas tracking-wider text-center">
+                Suggested weight adjustment:{' '}
+                <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
+              </p>
+            )}
           </div>
         </div>
 
@@ -124,7 +122,7 @@ export default function RecoveryCheckScreen() {
             </button>
             <button
               onClick={() => navigate('home')}
-              className="w-full text-white font-sans py-2 text-lg"
+              className="w-full text-white/90 font-bebas tracking-wider py-2 text-xl"
             >
               Back to Home
             </button>

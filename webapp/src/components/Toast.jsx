@@ -11,7 +11,7 @@ export function Toast({ message, onClose, visible }) {
       }}
       role="alert"
     >
-      <span className="text-red-400/90 flex-1 font-sans text-sm">{message}</span>
+      <span className="text-red-400/90 flex-1 font-bebas text-sm">{message}</span>
       <button
         onClick={onClose}
         className="shrink-0 p-1 -mr-1 rounded-lg text-white/50 hover:text-white/80 active:bg-white/10 transition-colors"
