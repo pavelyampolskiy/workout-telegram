@@ -641,7 +641,8 @@ class ReminderRequest(BaseModel):
     time_of_day: str
 
 class InactivityRequest(BaseModel):
-    pass
+    message: str = ""
+    force_send: bool = False
 
 class BroadcastRequest(BaseModel):
     message: str
