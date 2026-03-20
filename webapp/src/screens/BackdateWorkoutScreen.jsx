@@ -170,7 +170,7 @@ export default function BackdateWorkoutScreen() {
         <div className="mt-2 shrink-0">
           {/* Описание без плашки */}
           <div className="text-center mb-5">
-            <p className="text-white text-xl font-bebas tracking-wider">Record a workout that you completed on a previous date</p>
+            <p className="text-white text-xl font-bebas tracking-wider">Record a workout that you completed on a previous date.</p>
           </div>
 
           {/* Выбор даты и тренировки в одной плашке */}
