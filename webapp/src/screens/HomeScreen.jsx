@@ -610,6 +610,27 @@ export default function HomeScreen() {
             editMode={editMode}
           />
           
+          {/* Sthenos AI Laboratory Button */}
+          <div className="mt-4">
+            <button
+              onClick={() => navigate('ai-coach')}
+              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+              style={{
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
+              }}
+            >
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                SthenOS AI Laboratory
+              </div>
+              
+              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+                <div className="text-xs text-white whitespace-pre-line text-right">
+                  <span className="text-white/60">in progress...</span>
+                </div>
+              </div>
+            </button>
+          </div>
+          
           {/* Edit Dashboard */}
           <div className="mt-4 text-center">
             <EditModeToggle 
@@ -617,33 +638,6 @@ export default function HomeScreen() {
               onToggle={() => setEditMode(!editMode)}
             />
           </div>
-        </div>
-
-        {/* Sthenos AI Laboratory Button */}
-        <div className="shrink-0 px-5 pt-4">
-          <button
-            onClick={() => navigate('ai-coach')}
-            className="card-press w-full py-4 px-4 rounded-xl"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
-            }}
-          >
-            <div className="flex items-center justify-between w-full">
-              {/* Line 1: Title (left-aligned) */}
-              <div className="flex items-center">
-                <span className="text-white font-bebas tracking-wider text-lg text-left">
-                  SthenOS AI Laboratory
-                </span>
-              </div>
-            </div>
-            
-            {/* Line 2: Status (right-aligned) */}
-            <div className="text-right mt-1">
-              <span className="text-white/40 text-xs font-bebas tracking-wider">
-                in progress...
-              </span>
-            </div>
-          </button>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
