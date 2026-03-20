@@ -742,8 +742,50 @@ def get_weekly_streak(user_id: int) -> dict:
     return {"current": cur_streak, "max": max_streak}
 
 
+def get_days_since_last_workout(user_id: int):
+    """Get days since user's last workout (all types including cardio)"""
+    with db() as conn:
+        row = conn.execute(
+            """
+            SELECT MAX(date) as last_date FROM workouts 
+            WHERE user_id = ?
+            """,
+            (user_id,),
+        ).fetchone()
+    
+    if not row or not row["last_date"]:
+        return None  # No workouts found
+    
+    last_date = date.fromisoformat(row["last_date"])
+    days_since = (date.today() - last_date).days
+    return days_since
+
+
+def get_users_with_inactivity(days_threshold: int):
+    """Get users who haven't worked out for specified days"""
+    threshold_date = (date.today() - timedelta(days=days_threshold)).isoformat()
+    
+    with db() as conn:
+        # Get users who have worked out before but not since threshold
+        rows = conn.execute(
+            """
+            SELECT DISTINCT w1.user_id, MAX(w1.date) as last_date
+            FROM workouts w1
+            WHERE w1.user_id NOT IN (
+                SELECT DISTINCT user_id 
+                FROM workouts w2 
+                WHERE w2.date >= ?
+            )
+            AND w1.date < ?
+            GROUP BY w1.user_id
+            """,
+            (threshold_date, threshold_date),
+        ).fetchall()
+    
+    return [{"user_id": row["user_id"], "days_since": (date.today() - date.fromisoformat(row["last_date"])).days} for row in rows]
+
+
 def get_workout_patterns(user_id: int, weeks: int = 2):
-    """Analyze which days of the week user typically trains (strength only, no cardio)"""
     since = date.today() - timedelta(weeks=weeks)
     with db() as conn:
         rows = conn.execute(

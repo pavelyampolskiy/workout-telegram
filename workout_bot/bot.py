@@ -39,6 +39,19 @@ async def reminder_scheduler():
                 except Exception as e:
                     logging.error(f"Failed to send morning reminders: {e}")
             
+            # Inactivity reminders at 12:00 PM
+            if now.hour == 12 and now.minute == 0:
+                logging.info("Sending inactivity reminders...")
+                try:
+                    import requests
+                    response = requests.post(
+                        "http://localhost:8000/api/inactivity-reminders",
+                        json={}
+                    )
+                    logging.info(f"Inactivity reminders sent: {response.json()}")
+                except Exception as e:
+                    logging.error(f"Failed to send inactivity reminders: {e}")
+            
             # Evening reminder at 4:00 PM (16:00)
             if now.hour == 16 and now.minute == 0:
                 logging.info("Sending evening workout reminders...")

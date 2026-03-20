@@ -640,6 +640,83 @@ async def send_workout_reminder(user_id: int, time_of_day: str):
 class ReminderRequest(BaseModel):
     time_of_day: str
 
+class InactivityRequest(BaseModel):
+    pass
+
+@app.post("/api/inactivity-reminders")
+async def send_inactivity_reminders(request: InactivityRequest):
+    """Send reminders to users who haven't worked out in 3-7 days"""
+    import database as db_ops
+    
+    # Get users with 3+ days inactivity
+    inactive_users_3_days = db_ops.get_users_with_inactivity(3)
+    inactive_users_7_days = db_ops.get_users_with_inactivity(7)
+    
+    # Create sets to avoid duplicates
+    users_3_days = {user["user_id"]: user["days_since"] for user in inactive_users_3_days}
+    users_7_days = {user["user_id"]: user["days_since"] for user in inactive_users_7_days}
+    
+    # Send reminders
+    tasks = []
+    
+    # 3-day reminders
+    for user_id, days_since in users_3_days.items():
+        if user_id not in users_7_days:  # Only send 3-day message if not already 7-day
+            task = asyncio.create_task(send_inactivity_message(user_id, days_since, 3))
+            tasks.append(task)
+    
+    # 7-day reminders
+    for user_id, days_since in users_7_days.items():
+        task = asyncio.create_task(send_inactivity_message(user_id, days_since, 7))
+        tasks.append(task)
+    
+    if tasks:
+        await asyncio.gather(*tasks, return_exceptions=True)
+    
+    return {
+        "status": "sent", 
+        "users_3_days": len(users_3_days) - len(users_7_days),
+        "users_7_days": len(users_7_days)
+    }
+
+async def send_inactivity_message(user_id: int, days_since: int, threshold: int):
+    """Send inactivity reminder message to user"""
+    try:
+        # Get user's Telegram chat ID
+        import database as db_ops
+        with db_ops.db() as conn:
+            row = conn.execute(
+                "SELECT telegram_id FROM users WHERE id = ?",
+                (user_id,)
+            ).fetchone()
+        
+        if not row or not row["telegram_id"]:
+            return {"status": "no_telegram_id", "user_id": user_id}
+        
+        chat_id = row["telegram_id"]
+        
+        # Generate message based on threshold
+        if threshold == 3:
+            message = f"3 days without workouts - time to get back! 💪"
+        else:  # threshold == 7
+            message = f"A week without workouts - it's time to return! 🔥"
+        
+        # Send message via Telegram
+        from telegram import Bot
+        import os
+        
+        bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+        if not bot_token:
+            return {"status": "no_bot_token", "user_id": user_id}
+        
+        bot = Bot(token=bot_token)
+        await bot.send_message(chat_id=chat_id, text=message)
+        
+        return {"status": "sent", "user_id": user_id, "days_since": days_since}
+        
+    except Exception as e:
+        return {"status": "error", "user_id": user_id, "error": str(e)}
+
 @app.post("/api/send-daily-reminders")
 async def send_daily_reminders(request: ReminderRequest):
     """Send workout reminders to all users with workout patterns"""
