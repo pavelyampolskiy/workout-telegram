@@ -606,7 +606,7 @@ export default function HomeScreen() {
         />
 
         {/* AI Coach Button */}
-        <div className="shrink-0 px-5 pb-4">
+        <div className="shrink-0 px-5">
           <div className="relative">
             <button
               onClick={() => navigate('ai-coach')}
