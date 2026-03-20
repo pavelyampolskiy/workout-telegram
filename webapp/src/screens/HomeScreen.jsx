@@ -74,6 +74,8 @@ const AICoachIcon = () => (
     <circle cx="12" cy="6" r="1"/>
     <path d="M8 18l2 2M16 18l-2 2"/>
     <path d="M12 14v4"/>
+    {/* IN PROGRESS text inside the robot head */}
+    <text x="12" y="6.5" fontSize="2.5" fill="currentColor" textAnchor="middle" className="font-bebas tracking-wider">IP</text>
   </svg>
 );
 
@@ -607,37 +609,21 @@ export default function HomeScreen() {
 
         {/* AI Coach Button */}
         <div className="shrink-0 px-5">
-          <div className="relative">
-            <button
-              onClick={() => navigate('ai-coach')}
-              className="card-press w-full py-4 px-4 rounded-xl flex items-center justify-center gap-3"
-              style={{
-                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
-              }}
-            >
-              <span className={ICON_WRAPPER}>
-                <AICoachIcon />
-              </span>
-              <div className="text-left">
-                <div className="text-white font-bebas tracking-wider text-lg">AI Coach</div>
-                <div className="text-white/60 text-sm font-bebas">Muscle balance & plateau analysis</div>
-              </div>
-            </button>
-            {/* IN PROGRESS Badge */}
-            <div 
-              className="absolute -top-2 -right-2 px-2 py-1 rounded-full text-xs font-bebas tracking-wider"
-              style={{
-                background: 'rgba(255, 255, 255, 0.15)',
-                backdropFilter: 'blur(4px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: 'rgba(255, 255, 255, 0.9)',
-                fontSize: '10px',
-                letterSpacing: '0.5px'
-              }}
-            >
-              IN PROGRESS
+          <button
+            onClick={() => navigate('ai-coach')}
+            className="card-press w-full py-4 px-4 rounded-xl flex items-center justify-center gap-3"
+            style={{
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
+            }}
+          >
+            <span className={ICON_WRAPPER}>
+              <AICoachIcon />
+            </span>
+            <div className="text-left">
+              <div className="text-white font-bebas tracking-wider text-lg">AI Coach</div>
+              <div className="text-white/60 text-sm font-bebas">Muscle balance & plateau analysis</div>
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Низ: адаптивная сетка */}
