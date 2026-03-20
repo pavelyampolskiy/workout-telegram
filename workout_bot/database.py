@@ -534,6 +534,7 @@ def update_cardio(workout_id: int, text: str):
 
 def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id: int):
     with db() as conn:
+        # Try exact match first
         row = conn.execute(
             """
             SELECT we.id, w.date
@@ -545,6 +546,36 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
             """,
             (user_id, exercise_name, exclude_workout_id),
         ).fetchone()
+        
+        # If no exact match, try fuzzy matching
+        if not row:
+            # Try case-insensitive match
+            row = conn.execute(
+                """
+                SELECT we.id, w.date
+                FROM workout_exercises we
+                JOIN workouts w ON we.workout_id = w.id
+                WHERE w.user_id = ? AND LOWER(we.name) = LOWER(?) AND w.id != ?
+                ORDER BY w.date DESC, w.id DESC
+                LIMIT 1
+                """,
+                (user_id, exercise_name.lower(), exclude_workout_id),
+            ).fetchone()
+            
+        # If still no match, try partial matching (contains)
+        if not row:
+            row = conn.execute(
+                """
+                SELECT we.id, w.date
+                FROM workout_exercises we
+                JOIN workouts w ON we.workout_id = w.id
+                WHERE w.user_id = ? AND (LOWER(we.name) LIKE LOWER(?) OR LOWER(?) LIKE LOWER(we.name)) AND w.id != ?
+                ORDER BY w.date DESC, w.id DESC
+                LIMIT 1
+                """,
+                (user_id, f"%{exercise_name}%", f"%{exercise_name}%", exclude_workout_id),
+            ).fetchone()
+        
         if not row:
             return None, None
         rows = conn.execute(
