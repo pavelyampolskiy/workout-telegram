@@ -142,18 +142,15 @@ export default function DayScreen() {
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    if (!workoutId) {
-      setShowNote(true);
-      return;
-    }
     setSavingWorkout(true);
     try {
-      // Если это backdated тренировка, используем сохраненную дату
-      const completionDate = isBackdated && activeWorkout?.backdateDate 
+      const completionDate = activeWorkout?.isBackdated 
         ? activeWorkout.backdateDate 
         : undefined;
       
       await api.finishWorkout(workoutId, completionDate);
+      // Clear active workout from localStorage when finishing
+      localStorage.removeItem(`activeWorkout_${userId}`);
       setShowNote(true);
     } catch (e) {
       showToast(e.message);

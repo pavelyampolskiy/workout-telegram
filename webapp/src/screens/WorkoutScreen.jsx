@@ -95,6 +95,8 @@ export default function WorkoutScreen() {
     setSwitchingWorkout(true);
     try {
       await api.deleteWorkout(activeWorkout.id);
+      // Clear active workout from localStorage when deleting
+      localStorage.removeItem(`activeWorkout_${userId}`);
       setActiveWorkout(null);
       setActiveWorkoutModal(null);
       if (activeWorkoutModal.screen === 'day') {

@@ -1,6 +1,7 @@
 import { useState, createContext, useContext, useEffect, useCallback, useRef, Component } from 'react';
 import { useSwipeBack } from './hooks/useSwipeBack';
 import { Toast } from './components/Toast';
+import { api } from './api';
 
 import HomeScreen from './screens/HomeScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
@@ -148,6 +149,42 @@ export default function App() {
     }
   }, []);
 
+  // Save/restore activeWorkout from localStorage for persistence
+  useEffect(() => {
+    if (!userId) return;
+    
+    // Load active workout from localStorage
+    try {
+      const saved = localStorage.getItem(`activeWorkout_${userId}`);
+      if (saved) {
+        const workout = JSON.parse(saved);
+        // Verify it's still valid by checking with backend
+        api.getUnfinishedWorkout(userId).then(data => {
+          if (data.workout && data.workout.id === workout.id) {
+            setActiveWorkout(workout);
+          } else {
+            // Clear invalid saved workout
+            localStorage.removeItem(`activeWorkout_${userId}`);
+          }
+        }).catch(() => {
+          localStorage.removeItem(`activeWorkout_${userId}`);
+        });
+      }
+    } catch (e) {
+      localStorage.removeItem(`activeWorkout_${userId}`);
+    }
+  }, [userId]);
+
+  // Save activeWorkout to localStorage whenever it changes
+  useEffect(() => {
+    if (!userId || !activeWorkout) return;
+    try {
+      localStorage.setItem(`activeWorkout_${userId}`, JSON.stringify(activeWorkout));
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }, [userId, activeWorkout]);
+
   // Request fullscreen on first tap so background is full-screen on all screens (Home, Cardio, etc.)
   const fullscreenRequested = useRef(false);
   const requestFullscreenOnTap = useCallback(() => {
@@ -229,9 +266,13 @@ export default function App() {
   }, []);
 
   const resetTo = useCallback((screen = 'home', params = {}) => {
+    // Clear active workout from localStorage when resetting
+    if (userId) {
+      localStorage.removeItem(`activeWorkout_${userId}`);
+    }
     setStack([{ screen, params }]);
     setActiveWorkout(null);
-  }, []);
+  }, [userId]);
 
   // Telegram native back button — defensive
   useEffect(() => {

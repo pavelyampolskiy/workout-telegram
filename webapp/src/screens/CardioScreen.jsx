@@ -134,12 +134,13 @@ export default function CardioScreen() {
     try {
       await api.addCardio(workoutId, toSave.trim());
       
-      // Если это backdated тренировка, используем сохраненную дату
-      const completionDate = isBackdated && activeWorkout?.backdateDate 
+      const completionDate = activeWorkout?.isBackdated 
         ? activeWorkout.backdateDate 
         : undefined;
       
       await api.finishWorkout(workoutId, completionDate);
+      // Clear active workout from localStorage when finishing
+      localStorage.removeItem(`activeWorkout_${userId}`);
       resetTo('home');
     } catch (e) {
       showToast(e.message);
