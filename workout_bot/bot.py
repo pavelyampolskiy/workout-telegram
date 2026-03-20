@@ -14,6 +14,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 import database as db_ops
 from api import app as fastapi_app, set_bot_instance
 from handlers import router
+from simple_reminders import start_simple_reminders
 
 logging.basicConfig(level=logging.INFO)
 
@@ -29,6 +30,10 @@ async def main():
     set_bot_instance(bot)  # Make bot available to API
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
+
+    # Запускаем простые напоминания
+    await start_simple_reminders(bot)
+    logging.info("Simple reminders started (8:00 and 16:00)")
 
     port = int(os.environ.get("PORT", 8000))
     config = uvicorn.Config(fastapi_app, host="0.0.0.0", port=port, log_level="warning")
