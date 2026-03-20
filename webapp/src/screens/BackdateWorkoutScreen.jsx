@@ -168,16 +168,16 @@ export default function BackdateWorkoutScreen() {
         
         {/* Контент внутри плашек */}
         <div className="mt-2 shrink-0">
-          {/* Описание без плашки */}
-          <div className="text-center mb-5">
-            <p className="text-white text-xl font-bebas tracking-wider">Record a workout that you completed on a previous date.</p>
+          {/* Описание */}
+          <div className="rounded-xl p-4 space-y-4 mb-5" style={DARK_CARD_STYLE}>
+            <p className="text-white text-xl">Record a workout that you completed on a previous date</p>
           </div>
 
           {/* Выбор даты и тренировки в одной плашке */}
           <div className="rounded-xl p-4 space-y-4" style={DARK_CARD_STYLE}>
             {/* Выбор даты */}
             <div className="flex items-center justify-between">
-              <div className="text-white/40 text-sm font-bebas tracking-wider text-lg">Select the date when you did this workout</div>
+              <div className="text-white/40 text-sm">Select the date when you did this workout</div>
               
               <CustomCalendar
                 selectedDate={selectedDate}
@@ -196,7 +196,7 @@ export default function BackdateWorkoutScreen() {
 
             {/* Выбор типа тренировки */}
             <div>
-              <div className="text-white/40 text-sm font-bebas tracking-wider text-lg">Workout Type</div>
+              <div className="text-white/40 text-sm">Workout Type</div>
               <div className="space-y-2">
                 {days?.map(day => (
                   <DayCard
