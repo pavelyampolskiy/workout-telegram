@@ -602,6 +602,23 @@ export default function HomeScreen() {
           onClick={handleEmptySpaceClick}
         />
 
+        {/* Низ: адаптивная сетка */}
+        <div className="shrink-0 pt-4">
+          <DragDropGrid 
+            items={gridItems}
+            onLayoutChange={setGridItems}
+            editMode={editMode}
+          />
+          
+          {/* Edit Dashboard */}
+          <div className="mt-4 text-center">
+            <EditModeToggle 
+              enabled={editMode}
+              onToggle={() => setEditMode(!editMode)}
+            />
+          </div>
+        </div>
+
         {/* Sthenos AI Laboratory Button */}
         <div className="shrink-0 px-5 pt-4">
           <button
@@ -627,23 +644,6 @@ export default function HomeScreen() {
               </span>
             </div>
           </button>
-        </div>
-
-        {/* Низ: адаптивная сетка */}
-        <div className="shrink-0 pt-4">
-          <DragDropGrid 
-            items={gridItems}
-            onLayoutChange={setGridItems}
-            editMode={editMode}
-          />
-          
-          {/* Edit Dashboard */}
-          <div className="mt-4 text-center">
-            <EditModeToggle 
-              enabled={editMode}
-              onToggle={() => setEditMode(!editMode)}
-            />
-          </div>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
