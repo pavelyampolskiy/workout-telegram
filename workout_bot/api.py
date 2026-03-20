@@ -643,6 +643,56 @@ class ReminderRequest(BaseModel):
 class InactivityRequest(BaseModel):
     pass
 
+class BroadcastRequest(BaseModel):
+    message: str
+
+@app.post("/api/broadcast-message")
+async def broadcast_message(request: BroadcastRequest):
+    """Send custom message to all users"""
+    import database as db_ops
+    
+    # Get all users who have worked out before
+    with db_ops.db() as conn:
+        users = conn.execute(
+            """
+            SELECT DISTINCT user_id, telegram_id FROM users 
+            WHERE telegram_id IS NOT NULL
+            """
+        ).fetchall()
+    
+    # Send message to all users
+    tasks = []
+    for user_row in users:
+        user_id = user_row["user_id"]
+        chat_id = user_row["telegram_id"]
+        task = asyncio.create_task(send_broadcast_message(chat_id, request.message, user_id))
+        tasks.append(task)
+    
+    if tasks:
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        success_count = sum(1 for r in results if isinstance(r, dict) and r.get("status") == "sent")
+        return {"status": "sent", "total_users": len(users), "success_count": success_count}
+    
+    return {"status": "no_users", "total_users": 0}
+
+async def send_broadcast_message(chat_id: int, message: str, user_id: int):
+    """Send broadcast message to user"""
+    try:
+        from telegram import Bot
+        import os
+        
+        bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+        if not bot_token:
+            return {"status": "no_bot_token", "user_id": user_id}
+        
+        bot = Bot(token=bot_token)
+        await bot.send_message(chat_id=chat_id, text=message)
+        
+        return {"status": "sent", "user_id": user_id}
+        
+    except Exception as e:
+        return {"status": "error", "user_id": user_id, "error": str(e)}
+
 @app.post("/api/inactivity-reminders")
 async def send_inactivity_reminders(request: InactivityRequest):
     """Send reminders to users who haven't worked out in 3-7 days"""
