@@ -100,16 +100,16 @@ export default function RecoveryCheckScreen() {
               >
                 {score}%
               </div>
-              <div className="text-white/50 text-sm font-sans text-center max-w-xs mx-auto">
-                {rec.text}
-              </div>
-              {rec.modifier < 1 && (
-                <p className="mt-4 text-white/70 text-xs font-sans text-center">
-                  Suggested weight adjustment:{' '}
-                  <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
-                </p>
-              )}
             </div>
+            <div className="text-white/50 text-xl font-bebas tracking-wider text-center max-w-xs mx-auto mt-4">
+              {rec.text}
+            </div>
+            {rec.modifier < 1 && (
+              <p className="mt-4 text-white/70 text-sm font-bebas tracking-wider text-center">
+                Suggested weight adjustment:{' '}
+                <span className="text-white/90 font-medium">{Math.round((1 - rec.modifier) * 100)}% lighter</span>
+              </p>
+            )}
           </div>
         </div>
 
