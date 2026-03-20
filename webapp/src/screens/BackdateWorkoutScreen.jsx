@@ -167,7 +167,7 @@ export default function BackdateWorkoutScreen() {
         <h1 className="font-bebas text-white pt-6 mb-1" style={PAGE_HEADING_STYLE}>Add Past Workout</h1>
         
         {/* Контент внутри плашек */}
-        <div className="shrink-0">
+        <div className="mt-2 shrink-0">
           {/* Описание */}
           <div className="rounded-xl p-4 space-y-4 mb-5" style={DARK_CARD_STYLE}>
             <p className="text-white text-xl">Record a workout that you completed on a previous date</p>

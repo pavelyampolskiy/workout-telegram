@@ -76,7 +76,13 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
 
   const handleDayClick = (day) => {
     if (!day.isDisabled) {
-      onDateChange(day.date.toISOString().split('T')[0]);
+      // Используем локальную дату вместо UTC чтобы избежать сдвига на день назад
+      const year = day.date.getFullYear();
+      const month = String(day.date.getMonth() + 1).padStart(2, '0');
+      const dayNum = String(day.date.getDate()).padStart(2, '0');
+      const newDate = `${year}-${month}-${dayNum}`;
+      
+      onDateChange(newDate);
       setIsOpen(false);
     }
   };
@@ -84,13 +90,19 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
   const handlePrevMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(newDate.getMonth() - 1);
-    onDateChange(newDate.toISOString().split('T')[0]);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const dayNum = String(newDate.getDate()).padStart(2, '0');
+    onDateChange(`${year}-${month}-${dayNum}`);
   };
 
   const handleNextMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(newDate.getMonth() + 1);
-    onDateChange(newDate.toISOString().split('T')[0]);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, '0');
+    const dayNum = String(newDate.getDate()).padStart(2, '0');
+    onDateChange(`${year}-${month}-${dayNum}`);
   };
 
   return (
