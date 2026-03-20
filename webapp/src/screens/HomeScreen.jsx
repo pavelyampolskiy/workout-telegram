@@ -602,29 +602,29 @@ export default function HomeScreen() {
           onClick={handleEmptySpaceClick}
         />
 
-        {/* SthenOS AI Laboratory Button */}
+        {/* Sthenos AI Laboratory Button */}
         <div className="shrink-0 px-5 pt-4">
           <button
             onClick={() => navigate('ai-coach')}
-            className="card-press w-full py-4 px-4 rounded-xl"
+            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
             style={{
               background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
             }}
           >
-            <div className="flex items-center justify-between w-full">
-              {/* Line 1: Title (left-aligned) */}
-              <div className="flex items-center">
-                <span className="text-white font-bebas tracking-wider text-lg text-left">
-                  SthenOS AI Laboratory
-                </span>
-              </div>
+            {/* Title */}
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+              SthenOS AI Laboratory
             </div>
             
-            {/* Line 2: Status (right-aligned) */}
-            <div className="text-right mt-1">
-              <span className="text-white/40 text-xs font-bebas tracking-wider">
-                in progress...
-              </span>
+            {/* Status */}
+            <div className="w-full">
+              <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <div className="text-xs text-white/60">
+                  <div className="flex justify-between items-center">
+                    <span>in progress...</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </button>
         </div>
