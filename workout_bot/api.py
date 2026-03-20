@@ -649,31 +649,34 @@ class BroadcastRequest(BaseModel):
 @app.post("/api/broadcast-message")
 async def broadcast_message(request: BroadcastRequest):
     """Send custom message to all users"""
-    import database as db_ops
-    
-    # Get all users who have worked out before
-    with db_ops.db() as conn:
-        users = conn.execute(
-            """
-            SELECT DISTINCT user_id, telegram_id FROM users 
-            WHERE telegram_id IS NOT NULL
-            """
-        ).fetchall()
-    
-    # Send message to all users
-    tasks = []
-    for user_row in users:
-        user_id = user_row["user_id"]
-        chat_id = user_row["telegram_id"]
-        task = asyncio.create_task(send_broadcast_message(chat_id, request.message, user_id))
-        tasks.append(task)
-    
-    if tasks:
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-        success_count = sum(1 for r in results if isinstance(r, dict) and r.get("status") == "sent")
-        return {"status": "sent", "total_users": len(users), "success_count": success_count}
-    
-    return {"status": "no_users", "total_users": 0}
+    try:
+        import database as db_ops
+        
+        # Get all users who have worked out before
+        with db_ops.db() as conn:
+            users = conn.execute(
+                """
+                SELECT DISTINCT user_id, telegram_id FROM users 
+                WHERE telegram_id IS NOT NULL
+                """
+            ).fetchall()
+        
+        # Send message to all users
+        tasks = []
+        for user_row in users:
+            user_id = user_row["user_id"]
+            chat_id = user_row["telegram_id"]
+            task = asyncio.create_task(send_broadcast_message(chat_id, request.message, user_id))
+            tasks.append(task)
+        
+        if tasks:
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            success_count = sum(1 for r in results if isinstance(r, dict) and r.get("status") == "sent")
+            return {"status": "sent", "total_users": len(users), "success_count": success_count}
+        
+        return {"status": "no_users", "total_users": 0}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
 
 async def send_broadcast_message(chat_id: int, message: str, user_id: int):
     """Send broadcast message to user"""
