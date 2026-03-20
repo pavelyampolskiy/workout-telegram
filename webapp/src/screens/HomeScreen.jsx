@@ -67,6 +67,16 @@ const MetricsIcon = () => (
   </svg>
 );
 
+const AICoachIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+    <rect x="8" y="3" width="8" height="7" rx="1"/>
+    <path d="M8 10v2a2 2 0 002 2h4a2 2 0 002-2v-2"/>
+    <circle cx="12" cy="6" r="1"/>
+    <path d="M8 18l2 2M16 18l-2 2"/>
+    <path d="M12 14v4"/>
+  </svg>
+);
+
 const BUTTON_CONFIG = {
   history: { screen: 'history', icon: <HistoryIcon />, title: 'History' },
   stats: { screen: 'stats', icon: <StatsIcon />, title: 'Statistics' },
@@ -599,17 +609,17 @@ export default function HomeScreen() {
         <div className="shrink-0 px-5 pb-4">
           <button
             onClick={() => navigate('ai-coach')}
-            className="w-full py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition-all"
+            className="card-press w-full py-4 px-4 rounded-xl flex items-center justify-center gap-3"
             style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)'
+              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
             }}
           >
-            <span className="text-2xl">🤖</span>
+            <span className={ICON_WRAPPER}>
+              <AICoachIcon />
+            </span>
             <div className="text-left">
               <div className="text-white font-bebas tracking-wider text-lg">AI Coach</div>
-              <div className="text-white/60 text-xs font-bebas">Muscle balance & plateau analysis</div>
+              <div className="text-white/60 text-sm font-bebas">Muscle balance & plateau analysis</div>
             </div>
           </button>
         </div>
