@@ -29,24 +29,15 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     
-    // Начинаем с понедельника (1 = понедельник в JS)
-    let startDay = firstDay.getDay() - 1;
-    if (startDay === -1) startDay = 6; // Воскресенье становится 6
-    
-    const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - startDay);
-    
     const days = [];
-    const current = new Date(startDate);
     const maxDt = new Date(maxDate);
     const minDt = new Date(minDate);
     
-    // Добавляем пустые ячейки в начале месяца для правильного выравнивания
-    const monthFirstDay = new Date(year, month, 1);
-    const startDayOfWeek = monthFirstDay.getDay(); // 0=Sunday, 1=Monday, ...
+    // Получаем день недели первого числа месяца (0=Sunday, 1=Monday, ...)
+    const firstDayOfWeek = firstDay.getDay();
     
     // Добавляем пустые ячейки для дней до начала месяца
-    for (let i = 0; i < startDayOfWeek; i++) {
+    for (let i = 0; i < firstDayOfWeek; i++) {
       days.push({
         date: null,
         isCurrentMonth: false,
@@ -56,7 +47,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
       });
     }
     
-    // Показываем только дни текущего месяца
+    // Добавляем дни текущего месяца
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const currentDate = new Date(year, month, day);
       const isDisabled = currentDate > maxDt || currentDate < minDt;
@@ -71,7 +62,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
       });
     }
     
-    // Добавляем пустые ячейки в конце месяца для заполнения последней недели
+    // Добавляем пустые ячейки для заполнения последней недели
     const totalCells = days.length;
     const remainingCells = totalCells % 7;
     if (remainingCells > 0) {
