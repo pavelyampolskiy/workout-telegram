@@ -124,7 +124,7 @@ export default function RecoveryCheckScreen() {
             </button>
             <button
               onClick={() => navigate('home')}
-              className="w-full text-white font-sans py-2 text-lg"
+              className="w-full text-white font-bebas tracking-wider py-2 text-lg"
             >
               Back to Home
             </button>
