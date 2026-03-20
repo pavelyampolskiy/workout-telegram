@@ -646,6 +646,11 @@ class InactivityRequest(BaseModel):
 class BroadcastRequest(BaseModel):
     message: str
 
+@app.post("/api/test-broadcast")
+async def test_broadcast():
+    """Test broadcast endpoint"""
+    return {"status": "test", "message": "Broadcast endpoint works!"}
+
 @app.post("/api/broadcast-message")
 async def broadcast_message(request: BroadcastRequest):
     """Send custom message to all users"""
