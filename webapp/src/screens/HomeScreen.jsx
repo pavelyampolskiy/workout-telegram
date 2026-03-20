@@ -603,7 +603,7 @@ export default function HomeScreen() {
         />
 
         {/* SthenOS AI Laboratory Button */}
-        <div className="shrink-0 px-5">
+        <div className="shrink-0 px-5 pt-4">
           <button
             onClick={() => navigate('ai-coach')}
             className="card-press w-full py-4 px-4 rounded-xl"
@@ -612,11 +612,8 @@ export default function HomeScreen() {
             }}
           >
             <div className="flex items-center justify-between w-full">
-              {/* Line 1: Icon + Title (left-aligned) */}
-              <div className="flex items-center gap-3">
-                <span className={ICON_WRAPPER}>
-                  <AICoachIcon />
-                </span>
+              {/* Line 1: Title (left-aligned) */}
+              <div className="flex items-center">
                 <span className="text-white font-bebas tracking-wider text-lg text-left">
                   SthenOS AI Laboratory
                 </span>
