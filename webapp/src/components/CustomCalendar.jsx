@@ -14,7 +14,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
   
   const formatDateDisplay = (dateStr) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { 
+    return date.toLocaleDateString('en-GB', { 
       day: 'numeric', 
       month: 'short', 
       year: 'numeric' 
@@ -153,7 +153,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
                 </svg>
               </button>
               <div className="text-white font-bebas tracking-wider text-lg">
-                {new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                {new Date(selectedDate).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
               </div>
               <button
                 onClick={handleNextMonth}
