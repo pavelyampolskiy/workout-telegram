@@ -304,6 +304,50 @@ def get_last_exercise(ex_id: int, user_id: int, exclude_wid: int):
     }
 
 
+# ── Day Customizations ──────────────────────────────────────────────────────────
+
+class DayCustomizationBody(BaseModel):
+    removed_exercises: list
+    added_exercises: list
+
+@app.get("/api/day-customizations/{day_type}")
+def get_day_customizations(day_type: str, user_id: int):
+    """Get day customizations for a user"""
+    removed, added = db_ops.get_day_customization(user_id, day_type)
+    return {
+        "removed_exercises": removed or [],
+        "added_exercises": added or []
+    }
+
+@app.post("/api/day-customizations/{day_type}")
+def save_day_customizations(day_type: str, body: DayCustomizationBody, user_id: int):
+    """Save day customizations for a user"""
+    db_ops.save_day_customization(user_id, day_type, body.removed_exercises, body.added_exercises)
+    return {"ok": True}
+
+@app.get("/api/program/{day_type}/customized")
+def get_customized_program(day_type: str, user_id: int):
+    """Get program with customizations applied"""
+    # Get base program
+    base_program = db_ops.get_user_program(user_id)
+    base_exercises = base_program.get(day_type, [])
+    
+    # Get customizations
+    removed, added = db_ops.get_day_customization(user_id, day_type)
+    
+    # Apply customizations
+    if removed or added:
+        customized_exercises = db_ops.apply_day_customization(base_exercises, removed or [], added or [])
+    else:
+        customized_exercises = base_exercises
+    
+    return {
+        "day_type": day_type,
+        "exercises": customized_exercises,
+        "has_customizations": bool(removed or added)
+    }
+
+
 # ── Sets ──────────────────────────────────────────────────────────────────────
 
 class SetBody(BaseModel):

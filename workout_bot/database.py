@@ -128,6 +128,18 @@ def init_db():
                 is_active INTEGER NOT NULL DEFAULT 1,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             );
+
+            CREATE TABLE IF NOT EXISTS day_customizations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                day_type TEXT NOT NULL,
+                removed_exercises TEXT,
+                added_exercises TEXT,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            );
+
         """)
         # Migration: ensure workout_sets.weight is REAL (decimal weights like 145.7)
         try:
@@ -587,6 +599,83 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
             for r in rows
         ]
         return row["date"], sets
+
+
+# ── Day Customizations ──────────────────────────────────────────────────────────
+
+def save_day_customization(user_id: int, day_type: str, removed_exercises: list, added_exercises: list):
+    """Save day customization for a user"""
+    import json
+    with db() as conn:
+        # Check if customization already exists
+        existing = conn.execute(
+            "SELECT id FROM day_customizations WHERE user_id = ? AND day_type = ?",
+            (user_id, day_type)
+        ).fetchone()
+        
+        if existing:
+            # Update existing
+            conn.execute(
+                """UPDATE day_customizations 
+                   SET removed_exercises = ?, added_exercises = ?, updated_at = CURRENT_TIMESTAMP 
+                   WHERE user_id = ? AND day_type = ?""",
+                (json.dumps(removed_exercises), json.dumps(added_exercises), user_id, day_type)
+            )
+        else:
+            # Insert new
+            conn.execute(
+                """INSERT INTO day_customizations 
+                   (user_id, day_type, removed_exercises, added_exercises) 
+                   VALUES (?, ?, ?, ?)""",
+                (user_id, day_type, json.dumps(removed_exercises), json.dumps(added_exercises))
+            )
+
+def get_day_customization(user_id: int, day_type: str):
+    """Get day customization for a user"""
+    import json
+    with db() as conn:
+        row = conn.execute(
+            "SELECT removed_exercises, added_exercises FROM day_customizations WHERE user_id = ? AND day_type = ?",
+            (user_id, day_type)
+        ).fetchone()
+        
+        if not row:
+            return None, None
+            
+        try:
+            removed = json.loads(row["removed_exercises"]) if row["removed_exercises"] else []
+            added = json.loads(row["added_exercises"]) if row["added_exercises"] else []
+            return removed, added
+        except (json.JSONDecodeError, TypeError):
+            return None, None
+
+def apply_day_customization(base_exercises: list, removed_exercises: list, added_exercises: list):
+    """Apply customizations to base exercises"""
+    import json
+    
+    # Convert to list of dicts for easier manipulation
+    exercises = []
+    for ex in base_exercises:
+        if isinstance(ex, str):
+            exercises.append({"name": ex, "group": "", "target_sets": 3})
+        else:
+            exercises.append(ex)
+    
+    # Remove exercises
+    filtered_exercises = []
+    for ex in exercises:
+        ex_name = ex.get("name", "")
+        if ex_name not in removed_exercises:
+            filtered_exercises.append(ex)
+    
+    # Add custom exercises
+    for added_ex in added_exercises:
+        if isinstance(added_ex, str):
+            filtered_exercises.append({"name": added_ex, "group": "", "target_sets": 3})
+        else:
+            filtered_exercises.append(added_ex)
+    
+    return filtered_exercises
 
 
 # ── Progress ──────────────────────────────────────────────────────────────────

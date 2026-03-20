@@ -96,6 +96,15 @@ export const api = {
   getMuscleBalance: (weeks = 4) => req('POST', '/api/ai-coach/muscle-balance', { weeks }),
   getPlateauDetection: (weeks = 4) => req('POST', '/api/ai-coach/plateau-detection', { weeks }),
 
+  // Day Customizations
+  getDayCustomizations: (dayType, userId) => req('GET', `/api/day-customizations/${dayType}?user_id=${userId}`),
+  saveDayCustomizations: (dayType, userId, removedExercises, addedExercises) => 
+    req('POST', `/api/day-customizations/${dayType}?user_id=${userId}`, { 
+      removed_exercises: removedExercises, 
+      added_exercises: addedExercises 
+    }),
+  getCustomizedProgram: (dayType, userId) => req('GET', `/api/program/${dayType}/customized?user_id=${userId}`),
+
   // Body Metrics
   getBodyMetrics: (user_id) => req('GET', `/api/body-metrics?user_id=${user_id}`),
   createBodyMetric: (user_id, data) => req('POST', `/api/body-metrics`, { user_id, ...data }),
