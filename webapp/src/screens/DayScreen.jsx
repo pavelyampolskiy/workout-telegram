@@ -743,8 +743,8 @@ const cancelRemoval = () => {
           </button>
           <button
             onClick={() => setShowCancelConfirm(true)}
-            className="w-full text-center font-bebas text-white/50 py-3 transition-colors"
-            style={{ fontSize: '0.9rem', letterSpacing: '0.05em' }}
+            className="w-full text-center font-bebas text-white/50 py-3 transition-colors text-lg"
+            style={{ letterSpacing: '0.05em' }}
           >
             Cancel workout
           </button>
