@@ -107,7 +107,7 @@ export default function BackdateWorkoutScreen() {
       console.log('Request data:', requestData);
       
       console.log('Calling api.createWorkout...');
-      // Сначала создаем тренировку как обычно (без даты в параметрах)
+      // Создаем тренировку как в других экранах
       const response = await api.createWorkout(userId, type);
       console.log('API response received:', response);
       
@@ -118,27 +118,14 @@ export default function BackdateWorkoutScreen() {
       const { id } = response;
       console.log('Workout created with ID:', id);
       
-      // Теперь обновляем дату тренировки
-      console.log('Updating workout date to:', workoutDate);
-      await api.finishWorkout(id, workoutDate);
-      console.log('Workout date updated successfully');
-      
-      // Проверим что вернул сервер
-      if (response && response.date) {
-        console.log('Server returned date:', response.date);
-        if (response.date !== workoutDate) {
-          showToast(`Warning: Server saved date ${response.date} instead of ${workoutDate}`);
-        }
-      }
-      
-      // Устанавливаем активную тренировку с программой
+      // Устанавливаем активную тренировку с программой и датой
       setActiveWorkout({ 
         id, 
         day: type, 
         exerciseMap: {}, 
         startedAt: Date.now(),
         isBackdated: true,
-        backdateDate: selectedDate,
+        backdateDate: selectedDate, // Сохраняем дату для использования позже
         dayProgram: dayProgram // Сохраняем программу для DayScreen
       });
       
@@ -149,6 +136,7 @@ export default function BackdateWorkoutScreen() {
         day: type, 
         dayLabel: label, 
         isBackdated: true,
+        backdateDate: selectedDate, // Передаем дату
         dayProgram: dayProgram // Передаем программу
       });
     } catch (e) {
