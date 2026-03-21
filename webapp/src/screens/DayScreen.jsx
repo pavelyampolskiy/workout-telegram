@@ -235,9 +235,20 @@ export default function DayScreen() {
   };
 
   const handleRemoveExercise = (exerciseName) => {
-    // Add to removed exercises list instead of deleting from program
+    // Add to removed exercises list and save to localStorage
     if (!removedExercises.includes(exerciseName)) {
-      setRemovedExercises(prev => [...prev, exerciseName]);
+      const newRemoved = [...removedExercises, exerciseName];
+      setRemovedExercises(newRemoved);
+      
+      // Save to localStorage for persistence
+      localStorage.setItem(`removedExercises_${workoutId}`, JSON.stringify(newRemoved));
+      
+      // Save to activeWorkout for persistence
+      setActiveWorkout(prev => ({ 
+        ...prev, 
+        removedExercises: newRemoved,
+        exerciseMap: { ...prev.exerciseMap }
+      }));
       
       // Remove from exerciseMap
       const exerciseIndex = program.findIndex(ex => ex.name === exerciseName);
@@ -255,7 +266,19 @@ export default function DayScreen() {
     // Find the custom exercise and remove it
     const customExercise = customExercises.find(ex => ex.id === exerciseId);
     if (customExercise && !removedExercises.includes(customExercise.name)) {
-      setRemovedExercises(prev => [...prev, customExercise.name]);
+      const newRemoved = [...removedExercises, customExercise.name];
+      setRemovedExercises(newRemoved);
+      
+      // Save to localStorage for persistence
+      localStorage.setItem(`removedExercises_${workoutId}`, JSON.stringify(newRemoved));
+      
+      // Save to activeWorkout for persistence
+      setActiveWorkout(prev => ({ 
+        ...prev, 
+        removedExercises: newRemoved,
+        exerciseMap: { ...prev.exerciseMap }
+      }));
+      
       setCustomExercises(prev => prev.filter(ex => ex.id !== exerciseId));
       
       // Remove from exerciseMap
@@ -287,18 +310,21 @@ export default function DayScreen() {
     }
   };
 
+  // Load removed exercises from localStorage or activeWorkout
   useEffect(() => {
-    if (!userId || !day) return;
-    
-    api.getDayCustomizations(day, userId).then(data => {
-      setDayCustomizations({
-        removed: data.removed_exercises || [],
-        added: data.added_exercises || []
-      });
-    }).catch(() => {
-      // No customizations yet
-    });
-  }, [userId, day]);
+    if (activeWorkout?.removedExercises) {
+      setRemovedExercises(activeWorkout.removedExercises);
+    } else if (workoutId) {
+      const saved = localStorage.getItem(`removedExercises_${workoutId}`);
+      if (saved) {
+        try {
+          setRemovedExercises(JSON.parse(saved));
+        } catch (e) {
+          console.error('Failed to parse removed exercises:', e);
+        }
+      }
+    }
+  }, [activeWorkout, workoutId]);
 
   if (loading) {
     return (
@@ -539,6 +565,17 @@ export default function DayScreen() {
             </div>
           );
         })}
+
+        {/* Separator with OR */}
+        <div className="flex items-center gap-4 my-4">
+          <div className="flex-1 h-px bg-white/10"></div>
+          <span className="text-white/40 text-xs font-bebas tracking-wider">OR</span>
+          <div className="flex-1 h-px bg-white/10"></div>
+        </div>
+        
+        <div className="text-center text-white/30 text-xs font-bebas tracking-wider mb-4">
+          Modify your session
+        </div>
 
         {/* Exercise buttons in one row */}
         <div className="flex gap-2">
