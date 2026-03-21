@@ -234,18 +234,40 @@ export default function DayScreen() {
   };
 
   const handleRemoveExercise = (exerciseName) => {
-    setDayCustomizations(prev => ({
-      ...prev,
-      removed: [...prev.removed, exerciseName]
-    }));
+    // Remove from current workout only, not from program
+    if (activeWorkout && workoutId) {
+      // Find the exercise in current workout and remove it
+      const exerciseIndex = program.findIndex(ex => ex.name === exerciseName);
+      if (exerciseIndex >= 0) {
+        // Remove from exerciseMap
+        setActiveWorkout(prev => {
+          const newMap = { ...prev.exerciseMap };
+          delete newMap[exerciseIndex];
+          return { ...prev, exerciseMap: newMap };
+        });
+        
+        // Remove from program display for this session
+        setProgram(prev => prev.filter((ex, idx) => idx !== exerciseIndex));
+        
+        showToast(`Removed ${exerciseName} from current workout`);
+      }
+    }
   };
 
   const handleRemoveCustomExercise = (exerciseId) => {
-    setCustomExercises(prev => prev.filter(ex => ex.id !== exerciseId));
-    setDayCustomizations(prev => ({
-      ...prev,
-      added: prev.added.filter(ex => ex.id !== exerciseId)
-    }));
+    // Remove custom exercise from current workout only
+    if (activeWorkout && workoutId) {
+      setCustomExercises(prev => prev.filter(ex => ex.id !== exerciseId));
+      
+      // Remove from exerciseMap
+      setActiveWorkout(prev => {
+        const newMap = { ...prev.exerciseMap };
+        delete newMap[`custom_${exerciseId}`];
+        return { ...prev, exerciseMap: newMap };
+      });
+      
+      showToast('Removed custom exercise from current workout');
+    }
   };
 
   const handleSaveCustomizations = async () => {
@@ -659,18 +681,11 @@ export default function DayScreen() {
   );
 }
 
-// Add CSS for edit mode animation
+// Add CSS for edit mode
 const style = document.createElement('style');
 style.textContent = `
   .edit-mode {
-    animation: wiggle 3s ease-in-out infinite;
     position: relative;
-  }
-  
-  @keyframes wiggle {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(1deg); }
-    75% { transform: rotate(-1deg); }
   }
 `;
 if (!document.head.querySelector('style[data-day-screen]')) {
