@@ -722,7 +722,7 @@ const cancelRemoval = () => {
       </div>
 
       {/* Fixed bottom: только кнопка, без чёрного поля — контент уезжает под кнопку */}
-      {createPortal(
+      {!showAddExercise && createPortal(
         <div
           className="fixed bottom-0 left-0 right-0 z-[100] max-w-lg mx-auto px-4 pt-4"
           style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))' }}
