@@ -629,21 +629,8 @@ export default function HomeScreen() {
                     <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
                     <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
                   </div>
-                </div>
-                <div className="mt-6 w-full flex justify-start">
-                  <StatusWidget userId={userId} />
-                </div>
-                <button
-                  onClick={handleNewWorkout}
-                  className="card-press w-full mt-8 py-4 px-4 flex flex-col justify-between items-start rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
-                >
-                  <div className="flex flex-row justify-between items-center w-full">
-                    <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                    <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
-                  </div>
                   {latestAchievement && (
-                    <div className="flex flex-col items-start gap-0 mt-2 w-full">
+                    <div className="flex flex-col items-end gap-0 shrink-0">
                       <span className="text-white/40 text-xs font-bebas tracking-wider">Latest Achievements</span>
                       <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
                         {latestAchievement.name}
@@ -651,14 +638,35 @@ export default function HomeScreen() {
                     </div>
                   )}
                   {!latestAchievement && (
-                    <div className="flex flex-col items-start gap-0 mt-2 w-full">
+                    <div className="flex flex-col items-end gap-0 shrink-0">
                       <span className="text-white/20 text-xs font-bebas tracking-wider">No</span>
                       <span className="text-white/30 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
                         Achievements
                       </span>
                     </div>
                   )}
-                </button>
+                </div>
+                <div className="mt-6 w-full flex justify-start">
+                  <StatusWidget userId={userId} />
+                </div>
+                <div className="flex gap-3 mt-8">
+                  <button
+                    onClick={handleNewWorkout}
+                    className="card-press flex-1 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
+                    style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
+                  >
+                    <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
+                    <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  </button>
+                  {latestAchievement && (
+                    <div className="flex-1 py-4 px-4 flex flex-row justify-between items-center rounded-xl opacity-60" style={{ background: 'rgba(255,255,255,0.04)', fontSize: 'clamp(12px, 6vw, 28px)' }}>
+                      <span className="shrink-0 flex items-center justify-center text-white/30"><TrophyIcon style={{ width: '0.8em', height: '0.8em' }} /></span>
+                      <div className="font-bebas text-white/40 shrink-0 text-sm" style={{ letterSpacing: 'normal' }}>
+                        {latestAchievement.name}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
