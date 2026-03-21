@@ -631,14 +631,14 @@ export default function HomeScreen() {
                   </div>
                   {latestAchievement && (
                     <button
-                      className="card-press py-3 px-4 flex flex-row justify-between items-center rounded-xl opacity-80"
-                      style={{ background: 'rgba(255,255,255,0.06)', fontSize: 'clamp(11px, 5vw, 24px)' }}
+                      className="card-press py-2 px-3 flex flex-row justify-between items-center rounded-xl opacity-80"
+                      style={{ background: 'rgba(255,255,255,0.06)', fontSize: 'clamp(9px, 4vw, 20px)' }}
                       onClick={() => navigate('achievements')}
                     >
-                      <span className="shrink-0 flex items-center justify-center text-white/30 mr-2"><TrophyIcon style={{ width: '0.8em', height: '0.8em' }} /></span>
+                      <span className="shrink-0 flex items-center justify-center text-white/30 mr-2"><TrophyIcon style={{ width: '0.7em', height: '0.7em' }} /></span>
                       <div className="flex flex-col items-end gap-0">
-                        <span className="text-white/40 text-xs font-bebas tracking-wider">Latest Achievement</span>
-                        <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.9em' }}>
+                        <span className="text-white/40 text-xs font-bebas tracking-wider" style={{ fontSize: '0.7em' }}>Latest Achievement</span>
+                        <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
                           {latestAchievement.name}
                         </span>
                       </div>
