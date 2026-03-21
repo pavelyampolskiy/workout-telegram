@@ -67,6 +67,41 @@ const MetricsIcon = () => (
   </svg>
 );
 
+// Timer component for workout duration
+const WorkoutTimer = ({ startedAt }) => {
+  const [elapsed, setElapsed] = useState(0);
+  
+  useEffect(() => {
+    const updateTimer = () => {
+      const now = Date.now();
+      const elapsed = Math.floor((now - startedAt) / 1000);
+      setElapsed(elapsed);
+    };
+    
+    updateTimer(); // Initial update
+    const interval = setInterval(updateTimer, 1000);
+    
+    return () => clearInterval(interval);
+  }, [startedAt]);
+  
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    
+    if (hours > 0) {
+      return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+  };
+  
+  return (
+    <span className="font-bebas text-white/60" style={{ letterSpacing: 'normal', fontSize: '0.5em' }}>
+      {formatTime(elapsed)}
+    </span>
+  );
+};
+
 const AICoachIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
     <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
@@ -554,7 +589,10 @@ export default function HomeScreen() {
                   </span>
                   <div className="flex flex-col items-end shrink-0 text-right">
                     <span className="font-bebas text-white" style={{ letterSpacing: 'normal' }}>Continue Workout</span>
-                    <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                    <div className="flex flex-col items-end gap-0.5">
+                      <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
+                      <WorkoutTimer startedAt={unfinished.created_at ? new Date(unfinished.created_at.replace(' ', 'T') + 'Z').getTime() : Date.now()} />
+                    </div>
                   </div>
                 </button>
                 <button
