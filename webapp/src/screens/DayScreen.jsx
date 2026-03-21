@@ -259,7 +259,12 @@ export default function DayScreen() {
       };
       setCustomExercises(prev => [...prev, newEx]);
       // Save custom exercises to localStorage for persistence
-      localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify([...customExercises, newEx]));
+      try {
+        localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify([...customExercises, newEx]));
+      } catch (e) {
+        console.error('Failed to save custom exercises to localStorage:', e);
+        showToast('Warning: Exercise saved locally, but storage may be full');
+      }
       setActiveWorkout(prev => ({
         ...prev,
         exerciseMap: { ...prev.exerciseMap, [`custom_${id}`]: { dbId: id, setsCount: 0 } },
@@ -445,20 +450,47 @@ const cancelRemoval = () => {
     }
   }, [activeWorkout, workoutId]);
 
-  // Sync custom exercises when removedExercises changes
+  // Single useEffect for custom exercises management
   useEffect(() => {
-    console.log('Custom exercises sync effect triggered:', { 
-      removedExercises: removedExercises, 
+    if (!workoutId) return;
+    
+    console.log('Custom exercises management triggered:', { 
+      removedExercises, 
       customExercises: customExercises.map(ex => ex.name),
       workoutId 
     });
     
-    // Always save custom exercises to localStorage when they change
-    if (customExercises.length > 0 && workoutId) {
-      localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(customExercises));
+    // Load from localStorage if not loaded yet
+    if (customExercises.length === 0) {
+      const savedCustom = localStorage.getItem(`customExercises_${workoutId}`);
+      console.log('Loading custom exercises from localStorage:', { workoutId, savedCustom });
+      
+      if (savedCustom) {
+        try {
+          const parsedCustom = JSON.parse(savedCustom);
+          console.log('Parsed custom exercises:', parsedCustom);
+          
+          // Filter out removed exercises
+          const filteredCustom = parsedCustom.filter(ex => !removedExercises.includes(ex.name));
+          setCustomExercises(filteredCustom);
+          
+          // Add to exerciseMap
+          const customMap = {};
+          filteredCustom.forEach(ex => {
+            customMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: 0 };
+          });
+          
+          setActiveWorkout(prev => ({ 
+            ...prev, 
+            exerciseMap: { ...prev.exerciseMap, ...customMap }
+          }));
+        } catch (e) {
+          console.error('Error parsing custom exercises from localStorage:', e);
+        }
+      }
     }
     
-    // Filter out removed custom exercises if any are removed
+    // Filter out removed exercises if they exist
     if (removedExercises.length > 0 && customExercises.length > 0) {
       const filteredCustom = customExercises.filter(ex => !removedExercises.includes(ex.name));
       if (filteredCustom.length !== customExercises.length) {
@@ -468,7 +500,6 @@ const cancelRemoval = () => {
           removed: removedExercises
         });
         setCustomExercises(filteredCustom);
-        // Save filtered custom exercises to localStorage
         localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(filteredCustom));
         
         // Update exerciseMap to remove removed custom exercises
@@ -483,36 +514,12 @@ const cancelRemoval = () => {
         });
       }
     }
-  }, [removedExercises, customExercises, workoutId]);
-
-  // Load custom exercises from localStorage on mount and when workoutId changes
-  useEffect(() => {
-    if (workoutId) {
-      const savedCustom = localStorage.getItem(`customExercises_${workoutId}`);
-      console.log('Loading custom exercises from localStorage:', { workoutId, savedCustom });
-      
-      if (savedCustom) {
-        try {
-          const parsedCustom = JSON.parse(savedCustom);
-          console.log('Parsed custom exercises:', parsedCustom);
-          setCustomExercises(parsedCustom);
-          
-          // Add to exerciseMap
-          const customMap = {};
-          parsedCustom.forEach(ex => {
-            customMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: 0 };
-          });
-          
-          setActiveWorkout(prev => ({ 
-            ...prev, 
-            exerciseMap: { ...prev.exerciseMap, ...customMap }
-          }));
-        } catch (e) {
-          console.error('Error parsing custom exercises from localStorage:', e);
-        }
-      }
+    
+    // Always save current state to localStorage
+    if (customExercises.length > 0) {
+      localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(customExercises));
     }
-  }, [workoutId]);
+  }, [workoutId, removedExercises]);
 
   if (loading) {
     return (
