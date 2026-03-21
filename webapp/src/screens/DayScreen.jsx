@@ -503,7 +503,7 @@ const cancelRemoval = () => {
           </div>
         )}
         <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0">
-          Cancel
+          Cancel workout
         </button>
       </div>
 
@@ -559,7 +559,7 @@ const cancelRemoval = () => {
                           }}
                           className="text-white/60 text-xs font-bebas px-2 py-1 bg-white/10 rounded hover:bg-white/20 transition-colors"
                         >
-                          Cancel
+                          Don't remove
                         </button>
                       </div>
                     ) : (
@@ -656,7 +656,7 @@ const cancelRemoval = () => {
                           }}
                           className="text-white/60 text-xs font-bebas px-2 py-1 bg-white/10 rounded hover:bg-white/20 transition-colors"
                         >
-                          Cancel
+                          Don't remove
                         </button>
                       </div>
                     ) : (
