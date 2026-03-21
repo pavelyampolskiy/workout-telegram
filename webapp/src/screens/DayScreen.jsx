@@ -742,8 +742,9 @@ const cancelRemoval = () => {
             )}
           </button>
           <button
-            onClick={() => setShowCancelConfirm(true)}
-            className="w-full text-center font-bebas text-white/50 py-3 transition-colors text-lg"
+            onClick={() => !editMode && setShowCancelConfirm(true)}
+            disabled={editMode}
+            className={`w-full text-center font-bebas text-white/50 py-3 transition-colors text-lg ${editMode ? 'save-workout-disabled' : ''}`}
             style={{ letterSpacing: '0.05em' }}
           >
             Cancel workout
