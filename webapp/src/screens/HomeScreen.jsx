@@ -392,6 +392,10 @@ export default function HomeScreen() {
               hasNewAchievementParam ? 'animate-pulse ring-2 ring-white/30 ring-offset-2 ring-offset-black' : ''
             }`}
             disabled={isEditMode}
+            style={hasNewAchievementParam ? {
+              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              '--tw-ring-color': 'rgba(255, 255, 255, 0.3)',
+            } : {}}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
