@@ -499,10 +499,10 @@ const cancelRemoval = () => {
         <h1 className="font-bebas text-white shrink-0" style={PAGE_HEADING_STYLE}>{dayLabel}</h1>
         {activeWorkout?.startedAt != null && (
           <div className="flex-1 flex justify-center">
-            <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsedSec)}</span>
+            <span className="font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsedSec)}</span>
           </div>
         )}
-        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0">
+        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider transition-colors shrink-0">
           Cancel workout
         </button>
       </div>
