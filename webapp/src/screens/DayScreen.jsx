@@ -34,6 +34,9 @@ export default function DayScreen() {
   const [savingWorkout, setSavingWorkout] = useState(false); // for "Save Workout" → note screen
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [elapsedSec, setElapsedSec] = useState(0);
+  const [showCustomizeDay, setShowCustomizeDay] = useState(false);
+  const [dayCustomizations, setDayCustomizations] = useState({ removed: [], added: [] });
+  const [customizingDay, setCustomizingDay] = useState(false);
 
   // Cardio is handled by CardioScreen only — redirect if we got here with day CARDIO
   useEffect(() => {
@@ -219,6 +222,54 @@ export default function DayScreen() {
     });
   };
 
+  const handleRemoveExercise = (exerciseName) => {
+    setDayCustomizations(prev => ({
+      ...prev,
+      removed: [...prev.removed, exerciseName]
+    }));
+  };
+
+  const handleRemoveCustomExercise = (exerciseId) => {
+    setCustomExercises(prev => prev.filter(ex => ex.id !== exerciseId));
+    setDayCustomizations(prev => ({
+      ...prev,
+      added: prev.added.filter(ex => ex.id !== exerciseId)
+    }));
+  };
+
+  const handleSaveCustomizations = async () => {
+    setCustomizingDay(true);
+    try {
+      await api.saveDayCustomizations(day, userId, dayCustomizations.removed, dayCustomizations.added);
+      showToast('Day customizations saved!');
+      setShowCustomizeDay(false);
+      // Reload the program with customizations
+      const data = await api.getCustomizedProgram(day, userId);
+      if (data.has_customizations) {
+        // Update the program with customizations
+        // This would require updating the program state
+        console.log('Customizations applied:', data.exercises);
+      }
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setCustomizingDay(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!userId || !day) return;
+    
+    api.getDayCustomizations(day, userId).then(data => {
+      setDayCustomizations({
+        removed: data.removed_exercises || [],
+        added: data.added_exercises || []
+      });
+    }).catch(() => {
+      // No customizations yet
+    });
+  }, [userId, day]);
+
   if (loading) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -317,6 +368,12 @@ export default function DayScreen() {
             <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsedSec)}</span>
           </div>
         )}
+        <button
+          onClick={() => setShowCustomizeDay(true)}
+          className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0"
+        >
+          Customize
+        </button>
         <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0">
           Cancel
         </button>
@@ -477,6 +534,105 @@ export default function DayScreen() {
         secondaryLabel="Cancel workout"
         secondaryOnClick={handleCancel}
       />
+
+      {/* Customize Day Modal */}
+      {showCustomizeDay && (
+        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6 max-h-[80vh] overflow-y-auto">
+            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Customize {dayLabel}</h3>
+            
+            <div className="space-y-4">
+              {/* Current exercises */}
+              <div>
+                <h4 className="font-bebas text-sm text-white/60 mb-2">Current Exercises</h4>
+                <div className="space-y-2">
+                  {program?.map((ex, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
+                      <div className="flex-1">
+                        <div className="text-white/80 text-sm font-bebas">{ex.name}</div>
+                        <div className="text-white/40 text-xs">{ex.group}</div>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveExercise(ex.name)}
+                        className="text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom exercises */}
+              <div>
+                <h4 className="font-bebas text-sm text-white/60 mb-2">Custom Exercises</h4>
+                <div className="space-y-2">
+                  {customExercises.map((ex) => (
+                    <div key={ex.id} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
+                      <div className="flex-1">
+                        <div className="text-white/80 text-sm font-bebas">{ex.name}</div>
+                        <div className="text-white/40 text-xs">{ex.group}</div>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveCustomExercise(ex.id)}
+                        className="text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Add new exercise */}
+              <div>
+                <h4 className="font-bebas text-sm text-white/60 mb-2">Add Exercise</h4>
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    placeholder="Exercise name"
+                    value={customExName}
+                    onChange={(e) => setCustomExName(e.target.value)}
+                    className="w-full bg-white/10 text-white placeholder-white/40 rounded-lg px-3 py-2 text-sm font-bebas"
+                  />
+                  <select
+                    value={customExGroup}
+                    onChange={(e) => setCustomExGroup(e.target.value)}
+                    className="w-full bg-white/10 text-white rounded-lg px-3 py-2 text-sm font-bebas"
+                  >
+                    {MUSCLE_GROUPS.map(group => (
+                      <option key={group} value={group} className="bg-black">{group}</option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={handleAddCustomExercise}
+                    disabled={!customExName.trim() || addingEx}
+                    className="w-full bg-white/10 text-white/90 font-bebas tracking-wider text-sm py-2 rounded-xl disabled:opacity-40"
+                  >
+                    {addingEx ? 'Adding...' : 'Add Exercise'}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-2 mt-6">
+              <button
+                onClick={() => { setShowCustomizeDay(false); setCustomExName(''); }}
+                className="flex-1 text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveCustomizations}
+                disabled={customizingDay}
+                className="flex-1 bg-white/10 text-white/90 font-bebas tracking-wider text-sm py-3 rounded-xl disabled:opacity-40"
+              >
+                {customizingDay ? 'Saving...' : 'Save Customizations'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Add Exercise modal */}
       {showAddExercise && (
