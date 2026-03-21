@@ -219,7 +219,7 @@ export default function DayScreen() {
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    setSavingWorkout(true);
+    setSaving(true); // Исправляем: setSaving вместо setSavingWorkout
     try {
       const completionDate = activeWorkout?.isBackdated 
         ? activeWorkout.backdateDate 
@@ -235,7 +235,7 @@ export default function DayScreen() {
     } catch (e) {
       showToast(e.message);
     }
-    setSaving(false);
+    setSaving(false); // Исправляем: setSaving вместо setSavingWorkout
   };
 
   const handleCancel = async () => {
