@@ -396,7 +396,7 @@ export default function HomeScreen() {
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
             {hasNewAchievementParam && (
-              <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
+              <div className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
             )}
           </button>
         )
@@ -726,14 +726,14 @@ export default function HomeScreen() {
                 <button
                   onClick={createTestAchievement}
                   className="card-press w-full mt-2 py-2 px-4 flex flex-row justify-between items-center rounded-xl"
-                  style={{ background: 'rgba(34, 197, 94, 0.1)', fontSize: '14px' }}
+                  style={{ background: 'rgba(251, 191, 36, 0.1)', fontSize: '14px' }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-green-400">
+                  <span className="shrink-0 flex items-center justify-center text-yellow-400">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
                       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
                     </svg>
                   </span>
-                  <div className="font-bebas text-green-400 shrink-0" style={{ letterSpacing: 'normal' }}>Test Achievement Pulse</div>
+                  <div className="font-bebas text-yellow-400 shrink-0" style={{ letterSpacing: 'normal' }}>Test Achievement Pulse</div>
                 </button>
               </div>
             )}
