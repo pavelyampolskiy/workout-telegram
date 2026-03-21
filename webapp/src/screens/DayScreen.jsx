@@ -11,6 +11,16 @@ import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE, fmtTime } fro
 import { MUSCLE_GROUPS } from '../constants';
 import { ConfirmModal } from '../components/ConfirmModal';
 
+const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white';
+
+const SettingsIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+    <path d="M20.5 7.5L16 12l4.5 4.5M3.5 7.5L8 12l-4.5 4.5"/>
+  </svg>
+);
+
 export default function DayScreen() {
   const { params, userId, navigate, replace, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
   const { day, dayLabel: paramLabel, isBackdated, dayProgram: passedDayProgram } = params;
@@ -37,6 +47,7 @@ export default function DayScreen() {
   const [showCustomizeDay, setShowCustomizeDay] = useState(false);
   const [dayCustomizations, setDayCustomizations] = useState({ removed: [], added: [] });
   const [customizingDay, setCustomizingDay] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   // Cardio is handled by CardioScreen only — redirect if we got here with day CARDIO
   useEffect(() => {
@@ -382,12 +393,23 @@ export default function DayScreen() {
           const complete = done >= total;
 
           return (
-            <button
+            <div
               key={idx}
-              onClick={() => handleExerciseTap(idx)}
-              className="card-press w-full rounded-2xl p-4 text-left flex items-start gap-3 transition-colors"
+              className={`card-press w-full rounded-2xl p-4 text-left flex items-start gap-3 transition-colors relative ${editMode ? 'edit-mode' : ''}`}
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
+              onClick={() => !editMode && handleExerciseTap(idx)}
             >
+              {editMode && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveExercise(ex.name);
+                  }}
+                  className="absolute top-2 right-2 text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded z-10"
+                >
+                  Remove
+                </button>
+              )}
               <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 {idx + 1}
               </span>
@@ -424,7 +446,7 @@ export default function DayScreen() {
                   </svg>
                 )}
               </div>
-            </button>
+            </div>
           );
         })}
 
@@ -436,47 +458,53 @@ export default function DayScreen() {
           const complete = done >= total;
 
           return (
-            <button
+            <div
               key={`custom_${ex.id}`}
-              onClick={() => handleCustomExerciseTap(ex)}
-              className="card-press w-full rounded-2xl p-4 text-left flex items-start gap-3 transition-colors"
+              className={`card-press w-full rounded-2xl p-4 text-left flex items-start gap-3 transition-colors relative ${editMode ? 'edit-mode' : ''}`}
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
+              onClick={() => !editMode && handleCustomExerciseTap(ex)}
             >
+              {editMode && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveCustomExercise(ex.id);
+                  }}
+                  className="absolute top-2 right-2 text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded z-10"
+                >
+                  Remove
+                </button>
+              )}
               <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
-                +
+                C
               </span>
               <div className="flex-1 min-w-0">
                 <div className={`font-bebas tracking-wider text-base leading-tight ${complete ? 'text-white' : 'text-white/80'}`}>
                   {ex.name}
                 </div>
-                <div className="text-white/30 text-xs mt-1">{ex.group} • Custom</div>
+                <div className="text-white/30 text-xs mt-1">{ex.group}</div>
+                {/* Progress bar */}
                 {done > 0 && (
-                  <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
-                    <div
-                      className={`h-full rounded-full transition-[width] duration-300 ease-out ${complete ? 'bg-white/80' : 'bg-white/60'}`}
-                      style={{ width: `${Math.min((done / total) * 100, 100)}%` }}
-                    />
+                  <div className="mt-2">
+                    <div className="flex justify-between text-xs text-white/40 mb-1">
+                      <span>Progress</span>
+                      <span>{done}/{total}</span>
+                    </div>
+                    <div className="w-full bg-white/10 rounded-full h-1.5">
+                      <div 
+                        className="bg-white/60 h-1.5 rounded-full transition-all duration-300" 
+                        style={{ width: `${(done / total) * 100}%` }}
+                      />
+                    </div>
                   </div>
                 )}
               </div>
-              <div className="shrink-0 flex flex-col items-end gap-1">
-                {done > 0 ? (
-                  <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
-                    {done}/{total}
-                  </span>
-                ) : (
-                  <div className="flex flex-col items-end leading-none">
-                    <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
-                    <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
-                  </div>
-                )}
-                {complete && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
-                    <path d="M20 6L9 17l-5-5"/>
-                  </svg>
-                )}
-              </div>
-            </button>
+              {complete && (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+              )}
+            </div>
           );
         })}
 
@@ -494,17 +522,24 @@ export default function DayScreen() {
           </div>
         </button>
 
+        {/* Separator with OR */}
+        <div className="flex items-center gap-4 my-4">
+          <div className="flex-1 h-px bg-white/10"></div>
+          <span className="text-white/40 text-xs font-bebas tracking-wider">OR</span>
+          <div className="flex-1 h-px bg-white/10"></div>
+        </div>
+
         {/* Customize Day button */}
         <button
-          onClick={() => setShowCustomizeDay(true)}
+          onClick={() => setEditMode(!editMode)}
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
           style={SECONDARY_CARD_STYLE}
         >
-<span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
-              ⚙
+<span className={ICON_WRAPPER}>
+              <SettingsIcon />
             </span>
             <div className="font-bebas tracking-wider text-base text-white">
-            Customize Day
+            {editMode ? 'Done Customizing' : 'Customize Day'}
           </div>
         </button>
       </div>
@@ -542,105 +577,6 @@ export default function DayScreen() {
         secondaryLabel="Cancel workout"
         secondaryOnClick={handleCancel}
       />
-
-      {/* Customize Day Modal */}
-      {showCustomizeDay && (
-        <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6 max-h-[80vh] overflow-y-auto">
-            <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Customize {dayLabel}</h3>
-            
-            <div className="space-y-4">
-              {/* Current exercises */}
-              <div>
-                <h4 className="font-bebas text-sm text-white/60 mb-2">Current Exercises</h4>
-                <div className="space-y-2">
-                  {program?.map((ex, idx) => (
-                    <div key={idx} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
-                      <div className="flex-1">
-                        <div className="text-white/80 text-sm font-bebas">{ex.name}</div>
-                        <div className="text-white/40 text-xs">{ex.group}</div>
-                      </div>
-                      <button
-                        onClick={() => handleRemoveExercise(ex.name)}
-                        className="text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Custom exercises */}
-              <div>
-                <h4 className="font-bebas text-sm text-white/60 mb-2">Custom Exercises</h4>
-                <div className="space-y-2">
-                  {customExercises.map((ex) => (
-                    <div key={ex.id} className="flex items-center justify-between bg-white/5 rounded-lg p-3">
-                      <div className="flex-1">
-                        <div className="text-white/80 text-sm font-bebas">{ex.name}</div>
-                        <div className="text-white/40 text-xs">{ex.group}</div>
-                      </div>
-                      <button
-                        onClick={() => handleRemoveCustomExercise(ex.id)}
-                        className="text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Add new exercise */}
-              <div>
-                <h4 className="font-bebas text-sm text-white/60 mb-2">Add Exercise</h4>
-                <div className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Exercise name"
-                    value={customExName}
-                    onChange={(e) => setCustomExName(e.target.value)}
-                    className="w-full bg-white/10 text-white placeholder-white/40 rounded-lg px-3 py-2 text-sm font-bebas"
-                  />
-                  <select
-                    value={customExGroup}
-                    onChange={(e) => setCustomExGroup(e.target.value)}
-                    className="w-full bg-white/10 text-white rounded-lg px-3 py-2 text-sm font-bebas"
-                  >
-                    {MUSCLE_GROUPS.map(group => (
-                      <option key={group} value={group} className="bg-black">{group}</option>
-                    ))}
-                  </select>
-                  <button
-                    onClick={handleAddCustomExercise}
-                    disabled={!customExName.trim() || addingEx}
-                    className="w-full bg-white/10 text-white/90 font-bebas tracking-wider text-sm py-2 rounded-xl disabled:opacity-40"
-                  >
-                    {addingEx ? 'Adding...' : 'Add Exercise'}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-2 mt-6">
-              <button
-                onClick={() => { setShowCustomizeDay(false); setCustomExName(''); }}
-                className="flex-1 text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveCustomizations}
-                disabled={customizingDay}
-                className="flex-1 bg-white/10 text-white/90 font-bebas tracking-wider text-sm py-3 rounded-xl disabled:opacity-40"
-              >
-                {customizingDay ? 'Saving...' : 'Save Customizations'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Add Exercise modal */}
       {showAddExercise && (
@@ -711,4 +647,34 @@ export default function DayScreen() {
       </div>
     </div>
   );
+}
+
+// Add CSS for edit mode animation
+const style = document.createElement('style');
+style.textContent = `
+  .edit-mode {
+    animation: wiggle 3s ease-in-out infinite;
+    position: relative;
+  }
+  
+  .edit-mode::after {
+    content: '⋮⋮';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(1deg); }
+    75% { transform: rotate(-1deg); }
+  }
+`;
+if (!document.head.querySelector('style[data-day-screen]')) {
+  style.setAttribute('data-day-screen', 'true');
+  document.head.appendChild(style);
 }
