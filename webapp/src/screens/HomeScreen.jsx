@@ -519,12 +519,18 @@ export default function HomeScreen() {
     // Load latest achievement
     api.getAchievements(userId)
       .then(data => {
+        console.log('Achievements data:', data);
         if (data && data.length > 0) {
           // Get the most recent achievement (first one is usually latest)
+          console.log('Latest achievement:', data[0]);
           setLatestAchievement(data[0]);
+        } else {
+          console.log('No achievements found');
         }
       })
-      .catch(() => {});
+      .catch(e => {
+        console.error('Error loading achievements:', e);
+      });
   }, [userId]);
 
   const handleContinue = () => {
@@ -635,6 +641,14 @@ export default function HomeScreen() {
                       <span className="text-white/40 text-xs font-bebas tracking-wider">Latest</span>
                       <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
                         {latestAchievement.title}
+                      </span>
+                    </div>
+                  )}
+                  {!latestAchievement && (
+                    <div className="flex flex-col items-end gap-0 shrink-0">
+                      <span className="text-white/20 text-xs font-bebas tracking-wider">No</span>
+                      <span className="text-white/30 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
+                        Achievements
                       </span>
                     </div>
                   )}
