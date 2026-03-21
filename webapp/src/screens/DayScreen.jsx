@@ -11,7 +11,7 @@ import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE, fmtTime } fro
 import { MUSCLE_GROUPS } from '../constants';
 import { ConfirmModal } from '../components/ConfirmModal';
 
-const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white';
+const ICON_WRAPPER = 'shrink-0 flex items-center justify-center text-white/50';
 
 const SettingsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
