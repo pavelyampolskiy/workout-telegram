@@ -388,13 +388,11 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('achievements')}
-            className={`w-full h-full flex flex-row justify-between items-center p-4 relative ${
-              hasNewAchievementParam ? 'animate-pulse ring-2 ring-white/30 ring-offset-2 ring-offset-black' : ''
-            }`}
+            className="w-full h-full flex flex-row justify-between items-center p-4 relative"
             disabled={isEditMode}
             style={hasNewAchievementParam ? {
-              animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              '--tw-ring-color': 'rgba(255, 255, 255, 0.3)',
+              boxShadow: '0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3)',
+              transition: 'box-shadow 0.3s ease-in-out',
             } : {}}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
