@@ -420,6 +420,16 @@ export default function HomeScreen() {
             <BodyMetricsWidget />
           </div>
         )
+      },
+      {
+        id: 'supplements',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <SupplementsWidget />
+          </div>
+        )
       }
     ];
   };
