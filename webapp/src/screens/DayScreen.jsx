@@ -368,12 +368,6 @@ export default function DayScreen() {
             <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsedSec)}</span>
           </div>
         )}
-        <button
-          onClick={() => setShowCustomizeDay(true)}
-          className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0"
-        >
-          Customize
-        </button>
         <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider text-sm transition-colors shrink-0">
           Cancel
         </button>
@@ -497,6 +491,20 @@ export default function DayScreen() {
             </span>
             <div className="font-bebas tracking-wider text-base text-white">
             Add Exercise
+          </div>
+        </button>
+
+        {/* Customize Day button */}
+        <button
+          onClick={() => setShowCustomizeDay(true)}
+          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+          style={SECONDARY_CARD_STYLE}
+        >
+<span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
+              ⚙
+            </span>
+            <div className="font-bebas tracking-wider text-base text-white">
+            Customize Day
           </div>
         </button>
       </div>
