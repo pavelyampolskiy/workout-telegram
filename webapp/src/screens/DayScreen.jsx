@@ -129,10 +129,12 @@ export default function DayScreen() {
             if (savedCustom) {
               try {
                 const parsedCustom = JSON.parse(savedCustom);
-                setCustomExercises(parsedCustom);
+                // Filter out removed custom exercises
+                const filteredCustom = parsedCustom.filter(ex => !removedExercises.includes(ex.name));
+                setCustomExercises(filteredCustom);
                 // Add to exerciseMap
                 const customMap = {};
-                parsedCustom.forEach(ex => {
+                filteredCustom.forEach(ex => {
                   customMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: 0 };
                 });
                 setActiveWorkout(prev => ({ 
