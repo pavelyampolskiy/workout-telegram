@@ -48,6 +48,7 @@ export default function DayScreen() {
   const [dayCustomizations, setDayCustomizations] = useState({ removed: [], added: [] });
   const [customizingDay, setCustomizingDay] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [removedExercises, setRemovedExercises] = useState([]); // Track removed exercises for current session
 
   // Cardio is handled by CardioScreen only — redirect if we got here with day CARDIO
   useEffect(() => {
@@ -234,29 +235,27 @@ export default function DayScreen() {
   };
 
   const handleRemoveExercise = (exerciseName) => {
-    // Remove from current workout only, not from program
-    if (activeWorkout && workoutId) {
-      // Find the exercise in current workout and remove it
+    // Add to removed exercises list instead of deleting from program
+    if (!removedExercises.includes(exerciseName)) {
+      setRemovedExercises(prev => [...prev, exerciseName]);
+      
+      // Remove from exerciseMap
       const exerciseIndex = program.findIndex(ex => ex.name === exerciseName);
       if (exerciseIndex >= 0) {
-        // Remove from exerciseMap
         setActiveWorkout(prev => {
           const newMap = { ...prev.exerciseMap };
           delete newMap[exerciseIndex];
           return { ...prev, exerciseMap: newMap };
         });
-        
-        // Remove from program display for this session
-        setProgram(prev => prev.filter((ex, idx) => idx !== exerciseIndex));
-        
-        // No toast notification - it blocks the Save Workout button
       }
     }
   };
 
   const handleRemoveCustomExercise = (exerciseId) => {
-    // Remove custom exercise from current workout only
-    if (activeWorkout && workoutId) {
+    // Find the custom exercise and remove it
+    const customExercise = customExercises.find(ex => ex.id === exerciseId);
+    if (customExercise && !removedExercises.includes(customExercise.name)) {
+      setRemovedExercises(prev => [...prev, customExercise.name]);
       setCustomExercises(prev => prev.filter(ex => ex.id !== exerciseId));
       
       // Remove from exerciseMap
@@ -265,8 +264,6 @@ export default function DayScreen() {
         delete newMap[`custom_${exerciseId}`];
         return { ...prev, exerciseMap: newMap };
       });
-      
-      // No toast notification - it blocks the Save Workout button
     }
   };
 
@@ -409,6 +406,9 @@ export default function DayScreen() {
       {/* Exercise list */}
       <div className="flex-1 min-h-0 overflow-y-auto px-4 space-y-2 pb-28">
         {program?.map((ex, idx) => {
+          // Skip if exercise is in removed list
+          if (removedExercises.includes(ex.name)) return null;
+          
           const info = exerciseMap[idx];
           const done = info?.setsCount || 0;
           const total = ex.target_sets;
