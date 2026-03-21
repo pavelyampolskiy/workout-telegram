@@ -540,34 +540,30 @@ export default function DayScreen() {
           );
         })}
 
-        {/* Separator with OR */}
-        <div className="flex items-center gap-4 my-4">
-          <div className="flex-1 h-px bg-white/10"></div>
-          <span className="text-white/40 text-xs font-bebas tracking-wider">OR</span>
-          <div className="flex-1 h-px bg-white/10"></div>
+        {/* Exercise buttons in one row */}
+        <div className="flex gap-2">
+          {/* Delete Exercise button */}
+          <button
+            onClick={() => setEditMode(!editMode)}
+            className="card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+            style={SECONDARY_CARD_STYLE}
+          >
+              <div className="font-bebas tracking-wider text-base text-white">
+              {editMode ? 'Done' : 'Delete Exercise'}
+            </div>
+          </button>
+
+          {/* Add Exercise button */}
+          <button
+            onClick={() => setShowAddExercise(true)}
+            className="card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+            style={SECONDARY_CARD_STYLE}
+          >
+              <div className="font-bebas tracking-wider text-base text-white">
+              Add Exercise
+            </div>
+          </button>
         </div>
-
-        {/* Delete Exercise button */}
-        <button
-          onClick={() => setEditMode(!editMode)}
-          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-          style={SECONDARY_CARD_STYLE}
-        >
-            <div className="font-bebas tracking-wider text-base text-white">
-            {editMode ? 'Done' : 'Delete Exercise'}
-          </div>
-        </button>
-
-        {/* Add Exercise button */}
-        <button
-          onClick={() => setShowAddExercise(true)}
-          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-          style={SECONDARY_CARD_STYLE}
-        >
-            <div className="font-bebas tracking-wider text-base text-white">
-            Add Exercise
-          </div>
-        </button>
       </div>
 
       {/* Fixed bottom: только кнопка, без чёрного поля — контент уезжает под кнопку */}
