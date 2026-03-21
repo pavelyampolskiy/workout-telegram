@@ -421,22 +421,6 @@ export default function DayScreen() {
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
               onClick={() => !editMode && handleExerciseTap(idx)}
             >
-              {editMode && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl" style={{ zIndex: 20 }}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      console.log('Remove clicked:', ex.name);
-                      handleRemoveExercise(ex.name);
-                    }}
-                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-500/30 rounded-lg border border-red-400/40 hover:bg-red-500/40 transition-colors"
-                    style={{ zIndex: 30 }}
-                  >
-                    Remove
-                  </button>
-                </div>
-              )}
               <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 {idx + 1}
               </span>
@@ -456,6 +440,19 @@ export default function DayScreen() {
                 )}
               </div>
               <div className="shrink-0 flex flex-col items-end gap-1">
+                {editMode && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      console.log('Remove clicked:', ex.name);
+                      handleRemoveExercise(ex.name);
+                    }}
+                    className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded border border-red-400/40 hover:bg-red-500/40 transition-colors shrink-0"
+                  >
+                    Remove
+                  </button>
+                )}
                 {!editMode && done > 0 && (
                   <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
                     {done}/{total}
@@ -491,22 +488,6 @@ export default function DayScreen() {
               style={{ ...CARD_BTN_STYLE, ...(complete && { background: 'rgba(255,255,255,0.12)' }) }}
               onClick={() => !editMode && handleCustomExerciseTap(ex)}
             >
-              {editMode && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl" style={{ zIndex: 20 }}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      console.log('Remove custom clicked:', ex.name);
-                      handleRemoveCustomExercise(ex.id);
-                    }}
-                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-500/30 rounded-lg border border-red-400/40 hover:bg-red-500/40 transition-colors"
-                    style={{ zIndex: 30 }}
-                  >
-                    Remove
-                  </button>
-                </div>
-              )}
               <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 C
               </span>
@@ -535,6 +516,19 @@ export default function DayScreen() {
                     <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
                   </div>
+                )}
+                {editMode && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      console.log('Remove custom clicked:', ex.name);
+                      handleRemoveCustomExercise(ex.id);
+                    }}
+                    className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded border border-red-400/40 hover:bg-red-500/40 transition-colors shrink-0"
+                  >
+                    Remove
+                  </button>
                 )}
                 {complete && !editMode && (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
