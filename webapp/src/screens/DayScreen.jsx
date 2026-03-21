@@ -400,13 +400,16 @@ export default function DayScreen() {
               onClick={() => !editMode && handleExerciseTap(idx)}
             >
               {editMode && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl z-10">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl" style={{ zIndex: 20 }}>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      e.preventDefault();
+                      console.log('Remove clicked:', ex.name);
                       handleRemoveExercise(ex.name);
                     }}
-                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-400/20 rounded-lg border border-red-400/30"
+                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-500/30 rounded-lg border border-red-400/40 hover:bg-red-500/40 transition-colors"
+                    style={{ zIndex: 30 }}
                   >
                     Remove
                   </button>
@@ -467,13 +470,16 @@ export default function DayScreen() {
               onClick={() => !editMode && handleCustomExerciseTap(ex)}
             >
               {editMode && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl z-10">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl" style={{ zIndex: 20 }}>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      e.preventDefault();
+                      console.log('Remove custom clicked:', ex.name);
                       handleRemoveCustomExercise(ex.id);
                     }}
-                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-400/20 rounded-lg border border-red-400/30"
+                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-500/30 rounded-lg border border-red-400/40 hover:bg-red-500/40 transition-colors"
+                    style={{ zIndex: 30 }}
                   >
                     Remove
                   </button>
@@ -532,7 +538,7 @@ export default function DayScreen() {
           style={SECONDARY_CARD_STYLE}
         >
             <div className="font-bebas tracking-wider text-base text-white">
-            {editMode ? 'Done Customizing' : 'Customize Day'}
+            {editMode ? 'Done' : 'Customize'}
           </div>
         </button>
 
