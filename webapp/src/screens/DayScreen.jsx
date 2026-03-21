@@ -122,7 +122,33 @@ export default function DayScreen() {
               }
             });
             setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
-            setCustomExercises(restoredCustom);
+            
+            // Load custom exercises from localStorage and merge with API data
+            const savedCustom = localStorage.getItem(`customExercises_${activeWorkout.id}`);
+            let allCustomExercises = restoredCustom;
+            
+            if (savedCustom) {
+              try {
+                const parsedCustom = JSON.parse(savedCustom);
+                // Merge API custom exercises with localStorage exercises
+                const mergedCustom = [...restoredCustom];
+                parsedCustom.forEach(localEx => {
+                  // Add local exercise if not already in API data and not removed
+                  if (!mergedCustom.find(ex => ex.id === localEx.id) && !removedExercises.includes(localEx.name)) {
+                    mergedCustom.push(localEx);
+                    restoredMap[`custom_${localEx.id}`] = { dbId: localEx.id, setsCount: 0 };
+                  }
+                });
+                allCustomExercises = mergedCustom;
+                // Save merged data to localStorage
+                localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(mergedCustom));
+              } catch (e) {
+                console.error('Error parsing custom exercises from localStorage:', e);
+              }
+            }
+            
+            setCustomExercises(allCustomExercises);
+            setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
           } else {
             // Load custom exercises from localStorage if no exercises from API
             const savedCustom = localStorage.getItem(`customExercises_${activeWorkout.id}`);
