@@ -299,7 +299,23 @@ export default function ProgramDayScreen() {
                 min={1}
                 max={10}
                 value={editTargetSets}
-                onChange={e => setEditTargetSets(parseInt(e.target.value, 10) || 3)}
+                onChange={e => {
+                  const newValue = parseInt(e.target.value, 10);
+                  console.log('TargetSets onChange:', { value: e.target.value, parsed: newValue });
+                  if (!isNaN(newValue) && newValue >= 1 && newValue <= 10) {
+                    setEditTargetSets(newValue);
+                  } else if (e.target.value === '') {
+                    setEditTargetSets('');
+                  }
+                }}
+                onBlur={e => {
+                  const newValue = parseInt(e.target.value, 10);
+                  if (isNaN(newValue) || newValue < 1) {
+                    setEditTargetSets(3);
+                  } else if (newValue > 10) {
+                    setEditTargetSets(10);
+                  }
+                }}
                 className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white outline-none font-bebas tracking-wider"
               />
             </div>
