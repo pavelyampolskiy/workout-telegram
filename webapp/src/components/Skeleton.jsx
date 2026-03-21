@@ -1,7 +1,7 @@
 export function Skeleton({ className = '', style = {} }) {
   return (
     <div
-      className={`animate-pulse rounded-lg bg-white/10 ${className}`}
+      className={`skeleton-pulse rounded-lg bg-white/10 ${className}`}
       style={style}
     />
   );
@@ -287,4 +287,25 @@ export function AchievementsSkeleton() {
       ))}
     </div>
   );
+}
+
+// Add CSS for custom skeleton animation (white/gray instead of green)
+const skeletonStyle = document.createElement('style');
+skeletonStyle.textContent = `
+  @keyframes skeleton-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+  
+  .skeleton-pulse {
+    animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+`;
+if (!document.head.querySelector('style[data-skeleton]')) {
+  skeletonStyle.setAttribute('data-skeleton', 'true');
+  document.head.appendChild(skeletonStyle);
 }
