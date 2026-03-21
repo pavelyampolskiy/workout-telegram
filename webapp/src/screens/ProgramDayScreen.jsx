@@ -161,7 +161,9 @@ export default function ProgramDayScreen() {
                 className="flex-1 min-w-0 text-left"
               >
                 <div className="font-bebas tracking-wider text-white/90 truncate">{ex.name}</div>
-                <div className="text-white/40 text-xs font-sans">{ex.group} • {ex.target_sets} sets</div>
+                <div className="text-white/50 text-sm font-bebas tracking-wider mt-1">
+                  {ex.target_sets} sets
+                </div>
               </button>
               <button
                 onClick={() => handleRemove(idx)}
