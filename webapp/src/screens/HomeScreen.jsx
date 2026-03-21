@@ -640,7 +640,7 @@ export default function HomeScreen() {
                   </div>
                   {latestAchievement && (
                     <div className="flex flex-col items-end gap-0 shrink-0">
-                      <span className="text-white/40 text-xs font-bebas tracking-wider">Latest</span>
+                      <span className="text-white/40 text-xs font-bebas tracking-wider">Latest Achievements</span>
                       <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
                         {latestAchievement.name}
                       </span>
