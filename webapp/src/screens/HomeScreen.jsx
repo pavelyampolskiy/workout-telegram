@@ -637,7 +637,7 @@ export default function HomeScreen() {
                     >
                       <span className="shrink-0 flex items-center justify-center text-white/30 mr-2"><TrophyIcon style={{ width: '0.8em', height: '0.8em' }} /></span>
                       <div className="flex flex-col items-end gap-0">
-                        <span className="text-white/40 text-xs font-bebas tracking-wider">Latest</span>
+                        <span className="text-white/40 text-xs font-bebas tracking-wider">Latest Achievement</span>
                         <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.9em' }}>
                           {latestAchievement.name}
                         </span>
