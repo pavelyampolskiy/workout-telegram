@@ -453,8 +453,13 @@ const cancelRemoval = () => {
       workoutId 
     });
     
+    // Always save custom exercises to localStorage when they change
+    if (customExercises.length > 0 && workoutId) {
+      localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(customExercises));
+    }
+    
+    // Filter out removed custom exercises if any are removed
     if (removedExercises.length > 0 && customExercises.length > 0) {
-      // Filter out removed custom exercises
       const filteredCustom = customExercises.filter(ex => !removedExercises.includes(ex.name));
       if (filteredCustom.length !== customExercises.length) {
         console.log('Filtering custom exercises:', {
@@ -479,6 +484,35 @@ const cancelRemoval = () => {
       }
     }
   }, [removedExercises, customExercises, workoutId]);
+
+  // Load custom exercises from localStorage on mount and when workoutId changes
+  useEffect(() => {
+    if (workoutId) {
+      const savedCustom = localStorage.getItem(`customExercises_${workoutId}`);
+      console.log('Loading custom exercises from localStorage:', { workoutId, savedCustom });
+      
+      if (savedCustom) {
+        try {
+          const parsedCustom = JSON.parse(savedCustom);
+          console.log('Parsed custom exercises:', parsedCustom);
+          setCustomExercises(parsedCustom);
+          
+          // Add to exerciseMap
+          const customMap = {};
+          parsedCustom.forEach(ex => {
+            customMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: 0 };
+          });
+          
+          setActiveWorkout(prev => ({ 
+            ...prev, 
+            exerciseMap: { ...prev.exerciseMap, ...customMap }
+          }));
+        } catch (e) {
+          console.error('Error parsing custom exercises from localStorage:', e);
+        }
+      }
+    }
+  }, [workoutId]);
 
   if (loading) {
     return (
