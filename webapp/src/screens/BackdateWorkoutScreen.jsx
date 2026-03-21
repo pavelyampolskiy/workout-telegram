@@ -87,6 +87,18 @@ export default function BackdateWorkoutScreen() {
       console.log('userId:', userId);
       console.log('type:', type);
       console.log('selectedDate:', selectedDate);
+      console.log('api object:', api);
+      console.log('api.createWorkout function:', typeof api.createWorkout);
+      
+      // Проверим базовый API вызов
+      console.log('Testing basic API...');
+      try {
+        const testResponse = await api.getDays(userId);
+        console.log('Basic API works, got days:', testResponse?.length || 0);
+      } catch (testError) {
+        console.error('Basic API failed:', testError);
+        throw new Error('Basic API not working: ' + testError.message);
+      }
       
       // Загружаем программу тренировок для этого дня
       const program = await api.getProgram(userId);
@@ -97,21 +109,14 @@ export default function BackdateWorkoutScreen() {
       const workoutDate = selectedDate;
       console.log('Workout date to save:', workoutDate);
       
-      // Создаем тренировку с указанной датой
-      const requestData = { 
-        user_id: userId, 
-        type, 
-        date: workoutDate,
-        is_backdated: true  // Добавляем флаг что это past workout
-      };
-      console.log('Request data:', requestData);
+      console.log('Calling api.createWorkout with:', userId, type);
       
-      console.log('Calling api.createWorkout...');
-      // Создаем тренировку как в других экранах
+      // Пробуем самый простой вызов
       const response = await api.createWorkout(userId, type);
       console.log('API response received:', response);
       
       if (!response || !response.id) {
+        console.error('Invalid response:', response);
         throw new Error('Invalid response from server: missing workout ID');
       }
       
@@ -144,8 +149,10 @@ export default function BackdateWorkoutScreen() {
       console.error('Full error object:', e);
       console.error('Error message:', e?.message);
       console.error('Error stack:', e?.stack);
+      console.error('Error name:', e?.name);
+      console.error('Error code:', e?.code);
       
-      const errorMessage = e?.message || e?.error || 'Failed to create workout';
+      const errorMessage = e?.message || e?.error || e?.name || 'Failed to create workout';
       showToast(errorMessage);
     }
   };
