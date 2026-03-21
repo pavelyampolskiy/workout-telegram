@@ -567,7 +567,7 @@ const cancelRemoval = () => {
                           console.log('Remove clicked:', ex.name);
                           handleRemoveExercise(ex.name);
                         }}
-                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded hover:bg-red-500/40 transition-colors shrink-0"
+                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded hover:bg-red-500/40 transition-colors shrink-0 remove-button-pulse"
                       >
                         Remove
                       </button>
@@ -664,7 +664,7 @@ const cancelRemoval = () => {
                           console.log('Remove custom clicked:', ex.name);
                           handleRemoveCustomExercise(ex.id);
                         }}
-                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded hover:bg-red-500/40 transition-colors shrink-0"
+                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded hover:bg-red-500/40 transition-colors shrink-0 remove-button-pulse"
                       >
                         Remove
                       </button>
@@ -848,6 +848,12 @@ style.textContent = `
     box-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
   }
   
+  .remove-button-pulse {
+    animation: pulse-red 2s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1)) !important;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3) !important;
+  }
+  
   @keyframes pulse {
     0%, 100% { 
       transform: scale(1);
@@ -856,6 +862,17 @@ style.textContent = `
     50% { 
       transform: scale(1.02);
       box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+    }
+  }
+  
+  @keyframes pulse-red {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+    50% { 
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
     }
   }
   
