@@ -107,7 +107,8 @@ export default function BackdateWorkoutScreen() {
       console.log('Request data:', requestData);
       
       console.log('Calling api.createWorkout...');
-      const response = await api.createWorkout(userId, type, workoutDate);
+      // Сначала создаем тренировку как обычно (без даты в параметрах)
+      const response = await api.createWorkout(userId, type);
       console.log('API response received:', response);
       
       if (!response || !response.id) {
@@ -116,6 +117,11 @@ export default function BackdateWorkoutScreen() {
       
       const { id } = response;
       console.log('Workout created with ID:', id);
+      
+      // Теперь обновляем дату тренировки
+      console.log('Updating workout date to:', workoutDate);
+      await api.finishWorkout(id, workoutDate);
+      console.log('Workout date updated successfully');
       
       // Проверим что вернул сервер
       if (response && response.date) {
