@@ -498,9 +498,7 @@ const cancelRemoval = () => {
       <div className="flex items-center justify-between p-5 safe-top-lg flex-shrink-0">
         <h1 className="font-bebas text-white shrink-0" style={PAGE_HEADING_STYLE}>{dayLabel}</h1>
         {activeWorkout?.startedAt != null && (
-          <div className="flex-1 flex justify-center">
-            <span className="font-bebas tracking-widest text-white/60 tabular-nums" style={PAGE_HEADING_STYLE}>{fmtTime(elapsedSec)}</span>
-          </div>
+          <span className="font-bebas tracking-widest text-white/60 tabular-nums" style={PAGE_HEADING_STYLE}>{fmtTime(elapsedSec)}</span>
         )}
       </div>
 
