@@ -219,7 +219,7 @@ export default function DayScreen() {
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    setSaving(true); // Исправляем: setSaving вместо setSavingWorkout
+    setSavingWorkout(true); // Возвращаем правильное состояние
     try {
       const completionDate = activeWorkout?.isBackdated 
         ? activeWorkout.backdateDate 
@@ -235,7 +235,7 @@ export default function DayScreen() {
     } catch (e) {
       showToast(e.message);
     }
-    setSaving(false); // Исправляем: setSaving вместо setSavingWorkout
+    setSavingWorkout(false); // Возвращаем правильное состояние
   };
 
   const handleCancel = async () => {
@@ -584,10 +584,10 @@ const cancelRemoval = () => {
         <div className="fixed bottom-0 left-0 right-0 z-20 p-5 safe-bottom max-w-lg mx-auto bg-gradient-to-t from-black/90 via-black/70 to-transparent pt-8">
           <button
             onClick={handleSaveWorkout}
-            disabled={saving}
+            disabled={savingWorkout}
             className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50"
           >
-            {saving ? (
+            {savingWorkout ? (
               <span className="inline-flex items-center justify-center gap-2">
                 <Spinner size={20} />
                 Saving…
