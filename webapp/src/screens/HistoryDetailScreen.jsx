@@ -357,6 +357,16 @@ export default function HistoryDetailScreen() {
                   )}
                 </div>
               )}
+              {editMode && ex.sets.length > 0 && (
+                <div className="flex justify-end mt-2">
+                  <button
+                    onClick={() => handleAddSet(ex.id)}
+                    className="text-white/60 active:text-white/85 text-sm font-bebas tracking-wider transition-colors"
+                  >
+                    + Add Set
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           );
