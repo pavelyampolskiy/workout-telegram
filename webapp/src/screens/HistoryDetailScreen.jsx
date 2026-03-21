@@ -54,7 +54,7 @@ export default function HistoryDetailScreen() {
     setSaving(true);
     try {
       // Create a new set with default values
-      const newSet = await api.createSet(exId, 0, 1); // 0kg, 1 rep as defaults
+      const newSet = await api.addSet(exId, 0, 1); // 0kg, 1 rep as defaults
       
       // Update local state
       setWorkout(prev => ({
