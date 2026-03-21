@@ -684,10 +684,10 @@ const cancelRemoval = () => {
           );
         })}
 
-        {/* Separator with OR */}
+        {/* Separator with Modify current workout */}
         <div className="flex items-center gap-4 my-4">
           <div className="flex-1 h-px bg-white/10"></div>
-          <span className="text-white/40 text-xs font-bebas tracking-wider">OR</span>
+          <span className="text-white/40 text-xs font-bebas tracking-wider">Modify current workout</span>
           <div className="flex-1 h-px bg-white/10"></div>
         </div>
 
