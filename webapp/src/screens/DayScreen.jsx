@@ -118,7 +118,7 @@ export default function DayScreen() {
       }
     }
     init();
-  }, [userId, day, activeWorkout, passedDayProgram]);
+  }, [userId, day, passedDayProgram]);
 
   // Workout duration timer — updates every second (keeps counting when app is closed)
   useEffect(() => {
@@ -249,7 +249,7 @@ export default function DayScreen() {
         // Remove from program display for this session
         setProgram(prev => prev.filter((ex, idx) => idx !== exerciseIndex));
         
-        showToast(`Removed ${exerciseName} from current workout`);
+        // No toast notification - it blocks the Save Workout button
       }
     }
   };
@@ -266,7 +266,7 @@ export default function DayScreen() {
         return { ...prev, exerciseMap: newMap };
       });
       
-      showToast('Removed custom exercise from current workout');
+      // No toast notification - it blocks the Save Workout button
     }
   };
 
