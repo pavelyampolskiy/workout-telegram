@@ -520,12 +520,13 @@ export default function HomeScreen() {
     api.getAchievements(userId)
       .then(data => {
         console.log('Achievements data:', data);
-        if (data && data.length > 0) {
-          // Get the most recent achievement (first one is usually latest)
-          console.log('Latest achievement:', data[0]);
-          setLatestAchievement(data[0]);
+        if (data && data.unlocked && data.unlocked.length > 0) {
+          // Get the most recent unlocked achievement
+          const latestAchievement = data.unlocked[0];
+          console.log('Latest achievement:', latestAchievement);
+          setLatestAchievement(latestAchievement);
         } else {
-          console.log('No achievements found');
+          console.log('No unlocked achievements found');
         }
       })
       .catch(e => {
@@ -640,7 +641,7 @@ export default function HomeScreen() {
                     <div className="flex flex-col items-end gap-0 shrink-0">
                       <span className="text-white/40 text-xs font-bebas tracking-wider">Latest</span>
                       <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
-                        {latestAchievement.title}
+                        {latestAchievement.name}
                       </span>
                     </div>
                   )}
