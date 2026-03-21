@@ -508,20 +508,6 @@ export default function DayScreen() {
           );
         })}
 
-        {/* Add Exercise button */}
-        <button
-          onClick={() => setShowAddExercise(true)}
-          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-          style={SECONDARY_CARD_STYLE}
-        >
-<span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
-              +
-            </span>
-            <div className="font-bebas tracking-wider text-base text-white">
-            Add Exercise
-          </div>
-        </button>
-
         {/* Separator with OR */}
         <div className="flex items-center gap-4 my-4">
           <div className="flex-1 h-px bg-white/10"></div>
@@ -535,11 +521,24 @@ export default function DayScreen() {
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
           style={SECONDARY_CARD_STYLE}
         >
-<span className={ICON_WRAPPER}>
-              <SettingsIcon />
+<span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
             </span>
             <div className="font-bebas tracking-wider text-base text-white">
             {editMode ? 'Done Customizing' : 'Customize Day'}
+          </div>
+        </button>
+
+        {/* Add Exercise button */}
+        <button
+          onClick={() => setShowAddExercise(true)}
+          className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+          style={SECONDARY_CARD_STYLE}
+        >
+<span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-lg shrink-0 bg-white/10">
+              +
+            </span>
+            <div className="font-bebas tracking-wider text-base text-white">
+            Add Exercise
           </div>
         </button>
       </div>
