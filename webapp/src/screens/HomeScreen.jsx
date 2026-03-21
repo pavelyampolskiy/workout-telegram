@@ -5,6 +5,7 @@ import { useApp } from '../App';
 import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { ACHIEVEMENT_CATEGORY_ICONS } from '../constants';
 import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import SupplementsWidget from '../components/SupplementsWidget';
@@ -638,11 +639,19 @@ export default function HomeScreen() {
                     <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
                   </div>
                   {latestAchievement && (
-                    <div className="flex flex-col items-end gap-0 shrink-0">
+                    <div className="flex flex-col items-end gap-1 shrink-0">
                       <span className="text-white/40 text-xs font-bebas tracking-wider">Latest</span>
-                      <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
-                        {latestAchievement.name}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="shrink-0 flex items-center justify-center text-white/60">
+                          {(() => {
+                            const IconComponent = ACHIEVEMENT_CATEGORY_ICONS[latestAchievement.type] || ACHIEVEMENT_CATEGORY_ICONS.workouts;
+                            return <IconComponent style={{ width: '1em', height: '1em' }} />;
+                          })()}
+                        </span>
+                        <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
+                          {latestAchievement.name}
+                        </span>
+                      </div>
                     </div>
                   )}
                   {!latestAchievement && (
