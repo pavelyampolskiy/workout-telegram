@@ -462,6 +462,30 @@ const cancelRemoval = () => {
     }
   }, [activeWorkout, workoutId]);
 
+  // Sync custom exercises when removedExercises changes
+  useEffect(() => {
+    if (removedExercises.length > 0 && customExercises.length > 0) {
+      // Filter out removed custom exercises
+      const filteredCustom = customExercises.filter(ex => !removedExercises.includes(ex.name));
+      if (filteredCustom.length !== customExercises.length) {
+        setCustomExercises(filteredCustom);
+        // Save filtered custom exercises to localStorage
+        localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(filteredCustom));
+        
+        // Update exerciseMap to remove removed custom exercises
+        setActiveWorkout(prev => {
+          const newMap = { ...prev.exerciseMap };
+          customExercises.forEach(ex => {
+            if (removedExercises.includes(ex.name)) {
+              delete newMap[`custom_${ex.id}`];
+            }
+          });
+          return { ...prev, exerciseMap: newMap };
+        });
+      }
+    }
+  }, [removedExercises, customExercises, workoutId]);
+
   if (loading) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
