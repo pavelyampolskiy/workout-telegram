@@ -324,13 +324,10 @@ export default function HomeScreen() {
     return (
       <button
         onClick={() => !isEditMode && navigateFn(config.navigate)}
-        className="w-full h-full flex flex-row justify-between items-center p-4"
+        className={`w-full h-full flex flex-row justify-between items-center p-4 ${
+          isAchievements && hasNewAchievement ? 'achievement-glow' : ''
+        }`}
         disabled={isEditMode}
-        style={isAchievements && hasNewAchievement ? {
-          boxShadow: '0 0 20px rgba(255, 255, 255, 0.5) !important, 0 0 40px rgba(255, 255, 255, 0.3) !important',
-          transition: 'box-shadow 0.3s ease-in-out',
-          animation: 'none !important',
-        } : {}}
       >
         <span className="shrink-0 flex items-center justify-center text-white/25">{config.icon}</span>
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>{config.label}</div>
