@@ -21,6 +21,19 @@ const SettingsIcon = () => (
   </svg>
 );
 
+const TrashIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <path d="M3 6h18"/>
+    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+  </svg>
+);
+
+const PlusIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <path d="M12 5v14m-7-7h14"/>
+  </svg>
+);
+
 export default function DayScreen() {
   const { params, userId, navigate, replace, resetTo, goBack, activeWorkout, setActiveWorkout, showToast } = useApp();
   const { day, dayLabel: paramLabel, isBackdated, dayProgram: passedDayProgram } = params;
@@ -585,7 +598,12 @@ export default function DayScreen() {
             className={`card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${editMode ? 'done-button-active' : ''}`}
             style={SECONDARY_CARD_STYLE}
           >
-              <div className="font-bebas tracking-wider text-base text-white">
+            <span className={ICON_WRAPPER}>
+              {editMode ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg> : <TrashIcon />}
+            </span>
+            <div className="font-bebas tracking-wider text-base text-white">
               {editMode ? 'Done' : 'Delete Exercise'}
             </div>
           </button>
@@ -596,7 +614,10 @@ export default function DayScreen() {
             className="card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
             style={SECONDARY_CARD_STYLE}
           >
-              <div className="font-bebas tracking-wider text-base text-white">
+            <span className={ICON_WRAPPER}>
+              <PlusIcon />
+            </span>
+            <div className="font-bebas tracking-wider text-base text-white">
               Add Exercise
             </div>
           </button>
