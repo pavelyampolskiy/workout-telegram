@@ -547,14 +547,14 @@ export default function DayScreen() {
           <div className="flex-1 h-px bg-white/10"></div>
         </div>
 
-        {/* Customize Day button */}
+        {/* Delete Exercise button */}
         <button
           onClick={() => setEditMode(!editMode)}
           className="card-press w-full rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
           style={SECONDARY_CARD_STYLE}
         >
             <div className="font-bebas tracking-wider text-base text-white">
-            {editMode ? 'Done' : 'Customize'}
+            {editMode ? 'Done' : 'Delete Exercise'}
           </div>
         </button>
 
