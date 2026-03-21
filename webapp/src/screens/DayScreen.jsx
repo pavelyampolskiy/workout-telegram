@@ -455,13 +455,13 @@ export default function DayScreen() {
                   </div>
                 )}
               </div>
-              <div className={`shrink-0 flex flex-col items-end gap-1 ${editMode ? 'opacity-30' : ''}`}>
-                {done > 0 && (
+              <div className="shrink-0 flex flex-col items-end gap-1">
+                {!editMode && done > 0 && (
                   <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
                     {done}/{total}
                   </span>
                 )}
-                {!done && (
+                {!editMode && !done && (
                   <div className="flex flex-col items-end leading-none">
                     <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
@@ -530,8 +530,8 @@ export default function DayScreen() {
                     </div>
                   </div>
                 )}
-                {total > 0 && (
-                  <div className={`flex items-center gap-2 mt-1 ${editMode ? 'opacity-50' : ''}`}>
+                {!editMode && total > 0 && (
+                  <div className="flex items-center gap-2 mt-1">
                     <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
                   </div>
