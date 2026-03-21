@@ -234,25 +234,8 @@ export default function DayScreen() {
       setShowNote(true);
     } catch (e) {
       showToast(e.message);
-    } finally {
-      setSavingWorkout(false);
     }
-  };
-
-  const handleFinish = async () => {
-    setSaving(true);
-    try {
-      if (workoutId) {
-        await api.saveRating(workoutId, rating);
-      }
-      if (note.trim() && workoutId) {
-        await api.addNote(workoutId, note.trim());
-      }
-      resetTo('home');
-    } catch (e) {
-      setSaving(false);
-      showToast(e.message);
-    }
+    setSaving(false);
   };
 
   const handleCancel = async () => {
@@ -464,10 +447,21 @@ const cancelRemoval = () => {
 
   // Sync custom exercises when removedExercises changes
   useEffect(() => {
+    console.log('Custom exercises sync effect triggered:', { 
+      removedExercises: removedExercises, 
+      customExercises: customExercises.map(ex => ex.name),
+      workoutId 
+    });
+    
     if (removedExercises.length > 0 && customExercises.length > 0) {
       // Filter out removed custom exercises
       const filteredCustom = customExercises.filter(ex => !removedExercises.includes(ex.name));
       if (filteredCustom.length !== customExercises.length) {
+        console.log('Filtering custom exercises:', {
+          before: customExercises.map(ex => ex.name),
+          after: filteredCustom.map(ex => ex.name),
+          removed: removedExercises
+        });
         setCustomExercises(filteredCustom);
         // Save filtered custom exercises to localStorage
         localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(filteredCustom));
