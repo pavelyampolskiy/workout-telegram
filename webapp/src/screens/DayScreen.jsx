@@ -219,7 +219,7 @@ export default function DayScreen() {
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    setSavingWorkout(true); // Возвращаем правильное состояние
+    setSavingWorkout(true);
     try {
       const completionDate = activeWorkout?.isBackdated 
         ? activeWorkout.backdateDate 
@@ -235,7 +235,28 @@ export default function DayScreen() {
     } catch (e) {
       showToast(e.message);
     }
-    setSavingWorkout(false); // Возвращаем правильное состояние
+    setSavingWorkout(false);
+  };
+
+  const handleDone = async () => {
+    setSavingWorkout(true);
+    try {
+      // Save note and rating if provided
+      if (note.trim() || rating !== 3) {
+        if (note.trim()) {
+          await api.addNote(workoutId, note);
+        }
+        if (rating !== 3) {
+          await api.saveRating(workoutId, rating);
+        }
+      }
+      
+      // Go to home screen
+      resetTo('home');
+    } catch (e) {
+      showToast(e.message);
+    }
+    setSavingWorkout(false);
   };
 
   const handleCancel = async () => {
@@ -583,7 +604,7 @@ const cancelRemoval = () => {
         {/* Кнопки прикреплены к нижнему краю */}
         <div className="fixed bottom-0 left-0 right-0 z-20 p-5 safe-bottom max-w-lg mx-auto bg-gradient-to-t from-black/90 via-black/70 to-transparent pt-8">
           <button
-            onClick={handleSaveWorkout}
+            onClick={handleDone}
             disabled={savingWorkout}
             className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50"
           >
