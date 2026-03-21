@@ -799,7 +799,6 @@ const cancelRemoval = () => {
                 userId={userId}
                 placeholder="e.g. Dumbbell Curls"
                 className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider"
-                autoFocus
               />
             </div>
 
