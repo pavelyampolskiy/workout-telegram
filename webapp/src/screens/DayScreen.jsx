@@ -583,7 +583,7 @@ const cancelRemoval = () => {
         {/* Кнопки прикреплены к нижнему краю */}
         <div className="fixed bottom-0 left-0 right-0 z-20 p-5 safe-bottom max-w-lg mx-auto bg-gradient-to-t from-black/90 via-black/70 to-transparent pt-8">
           <button
-            onClick={handleFinish}
+            onClick={handleSaveWorkout}
             disabled={saving}
             className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50"
           >

@@ -109,10 +109,9 @@ export default function BackdateWorkoutScreen() {
       const workoutDate = selectedDate;
       console.log('Workout date to save:', workoutDate);
       
-      console.log('Calling api.createWorkout with:', userId, type);
-      
-      // Пробуем самый простой вызов
-      const response = await api.createWorkout(userId, type);
+      console.log('Calling api.createWorkout with date...');
+      // Передаем дату в API - это правильный способ
+      const response = await api.createWorkout(userId, type, selectedDate);
       console.log('API response received:', response);
       
       if (!response || !response.id) {
