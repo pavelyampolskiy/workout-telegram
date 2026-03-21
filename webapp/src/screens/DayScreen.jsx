@@ -582,7 +582,7 @@ export default function DayScreen() {
           {/* Delete Exercise button */}
           <button
             onClick={() => setEditMode(!editMode)}
-            className="card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+            className={`card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${editMode ? 'done-button-active' : ''}`}
             style={SECONDARY_CARD_STYLE}
           >
               <div className="font-bebas tracking-wider text-base text-white">
@@ -611,8 +611,8 @@ export default function DayScreen() {
         >
           <button
             onClick={handleSaveWorkout}
-            disabled={savingWorkout}
-            className="btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50 flex items-center justify-center gap-2"
+            disabled={savingWorkout || editMode}
+            className={`btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50 flex items-center justify-center gap-2 ${editMode ? 'save-workout-disabled' : ''}`}
           >
             {savingWorkout ? (
               <>
@@ -708,11 +708,34 @@ export default function DayScreen() {
   );
 }
 
-// Add CSS for edit mode
+// Add CSS for edit mode and Done button animation
 const style = document.createElement('style');
 style.textContent = `
   .edit-mode {
     position: relative;
+  }
+  
+  .done-button-active {
+    animation: pulse 2s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.1)) !important;
+    border: 1px solid rgba(34, 197, 94, 0.5) !important;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    }
+    50% { 
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+    }
+  }
+  
+  .save-workout-disabled {
+    opacity: 0.3 !important;
+    pointer-events: none !important;
   }
 `;
 if (!document.head.querySelector('style[data-day-screen]')) {
