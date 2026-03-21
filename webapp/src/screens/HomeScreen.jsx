@@ -644,21 +644,6 @@ export default function HomeScreen() {
                       </div>
                     </button>
                   )}
-                  {!latestAchievement && (
-                    <button
-                      className="card-press py-3 px-4 flex flex-row justify-between items-center rounded-xl opacity-60"
-                      style={{ background: 'rgba(255,255,255,0.04)', fontSize: 'clamp(11px, 5vw, 24px)' }}
-                      onClick={() => navigate('achievements')}
-                    >
-                      <span className="shrink-0 flex items-center justify-center text-white/20 mr-2"><TrophyIcon style={{ width: '0.8em', height: '0.8em' }} /></span>
-                      <div className="flex flex-col items-end gap-0">
-                        <span className="text-white/20 text-xs font-bebas tracking-wider">No</span>
-                        <span className="text-white/30 text-sm font-bebas tracking-wider" style={{ fontSize: '0.9em' }}>
-                          Achievements
-                        </span>
-                      </div>
-                    </button>
-                  )}
                 </div>
                 <div className="mt-6 w-full flex justify-start">
                   <StatusWidget userId={userId} />
