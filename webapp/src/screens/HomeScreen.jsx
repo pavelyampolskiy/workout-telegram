@@ -321,6 +321,18 @@ export default function HomeScreen() {
     const config = buttonConfig[id];
     const isAchievements = id === 'achievements';
     
+    // Debug logging
+    if (isAchievements) {
+      console.log('Achievement button debug:', {
+        id,
+        hasNewAchievement,
+        shouldHaveGlow: hasNewAchievement,
+        className: `w-full h-full flex flex-row justify-between items-center p-4 ${
+          isAchievements && hasNewAchievement ? 'achievement-glow' : ''
+        }`
+      });
+    }
+    
     return (
       <button
         onClick={() => !isEditMode && navigateFn(config.navigate)}
