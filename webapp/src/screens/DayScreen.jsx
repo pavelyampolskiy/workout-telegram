@@ -502,9 +502,6 @@ const cancelRemoval = () => {
             <span className="font-bebas tracking-widest text-white/60 tabular-nums" style={PAGE_HEADING_STYLE}>{fmtTime(elapsedSec)}</span>
           </div>
         )}
-        <button onClick={() => setShowCancelConfirm(true)} className="text-white/60 active:text-white/85 font-bebas tracking-wider transition-colors shrink-0" style={PAGE_HEADING_STYLE}>
-          Cancel workout
-        </button>
       </div>
 
       {/* Exercise list */}
@@ -745,6 +742,13 @@ const cancelRemoval = () => {
             ) : (
               'Save Workout'
             )}
+          </button>
+          <button
+            onClick={() => setShowCancelConfirm(true)}
+            className="w-full text-center font-bebas text-white/50 py-3 transition-colors"
+            style={{ fontSize: '0.9rem', letterSpacing: '0.05em' }}
+          >
+            Cancel workout
           </button>
         </div>,
         document.body
