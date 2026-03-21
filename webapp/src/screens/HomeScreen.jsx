@@ -96,7 +96,7 @@ const WorkoutTimer = ({ startedAt }) => {
   };
   
   return (
-    <span className="font-bebas text-white/60" style={{ letterSpacing: 'normal', fontSize: '0.5em' }}>
+    <span className="font-bebas text-white/60" style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>
       {formatTime(elapsed)}
     </span>
   );
@@ -589,7 +589,7 @@ export default function HomeScreen() {
                   </span>
                   <div className="flex flex-col items-end shrink-0 text-right">
                     <span className="font-bebas text-white" style={{ letterSpacing: 'normal' }}>Continue Workout</span>
-                    <div className="flex flex-col items-end gap-0.5">
+                    <div className="flex items-center gap-2">
                       <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
                       <WorkoutTimer startedAt={unfinished.created_at ? new Date(unfinished.created_at.replace(' ', 'T') + 'Z').getTime() : Date.now()} />
                     </div>
