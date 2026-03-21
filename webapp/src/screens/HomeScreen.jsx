@@ -181,7 +181,6 @@ export default function HomeScreen() {
   const [editMode, setEditMode] = useState(false);
   const [gridItems, setGridItems] = useState([]);
   const [latestAchievement, setLatestAchievement] = useState(null);
-  const [hasNewAchievement, setHasNewAchievement] = useState(false);
   const dismissModalRef = useRef(null);
   useFocusTrap(dismissModalRef, !!(unfinished && showDismissConfirm));
 
@@ -198,7 +197,7 @@ export default function HomeScreen() {
           console.log('Found saved layout:', parsed.map(item => item.id));
           
           // Создаем все элементы в сохраненном порядке
-          const allItems = createGridItems(editMode, navigate, hasNewAchievement);
+          const allItems = createGridItems(editMode, navigate);
           const itemMap = {};
           allItems.forEach(item => {
             itemMap[item.id] = item;
@@ -226,7 +225,7 @@ export default function HomeScreen() {
     
     // Если нет сохраненного, создаем стандартный
     console.log('No saved layout, creating default');
-    setGridItems(createGridItems(editMode, navigate, hasNewAchievement));
+    setGridItems(createGridItems(editMode, navigate));
   }, []); // Только при монтировании
 
   // Обновляем блокировку при смене editMode
@@ -290,8 +289,8 @@ export default function HomeScreen() {
   };
 
   // Восстановление полного порядка из сохраненных данных
-  const restoreLayoutFromSaved = (savedItems, isEditMode, navigateFn, hasNewAchievementParam = false) => {
-    const allItems = createGridItems(isEditMode, navigateFn, hasNewAchievementParam);
+  const restoreLayoutFromSaved = (savedItems, isEditMode, navigateFn) => {
+    const allItems = createGridItems(isEditMode, navigateFn);
     
     // Создаем карту всех элементов по id
     const itemMap = {};
@@ -319,26 +318,11 @@ export default function HomeScreen() {
     };
     
     const config = buttonConfig[id];
-    const isAchievements = id === 'achievements';
-    
-    // Debug logging
-    if (isAchievements) {
-      console.log('Achievement button debug:', {
-        id,
-        hasNewAchievement,
-        shouldHaveGlow: hasNewAchievement,
-        className: `w-full h-full flex flex-row justify-between items-center p-4 ${
-          isAchievements && hasNewAchievement ? 'achievement-glow' : ''
-        }`
-      });
-    }
     
     return (
       <button
         onClick={() => !isEditMode && navigateFn(config.navigate)}
-        className={`w-full h-full flex flex-row justify-between items-center p-4 ${
-          isAchievements && hasNewAchievement ? 'achievement-glow' : ''
-        }`}
+        className="w-full h-full flex flex-row justify-between items-center p-4"
         disabled={isEditMode}
       >
         <span className="shrink-0 flex items-center justify-center text-white/25">{config.icon}</span>
@@ -365,7 +349,7 @@ export default function HomeScreen() {
   };
 
   // Функция создания элементов сетки
-  const createGridItems = (isEditMode, navigateFn, hasNewAchievementParam = false) => {
+  const createGridItems = (isEditMode, navigateFn) => {
     return [
       {
         id: 'history',
@@ -406,11 +390,6 @@ export default function HomeScreen() {
             onClick={() => !isEditMode && navigateFn('achievements')}
             className="w-full h-full flex flex-row justify-between items-center p-4 relative"
             disabled={isEditMode}
-            style={hasNewAchievementParam ? {
-              boxShadow: '0 0 20px rgba(255, 255, 255, 0.5) !important, 0 0 40px rgba(255, 255, 255, 0.3) !important',
-              transition: 'box-shadow 0.3s ease-in-out',
-              animation: 'none !important',
-            } : {}}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
@@ -548,21 +527,6 @@ export default function HomeScreen() {
           const latestAchievement = data.unlocked[0];
           console.log('Latest achievement:', latestAchievement);
           setLatestAchievement(latestAchievement);
-          
-          // Check if achievement is new (within last 5 minutes)
-          const achievementTime = new Date(latestAchievement.earned_at || latestAchievement.created_at).getTime();
-          const now = Date.now();
-          const fiveMinutesAgo = now - 5 * 60 * 1000;
-          
-          if (achievementTime > fiveMinutesAgo) {
-            console.log('New achievement detected!');
-            setHasNewAchievement(true);
-            
-            // Reset pulse after 10 seconds
-            setTimeout(() => {
-              setHasNewAchievement(false);
-            }, 10000);
-          }
         } else {
           console.log('No unlocked achievements found');
         }
@@ -571,40 +535,6 @@ export default function HomeScreen() {
         console.error('Error loading achievements:', e);
       });
   }, [userId]);
-
-  // Update grid items when hasNewAchievement changes
-  useEffect(() => {
-    if (gridItems.length > 0) {
-      console.log('Updating grid items for new achievement pulse');
-      setGridItems(createGridItems(editMode, navigate, hasNewAchievement));
-    }
-  }, [hasNewAchievement, editMode, navigate]);
-
-  // Create test achievement for demonstration
-  const createTestAchievement = async () => {
-    try {
-      // This would normally be handled by the backend, but for testing we'll simulate it
-      console.log('Creating test achievement...');
-      
-      // Simulate new achievement by setting the state
-      setHasNewAchievement(true);
-      setLatestAchievement({
-        name: 'First Login!',
-        type: 'workouts',
-        desc: 'Welcome to your fitness journey!',
-        earned_at: new Date().toISOString()
-      });
-      
-      // Reset after 10 seconds
-      setTimeout(() => {
-        setHasNewAchievement(false);
-      }, 10000);
-      
-      showToast('Test achievement created! Check the Achievements button!');
-    } catch (e) {
-      console.error('Error creating test achievement:', e);
-    }
-  };
 
   const handleContinue = () => {
     if (!unfinished) return;
@@ -736,20 +666,6 @@ export default function HomeScreen() {
                 >
                   <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
                   <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
-                </button>
-                
-                {/* Test button for achievement pulse */}
-                <button
-                  onClick={createTestAchievement}
-                  className="card-press w-full mt-2 py-2 px-4 flex flex-row justify-between items-center rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.08)', fontSize: '14px' }}
-                >
-                  <span className="shrink-0 flex items-center justify-center text-white/40">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                    </svg>
-                  </span>
-                  <div className="font-bebas text-white/40 shrink-0" style={{ letterSpacing: 'normal' }}>Test Achievement Pulse</div>
                 </button>
               </div>
             )}
