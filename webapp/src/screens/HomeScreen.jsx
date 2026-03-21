@@ -628,23 +628,23 @@ export default function HomeScreen() {
                   <div className="flex flex-col items-start gap-0">
                     <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
                     <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
+                    {latestAchievement && (
+                      <div className="flex flex-col items-start gap-0 mt-2">
+                        <span className="text-white/40 text-xs font-bebas tracking-wider">Latest Achievements</span>
+                        <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
+                          {latestAchievement.name}
+                        </span>
+                      </div>
+                    )}
+                    {!latestAchievement && (
+                      <div className="flex flex-col items-start gap-0 mt-2">
+                        <span className="text-white/20 text-xs font-bebas tracking-wider">No</span>
+                        <span className="text-white/30 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
+                          Achievements
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  {latestAchievement && (
-                    <div className="flex flex-col items-end gap-0 shrink-0">
-                      <span className="text-white/40 text-xs font-bebas tracking-wider">Latest Achievements</span>
-                      <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
-                        {latestAchievement.name}
-                      </span>
-                    </div>
-                  )}
-                  {!latestAchievement && (
-                    <div className="flex flex-col items-end gap-0 shrink-0">
-                      <span className="text-white/20 text-xs font-bebas tracking-wider">No</span>
-                      <span className="text-white/30 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
-                        Achievements
-                      </span>
-                    </div>
-                  )}
                 </div>
                 <div className="mt-6 w-full flex justify-start">
                   <StatusWidget userId={userId} />
