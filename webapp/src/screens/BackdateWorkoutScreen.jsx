@@ -62,7 +62,11 @@ export default function BackdateWorkoutScreen() {
   useEffect(() => {
     api.getDays(userId)
       .then(setDays)
-      .catch(e => showToast(e.message))
+      .catch(e => {
+        console.error('Error loading days:', e);
+        const errorMessage = e?.message || e?.error || 'Failed to load days';
+        showToast(errorMessage);
+      })
       .finally(() => setLoading(false));
   }, [userId]);
 
@@ -79,9 +83,15 @@ export default function BackdateWorkoutScreen() {
 
   const createBackdateWorkout = async (type, params) => {
     try {
+      console.log('=== Creating backdated workout ===');
+      console.log('userId:', userId);
+      console.log('type:', type);
+      console.log('selectedDate:', selectedDate);
+      
       // Загружаем программу тренировок для этого дня
       const program = await api.getProgram(userId);
       const dayProgram = program[type] || [];
+      console.log('Day program loaded:', dayProgram?.length || 0, 'exercises');
       
       // Явно проверяем и форматируем дату
       const workoutDate = selectedDate;
@@ -96,10 +106,16 @@ export default function BackdateWorkoutScreen() {
       };
       console.log('Request data:', requestData);
       
+      console.log('Calling api.createWorkout...');
       const response = await api.createWorkout(userId, type, workoutDate);
-      console.log('API response:', response);
+      console.log('API response received:', response);
+      
+      if (!response || !response.id) {
+        throw new Error('Invalid response from server: missing workout ID');
+      }
       
       const { id } = response;
+      console.log('Workout created with ID:', id);
       
       // Проверим что вернул сервер
       if (response && response.date) {
@@ -122,6 +138,7 @@ export default function BackdateWorkoutScreen() {
       
       // Переходим к экрану тренировки
       const label = formatActiveDayLabel(type, days);
+      console.log('Navigating to day screen with:', { type, label, isBackdated: true });
       navigate('day', { 
         day: type, 
         dayLabel: label, 
@@ -129,7 +146,13 @@ export default function BackdateWorkoutScreen() {
         dayProgram: dayProgram // Передаем программу
       });
     } catch (e) {
-      showToast(e.message);
+      console.error('=== Error in createBackdated workout ===');
+      console.error('Full error object:', e);
+      console.error('Error message:', e?.message);
+      console.error('Error stack:', e?.stack);
+      
+      const errorMessage = e?.message || e?.error || 'Failed to create workout';
+      showToast(errorMessage);
     }
   };
 
