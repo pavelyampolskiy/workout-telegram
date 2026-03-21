@@ -123,6 +123,26 @@ export default function DayScreen() {
             });
             setActiveWorkout(prev => ({ ...prev, exerciseMap: restoredMap }));
             setCustomExercises(restoredCustom);
+          } else {
+            // Load custom exercises from localStorage if no exercises from API
+            const savedCustom = localStorage.getItem(`customExercises_${activeWorkout.id}`);
+            if (savedCustom) {
+              try {
+                const parsedCustom = JSON.parse(savedCustom);
+                setCustomExercises(parsedCustom);
+                // Add to exerciseMap
+                const customMap = {};
+                parsedCustom.forEach(ex => {
+                  customMap[`custom_${ex.id}`] = { dbId: ex.id, setsCount: 0 };
+                });
+                setActiveWorkout(prev => ({ 
+                  ...prev, 
+                  exerciseMap: { ...prev.exerciseMap, ...customMap }
+                }));
+              } catch (e) {
+                console.error('Error parsing custom exercises from localStorage:', e);
+              }
+            }
           }
         }
       } catch (e) {
@@ -180,6 +200,9 @@ export default function DayScreen() {
       await api.finishWorkout(workoutId, completionDate);
       // Clear active workout from localStorage when finishing
       localStorage.removeItem(`activeWorkout_${userId}`);
+      // Clear custom exercises from localStorage when finishing
+      localStorage.removeItem(`customExercises_${workoutId}`);
+      localStorage.removeItem(`removedExercises_${workoutId}`);
       setShowNote(true);
     } catch (e) {
       showToast(e.message);
@@ -224,6 +247,8 @@ export default function DayScreen() {
         isCustom: true,
       };
       setCustomExercises(prev => [...prev, newEx]);
+      // Save custom exercises to localStorage for persistence
+      localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify([...customExercises, newEx]));
       setActiveWorkout(prev => ({
         ...prev,
         exerciseMap: { ...prev.exerciseMap, [`custom_${id}`]: { dbId: id, setsCount: 0 } },
@@ -350,7 +375,12 @@ const executeRemoval = (removal) => {
       exerciseMap: { ...prev.exerciseMap }
     }));
     
-    setCustomExercises(prev => prev.filter(ex => ex.id !== removal.id));
+    setCustomExercises(prev => {
+      const updated = prev.filter(ex => ex.id !== removal.id);
+      // Save updated custom exercises to localStorage
+      localStorage.setItem(`customExercises_${workoutId}`, JSON.stringify(updated));
+      return updated;
+    });
     
     // Remove from exerciseMap
     setActiveWorkout(prev => {
