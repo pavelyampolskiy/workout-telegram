@@ -62,6 +62,7 @@ export default function DayScreen() {
   const [customizingDay, setCustomizingDay] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [removedExercises, setRemovedExercises] = useState([]); // Track removed exercises for current session
+  const [pendingRemoval, setPendingRemoval] = useState(null); // Track exercise pending removal with countdown
 
   // Cardio is handled by CardioScreen only — redirect if we got here with day CARDIO
   useEffect(() => {
@@ -248,9 +249,70 @@ export default function DayScreen() {
   };
 
   const handleRemoveExercise = (exerciseName) => {
+  // Start countdown for removal
+  setPendingRemoval({
+    name: exerciseName,
+    type: 'program',
+    countdown: 3
+  });
+  
+  // Start countdown timer
+  const timer = setInterval(() => {
+    setPendingRemoval(prev => {
+      if (!prev) return null;
+      
+      if (prev.countdown <= 1) {
+        // Execute removal
+        executeRemoval(prev);
+        clearInterval(timer);
+        return null;
+      }
+      
+      return { ...prev, countdown: prev.countdown - 1 };
+    });
+  }, 1000);
+  
+  // Store timer ID for cleanup
+  setPendingRemoval(prev => prev ? { ...prev, timerId: timer } : null);
+};
+
+const handleRemoveCustomExercise = (exerciseId) => {
+  const customExercise = customExercises.find(ex => ex.id === exerciseId);
+  if (!customExercise) return;
+  
+  // Start countdown for removal
+  setPendingRemoval({
+    name: customExercise.name,
+    id: exerciseId,
+    type: 'custom',
+    countdown: 3
+  });
+  
+  // Start countdown timer
+  const timer = setInterval(() => {
+    setPendingRemoval(prev => {
+      if (!prev) return null;
+      
+      if (prev.countdown <= 1) {
+        // Execute removal
+        executeRemoval(prev);
+        clearInterval(timer);
+        return null;
+      }
+      
+      return { ...prev, countdown: prev.countdown - 1 };
+    });
+  }, 1000);
+  
+  // Store timer ID for cleanup
+  setPendingRemoval(prev => prev ? { ...prev, timerId: timer } : null);
+};
+
+const executeRemoval = (removal) => {
+  if (removal.type === 'program') {
     // Add to removed exercises list and save to localStorage
-    if (!removedExercises.includes(exerciseName)) {
-      const newRemoved = [...removedExercises, exerciseName];
+    if (!removedExercises.includes(removal.name)) {
+      const newRemoved = [...removedExercises, removal.name];
       setRemovedExercises(newRemoved);
       
       // Save to localStorage for persistence
@@ -264,7 +326,7 @@ export default function DayScreen() {
       }));
       
       // Remove from exerciseMap
-      const exerciseIndex = program.findIndex(ex => ex.name === exerciseName);
+      const exerciseIndex = program.findIndex(ex => ex.name === removal.name);
       if (exerciseIndex >= 0) {
         setActiveWorkout(prev => {
           const newMap = { ...prev.exerciseMap };
@@ -273,35 +335,38 @@ export default function DayScreen() {
         });
       }
     }
-  };
+  } else if (removal.type === 'custom') {
+    // Remove custom exercise
+    const newRemoved = [...removedExercises, removal.name];
+    setRemovedExercises(newRemoved);
+    
+    // Save to localStorage for persistence
+    localStorage.setItem(`removedExercises_${workoutId}`, JSON.stringify(newRemoved));
+    
+    // Save to activeWorkout for persistence
+    setActiveWorkout(prev => ({ 
+      ...prev, 
+      removedExercises: newRemoved,
+      exerciseMap: { ...prev.exerciseMap }
+    }));
+    
+    setCustomExercises(prev => prev.filter(ex => ex.id !== removal.id));
+    
+    // Remove from exerciseMap
+    setActiveWorkout(prev => {
+      const newMap = { ...prev.exerciseMap };
+      delete newMap[`custom_${removal.id}`];
+      return { ...prev, exerciseMap: newMap };
+    });
+  }
+};
 
-  const handleRemoveCustomExercise = (exerciseId) => {
-    // Find the custom exercise and remove it
-    const customExercise = customExercises.find(ex => ex.id === exerciseId);
-    if (customExercise && !removedExercises.includes(customExercise.name)) {
-      const newRemoved = [...removedExercises, customExercise.name];
-      setRemovedExercises(newRemoved);
-      
-      // Save to localStorage for persistence
-      localStorage.setItem(`removedExercises_${workoutId}`, JSON.stringify(newRemoved));
-      
-      // Save to activeWorkout for persistence
-      setActiveWorkout(prev => ({ 
-        ...prev, 
-        removedExercises: newRemoved,
-        exerciseMap: { ...prev.exerciseMap }
-      }));
-      
-      setCustomExercises(prev => prev.filter(ex => ex.id !== exerciseId));
-      
-      // Remove from exerciseMap
-      setActiveWorkout(prev => {
-        const newMap = { ...prev.exerciseMap };
-        delete newMap[`custom_${exerciseId}`];
-        return { ...prev, exerciseMap: newMap };
-      });
-    }
-  };
+const cancelRemoval = () => {
+  if (pendingRemoval?.timerId) {
+    clearInterval(pendingRemoval.timerId);
+  }
+  setPendingRemoval(null);
+};
 
   const handleSaveCustomizations = async () => {
     setCustomizingDay(true);
@@ -480,17 +545,37 @@ export default function DayScreen() {
               </div>
               <div className="shrink-0 flex flex-col items-end gap-1">
                 {editMode && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      console.log('Remove clicked:', ex.name);
-                      handleRemoveExercise(ex.name);
-                    }}
-                    className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded border border-red-400/40 hover:bg-red-500/40 transition-colors shrink-0"
-                  >
-                    Remove
-                  </button>
+                  <div className="shrink-0 flex flex-col items-end gap-1">
+                    {pendingRemoval && pendingRemoval.name === ex.name && pendingRemoval.type === 'program' ? (
+                      <div className="flex flex-col items-end gap-1">
+                        <div className="text-red-400 text-xs font-bebas">
+                          {pendingRemoval.countdown}
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            cancelRemoval();
+                          }}
+                          className="text-white/60 text-xs font-bebas px-2 py-1 bg-white/10 rounded hover:bg-white/20 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          console.log('Remove clicked:', ex.name);
+                          handleRemoveExercise(ex.name);
+                        }}
+                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded border border-red-400/40 hover:bg-red-500/40 transition-colors shrink-0"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 )}
                 {!editMode && done > 0 && (
                   <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
@@ -557,17 +642,37 @@ export default function DayScreen() {
                   </div>
                 )}
                 {editMode && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      e.preventDefault();
-                      console.log('Remove custom clicked:', ex.name);
-                      handleRemoveCustomExercise(ex.id);
-                    }}
-                    className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded border border-red-400/40 hover:bg-red-500/40 transition-colors shrink-0"
-                  >
-                    Remove
-                  </button>
+                  <div className="shrink-0 flex flex-col items-end gap-1">
+                    {pendingRemoval && pendingRemoval.id === ex.id && pendingRemoval.type === 'custom' ? (
+                      <div className="flex flex-col items-end gap-1">
+                        <div className="text-red-400 text-xs font-bebas">
+                          {pendingRemoval.countdown}
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            cancelRemoval();
+                          }}
+                          className="text-white/60 text-xs font-bebas px-2 py-1 bg-white/10 rounded hover:bg-white/20 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          console.log('Remove custom clicked:', ex.name);
+                          handleRemoveCustomExercise(ex.id);
+                        }}
+                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded border border-red-400/40 hover:bg-red-500/40 transition-colors shrink-0"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 )}
                 {complete && !editMode && (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
