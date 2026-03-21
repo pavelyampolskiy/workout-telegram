@@ -50,6 +50,35 @@ export default function HistoryDetailScreen() {
     setEditingSet({ exId, setId: set.id, weight: String(set.weight), reps: String(set.reps) });
   };
 
+  const handleAddSet = async (exId) => {
+    setSaving(true);
+    try {
+      // Create a new set with default values
+      const newSet = await api.createSet(exId, 0, 1); // 0kg, 1 rep as defaults
+      
+      // Update local state
+      setWorkout(prev => ({
+        ...prev,
+        exercises: prev.exercises.map(ex => 
+          ex.id === exId 
+            ? {
+                ...ex,
+                sets: [...ex.sets, newSet],
+                volume: ex.sets.reduce((sum, s) => sum + s.weight * s.reps, 0) + (0 * 1), // Add default volume
+              }
+            : ex
+        ),
+      }));
+      
+      // Open edit mode for the new set immediately
+      handleEditSet(exId, newSet);
+    } catch (e) {
+      showToast(e.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleSaveSet = async () => {
     if (!editingSet) return;
     const weight = parseFloat(String(editingSet.weight).replace(',', '.'));
@@ -316,7 +345,17 @@ export default function HistoryDetailScreen() {
                 </div>
               ))}
               {ex.sets.length === 0 && (
-                <div className="text-white/30 text-sm">No sets recorded</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-white/30 text-sm">No sets recorded</div>
+                  {editMode && (
+                    <button
+                      onClick={() => handleAddSet(ex.id)}
+                      className="text-white/60 active:text-white/85 text-sm font-bebas tracking-wider transition-colors"
+                    >
+                      + Add Set
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           </div>
