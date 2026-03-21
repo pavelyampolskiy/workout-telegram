@@ -704,7 +704,7 @@ const cancelRemoval = () => {
                 <path d="M20 6L9 17l-5-5"/>
               </svg> : <TrashIcon />}
             </span>
-            <div className="font-bebas tracking-wider text-base text-white">
+            <div className="font-bebas tracking-wider text-base text-white/70">
               {editMode ? 'Done' : 'Delete Exercise'}
             </div>
           </button>
@@ -718,7 +718,7 @@ const cancelRemoval = () => {
             <span className={ICON_WRAPPER}>
               <PlusIcon />
             </span>
-            <div className="font-bebas tracking-wider text-base text-white">
+            <div className="font-bebas tracking-wider text-base text-white/70">
               Add Exercise
             </div>
           </button>
