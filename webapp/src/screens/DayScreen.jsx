@@ -585,10 +585,6 @@ export default function DayScreen() {
           <span className="text-white/40 text-xs font-bebas tracking-wider">OR</span>
           <div className="flex-1 h-px bg-white/10"></div>
         </div>
-        
-        <div className="text-center text-white/30 text-xs font-bebas tracking-wider mb-4">
-          Modify your session
-        </div>
 
         {/* Exercise buttons in one row */}
         <div className="flex gap-2">
