@@ -704,15 +704,16 @@ const cancelRemoval = () => {
                 <path d="M20 6L9 17l-5-5"/>
               </svg> : <TrashIcon />}
             </span>
-            <div className="font-bebas tracking-wider text-base text-white/70">
+            <div className={`font-bebas tracking-wider text-base ${editMode ? 'text-white' : 'text-white/70'}`}>
               {editMode ? 'Done' : 'Delete Exercise'}
             </div>
           </button>
 
           {/* Add Exercise button */}
           <button
-            onClick={() => setShowAddExercise(true)}
-            className="card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
+            onClick={() => !editMode && setShowAddExercise(true)}
+            disabled={editMode}
+            className={`card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${editMode ? 'save-workout-disabled' : ''}`}
             style={SECONDARY_CARD_STYLE}
           >
             <span className={ICON_WRAPPER}>
