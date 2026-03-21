@@ -400,15 +400,17 @@ export default function DayScreen() {
               onClick={() => !editMode && handleExerciseTap(idx)}
             >
               {editMode && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveExercise(ex.name);
-                  }}
-                  className="absolute top-2 right-2 text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded z-10"
-                >
-                  Remove
-                </button>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl z-10">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveExercise(ex.name);
+                    }}
+                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-400/20 rounded-lg border border-red-400/30"
+                  >
+                    Remove
+                  </button>
+                </div>
               )}
               <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 {idx + 1}
@@ -418,8 +420,8 @@ export default function DayScreen() {
                   {ex.name}
                 </div>
                 <div className="text-white/30 text-xs mt-1">{ex.group}</div>
-                {/* Progress bar */}
-                {done > 0 && (
+                {/* Progress bar - hide in edit mode */}
+                {!editMode && done > 0 && (
                   <div className="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden w-full">
                     <div
                       className={`h-full rounded-full transition-[width] duration-300 ease-out ${complete ? 'bg-white/80' : 'bg-white/60'}`}
@@ -428,7 +430,7 @@ export default function DayScreen() {
                   </div>
                 )}
               </div>
-              <div className="shrink-0 flex flex-col items-end gap-1">
+              <div className={`shrink-0 flex flex-col items-end gap-1 ${editMode ? 'opacity-30' : ''}`}>
                 {done > 0 && (
                   <span className={`text-sm font-bebas tracking-wider ${complete ? 'text-white/70' : 'text-white/40'}`}>
                     {done}/{total}
@@ -440,7 +442,7 @@ export default function DayScreen() {
                     <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
                   </div>
                 )}
-                {complete && (
+                {complete && !editMode && (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
                     <path d="M20 6L9 17l-5-5"/>
                   </svg>
@@ -465,15 +467,17 @@ export default function DayScreen() {
               onClick={() => !editMode && handleCustomExerciseTap(ex)}
             >
               {editMode && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveCustomExercise(ex.id);
-                  }}
-                  className="absolute top-2 right-2 text-red-400 text-xs font-bebas px-2 py-1 bg-red-400/20 rounded z-10"
-                >
-                  Remove
-                </button>
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-2xl z-10">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveCustomExercise(ex.id);
+                    }}
+                    className="text-red-400 text-sm font-bebas px-4 py-2 bg-red-400/20 rounded-lg border border-red-400/30"
+                  >
+                    Remove
+                  </button>
+                </div>
               )}
               <span className="text-white/40 text-xs font-bebas tracking-wider shrink-0 pt-0.5">
                 C
@@ -483,8 +487,8 @@ export default function DayScreen() {
                   {ex.name}
                 </div>
                 <div className="text-white/30 text-xs mt-1">{ex.group}</div>
-                {/* Progress bar */}
-                {done > 0 && (
+                {/* Progress bar - hide in edit mode */}
+                {!editMode && done > 0 && (
                   <div className="mt-2">
                     <div className="flex justify-between text-xs text-white/40 mb-1">
                       <span>Progress</span>
@@ -498,12 +502,18 @@ export default function DayScreen() {
                     </div>
                   </div>
                 )}
+                {total > 0 && (
+                  <div className={`flex items-center gap-2 mt-1 ${editMode ? 'opacity-50' : ''}`}>
+                    <span className="text-sm font-bebas tracking-wider text-white/70">{total}</span>
+                    <span className="text-[9px] uppercase tracking-wider text-white/35 mt-0.5">sets</span>
+                  </div>
+                )}
+                {complete && !editMode && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                )}
               </div>
-              {complete && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white/70 shrink-0">
-                  <path d="M20 6L9 17l-5-5"/>
-                </svg>
-              )}
             </div>
           );
         })}
@@ -654,17 +664,6 @@ style.textContent = `
   .edit-mode {
     animation: wiggle 3s ease-in-out infinite;
     position: relative;
-  }
-  
-  .edit-mode::after {
-    content: '⋮⋮';
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    color: rgba(255, 255, 255, 0.3);
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 10;
   }
   
   @keyframes wiggle {
