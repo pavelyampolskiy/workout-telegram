@@ -367,6 +367,21 @@ export default function HomeScreen() {
         )
       },
       {
+        id: 'program',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => !isEditMode && navigateFn('program')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={isEditMode}
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
+          </button>
+        )
+      },
+      {
         id: 'stats',
         type: 'button',
         size: { cols: 1, rows: 1 },
@@ -394,31 +409,6 @@ export default function HomeScreen() {
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
           </button>
-        )
-      },
-      {
-        id: 'program',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('program')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
-          </button>
-        )
-      },
-      {
-        id: 'supplements',
-        type: 'widget',
-        size: { cols: 2, rows: 1 },
-        content: (
-          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
-            <SupplementsWidget />
-          </div>
         )
       },
       {
