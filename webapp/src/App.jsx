@@ -20,6 +20,7 @@ import SupplementsScreen from './screens/SupplementsScreen';
 import MetricsScreen from './screens/MetricsScreen';
 import BackdateWorkoutScreen from './screens/BackdateWorkoutScreen';
 import AICoachScreen from './screens/AICoachScreen';
+import FigmaScreen from './screens/FigmaScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -42,6 +43,7 @@ const SCREENS = {
   metrics: MetricsScreen,
   'backdate-workout': BackdateWorkoutScreen,
   'ai-coach': AICoachScreen,
+  figma: FigmaScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen

@@ -12,6 +12,18 @@ import SupplementsWidget from '../components/SupplementsWidget';
 import BodyMetricsWidget from '../components/BodyMetricsWidget';
 import DragDropGrid from '../components/DragDropGrid';
 import EditModeToggle from '../components/EditModeToggle';
+import FigmaScreen from '../screens/FigmaScreen';
+
+// Figma Icon
+const FigmaIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.852 8.98h4.918c.016-.108.024-.216.024-.326C20.794 4.097 16.7 0 11.642 0 9.263 0 7.082.864 5.418 2.273l2.856 2.856c.946-.75 2.142-1.197 3.437-1.197 2.638 0 4.818 1.948 5.18 4.479.016.108.024.216.024.326 0 .11-.008.218-.024.326l-1.039 6.543h4.918l1.039-6.543z" fill="#F24E1E"/>
+    <path d="M11.642 12.022c-1.295 0-2.49-.447-3.437-1.197L5.349 7.969c-.946.75-1.65 1.816-1.948 3.053h6.241zm-6.241 0c.298 1.237 1.002 2.303 1.948 3.053l2.856-2.856c.946-.75 1.65-1.816 1.948-3.053H5.401z" fill="#A259FF"/>
+    <path d="M11.642 12.022c-.298-1.237-1.002-2.303-1.948-3.053L6.838 11.825c-.946.75-1.65 1.816-1.948 3.053h6.241z" fill="#0ACF83"/>
+    <path d="M11.642 12.022c1.295 0 2.49.447 3.437 1.197l2.856-2.856c.946-.75 1.65-1.816 1.948-3.053h-8.241z" fill="#FF7262"/>
+    <path d="M8.184 15.075c.946.75 2.142 1.197 3.437 1.197 1.295 0 2.49-.447 3.437-1.197l-2.856-2.856c-.946.75-2.142 1.197-3.437 1.197-1.295 0-2.49-.447-3.437-1.197z" fill="#1ABCFE"/>
+  </svg>
+);
 import homeBg from '../assets/gym-bg.jpg';
 
 const SupplementsIcon = () => (
@@ -429,6 +441,21 @@ export default function HomeScreen() {
           <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
             <SupplementsWidget />
           </div>
+        )
+      },
+      {
+        id: 'figma',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => !isEditMode && navigateFn('figma')}
+            className="w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={isEditMode}
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><FigmaIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Figma</div>
+          </button>
         )
       }
     ];
