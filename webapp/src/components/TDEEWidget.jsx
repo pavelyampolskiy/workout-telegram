@@ -18,19 +18,19 @@ export default function TDEEWidget() {
 
   // Activity levels with coefficients
   const activityLevels = {
-    sedentary: { name: 'Сидячий', desc: 'Нет спорта, офисная работа', coefficient: 1.2 },
-    light: { name: 'Лёгкая', desc: '1–3 тренировки в неделю', coefficient: 1.375 },
-    moderate: { name: 'Умеренная', desc: '3–5 тренировок в неделю', coefficient: 1.55 },
-    high: { name: 'Высокая', desc: '6–7 тренировок в неделю', coefficient: 1.725 },
-    very_high: { name: 'Очень высокая', desc: '2 тренировки в день', coefficient: 1.9 }
+    sedentary: { name: 'Sedentary', desc: 'No exercise, office work', coefficient: 1.2 },
+    light: { name: 'Light', desc: '1-3 workouts per week', coefficient: 1.375 },
+    moderate: { name: 'Moderate', desc: '3-5 workouts per week', coefficient: 1.55 },
+    high: { name: 'High', desc: '6-7 workouts per week', coefficient: 1.725 },
+    very_high: { name: 'Very High', desc: '2 workouts per day', coefficient: 1.9 }
   };
 
   // Goals with calorie deltas
   const goals = {
-    cutting: { name: 'Сушка', delta: -400, desc: 'Есть мышцы, хочется рельеф' },
-    weight_loss: { name: 'Похудение', delta: -600, desc: 'Общий сброс веса' },
-    recomp: { name: 'Рекомпозиция', delta: 0, desc: 'Жир ↓ и мышцы ↑ одновременно' },
-    bulk: { name: 'Набор массы', delta: 300, desc: 'Набор мышечной массы' }
+    cutting: { name: 'Cutting', delta: -400, desc: 'Have muscles, want definition' },
+    weight_loss: { name: 'Weight Loss', delta: -600, desc: 'General weight loss' },
+    recomp: { name: 'Recomposition', delta: 0, desc: 'Fat ↓ and muscles ↑ simultaneously' },
+    bulk: { name: 'Bulk', delta: 300, desc: 'Muscle mass gain' }
   };
 
   // Load saved TDEE data
@@ -104,17 +104,17 @@ export default function TDEEWidget() {
 
     const ageNum = parseInt(formData.age);
     if (!formData.age || isNaN(ageNum) || ageNum < 10 || ageNum > 100) {
-      newErrors.age = 'Введи корректный возраст (10–100 лет)';
+      newErrors.age = 'Enter valid age (10-100 years)';
     }
 
     const weightNum = parseFloat(formData.weight);
     if (!formData.weight || isNaN(weightNum) || weightNum < 30 || weightNum > 300) {
-      newErrors.weight = 'Введи корректный вес (30–300 кг)';
+      newErrors.weight = 'Enter valid weight (30-300 kg)';
     }
 
     const heightNum = parseFloat(formData.height);
     if (!formData.height || isNaN(heightNum) || heightNum < 100 || heightNum > 250) {
-      newErrors.height = 'Введи корректный рост (100–250 см)';
+      newErrors.height = 'Enter valid height (100-250 cm)';
     }
 
     setErrors(newErrors);
@@ -146,10 +146,10 @@ export default function TDEEWidget() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
-              TDEE Калькулятор
+              TDEE
             </div>
             <div className="text-xs text-white/40 mt-1">
-              Общая суточная энерготрата
+              Total Daily Energy Expenditure
             </div>
           </div>
           <button
@@ -172,7 +172,7 @@ export default function TDEEWidget() {
                   : 'text-white/40 hover:text-white/60'
               }`}
             >
-              МУЖСКОЙ
+              MALE
             </button>
             <button
               onClick={() => setFormData(prev => ({ ...prev, gender: 'female' }))}
@@ -182,7 +182,7 @@ export default function TDEEWidget() {
                   : 'text-white/40 hover:text-white/60'
               }`}
             >
-              ЖЕНСКИЙ
+              FEMALE
             </button>
           </div>
 
@@ -193,7 +193,7 @@ export default function TDEEWidget() {
                 type="number"
                 value={formData.age}
                 onChange={(e) => setFormData(prev => ({ ...prev, age: e.target.value }))}
-                placeholder="Возраст"
+                placeholder="Age"
                 className={`w-full px-2 py-2 bg-white/5 rounded-lg text-white placeholder-white/40 border text-xs ${
                   errors.age ? 'border-red-500/50' : 'border-white/10'
                 } focus:border-white/30 focus:outline-none transition-all`}
@@ -205,7 +205,7 @@ export default function TDEEWidget() {
                 type="number"
                 value={formData.weight}
                 onChange={(e) => setFormData(prev => ({ ...prev, weight: e.target.value }))}
-                placeholder="Вес, кг"
+                placeholder="Weight, kg"
                 className={`w-full px-2 py-2 bg-white/5 rounded-lg text-white placeholder-white/40 border text-xs ${
                   errors.weight ? 'border-red-500/50' : 'border-white/10'
                 } focus:border-white/30 focus:outline-none transition-all`}
@@ -217,7 +217,7 @@ export default function TDEEWidget() {
                 type="number"
                 value={formData.height}
                 onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
-                placeholder="Рост, см"
+                placeholder="Height, cm"
                 className={`w-full px-2 py-2 bg-white/5 rounded-lg text-white placeholder-white/40 border text-xs ${
                   errors.height ? 'border-red-500/50' : 'border-white/10'
                 } focus:border-white/30 focus:outline-none transition-all`}
@@ -257,7 +257,7 @@ export default function TDEEWidget() {
             onClick={handleCalculate}
             className="w-full py-2 bg-white/10 hover:bg-white/15 rounded-lg border border-white/20 transition-all text-xs font-bebas tracking-wider"
           >
-            РАССЧИТАТЬ
+            CALCULATE
           </button>
         </div>
       </div>
@@ -275,10 +275,10 @@ export default function TDEEWidget() {
         {/* Header with title and description */}
         <div className="w-full">
           <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
-            TDEE Калькулятор
+            TDEE
           </div>
           <div className="text-xs text-white/40 mt-1">
-            Общая суточная энерготрата
+            Total Daily Energy Expenditure
           </div>
         </div>
         
@@ -315,10 +315,10 @@ export default function TDEEWidget() {
     >
       <div>
         <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
-          TDEE Калькулятор
+          TDEE
         </div>
         <div className="text-xs text-white/40 mt-1">
-          Общая суточная энерготрата
+          Total Daily Energy Expenditure
         </div>
       </div>
       
@@ -331,10 +331,10 @@ export default function TDEEWidget() {
             {tdeeData.targetCalories}
           </div>
           <div className="text-xs text-white/40">
-            ккал/день
+            kcal/day
           </div>
           <div className="text-xs text-white/30 mt-1">
-            Б: {tdeeData.protein.grams}г · У: {tdeeData.carbs.grams}г · Ж: {tdeeData.fat.grams}г
+            P: {tdeeData.protein.grams}g · C: {tdeeData.carbs.grams}g · F: {tdeeData.fat.grams}g
           </div>
         </div>
       </div>
