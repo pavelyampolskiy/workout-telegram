@@ -332,7 +332,7 @@ export default function TDEEWidget() {
     <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
          style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      {/* Header with reset button */}
+      {/* Header */}
       <div className="flex items-center justify-between w-full">
         <div>
           <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
@@ -347,21 +347,12 @@ export default function TDEEWidget() {
             </div>
           )}
         </div>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleReset();
-          }}
-          className="text-white/40 hover:text-red-400 text-xs transition-colors"
-        >
-          Reset
-        </button>
       </div>
 
       {/* Results content */}
       <button
         onClick={() => setShowCalculator(true)}
-        className="flex-1 px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 text-left"
+        className="flex-1 px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 text-left w-full"
       >
         <div className="text-xs text-white whitespace-pre-line">
           <div className="text-xs text-white/60 mb-1">
@@ -375,14 +366,14 @@ export default function TDEEWidget() {
           </div>
           
           {/* BMR and TDEE info */}
-          <div className="text-xs text-white/30 mb-2">
+          <div className="text-sm text-white mb-2">
             BMR: {tdeeData.bmr} · TDEE: {tdeeData.tdee}
           </div>
           
           {/* Macro progress bars */}
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/40 w-8">P:</span>
+              <span className="text-xs text-white/40 w-16">Protein:</span>
               <div className="flex-1 bg-white/10 rounded-full h-1">
                 <div 
                   className="bg-blue-500 h-1 rounded-full"
@@ -392,7 +383,7 @@ export default function TDEEWidget() {
               <span className="text-xs text-white/40 w-8 text-right">{tdeeData.protein.grams}g</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/40 w-8">C:</span>
+              <span className="text-xs text-white/40 w-16">Carbs:</span>
               <div className="flex-1 bg-white/10 rounded-full h-1">
                 <div 
                   className="bg-green-500 h-1 rounded-full"
@@ -402,7 +393,7 @@ export default function TDEEWidget() {
               <span className="text-xs text-white/40 w-8 text-right">{tdeeData.carbs.grams}g</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/40 w-8">F:</span>
+              <span className="text-xs text-white/40 w-16">Fats:</span>
               <div className="flex-1 bg-white/10 rounded-full h-1">
                 <div 
                   className="bg-yellow-500 h-1 rounded-full"
