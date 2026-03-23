@@ -2,15 +2,6 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../App';
 import { TEXT_MUTED } from '../shared';
 
-const TDEEIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <path d="M12 2v20M2 12h20"/>
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M12 5V7M12 17v2M5 12h2M17 12h2"/>
-    <path d="M7 7l1.5 1.5M15.5 15.5L17 17M17 7l-1.5 1.5M8.5 15.5L7 17"/>
-  </svg>
-);
-
 export default function TDEEWidget() {
   const { userId } = useApp();
   const [tdeeData, setTdeeData] = useState(null);
@@ -36,10 +27,10 @@ export default function TDEEWidget() {
 
   // Goals with calorie deltas
   const goals = {
-    cutting: { name: '🔥 Сушка', delta: -400, desc: 'Есть мышцы, хочется рельеф' },
-    weight_loss: { name: '⚖️ Похудение', delta: -600, desc: 'Общий сброс веса' },
-    recomp: { name: '⚡ Рекомпозиция', delta: 0, desc: 'Жир ↓ и мышцы ↑ одновременно' },
-    bulk: { name: '💪 Набор массы', delta: 300, desc: 'Набор мышечной массы' }
+    cutting: { name: 'Сушка', delta: -400, desc: 'Есть мышцы, хочется рельеф' },
+    weight_loss: { name: 'Похудение', delta: -600, desc: 'Общий сброс веса' },
+    recomp: { name: 'Рекомпозиция', delta: 0, desc: 'Жир ↓ и мышцы ↑ одновременно' },
+    bulk: { name: 'Набор массы', delta: 300, desc: 'Набор мышечной массы' }
   };
 
   // Load saved TDEE data
@@ -153,12 +144,12 @@ export default function TDEEWidget() {
       <div className="card-press py-6 px-4 rounded-xl w-full" style={{ background: 'rgba(255,255,255,0.03)' }}>
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <span className="shrink-0 flex items-center justify-center text-white/25">
-              <TDEEIcon />
-            </span>
+          <div>
             <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
               TDEE Калькулятор
+            </div>
+            <div className="text-xs text-white/40 mt-1">
+              Общая суточная энерготрата
             </div>
           </div>
           <button
@@ -281,13 +272,13 @@ export default function TDEEWidget() {
         className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
       >
-        {/* Header with icon */}
-        <div className="flex items-center gap-3 w-full">
-          <span className="shrink-0 flex items-center justify-center text-white/25">
-            <TDEEIcon />
-          </span>
-          <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        {/* Header with title and description */}
+        <div className="w-full">
+          <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
             TDEE Калькулятор
+          </div>
+          <div className="text-xs text-white/40 mt-1">
+            Общая суточная энерготрата
           </div>
         </div>
         
@@ -304,7 +295,6 @@ export default function TDEEWidget() {
             <div className="text-xs text-white/60">
               <div className="flex justify-between items-center">
                 <span>No calculations yet</span>
-                <span style={{ color: '#6b7280' }}>🔥</span>
               </div>
               <div className="text-xs text-white/40 mt-1">
                 Tap to calculate your TDEE
@@ -323,8 +313,13 @@ export default function TDEEWidget() {
       className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-        TDEE Калькулятор
+      <div>
+        <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
+          TDEE Калькулятор
+        </div>
+        <div className="text-xs text-white/40 mt-1">
+          Общая суточная энерготрата
+        </div>
       </div>
       
       <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
