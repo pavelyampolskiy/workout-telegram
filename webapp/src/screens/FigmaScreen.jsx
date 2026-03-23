@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../App';
-import { ScreenBg } from '../components/ScreenBg';
+import ScreenBg from '../ScreenBg';
 import { PAGE_HEADING_STYLE, CARD_BG } from '../constants';
 import FigmaEmbed from '../components/FigmaEmbed';
 import { useFigma } from '../hooks/useFigma';
