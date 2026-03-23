@@ -125,6 +125,7 @@ export default function TDEEWidget() {
   const handleCalculate = () => {
     if (validateForm()) {
       const results = calculateTDEE();
+      results.calculatedAt = new Date().toISOString(); // Add timestamp
       setTdeeData(results);
       
       // Save to localStorage
@@ -135,6 +136,16 @@ export default function TDEEWidget() {
       }
       
       setShowCalculator(false);
+    }
+  };
+
+  // Handle reset data
+  const handleReset = () => {
+    setTdeeData(null);
+    try {
+      localStorage.removeItem(`tdee_data_${userId}`);
+    } catch (e) {
+      console.error('Error removing TDEE data:', e);
     }
   };
 
@@ -259,6 +270,16 @@ export default function TDEEWidget() {
           >
             CALCULATE
           </button>
+
+          {/* Reset Button */}
+          {tdeeData && (
+            <button
+              onClick={handleReset}
+              className="w-full py-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg border border-red-500/20 transition-all text-xs font-bebas tracking-wider text-red-400"
+            >
+              RESET DATA
+            </button>
+          )}
         </div>
       </div>
     );
@@ -306,38 +327,93 @@ export default function TDEEWidget() {
     );
   }
 
-  // Show TDEE results
+  // Show TDEE results with reset option
   return (
-    <button
-      onClick={() => setShowCalculator(true)}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
+    <div className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+         style={{ background: 'rgba(255,255,255,0.03)' }}
     >
-      <div>
-        <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
-          TDEE
+      {/* Header with reset button */}
+      <div className="flex items-center justify-between w-full">
+        <div>
+          <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
+            TDEE
+          </div>
+          <div className="text-xs text-white/40 mt-1">
+            Total Daily Energy Expenditure
+          </div>
+          {tdeeData.calculatedAt && (
+            <div className="text-xs text-white/30 mt-1">
+              {new Date(tdeeData.calculatedAt).toLocaleDateString()}
+            </div>
+          )}
         </div>
-        <div className="text-xs text-white/40 mt-1">
-          Total Daily Energy Expenditure
-        </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleReset();
+          }}
+          className="text-white/40 hover:text-red-400 text-xs transition-colors"
+        >
+          Reset
+        </button>
       </div>
-      
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-        <div className="text-xs text-white whitespace-pre-line text-right">
+
+      {/* Results content */}
+      <button
+        onClick={() => setShowCalculator(true)}
+        className="flex-1 px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 text-left"
+      >
+        <div className="text-xs text-white whitespace-pre-line">
           <div className="text-xs text-white/60 mb-1">
-            {tdeeData.goal.name}
+            {tdeeData.goal.name} ({tdeeData.goal.delta > 0 ? '+' : ''}{tdeeData.goal.delta} kcal)
           </div>
           <div className="text-lg font-bebas tracking-wider text-white/80 mb-1">
             {tdeeData.targetCalories}
           </div>
-          <div className="text-xs text-white/40">
+          <div className="text-xs text-white/40 mb-2">
             kcal/day
           </div>
-          <div className="text-xs text-white/30 mt-1">
-            P: {tdeeData.protein.grams}g · C: {tdeeData.carbs.grams}g · F: {tdeeData.fat.grams}g
+          
+          {/* BMR and TDEE info */}
+          <div className="text-xs text-white/30 mb-2">
+            BMR: {tdeeData.bmr} · TDEE: {tdeeData.tdee}
+          </div>
+          
+          {/* Macro progress bars */}
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-white/40 w-8">P:</span>
+              <div className="flex-1 bg-white/10 rounded-full h-1">
+                <div 
+                  className="bg-blue-500 h-1 rounded-full"
+                  style={{ width: `${(tdeeData.protein.kcal / tdeeData.targetCalories) * 100}%` }}
+                />
+              </div>
+              <span className="text-xs text-white/40 w-8 text-right">{tdeeData.protein.grams}g</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-white/40 w-8">C:</span>
+              <div className="flex-1 bg-white/10 rounded-full h-1">
+                <div 
+                  className="bg-green-500 h-1 rounded-full"
+                  style={{ width: `${(tdeeData.carbs.kcal / tdeeData.targetCalories) * 100}%` }}
+                />
+              </div>
+              <span className="text-xs text-white/40 w-8 text-right">{tdeeData.carbs.grams}g</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-white/40 w-8">F:</span>
+              <div className="flex-1 bg-white/10 rounded-full h-1">
+                <div 
+                  className="bg-yellow-500 h-1 rounded-full"
+                  style={{ width: `${(tdeeData.fat.kcal / tdeeData.targetCalories) * 100}%` }}
+                />
+              </div>
+              <span className="text-xs text-white/40 w-8 text-right">{tdeeData.fat.grams}g</span>
+            </div>
           </div>
         </div>
-      </div>
-    </button>
+      </button>
+    </div>
   );
 }
