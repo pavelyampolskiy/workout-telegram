@@ -225,7 +225,7 @@ export default function HomeScreen() {
             itemMap[item.id] = item;
           });
           
-          // Восстанавливаем порядок
+          // Восстанавливаем порядок и добавляем новые элементы
           const restoredItems = parsed.map(savedItem => {
             const fullItem = itemMap[savedItem.id];
             if (fullItem) {
@@ -233,6 +233,16 @@ export default function HomeScreen() {
             }
             return null;
           }).filter(item => item !== null);
+          
+          // Добавляем TDEE виджет, если его нет в восстановленных элементах
+          const hasTDEE = restoredItems.some(item => item.id === 'tdee');
+          if (!hasTDEE) {
+            const tdeeItem = itemMap['tdee'];
+            if (tdeeItem) {
+              restoredItems.push(tdeeItem);
+              console.log('Added TDEE widget to existing layout');
+            }
+          }
           
           if (restoredItems.length > 0) {
             setGridItems(restoredItems);
