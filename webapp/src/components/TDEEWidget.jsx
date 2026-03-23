@@ -234,7 +234,7 @@ export default function TDEEWidget() {
           >
             {Object.entries(activityLevels).map(([key, level]) => (
               <option key={key} value={key} className="bg-black">
-                {level.name}
+                {level.name} - {level.desc}
               </option>
             ))}
           </select>
@@ -247,7 +247,7 @@ export default function TDEEWidget() {
           >
             {Object.entries(goals).map(([key, goal]) => (
               <option key={key} value={key} className="bg-black">
-                {goal.name}
+                {goal.name} - {goal.desc}
               </option>
             ))}
           </select>
