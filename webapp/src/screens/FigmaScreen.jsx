@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../App';
 import ScreenBg from '../ScreenBg';
-import { PAGE_HEADING_STYLE, CARD_BG } from '../constants';
+import { PAGE_HEADING_STYLE, PRIMARY_CARD_STYLE } from '../shared';
 import FigmaEmbed from '../components/FigmaEmbed';
 import { useFigma } from '../hooks/useFigma';
 import { Spinner } from '../components/Spinner';
@@ -86,7 +86,7 @@ const FigmaScreen = () => {
         </div>
 
         {/* Контент табов */}
-        <div className="rounded-xl p-5" style={{ background: CARD_BG }}>
+        <div className="rounded-xl p-5" style={{ background: PRIMARY_CARD_STYLE.background }}>
           {activeTab === 'preview' && (
             <div>
               <h2 className="font-bebas text-white/80 text-lg mb-4">Figma Preview</h2>
