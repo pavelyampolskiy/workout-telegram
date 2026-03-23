@@ -10,6 +10,7 @@ import { Spinner } from '../components/Spinner';
 import { HomeStatsSkeleton } from '../components/Skeleton';
 import SupplementsWidget from '../components/SupplementsWidget';
 import BodyMetricsWidget from '../components/BodyMetricsWidget';
+import TDEEWidget from '../components/TDEEWidget';
 import DragDropGrid from '../components/DragDropGrid';
 import EditModeToggle from '../components/EditModeToggle';
 import FigmaScreen from '../screens/FigmaScreen';
@@ -77,6 +78,15 @@ const MetricsIcon = () => (
     <path d="M6 13V8a6 6 0 0112 0v5"/>
     <circle cx="12" cy="17" r="1"/>
     <path d="M8 17h8"/>
+  </svg>
+);
+
+const TDEEIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+    <path d="M12 2v20M2 12h20"/>
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M12 5V7M12 17v2M5 12h2M17 12h2"/>
+    <path d="M7 7l1.5 1.5M15.5 15.5L17 17M17 7l-1.5 1.5M8.5 15.5L7 17"/>
   </svg>
 );
 
@@ -457,7 +467,17 @@ export default function HomeScreen() {
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Figma</div>
           </button>
         )
-      }
+      },
+      {
+        id: 'tdee',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <TDEEWidget />
+          </div>
+        )
+      },
     ];
   };
 
