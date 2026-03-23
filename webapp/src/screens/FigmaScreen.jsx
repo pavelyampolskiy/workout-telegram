@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from '../context/AppContext';
+import { useApp } from '../App';
 import { ScreenBg } from '../components/ScreenBg';
 import { PAGE_HEADING_STYLE, CARD_BG } from '../constants';
 import FigmaEmbed from '../components/FigmaEmbed';
@@ -7,7 +7,7 @@ import { useFigma } from '../hooks/useFigma';
 import { Spinner } from '../components/Spinner';
 
 const FigmaScreen = () => {
-  const navigate = useNavigate();
+  const { navigate } = useApp();
   const { figmaData, styles, cssVariables, loading, error } = useFigma();
   const [activeTab, setActiveTab] = useState('preview');
 
