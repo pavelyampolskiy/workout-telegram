@@ -16,6 +16,7 @@ const TDEEScreen = () => {
   const [heightUnit, setHeightUnit] = useState('cm'); // cm or inches
   const [activityLevel, setActivityLevel] = useState('moderate');
   const [goal, setGoal] = useState('cutting');
+  const [showInfoSheet, setShowInfoSheet] = useState(false);
 
   // Results state
   const [results, setResults] = useState(null);
@@ -197,18 +198,16 @@ const TDEEScreen = () => {
       {/* Main Content */}
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         {/* Header */}
-        <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>
-          TDEE Calculator
-        </h1>
-
-        {/* Info Card */}
-        <div className="bg-white/5 rounded-xl p-4 mb-6 border border-white/10">
-          <div className="space-y-2">
-            <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>WHAT IS TDEE?</div>
-            <div className={`text-xs ${TEXT_MUTED} leading-relaxed`}>
-              <strong>Total Daily Energy Expenditure</strong> is the total number of calories your body burns in a 24-hour period. This calculator helps you determine your daily calorie needs based on your body parameters, activity level, and fitness goals.
-            </div>
-          </div>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="font-bebas text-white pt-6" style={PAGE_HEADING_STYLE}>
+            TDEE Calculator
+          </h1>
+          <button
+            onClick={() => setShowInfoSheet(true)}
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+          >
+            <span className="text-sm text-white/60">ⓘ</span>
+          </button>
         </div>
 
         {/* History Card */}
@@ -584,6 +583,44 @@ const TDEEScreen = () => {
           </div>
         )}
       </div>
+
+      {/* Info Bottom Sheet */}
+      {showInfoSheet && (
+        <div 
+          className="fixed inset-0 z-50 flex items-end justify-center"
+          onClick={() => setShowInfoSheet(false)}
+        >
+          <div 
+            className="bg-black/95 backdrop-blur-lg w-full max-w-lg rounded-t-3xl p-6 border-t border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1 bg-white/30 rounded-full mx-auto mb-6"></div>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className={`text-lg font-bebas tracking-wider ${TEXT_PRIMARY} mb-3`}>What is TDEE?</h3>
+                <p className={`text-sm ${TEXT_MUTED} leading-relaxed`}>
+                  <strong>Total Daily Energy Expenditure</strong> — the total number of calories your body burns in a day, including all physical activity. Think of it as your daily energy budget.
+                </p>
+              </div>
+              
+              <div>
+                <h3 className={`text-lg font-bebas tracking-wider ${TEXT_PRIMARY} mb-3`}>How we calculate it</h3>
+                <p className={`text-sm ${TEXT_MUTED} leading-relaxed`}>
+                  We use the Mifflin-St Jeor equation to estimate your Basal Metabolic Rate (BMR) — calories your body needs at complete rest. Then we multiply it by an activity factor based on your training frequency.
+                </p>
+              </div>
+              
+              <button
+                onClick={() => setShowInfoSheet(false)}
+                className="w-full py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
+              >
+                <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>GOT IT</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
