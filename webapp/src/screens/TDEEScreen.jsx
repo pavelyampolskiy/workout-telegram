@@ -788,6 +788,9 @@ const TDEEScreen = () => {
                     }}
                   />
                 </div>
+                <div className="text-right mt-1">
+                  <span className={`text-xs ${TEXT_MUTED}`}>{Math.round((results.protein.kcal / results.targetCalories) * 100)}%</span>
+                </div>
               </div>
 
               {/* Carbs */}
@@ -804,6 +807,9 @@ const TDEEScreen = () => {
                     }}
                   />
                 </div>
+                <div className="text-right mt-1">
+                  <span className={`text-xs ${TEXT_MUTED}`}>{Math.round((results.carbs.kcal / results.targetCalories) * 100)}%</span>
+                </div>
               </div>
 
               {/* Fat */}
@@ -819,6 +825,9 @@ const TDEEScreen = () => {
                       width: showResults ? `${(results.fat.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
                   />
+                </div>
+                <div className="text-right mt-1">
+                  <span className={`text-xs ${TEXT_MUTED}`}>{Math.round((results.fat.kcal / results.targetCalories) * 100)}%</span>
                 </div>
               </div>
             </div>
