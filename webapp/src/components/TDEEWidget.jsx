@@ -102,26 +102,31 @@ export default function TDEEWidget() {
         </div>
         
         {/* Quick macro stats */}
-        <div className="grid grid-cols-3 gap-2">
-          <div className="text-center">
-            <div className="text-xs text-white/40">Protein</div>
-            <div className="text-xs text-white/90 font-medium">
-              {tdeeData.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="w-full py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
+        >
+          <div className="grid grid-cols-3 gap-2">
+            <div className="text-center">
+              <div className="text-xs text-white/40">Protein</div>
+              <div className="text-xs text-white/90 font-medium">
+                {tdeeData.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-xs text-white/40">Carbohydrates</div>
+              <div className="text-xs text-white/90 font-medium">
+                {tdeeData.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-xs text-white/40">Fats</div>
+              <div className="text-xs text-white/90 font-medium">
+                {tdeeData.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+              </div>
             </div>
           </div>
-          <div className="text-center">
-            <div className="text-xs text-white/40">Carbohydrates</div>
-            <div className="text-xs text-white/90 font-medium">
-              {tdeeData.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-xs text-white/40">Fats</div>
-            <div className="text-xs text-white/90 font-medium">
-              {tdeeData.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
-            </div>
-          </div>
-        </div>
+        </button>
       </div>
     </button>
   );
