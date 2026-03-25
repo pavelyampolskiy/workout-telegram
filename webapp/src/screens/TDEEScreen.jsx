@@ -205,9 +205,9 @@ const TDEEScreen = () => {
               TDEE Calculator
               <button
                 onClick={() => setShowInfoSheet(true)}
-                className="absolute -top-2 -right-4 p-1 hover:bg-white/5 rounded transition-all"
+                className="absolute -top-2 -right-4 p-1"
               >
-                <span className="text-xs text-white/40 hover:text-white/60">ⓘ</span>
+                <span className="text-xs text-white/40">ⓘ</span>
               </button>
             </h1>
           </div>
@@ -431,9 +431,9 @@ const TDEEScreen = () => {
               <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
               <button
                 onClick={() => setShowGoalSheet(true)}
-                className="absolute -top-1 -right-4 p-1 hover:bg-white/5 rounded transition-all"
+                className="absolute -top-1 -right-4 p-1"
               >
-                <span className="text-xs text-white/40 hover:text-white/60">ⓘ</span>
+                <span className="text-xs text-white/40">ⓘ</span>
               </button>
             </div>
             <div className="grid grid-cols-2 gap-3">
