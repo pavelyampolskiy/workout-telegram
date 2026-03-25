@@ -201,6 +201,16 @@ const TDEEScreen = () => {
           TDEE Calculator
         </h1>
 
+        {/* Info Card */}
+        <div className="bg-white/5 rounded-xl p-4 mb-6 border border-white/10">
+          <div className="space-y-2">
+            <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>WHAT IS TDEE?</div>
+            <div className={`text-xs ${TEXT_MUTED} leading-relaxed`}>
+              <strong>Total Daily Energy Expenditure</strong> is the total number of calories your body burns in a 24-hour period. This calculator helps you determine your daily calorie needs based on your body parameters, activity level, and fitness goals.
+            </div>
+          </div>
+        </div>
+
         {/* Form Content */}
         <div className="space-y-6">
           {/* Gender Toggle */}
