@@ -94,6 +94,16 @@ export default function TDEEWidget() {
                 {tdeeData.goal ? (typeof tdeeData.goal === 'string' ? tdeeData.goal : tdeeData.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
               </span>
             </span>
+            {/* Info icon */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate('tdee');
+              }}
+              className="p-1 hover:bg-white/5 rounded transition-all"
+            >
+              <span className="text-xs text-white/40 hover:text-white/60">ⓘ</span>
+            </button>
           </div>
         </div>
         
