@@ -674,16 +674,6 @@ const TDEEScreen = () => {
                     value={customMacroSplit.protein}
                     onChange={(e) => updateMacroSplit('protein', parseInt(e.target.value))}
                     className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-                    style={{
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.protein}%, rgba(255,255,255,0.1) ${customMacroSplit.protein}%, rgba(255,255,255,0.1) 100%)`,
-                      height: '8px',
-                      borderRadius: '4px',
-                      outline: 'none',
-                      opacity: '1',
-                      transition: 'opacity 0.2s'
-                    }}
                   />
                 </div>
                 
@@ -700,16 +690,6 @@ const TDEEScreen = () => {
                     value={customMacroSplit.carbs}
                     onChange={(e) => updateMacroSplit('carbs', parseInt(e.target.value))}
                     className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-                    style={{
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.carbs}%, rgba(255,255,255,0.1) ${customMacroSplit.carbs}%, rgba(255,255,255,0.1) 100%)`,
-                      height: '8px',
-                      borderRadius: '4px',
-                      outline: 'none',
-                      opacity: '1',
-                      transition: 'opacity 0.2s'
-                    }}
                   />
                 </div>
                 
@@ -726,16 +706,6 @@ const TDEEScreen = () => {
                     value={customMacroSplit.fat}
                     onChange={(e) => updateMacroSplit('fats', parseInt(e.target.value))}
                     className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-                    style={{
-                      WebkitAppearance: 'none',
-                      appearance: 'none',
-                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.fat}%, rgba(255,255,255,0.1) ${customMacroSplit.fat}%, rgba(255,255,255,0.1) 100%)`,
-                      height: '8px',
-                      borderRadius: '4px',
-                      outline: 'none',
-                      opacity: '1',
-                      transition: 'opacity 0.2s'
-                    }}
                   />
                 </div>
                 
