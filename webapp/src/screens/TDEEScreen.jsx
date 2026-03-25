@@ -340,35 +340,22 @@ const TDEEScreen = () => {
     const remaining = 100 - total;
     
     if (remaining !== 0) {
-      // Distribute remaining proportionally to other macros
+      // Simple proportional adjustment
       const otherMacros = Object.keys(currentSplit).filter(key => key !== macroType);
-      const otherTotal = otherMacros.reduce((sum, key) => sum + currentSplit[key], 0);
       
-      if (otherTotal > 0) {
-        // Distribute proportionally based on current ratios
-        otherMacros.forEach(macro => {
-          const ratio = currentSplit[macro] / otherTotal;
-          const adjustment = remaining * ratio;
-          currentSplit[macro] = Math.max(0, Math.min(100, currentSplit[macro] + adjustment));
-        });
-      } else {
-        // If other macros are 0, distribute equally
-        const equalShare = remaining / otherMacros.length;
-        otherMacros.forEach(macro => {
-          currentSplit[macro] = Math.max(0, Math.min(100, equalShare));
-        });
-      }
+      otherMacros.forEach(macro => {
+        const currentValue = currentSplit[macro];
+        const adjustment = (remaining / otherMacros.length);
+        currentSplit[macro] = Math.max(0, Math.min(100, currentValue + adjustment));
+      });
     }
     
-    // Final adjustment to ensure total is exactly 100
+    // Final correction to ensure exactly 100%
     const finalTotal = currentSplit.protein + currentSplit.carbs + currentSplit.fat;
     if (Math.abs(finalTotal - 100) > 0.1) {
       const diff = 100 - finalTotal;
-      // Adjust the macro with highest percentage to minimize impact
-      const highestMacro = Object.keys(currentSplit).reduce((a, b) => 
-        currentSplit[a] > currentSplit[b] ? a : b
-      );
-      currentSplit[highestMacro] = Math.max(0, Math.min(100, currentSplit[highestMacro] + diff));
+      // Adjust carbs (most flexible) to fix any rounding errors
+      currentSplit.carbs = Math.max(0, Math.min(100, currentSplit.carbs + diff));
     }
     
     setCustomMacroSplit(currentSplit);
