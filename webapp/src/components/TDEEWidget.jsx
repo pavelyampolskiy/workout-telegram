@@ -85,13 +85,14 @@ export default function TDEEWidget() {
       {/* Main calories display */}
       <div className="w-full flex-1 flex flex-col justify-center items-center">
         <div className="text-center mb-2">
-          <div className="text-2xl font-bebas tracking-wider text-white/90 mb-1">
-            {tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal per day
-          </div>
-          {/* Temporary debug - always show badge */}
-          <div className="inline-block px-2 py-1 rounded bg-white/10 border border-white/20">
-            <span className="text-xs font-bebas tracking-wider text-white/70">
-              {tdeeData.goal ? (typeof tdeeData.goal === 'string' ? tdeeData.goal : tdeeData.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
+          <div className="flex items-center justify-center gap-2 text-2xl font-bebas tracking-wider text-white/90 mb-1">
+            <span>{tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</span>
+            <span className="text-sm text-white/60">kcal per day</span>
+            {/* Goal badge in same line */}
+            <span className="px-2 py-1 rounded bg-white/10">
+              <span className="text-xs font-bebas tracking-wider text-white/70">
+                {tdeeData.goal ? (typeof tdeeData.goal === 'string' ? tdeeData.goal : tdeeData.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
+              </span>
             </span>
           </div>
         </div>
