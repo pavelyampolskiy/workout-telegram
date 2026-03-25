@@ -96,7 +96,7 @@ export default function TDEEWidget() {
         {/* Quick macro stats */}
         <button
           onClick={(e) => e.stopPropagation()}
-          className="w-full py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
+          className="w-full py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
         >
           <div className="grid grid-cols-3 gap-2">
             <div className="text-center">
