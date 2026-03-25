@@ -49,13 +49,10 @@ export default function TDEEWidget() {
         className="btn-active-style card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
       >
-        {/* Header with title and description */}
+        {/* Header with title only */}
         <div className="w-full">
           <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
             TDEE
-          </div>
-          <div className="text-xs text-white/40 mt-1">
-            Total Daily Energy Expenditure
           </div>
         </div>
         
@@ -65,9 +62,8 @@ export default function TDEEWidget() {
             <div className="text-sm text-white/60 mb-2 font-medium">
               Calculate Your Daily Calories
             </div>
-            <div className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 inline-flex items-center gap-2">
+            <div className="px-4 py-2 rounded-lg bg-white/10 border border-white/20">
               <span className="text-xs font-bebas tracking-wider">CALCULATE</span>
-              <span className="text-xs">→</span>
             </div>
           </div>
         </div>
