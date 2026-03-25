@@ -211,7 +211,7 @@ const TDEEScreen = () => {
       targetCalories,
       protein: { grams: proteinG, kcal: proteinKcal },
       fat: { grams: fatG, kcal: fatKcal },
-      carbs: { grams: carbG, kcal: carbKcal * 4 },
+      carbs: { grams: carbG, kcal: carbKcal },
       goal: goalData
     };
   };
