@@ -395,7 +395,7 @@ const TDEEScreen = () => {
 
         {/* History Card */}
         {results && (
-          <div className="bg-white/5 rounded-xl p-4 mb-6 border border-white/10">
+          <div className="bg-white/5 rounded-xl p-4 mb-6">
             <div className="space-y-3">
               <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>LAST CALCULATION</div>
               <div className="flex justify-between items-center">
@@ -741,7 +741,7 @@ const TDEEScreen = () => {
                 
                 {/* Protein Warning */}
                 {getProteinWarning() && (
-                  <div className="bg-yellow-500/10 rounded-xl p-3 border border-yellow-500/30">
+                  <div className="bg-yellow-500/10 rounded-xl p-3">
                     <p className={`text-xs ${TEXT_MUTED}`}>{getProteinWarning()}</p>
                   </div>
                 )}
@@ -769,7 +769,7 @@ const TDEEScreen = () => {
         {results && (
           <div ref={resultsRef} className="mt-12 space-y-6">
             {/* Hero Card - Target Calories */}
-            <div className={`bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 border border-white/20 transition-all duration-700 ${
+            <div className={`bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 transition-all duration-700 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
               <div className="text-center">
@@ -784,7 +784,7 @@ const TDEEScreen = () => {
             <div className={`space-y-4 transition-all duration-700 delay-75 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <div className="bg-white/5 rounded-xl p-4">
                 <div className="flex justify-between items-center">
                   <div>
                     <div className={`text-2xl font-bebas tracking-wider ${TEXT_PRIMARY}`}>{results.bmr}</div>
@@ -805,7 +805,7 @@ const TDEEScreen = () => {
               <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MACRONUTRIENTS</div>
               
               {/* Protein */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <div className="bg-white/5 rounded-xl p-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>Protein</span>
                   <span className={`text-sm ${TEXT_SECONDARY}`}>{results.protein.grams}g / {results.protein.kcal} kcal</span>
@@ -821,7 +821,7 @@ const TDEEScreen = () => {
               </div>
 
               {/* Carbs */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <div className="bg-white/5 rounded-xl p-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>Carbs</span>
                   <span className={`text-sm ${TEXT_SECONDARY}`}>{results.carbs.grams}g / {results.carbs.kcal} kcal</span>
@@ -837,7 +837,7 @@ const TDEEScreen = () => {
               </div>
 
               {/* Fat */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <div className="bg-white/5 rounded-xl p-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>Fats</span>
                   <span className={`text-sm ${TEXT_SECONDARY}`}>{results.fat.grams}g / {results.fat.kcal} kcal</span>
@@ -855,9 +855,9 @@ const TDEEScreen = () => {
 
             {/* Recomp Note */}
             {goal === 'recomp' && (
-              <div className={`bg-yellow-500/10 rounded-xl p-4 border border-yellow-500/30 transition-all duration-700 delay-200 ${
-                showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-              }`}>
+              <div className={`bg-yellow-500/10 p-4 transition-all duration-700 delay-200 ${
+              showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
                 <div className={`text-xs ${TEXT_SECONDARY} leading-relaxed`}>
                   Eat at TDEE. Scale progress will be minimal — fat leaves, muscle grows. Focus on mirror and measurements, not scale number. Protein is top priority.
                 </div>
