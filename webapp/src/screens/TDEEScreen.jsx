@@ -17,6 +17,7 @@ const TDEEScreen = () => {
   const [activityLevel, setActivityLevel] = useState('moderate');
   const [goal, setGoal] = useState('cutting');
   const [showInfoSheet, setShowInfoSheet] = useState(false);
+  const [showGoalSheet, setShowGoalSheet] = useState(false);
 
   // Results state
   const [results, setResults] = useState(null);
@@ -429,7 +430,7 @@ const TDEEScreen = () => {
             <div className="relative">
               <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
               <button
-                onClick={() => setShowInfoSheet(true)}
+                onClick={() => setShowGoalSheet(true)}
                 className="absolute -top-1 -right-4 p-1 hover:bg-white/5 rounded transition-all"
               >
                 <span className="text-xs text-white/40 hover:text-white/60">ⓘ</span>
@@ -621,6 +622,30 @@ const TDEEScreen = () => {
                 </p>
               </div>
               
+              <button
+                onClick={() => setShowInfoSheet(false)}
+                className="w-full py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
+              >
+                <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>GOT IT</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Goal Info Bottom Sheet */}
+      {showGoalSheet && (
+        <div 
+          className="fixed inset-0 z-50 flex items-end justify-center"
+          onClick={() => setShowGoalSheet(false)}
+        >
+          <div 
+            className="bg-black/95 backdrop-blur-lg w-full max-w-lg rounded-t-3xl p-6 border-t border-white/10"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1 bg-white/30 rounded-full mx-auto mb-6"></div>
+            
+            <div className="space-y-6">
               <div>
                 <h3 className={`text-lg font-bebas tracking-wider ${TEXT_PRIMARY} mb-3`}>Goals Explained</h3>
                 <div className="space-y-3">
@@ -652,7 +677,7 @@ const TDEEScreen = () => {
               </div>
               
               <button
-                onClick={() => setShowInfoSheet(false)}
+                onClick={() => setShowGoalSheet(false)}
                 className="w-full py-3 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
               >
                 <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>GOT IT</span>
