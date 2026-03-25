@@ -334,11 +334,11 @@ const TDEEScreen = () => {
                   onClick={() => setActivityLevel(key)}
                   className={`w-full p-4 rounded-xl border transition-all text-left ${
                     activityLevel === key
-                      ? 'bg-white/10 border-white/30'
+                      ? 'bg-white/10 text-white border-transparent'
                       : 'bg-white/5 border-white/10 hover:bg-white/7 hover:border-white/20'
                   }`}
                 >
-                  <div className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>{level.name}</div>
+                  <div className={`font-bebas tracking-wider ${activityLevel === key ? TEXT_PRIMARY : TEXT_PRIMARY}`}>{level.name}</div>
                   <div className={`text-xs mt-1 ${TEXT_MUTED}`}>{level.desc}</div>
                 </button>
               ))}
