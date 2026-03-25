@@ -26,6 +26,7 @@ const TDEEScreen = () => {
     fat: 25
   });
   const [useCustomMacros, setUseCustomMacros] = useState(false);
+  const [showMacroSplit, setShowMacroSplit] = useState(false);
 
   // Results state
   const [results, setResults] = useState(null);
@@ -554,84 +555,95 @@ const TDEEScreen = () => {
 
           {/* Macronutrient Split */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
+            <button
+              onClick={() => setShowMacroSplit(!showMacroSplit)}
+              className="flex items-center justify-between w-full text-left"
+            >
               <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MACRONUTRIENT SPLIT</label>
-              {useCustomMacros && (
-                <button
-                  onClick={() => {
-                    setCustomMacroSplit(goals[goal].defaultMacros);
-                    setUseCustomMacros(false);
-                  }}
-                  className="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
-                >
-                  <span className="text-xs font-bebas tracking-wider text-white/60">RESET TO DEFAULT</span>
-                </button>
-              )}
-            </div>
-            
-            <div className="space-y-4">
-              {/* Protein */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>PROTEIN</span>
-                  <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.protein}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={customMacroSplit.protein}
-                  onChange={(e) => updateMacroSplit('protein', parseInt(e.target.value))}
-                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-              
-              {/* Carbs */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>CARBOHYDRATES</span>
-                  <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.carbs}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={customMacroSplit.carbs}
-                  onChange={(e) => updateMacroSplit('carbs', parseInt(e.target.value))}
-                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-              
-              {/* Fats */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>FATS</span>
-                  <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.fat}%</span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={customMacroSplit.fat}
-                  onChange={(e) => updateMacroSplit('fats', parseInt(e.target.value))}
-                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-              
-              {/* Protein Warning */}
-              {getProteinWarning() && (
-                <div className="bg-yellow-500/10 rounded-xl p-3 border border-yellow-500/30">
-                  <p className={`text-xs ${TEXT_MUTED}`}>{getProteinWarning()}</p>
-                </div>
-              )}
-              
-              {/* Total indicator */}
-              <div className="flex justify-center">
-                <span className={`text-xs ${TEXT_MUTED}`}>
-                  Total: {customMacroSplit.protein + customMacroSplit.carbs + customMacroSplit.fat}%
+              <div className="flex items-center gap-2">
+                {useCustomMacros && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCustomMacroSplit(goals[goal].defaultMacros);
+                      setUseCustomMacros(false);
+                    }}
+                    className="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+                  >
+                    <span className="text-xs font-bebas tracking-wider text-white/60">RESET TO DEFAULT</span>
+                  </button>
+                )}
+                <span className={`text-xs ${TEXT_MUTED} transition-transform ${showMacroSplit ? 'rotate-180' : ''}`}>
+                  ▼
                 </span>
               </div>
-            </div>
+            </button>
+            
+            {showMacroSplit && (
+              <div className="space-y-4 animate-in slide-in-from-top-2 duration-200">
+                {/* Protein */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>PROTEIN</span>
+                    <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.protein}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={customMacroSplit.protein}
+                    onChange={(e) => updateMacroSplit('protein', parseInt(e.target.value))}
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+                
+                {/* Carbs */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>CARBOHYDRATES</span>
+                    <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.carbs}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={customMacroSplit.carbs}
+                    onChange={(e) => updateMacroSplit('carbs', parseInt(e.target.value))}
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+                
+                {/* Fats */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>FATS</span>
+                    <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.fat}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={customMacroSplit.fat}
+                    onChange={(e) => updateMacroSplit('fats', parseInt(e.target.value))}
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+                
+                {/* Protein Warning */}
+                {getProteinWarning() && (
+                  <div className="bg-yellow-500/10 rounded-xl p-3 border border-yellow-500/30">
+                    <p className={`text-xs ${TEXT_MUTED}`}>{getProteinWarning()}</p>
+                  </div>
+                )}
+                
+                {/* Total indicator */}
+                <div className="flex justify-center">
+                  <span className={`text-xs ${TEXT_MUTED}`}>
+                    Total: {customMacroSplit.protein + customMacroSplit.carbs + customMacroSplit.fat}%
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Calculate Button */}
