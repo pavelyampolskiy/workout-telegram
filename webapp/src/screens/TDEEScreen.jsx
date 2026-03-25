@@ -385,10 +385,7 @@ const TDEEScreen = () => {
                 <div className={`text-5xl font-bebas tracking-wider ${TEXT_PRIMARY} mb-2`}>
                   {results.targetCalories}
                 </div>
-                <div className={`text-sm ${TEXT_SECONDARY} mb-1`}>CALORIES / DAY</div>
-                <div className={`text-xs ${TEXT_MUTED}`}>
-                  {results.goal.delta > 0 ? '+' : ''}{results.goal.delta} kcal · {results.goal.desc}
-                </div>
+                <div className={`text-sm ${TEXT_SECONDARY}`}>kcal per day</div>
               </div>
             </div>
 
