@@ -716,31 +716,6 @@ const TDEEScreen = () => {
                   setActivityLevel('moderate');
                   setGoal('cutting');
                 }}
-                className="w-full py-3 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all mb-3"
-              >
-                <span className={`font-bebas tracking-wider text-green-400`}>SAVE DATA</span>
-              </button>
-              
-              <button
-                onClick={() => {
-                  // Clear localStorage data
-                  try {
-                    localStorage.removeItem(`tdee_data_${userId}`);
-                  } catch (e) {
-                    console.error('Error removing TDEE data:', e);
-                  }
-                  setResults(null);
-                  setShowResults(false);
-                  // Reset form to defaults
-                  setGender('male');
-                  setAge('');
-                  setWeight('');
-                  setHeight('');
-                  setWeightUnit('kg');
-                  setHeightUnit('cm');
-                  setActivityLevel('moderate');
-                  setGoal('cutting');
-                }}
                 className="w-full py-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all"
               >
                 <span className={`font-bebas tracking-wider text-red-400`}>RESET DATA</span>
