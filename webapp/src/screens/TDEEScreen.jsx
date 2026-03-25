@@ -12,12 +12,15 @@ const sliderStyles = `
     cursor: pointer;
     width: 100%;
     height: 8px;
+    border: none;
+    outline: none;
   }
   
   input[type="range"]::-webkit-slider-track {
     background: rgba(255, 255, 255, 0.1);
     height: 8px;
     border-radius: 4px;
+    border: none;
   }
   
   input[type="range"]::-moz-range-track {
@@ -37,6 +40,7 @@ const sliderStyles = `
     margin-top: -4px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     transition: all 0.2s;
+    border: none;
   }
   
   input[type="range"]::-moz-range-thumb {
@@ -61,6 +65,7 @@ const sliderStyles = `
   
   input[type="range"]:focus {
     outline: none;
+    border: none;
   }
   
   input[type="range"]:focus::-webkit-slider-thumb {
@@ -69,6 +74,18 @@ const sliderStyles = `
   
   input[type="range"]:focus::-moz-range-thumb {
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+  
+  .protein-slider {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .carbs-slider {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .fats-slider {
+    background: rgba(255, 255, 255, 0.1);
   }
 `;
 
@@ -673,7 +690,7 @@ const TDEEScreen = () => {
                     max="100"
                     value={customMacroSplit.protein}
                     onChange={(e) => updateMacroSplit('protein', parseInt(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                    className="w-full h-2 protein-slider appearance-none cursor-pointer"
                   />
                 </div>
                 
@@ -689,7 +706,7 @@ const TDEEScreen = () => {
                     max="100"
                     value={customMacroSplit.carbs}
                     onChange={(e) => updateMacroSplit('carbs', parseInt(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                    className="w-full h-2 carbs-slider appearance-none cursor-pointer"
                   />
                 </div>
                 
@@ -705,7 +722,7 @@ const TDEEScreen = () => {
                     max="100"
                     value={customMacroSplit.fat}
                     onChange={(e) => updateMacroSplit('fats', parseInt(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                    className="w-full h-2 fats-slider appearance-none cursor-pointer"
                   />
                 </div>
                 
