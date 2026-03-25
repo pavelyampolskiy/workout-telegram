@@ -75,10 +75,10 @@ const TDEEScreen = () => {
 
   // Goals with calorie deltas
   const goals = {
-    cutting: { name: '🔥 Cutting', delta: -400, desc: 'Have muscles, want definition' },
-    weight_loss: { name: '⚖️ Weight Loss', delta: -600, desc: 'General weight loss' },
-    recomp: { name: '⚡ Recomp', delta: 0, desc: 'Fat ↓ and muscles ↑ simultaneously' },
-    bulk: { name: '💪 Bulk', delta: 300, desc: 'Muscle mass gain' }
+    cutting: { name: 'Cutting', delta: -400, desc: 'Have muscles, want definition' },
+    weight_loss: { name: 'Weight Loss', delta: -600, desc: 'General weight loss' },
+    recomp: { name: 'Recomp', delta: 0, desc: 'Fat ↓ and muscles ↑ simultaneously' },
+    bulk: { name: 'Bulk', delta: 300, desc: 'Muscle mass gain' }
   };
 
   // Calculate BMR using Mifflin-St Jeor formula
@@ -609,6 +609,36 @@ const TDEEScreen = () => {
                 <p className={`text-sm ${TEXT_MUTED} leading-relaxed`}>
                   We use the Mifflin-St Jeor equation to estimate your Basal Metabolic Rate (BMR) — calories your body needs at complete rest. Then we multiply it by an activity factor based on your training frequency.
                 </p>
+              </div>
+              
+              <div>
+                <h3 className={`text-lg font-bebas tracking-wider ${TEXT_PRIMARY} mb-3`}>Goals Explained</h3>
+                <div className="space-y-3">
+                  <div>
+                    <h4 className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>Cutting</h4>
+                    <p className={`text-xs ${TEXT_MUTED} leading-relaxed`}>
+                      Moderate calorie deficit, high protein. Designed to lose fat while preserving muscle. Slower but sustainable.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>Weight Loss</h4>
+                    <p className={`text-xs ${TEXT_MUTED} leading-relaxed`}>
+                      Larger deficit for faster results. Best for those prioritizing scale progress over performance.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>Recomp</h4>
+                    <p className={`text-xs ${TEXT_MUTED} leading-relaxed`}>
+                      Eat at your TDEE. Body fat decreases, muscle grows. Scale won't move much — trust the mirror.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>Bulk</h4>
+                    <p className={`text-xs ${TEXT_MUTED} leading-relaxed`}>
+                      Moderate surplus to fuel muscle growth. Expect some fat gain alongside strength progress.
+                    </p>
+                  </div>
+                </div>
               </div>
               
               <button
