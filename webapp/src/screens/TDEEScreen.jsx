@@ -3,9 +3,89 @@ import { useApp } from '../App';
 import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED, PAGE_HEADING_STYLE } from '../shared';
 
+// Global CSS for range inputs
+const sliderStyles = `
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+    height: 8px;
+  }
+  
+  input[type="range"]::-webkit-slider-track {
+    background: rgba(255, 255, 255, 0.1);
+    height: 8px;
+    border-radius: 4px;
+  }
+  
+  input[type="range"]::-moz-range-track {
+    background: rgba(255, 255, 255, 0.1);
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.8);
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    margin-top: -4px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    background: rgba(255, 255, 255, 0.8);
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+  }
+  
+  input[type="range"]::-moz-range-thumb:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+  }
+  
+  input[type="range"]:focus {
+    outline: none;
+  }
+  
+  input[type="range"]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+  
+  input[type="range"]:focus::-moz-range-thumb {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+`;
+
 const TDEEScreen = () => {
   const { navigate, goBack, userId } = useApp();
   const resultsRef = useRef(null);
+
+  // Inject slider styles
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = sliderStyles;
+    document.head.appendChild(styleElement);
+    
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   // Form state
   const [gender, setGender] = useState('male');
@@ -593,11 +673,16 @@ const TDEEScreen = () => {
                     max="100"
                     value={customMacroSplit.protein}
                     onChange={(e) => updateMacroSplit('protein', parseInt(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
                     style={{
                       WebkitAppearance: 'none',
                       appearance: 'none',
-                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.protein}%, rgba(255,255,255,0.1) ${customMacroSplit.protein}%, rgba(255,255,255,0.1) 100%)`
+                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.protein}%, rgba(255,255,255,0.1) ${customMacroSplit.protein}%, rgba(255,255,255,0.1) 100%)`,
+                      height: '8px',
+                      borderRadius: '4px',
+                      outline: 'none',
+                      opacity: '1',
+                      transition: 'opacity 0.2s'
                     }}
                   />
                 </div>
@@ -614,11 +699,16 @@ const TDEEScreen = () => {
                     max="100"
                     value={customMacroSplit.carbs}
                     onChange={(e) => updateMacroSplit('carbs', parseInt(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
                     style={{
                       WebkitAppearance: 'none',
                       appearance: 'none',
-                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.carbs}%, rgba(255,255,255,0.1) ${customMacroSplit.carbs}%, rgba(255,255,255,0.1) 100%)`
+                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.carbs}%, rgba(255,255,255,0.1) ${customMacroSplit.carbs}%, rgba(255,255,255,0.1) 100%)`,
+                      height: '8px',
+                      borderRadius: '4px',
+                      outline: 'none',
+                      opacity: '1',
+                      transition: 'opacity 0.2s'
                     }}
                   />
                 </div>
@@ -635,11 +725,16 @@ const TDEEScreen = () => {
                     max="100"
                     value={customMacroSplit.fat}
                     onChange={(e) => updateMacroSplit('fats', parseInt(e.target.value))}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
                     style={{
                       WebkitAppearance: 'none',
                       appearance: 'none',
-                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.fat}%, rgba(255,255,255,0.1) ${customMacroSplit.fat}%, rgba(255,255,255,0.1) 100%)`
+                      background: `linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.3) ${customMacroSplit.fat}%, rgba(255,255,255,0.1) ${customMacroSplit.fat}%, rgba(255,255,255,0.1) 100%)`,
+                      height: '8px',
+                      borderRadius: '4px',
+                      outline: 'none',
+                      opacity: '1',
+                      transition: 'opacity 0.2s'
                     }}
                   />
                 </div>
