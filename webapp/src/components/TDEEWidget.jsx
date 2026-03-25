@@ -46,22 +46,19 @@ export default function TDEEWidget() {
     return (
       <button
         onClick={() => navigate('tdee')}
-        className="btn-active-style card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+        className="btn-active-style card-press w-full h-full flex flex-col justify-center items-center p-4"
         style={{ background: 'rgba(255,255,255,0.03)' }}
       >
         {/* Header with title only */}
-        <div className="w-full">
-          <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
+        <div className="w-full text-center">
+          <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
             TDEE
           </div>
         </div>
         
         {/* Call to action */}
-        <div className="w-full flex-1 flex flex-col justify-center items-center py-2">
+        <div className="w-full flex-1 flex flex-col justify-center items-center">
           <div className="text-center">
-            <div className="text-sm text-white/60 mb-2 font-medium">
-              Calculate Your Daily Calories
-            </div>
             <div className="px-4 py-2 rounded-lg bg-white/10 border border-white/20">
               <span className="text-xs font-bebas tracking-wider">CALCULATE</span>
             </div>
@@ -75,24 +72,19 @@ export default function TDEEWidget() {
   return (
     <button
       onClick={() => navigate('tdee')}
-      className="btn-active-style card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+      className="btn-active-style card-press w-full h-full flex flex-col justify-center items-center p-4"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between w-full">
-        <div>
-          <div className="font-bebas text-base text-white/25" style={{ letterSpacing: 'normal' }}>
-            TDEE
-          </div>
-          <div className="text-xs text-white/40 mt-1">
-            {tdeeData.calculatedAt && new Date(tdeeData.calculatedAt).toLocaleDateString()}
-          </div>
+      <div className="w-full text-center mb-2">
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+          TDEE
         </div>
       </div>
 
       {/* Main calories display */}
-      <div className="w-full">
-        <div className="text-center mb-3">
+      <div className="w-full flex-1 flex flex-col justify-center items-center">
+        <div className="text-center mb-2">
           <div className="text-2xl font-bebas tracking-wider text-white/90 mb-1">
             {tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
           </div>
@@ -104,7 +96,7 @@ export default function TDEEWidget() {
         {/* Quick macro stats */}
         <button
           onClick={(e) => e.stopPropagation()}
-          className="w-full py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
+          className="w-full py-2 px-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
         >
           <div className="grid grid-cols-3 gap-2">
             <div className="text-center">
