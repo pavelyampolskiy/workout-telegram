@@ -242,20 +242,35 @@ const TDEEScreen = () => {
     const remaining = 100 - total;
     
     if (remaining !== 0) {
-      // Distribute remaining proportionally
+      // Distribute remaining proportionally to other macros
       const otherMacros = Object.keys(currentSplit).filter(key => key !== macroType);
-      const adjustment = remaining / otherMacros.length;
+      const otherTotal = otherMacros.reduce((sum, key) => sum + currentSplit[key], 0);
       
-      otherMacros.forEach(macro => {
-        currentSplit[macro] = Math.max(0, Math.min(100, currentSplit[macro] + adjustment));
-      });
+      if (otherTotal > 0) {
+        // Distribute proportionally based on current ratios
+        otherMacros.forEach(macro => {
+          const ratio = currentSplit[macro] / otherTotal;
+          const adjustment = remaining * ratio;
+          currentSplit[macro] = Math.max(0, Math.min(100, currentSplit[macro] + adjustment));
+        });
+      } else {
+        // If other macros are 0, distribute equally
+        const equalShare = remaining / otherMacros.length;
+        otherMacros.forEach(macro => {
+          currentSplit[macro] = Math.max(0, Math.min(100, equalShare));
+        });
+      }
     }
     
-    // Ensure total is exactly 100 (final adjustment)
+    // Final adjustment to ensure total is exactly 100
     const finalTotal = currentSplit.protein + currentSplit.carbs + currentSplit.fat;
-    if (finalTotal !== 100) {
+    if (Math.abs(finalTotal - 100) > 0.1) {
       const diff = 100 - finalTotal;
-      currentSplit.carbs += diff; // Adjust carbs as it's usually most flexible
+      // Adjust the macro with highest percentage to minimize impact
+      const highestMacro = Object.keys(currentSplit).reduce((a, b) => 
+        currentSplit[a] > currentSplit[b] ? a : b
+      );
+      currentSplit[highestMacro] = Math.max(0, Math.min(100, currentSplit[highestMacro] + diff));
     }
     
     setCustomMacroSplit(currentSplit);
