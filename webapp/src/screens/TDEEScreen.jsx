@@ -168,27 +168,17 @@ const TDEEScreen = () => {
   }, [gender, age, weight, height, activityLevel, goal]);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg bgType="gym" />
       
-      {/* Header */}
-      <div className="relative z-10 px-4 pt-12 pb-6">
-        <div className="flex items-center justify-between mb-6">
-          <button
-            onClick={goBack}
-            className="text-white/60 hover:text-white transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+      {/* Main Content */}
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-center mb-6">
           <h1 className={`text-2xl font-bebas tracking-wider ${TEXT_PRIMARY}`}>TDEE CALCULATOR</h1>
-          <div className="w-6" />
         </div>
-      </div>
 
-      {/* Form Content */}
-      <div className="relative z-10 px-4 pb-8">
+        {/* Form Content */}
         <div className="space-y-6">
           {/* Gender Toggle */}
           <div className="space-y-3">
