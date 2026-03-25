@@ -88,13 +88,12 @@ export default function TDEEWidget() {
           <div className="text-2xl font-bebas tracking-wider text-white/90 mb-1">
             {tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal per day
           </div>
-          {tdeeData.goal?.name && (
-            <div className="inline-block px-2 py-1 rounded bg-white/10 border border-white/20">
-              <span className="text-xs font-bebas tracking-wider text-white/70">
-                {tdeeData.goal.name.replace(/[^\w\s]/gi, '').trim()}
-              </span>
-            </div>
-          )}
+          {/* Temporary debug - always show badge */}
+          <div className="inline-block px-2 py-1 rounded bg-white/10 border border-white/20">
+            <span className="text-xs font-bebas tracking-wider text-white/70">
+              {tdeeData.goal ? (typeof tdeeData.goal === 'string' ? tdeeData.goal : tdeeData.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
+            </span>
+          </div>
         </div>
         
         {/* Quick macro stats */}
