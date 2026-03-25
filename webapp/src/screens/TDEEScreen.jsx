@@ -12,6 +12,8 @@ const TDEEScreen = () => {
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [weightUnit, setWeightUnit] = useState('kg'); // kg or lbs
+  const [heightUnit, setHeightUnit] = useState('cm'); // cm or inches
   const [activityLevel, setActivityLevel] = useState('moderate');
   const [goal, setGoal] = useState('cutting');
 
@@ -36,6 +38,8 @@ const TDEEScreen = () => {
         if (data.age) setAge(data.age);
         if (data.weight) setWeight(data.weight);
         if (data.height) setHeight(data.height);
+        if (data.weightUnit) setWeightUnit(data.weightUnit);
+        if (data.heightUnit) setHeightUnit(data.heightUnit);
         if (data.activityLevel) setActivityLevel(data.activityLevel);
         if (data.goal) setGoal(data.goal);
       }
@@ -43,6 +47,21 @@ const TDEEScreen = () => {
       console.error('Error loading TDEE data:', e);
     }
   }, [userId]);
+
+  // Unit conversion functions
+  const convertWeightToKg = (value, unit) => {
+    if (unit === 'lbs') {
+      return parseFloat(value) / 2.20462; // lbs to kg
+    }
+    return parseFloat(value); // already kg
+  };
+
+  const convertHeightToCm = (value, unit) => {
+    if (unit === 'inches') {
+      return parseFloat(value) * 2.54; // inches to cm
+    }
+    return parseFloat(value); // already cm
+  };
 
   // Activity levels with coefficients
   const activityLevels = {
@@ -64,8 +83,8 @@ const TDEEScreen = () => {
   // Calculate BMR using Mifflin-St Jeor formula
   const calculateBMR = () => {
     const ageNum = parseInt(age);
-    const weightNum = parseFloat(weight);
-    const heightNum = parseFloat(height);
+    const weightNum = convertWeightToKg(weight, weightUnit);
+    const heightNum = convertHeightToCm(height, heightUnit);
 
     if (gender === 'male') {
       return 10 * weightNum + 6.25 * heightNum - 5 * ageNum + 5;
@@ -82,8 +101,8 @@ const TDEEScreen = () => {
     const goalData = goals[goal];
     const targetCalories = tdee + goalData.delta;
 
-    // Calculate macros
-    const weightNum = parseFloat(weight);
+    // Calculate macros using converted weight in kg
+    const weightNum = convertWeightToKg(weight, weightUnit);
     const proteinG = Math.round(weightNum * 2.2);
     const fatG = Math.round(weightNum * 1.0);
     const proteinKcal = proteinG * 4;
@@ -112,13 +131,15 @@ const TDEEScreen = () => {
     }
 
     const weightNum = parseFloat(weight);
-    if (!weight || isNaN(weightNum) || weightNum < 30 || weightNum > 300) {
-      newErrors.weight = 'Enter valid weight (30-300 kg)';
+    const weightInKg = convertWeightToKg(weight, weightUnit);
+    if (!weight || isNaN(weightNum) || weightInKg < 30 || weightInKg > 300) {
+      newErrors.weight = `Enter valid weight (${weightUnit === 'kg' ? '30-300 kg' : '66-660 lbs'})`;
     }
 
     const heightNum = parseFloat(height);
-    if (!height || isNaN(heightNum) || heightNum < 100 || heightNum > 250) {
-      newErrors.height = 'Enter valid height (100-250 cm)';
+    const heightInCm = convertHeightToCm(height, heightUnit);
+    if (!height || isNaN(heightNum) || heightInCm < 100 || heightInCm > 250) {
+      newErrors.height = `Enter valid height (${heightUnit === 'cm' ? '100-250 cm' : '39-98 inches'})`;
     }
 
     setErrors(newErrors);
@@ -136,6 +157,8 @@ const TDEEScreen = () => {
         age,
         weight,
         height,
+        weightUnit,
+        heightUnit,
         activityLevel,
         goal
       };
@@ -165,7 +188,7 @@ const TDEEScreen = () => {
       setShowResults(false);
       setTimeout(() => setShowResults(true), 50);
     }
-  }, [gender, age, weight, height, activityLevel, goal]);
+  }, [gender, age, weight, height, weightUnit, heightUnit, activityLevel, goal]);
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -226,28 +249,76 @@ const TDEEScreen = () => {
               </div>
 
               <div>
-                <input
-                  type="number"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  placeholder="75 kg"
-                  className={`w-full px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
-                    errors.weight ? 'border-red-500/50' : 'border-white/10'
-                  } focus:border-white/30 focus:outline-none transition-all`}
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value)}
+                    placeholder="75"
+                    className={`flex-1 px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
+                      errors.weight ? 'border-red-500/50' : 'border-white/10'
+                    } focus:border-white/30 focus:outline-none transition-all`}
+                  />
+                  <div className="flex bg-white/5 rounded-xl p-1">
+                    <button
+                      onClick={() => setWeightUnit('kg')}
+                      className={`px-3 py-2 rounded-lg font-bebas tracking-wider text-xs transition-all ${
+                        weightUnit === 'kg'
+                          ? 'bg-white/10 text-white'
+                          : 'text-white/40 hover:text-white/60'
+                      }`}
+                    >
+                      KG
+                    </button>
+                    <button
+                      onClick={() => setWeightUnit('lbs')}
+                      className={`px-3 py-2 rounded-lg font-bebas tracking-wider text-xs transition-all ${
+                        weightUnit === 'lbs'
+                          ? 'bg-white/10 text-white'
+                          : 'text-white/40 hover:text-white/60'
+                      }`}
+                    >
+                      LBS
+                    </button>
+                  </div>
+                </div>
                 {errors.weight && <p className="mt-1 text-xs text-red-400">{errors.weight}</p>}
               </div>
 
               <div>
-                <input
-                  type="number"
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  placeholder="175 cm"
-                  className={`w-full px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
-                    errors.height ? 'border-red-500/50' : 'border-white/10'
-                  } focus:border-white/30 focus:outline-none transition-all`}
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value)}
+                    placeholder="175"
+                    className={`flex-1 px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
+                      errors.height ? 'border-red-500/50' : 'border-white/10'
+                    } focus:border-white/30 focus:outline-none transition-all`}
+                  />
+                  <div className="flex bg-white/5 rounded-xl p-1">
+                    <button
+                      onClick={() => setHeightUnit('cm')}
+                      className={`px-3 py-2 rounded-lg font-bebas tracking-wider text-xs transition-all ${
+                        heightUnit === 'cm'
+                          ? 'bg-white/10 text-white'
+                          : 'text-white/40 hover:text-white/60'
+                      }`}
+                    >
+                      CM
+                    </button>
+                    <button
+                      onClick={() => setHeightUnit('inches')}
+                      className={`px-3 py-2 rounded-lg font-bebas tracking-wider text-xs transition-all ${
+                        heightUnit === 'inches'
+                          ? 'bg-white/10 text-white'
+                          : 'text-white/40 hover:text-white/60'
+                      }`}
+                    >
+                      IN
+                    </button>
+                  </div>
+                </div>
                 {errors.height && <p className="mt-1 text-xs text-red-400">{errors.height}</p>}
               </div>
             </div>
@@ -425,6 +496,8 @@ const TDEEScreen = () => {
                   setAge('');
                   setWeight('');
                   setHeight('');
+                  setWeightUnit('kg');
+                  setHeightUnit('cm');
                   setActivityLevel('moderate');
                   setGoal('cutting');
                 }}
