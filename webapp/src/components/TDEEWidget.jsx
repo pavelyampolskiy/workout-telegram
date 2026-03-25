@@ -92,19 +92,13 @@ export default function TDEEWidget() {
             {tdeeData.calculatedAt && new Date(tdeeData.calculatedAt).toLocaleDateString()}
           </div>
         </div>
-        <div className="text-white/40 hover:text-white/60 text-xs">
-          →
-        </div>
       </div>
 
       {/* Main calories display */}
       <div className="w-full">
         <div className="text-center mb-3">
-          <div className="text-xs text-white/60 mb-1">
-            {tdeeData.goal?.name} ({tdeeData.goal?.delta > 0 ? '+' : ''}{tdeeData.goal?.delta} kcal)
-          </div>
           <div className="text-2xl font-bebas tracking-wider text-white/90 mb-1">
-            {tdeeData.targetCalories}
+            {tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
           </div>
           <div className="text-xs text-white/40">
             kcal/day
@@ -114,16 +108,22 @@ export default function TDEEWidget() {
         {/* Quick macro stats */}
         <div className="grid grid-cols-3 gap-2">
           <div className="text-center">
-            <div className="text-xs text-white/40">P</div>
-            <div className="text-xs text-blue-400 font-medium">{tdeeData.protein?.grams}g</div>
+            <div className="text-xs text-white/40">Protein</div>
+            <div className="text-xs text-white/90 font-medium">
+              {tdeeData.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+            </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-white/40">C</div>
-            <div className="text-xs text-green-400 font-medium">{tdeeData.carbs?.grams}g</div>
+            <div className="text-xs text-white/40">Carbohydrates</div>
+            <div className="text-xs text-white/90 font-medium">
+              {tdeeData.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+            </div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-white/40">F</div>
-            <div className="text-xs text-yellow-400 font-medium">{tdeeData.fat?.grams}g</div>
+            <div className="text-xs text-white/40">Fats</div>
+            <div className="text-xs text-white/90 font-medium">
+              {tdeeData.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+            </div>
           </div>
         </div>
       </div>
