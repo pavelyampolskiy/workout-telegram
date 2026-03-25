@@ -481,7 +481,7 @@ export default function HomeScreen() {
       {
         id: 'tdee',
         type: 'widget',
-        size: { cols: 4, rows: 2 },
+        size: { cols: 2, rows: 1 },
         content: (
           <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
             <TDEEWidget />
