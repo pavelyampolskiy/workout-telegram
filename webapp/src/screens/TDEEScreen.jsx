@@ -199,15 +199,17 @@ const TDEEScreen = () => {
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-bebas text-white pt-6" style={PAGE_HEADING_STYLE}>
-            TDEE Calculator
-          </h1>
-          <button
-            onClick={() => setShowInfoSheet(true)}
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
-          >
-            <span className="text-sm text-white/60">ⓘ</span>
-          </button>
+          <div className="relative">
+            <h1 className="font-bebas text-white pt-6" style={PAGE_HEADING_STYLE}>
+              TDEE Calculator
+              <button
+                onClick={() => setShowInfoSheet(true)}
+                className="absolute -top-2 -right-4 p-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+              >
+                <span className="text-xs text-white/60">ⓘ</span>
+              </button>
+            </h1>
+          </div>
         </div>
 
         {/* History Card */}
@@ -424,7 +426,15 @@ const TDEEScreen = () => {
 
           {/* Goal Selection */}
           <div className="space-y-3">
-            <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
+            <div className="relative">
+              <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
+              <button
+                onClick={() => setShowInfoSheet(true)}
+                className="absolute -top-1 -right-4 p-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+              >
+                <span className="text-xs text-white/60">ⓘ</span>
+              </button>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(goals).map(([key, goalData]) => (
                 <button
