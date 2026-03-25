@@ -59,7 +59,7 @@ export default function TDEEWidget() {
         {/* Call to action */}
         <div className="w-full flex-1 flex flex-col justify-center items-center">
           <div className="text-center">
-            <div className="px-4 py-2 rounded-lg bg-white/10 border border-white/20">
+            <div className="px-4 py-2 rounded-lg bg-white/10">
               <span className="text-xs font-bebas tracking-wider">CALCULATE</span>
             </div>
           </div>
