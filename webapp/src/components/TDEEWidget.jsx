@@ -86,7 +86,7 @@ export default function TDEEWidget() {
       <div className="w-full flex-1 flex flex-col justify-center items-center">
         <div className="text-center mb-2">
           <div className="text-2xl font-bebas tracking-wider text-white/90">
-            {tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal/day
+            {tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal per day
           </div>
         </div>
         
