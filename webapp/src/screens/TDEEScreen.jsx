@@ -18,6 +18,14 @@ const TDEEScreen = () => {
   const [goal, setGoal] = useState('cutting');
   const [showInfoSheet, setShowInfoSheet] = useState(false);
   const [showGoalSheet, setShowGoalSheet] = useState(false);
+  
+  // Custom macro split state
+  const [customMacroSplit, setCustomMacroSplit] = useState({
+    protein: 40,
+    carbs: 35,
+    fat: 25
+  });
+  const [useCustomMacros, setUseCustomMacros] = useState(false);
 
   // Results state
   const [results, setResults] = useState(null);
@@ -74,12 +82,32 @@ const TDEEScreen = () => {
     very_high: { name: 'Very High', desc: '2 workouts per day', coefficient: 1.9 }
   };
 
-  // Goals with calorie deltas
+  // Goals with calorie deltas and default macro splits
   const goals = {
-    cutting: { name: 'Cutting', delta: -400, desc: 'Have muscles, want definition' },
-    weight_loss: { name: 'Weight Loss', delta: -600, desc: 'General weight loss' },
-    recomp: { name: 'Recomp', delta: 0, desc: 'Fat ↓ and muscles ↑ simultaneously' },
-    bulk: { name: 'Bulk', delta: 300, desc: 'Muscle mass gain' }
+    cutting: { 
+      name: 'Cutting', 
+      delta: -400, 
+      desc: 'Have muscles, want definition',
+      defaultMacros: { protein: 40, carbs: 35, fat: 25 }
+    },
+    weight_loss: { 
+      name: 'Weight Loss', 
+      delta: -600, 
+      desc: 'General weight loss',
+      defaultMacros: { protein: 35, carbs: 35, fat: 30 }
+    },
+    recomp: { 
+      name: 'Recomp', 
+      delta: 0, 
+      desc: 'Fat ↓ and muscles ↑ simultaneously',
+      defaultMacros: { protein: 30, carbs: 45, fat: 25 }
+    },
+    bulk: { 
+      name: 'Bulk', 
+      delta: 300, 
+      desc: 'Muscle mass gain',
+      defaultMacros: { protein: 25, carbs: 50, fat: 25 }
+    }
   };
 
   // Calculate BMR using Mifflin-St Jeor formula
@@ -103,14 +131,17 @@ const TDEEScreen = () => {
     const goalData = goals[goal];
     const targetCalories = tdee + goalData.delta;
 
-    // Calculate macros using converted weight in kg
+    // Calculate macros using custom or default split
+    const macros = useCustomMacros ? customMacroSplit : goalData.defaultMacros;
     const weightNum = convertWeightToKg(weight, weightUnit);
-    const proteinG = Math.round(weightNum * 2.2);
-    const fatG = Math.round(weightNum * 1.0);
-    const proteinKcal = proteinG * 4;
-    const fatKcal = fatG * 9;
-    const carbKcal = targetCalories - proteinKcal - fatKcal;
-    const carbG = Math.max(0, Math.round(carbKcal / 4));
+    
+    const proteinKcal = Math.round(targetCalories * (macros.protein / 100));
+    const carbKcal = Math.round(targetCalories * (macros.carbs / 100));
+    const fatKcal = Math.round(targetCalories * (macros.fat / 100));
+    
+    const proteinG = Math.round(proteinKcal / 4);
+    const carbG = Math.round(carbKcal / 4);
+    const fatG = Math.round(fatKcal / 9);
 
     return {
       bmr: Math.round(bmr),
@@ -118,8 +149,9 @@ const TDEEScreen = () => {
       targetCalories,
       protein: { grams: proteinG, kcal: proteinKcal },
       fat: { grams: fatG, kcal: fatKcal },
-      carbs: { grams: carbG, kcal: carbG * 4 },
-      goal: goalData
+      carbs: { grams: carbG, kcal: carbKcal * 4 },
+      goal: goalData,
+      macroSplit: macros
     };
   };
 
@@ -190,7 +222,59 @@ const TDEEScreen = () => {
       setShowResults(false);
       setTimeout(() => setShowResults(true), 50);
     }
-  }, [gender, age, weight, height, weightUnit, heightUnit, activityLevel, goal]);
+  }, [gender, age, weight, height, weightUnit, heightUnit, activityLevel, goal, customMacroSplit]);
+
+  // Update custom macros when goal changes (if not using custom)
+  useEffect(() => {
+    if (!useCustomMacros && goals[goal]) {
+      setCustomMacroSplit(goals[goal].defaultMacros);
+    }
+  }, [goal, useCustomMacros]);
+
+  // Update macro split with validation
+  const updateMacroSplit = (macroType, value) => {
+    const newValue = Math.max(0, Math.min(100, value));
+    const currentSplit = { ...customMacroSplit };
+    currentSplit[macroType] = newValue;
+    
+    // Calculate remaining percentage
+    const total = currentSplit.protein + currentSplit.carbs + currentSplit.fat;
+    const remaining = 100 - total;
+    
+    if (remaining !== 0) {
+      // Distribute remaining proportionally
+      const otherMacros = Object.keys(currentSplit).filter(key => key !== macroType);
+      const adjustment = remaining / otherMacros.length;
+      
+      otherMacros.forEach(macro => {
+        currentSplit[macro] = Math.max(0, Math.min(100, currentSplit[macro] + adjustment));
+      });
+    }
+    
+    // Ensure total is exactly 100 (final adjustment)
+    const finalTotal = currentSplit.protein + currentSplit.carbs + currentSplit.fat;
+    if (finalTotal !== 100) {
+      const diff = 100 - finalTotal;
+      currentSplit.carbs += diff; // Adjust carbs as it's usually most flexible
+    }
+    
+    setCustomMacroSplit(currentSplit);
+    setUseCustomMacros(true);
+  };
+
+  // Check minimum protein requirement
+  const getProteinWarning = () => {
+    const weightNum = convertWeightToKg(weight, weightUnit);
+    if (!weightNum) return null;
+    
+    const proteinG = Math.round((customMacroSplit.protein / 100) * parseInt(calculateTDEE().targetCalories) / 4);
+    const minProteinG = weightNum * 1.6;
+    
+    if (proteinG < minProteinG) {
+      return `Protein should be at least ${Math.round(minProteinG)}g (${(1.6 * 4).toFixed(1)}%) for your weight`;
+    }
+    return null;
+  };
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -450,6 +534,88 @@ const TDEEScreen = () => {
                   <div className={`text-sm font-bebas tracking-wider ${TEXT_PRIMARY}`}>{goalData.name}</div>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Macronutrient Split */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MACRONUTRIENT SPLIT</label>
+              {useCustomMacros && (
+                <button
+                  onClick={() => {
+                    setCustomMacroSplit(goals[goal].defaultMacros);
+                    setUseCustomMacros(false);
+                  }}
+                  className="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+                >
+                  <span className="text-xs font-bebas tracking-wider text-white/60">RESET TO DEFAULT</span>
+                </button>
+              )}
+            </div>
+            
+            <div className="space-y-4">
+              {/* Protein */}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>PROTEIN</span>
+                  <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.protein}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={customMacroSplit.protein}
+                  onChange={(e) => updateMacroSplit('protein', parseInt(e.target.value))}
+                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              
+              {/* Carbs */}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>CARBOHYDRATES</span>
+                  <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.carbs}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={customMacroSplit.carbs}
+                  onChange={(e) => updateMacroSplit('carbs', parseInt(e.target.value))}
+                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              
+              {/* Fats */}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className={`text-xs font-bebas tracking-wider ${TEXT_SECONDARY}`}>FATS</span>
+                  <span className={`text-xs ${TEXT_MUTED}`}>{customMacroSplit.fat}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={customMacroSplit.fat}
+                  onChange={(e) => updateMacroSplit('fats', parseInt(e.target.value))}
+                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              
+              {/* Protein Warning */}
+              {getProteinWarning() && (
+                <div className="bg-yellow-500/10 rounded-xl p-3 border border-yellow-500/30">
+                  <p className={`text-xs ${TEXT_MUTED}`}>{getProteinWarning()}</p>
+                </div>
+              )}
+              
+              {/* Total indicator */}
+              <div className="flex justify-center">
+                <span className={`text-xs ${TEXT_MUTED}`}>
+                  Total: {customMacroSplit.protein + customMacroSplit.carbs + customMacroSplit.fat}%
+                </span>
+              </div>
             </div>
           </div>
 
