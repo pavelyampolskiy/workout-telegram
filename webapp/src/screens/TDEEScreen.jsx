@@ -602,7 +602,7 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-blue-500 h-2 rounded-full transition-all duration-600"
+                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
                     style={{ 
                       width: showResults ? '100%' : '0%'
                     }}
@@ -621,7 +621,7 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-green-500 h-2 rounded-full transition-all duration-600"
+                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
                     style={{ 
                       width: showResults ? '100%' : '0%'
                     }}
@@ -640,7 +640,7 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-yellow-500 h-2 rounded-full transition-all duration-600"
+                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
                     style={{ 
                       width: showResults ? '100%' : '0%'
                     }}
