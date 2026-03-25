@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useApp } from '../App';
 import ScreenBg from '../ScreenBg';
-import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED } from '../shared';
+import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, TEXT_FADED, PAGE_HEADING_STYLE } from '../shared';
 
 const TDEEScreen = () => {
   const { navigate, goBack, userId } = useApp();
@@ -174,9 +174,9 @@ const TDEEScreen = () => {
       {/* Main Content */}
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-center mb-6">
-          <h1 className={`text-2xl font-bebas tracking-wider ${TEXT_PRIMARY}`}>TDEE CALCULATOR</h1>
-        </div>
+        <h1 className="font-bebas text-white pt-6 mb-4" style={PAGE_HEADING_STYLE}>
+          TDEE Calculator
+        </h1>
 
         {/* Form Content */}
         <div className="space-y-6">
