@@ -1,0 +1,65 @@
+import { useRef } from 'react';
+import { CARD_BTN_STYLE } from '../shared';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { Spinner } from './Spinner';
+
+/**
+ * Reusable confirmation modal: title, description, primary + secondary actions.
+ * Focus is moved into the modal and trapped; on close, focus returns to the trigger.
+ */
+export function ConfirmModal({
+  visible,
+  title,
+  description,
+  primaryLabel,
+  primaryOnClick,
+  secondaryLabel,
+  secondaryOnClick,
+  loading = false,
+  secondaryLoading = false,
+}) {
+  const contentRef = useRef(null);
+  useFocusTrap(contentRef, visible);
+
+  if (!visible) return null;
+
+  return (
+    <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm" role="presentation">
+      <div ref={contentRef} className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+        <h3 id="confirm-modal-title" className="font-bebas text-lg tracking-wider text-white/90 mb-1">{title}</h3>
+        {description && <p className="text-sm text-white/40 mb-6 font-sans">{description}</p>}
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={primaryOnClick}
+            disabled={loading}
+            className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-50 flex items-center justify-center gap-2"
+            style={CARD_BTN_STYLE}
+          >
+            {loading ? (
+              <>
+                <Spinner size={18} />
+                …
+              </>
+            ) : (
+              primaryLabel
+            )}
+          </button>
+          <button
+            onClick={secondaryOnClick}
+            disabled={secondaryLoading}
+            className="w-full py-3 font-bebas tracking-wider text-sm text-white/50 active:text-white/80 disabled:opacity-40 transition-colors flex items-center justify-center gap-2"
+          >
+            {secondaryLoading ? (
+              <>
+                <Spinner size={16} />
+                …
+              </>
+            ) : (
+              secondaryLabel
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
