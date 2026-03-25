@@ -241,9 +241,9 @@ const TDEEScreen = () => {
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                   placeholder="25 years"
-                  className={`w-full px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
-                    errors.age ? 'border-red-500/50' : 'border-white/10'
-                  } focus:border-white/30 focus:outline-none transition-all`}
+                  className={`w-full px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 transition-all ${
+                    errors.age ? 'bg-red-500/10' : ''
+                  } focus:bg-white/10 focus:outline-none`}
                 />
                 {errors.age && <p className="mt-1 text-xs text-red-400">{errors.age}</p>}
               </div>
@@ -255,9 +255,9 @@ const TDEEScreen = () => {
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
                     placeholder="75"
-                    className={`flex-1 px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
-                      errors.weight ? 'border-red-500/50' : 'border-white/10'
-                    } focus:border-white/30 focus:outline-none transition-all`}
+                    className={`flex-1 px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 transition-all ${
+                      errors.weight ? 'bg-red-500/10' : ''
+                    } focus:bg-white/10 focus:outline-none`}
                   />
                   <div className="flex bg-white/5 rounded-xl p-1">
                     <button
@@ -292,9 +292,9 @@ const TDEEScreen = () => {
                     value={height}
                     onChange={(e) => setHeight(e.target.value)}
                     placeholder="175"
-                    className={`flex-1 px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 border ${
-                      errors.height ? 'border-red-500/50' : 'border-white/10'
-                    } focus:border-white/30 focus:outline-none transition-all`}
+                    className={`flex-1 px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 transition-all ${
+                      errors.height ? 'bg-red-500/10' : ''
+                    } focus:bg-white/10 focus:outline-none`}
                   />
                   <div className="flex bg-white/5 rounded-xl p-1">
                     <button
@@ -332,10 +332,10 @@ const TDEEScreen = () => {
                 <button
                   key={key}
                   onClick={() => setActivityLevel(key)}
-                  className={`w-full p-4 rounded-xl border transition-all text-left ${
+                  className={`w-full p-4 rounded-xl transition-all text-left ${
                     activityLevel === key
-                      ? 'bg-white/10 text-white border-transparent'
-                      : 'bg-white/5 border-white/10 hover:bg-white/7 hover:border-white/20'
+                      ? 'bg-white/10 text-white'
+                      : 'bg-white/5 hover:bg-white/7'
                   }`}
                 >
                   <div className={`font-bebas tracking-wider ${activityLevel === key ? TEXT_PRIMARY : TEXT_PRIMARY}`}>{level.name}</div>
@@ -353,10 +353,10 @@ const TDEEScreen = () => {
                 <button
                   key={key}
                   onClick={() => setGoal(key)}
-                  className={`p-4 rounded-xl border transition-all text-center ${
+                  className={`p-4 rounded-xl transition-all text-center ${
                     goal === key
-                      ? 'bg-white/10 border-white/30'
-                      : 'bg-white/5 border-white/10 hover:bg-white/7 hover:border-white/20'
+                      ? 'bg-white/10 text-white'
+                      : 'bg-white/5 hover:bg-white/7'
                   }`}
                 >
                   <div className={`text-sm font-bebas tracking-wider ${TEXT_PRIMARY}`}>{goalData.name}</div>
@@ -368,7 +368,7 @@ const TDEEScreen = () => {
           {/* Calculate Button */}
           <button
             onClick={handleCalculate}
-            className="w-full py-4 bg-white/10 hover:bg-white/15 rounded-xl border border-white/20 transition-all"
+            className="w-full py-4 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
           >
             <span className={`font-bebas tracking-wider text-lg ${TEXT_PRIMARY}`}>CALCULATE</span>
           </button>
@@ -501,7 +501,7 @@ const TDEEScreen = () => {
                   setActivityLevel('moderate');
                   setGoal('cutting');
                 }}
-                className="w-full py-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl border border-red-500/20 transition-all"
+                className="w-full py-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all"
               >
                 <span className={`font-bebas tracking-wider text-red-400`}>RESET DATA</span>
               </button>
