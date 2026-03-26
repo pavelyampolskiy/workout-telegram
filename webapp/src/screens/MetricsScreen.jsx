@@ -231,8 +231,20 @@ export default function MetricsScreen() {
                       <div className={`font-bebas text-xs tracking-wider text-white/25 mb-1`}>
                         {formatDate(metric.date.split('T')[0]).toUpperCase()}
                       </div>
-                      <div className="font-bebas text-lg tracking-wider text-white mb-2">
-                        Weight: {metric.weight}kg • Body Fat: {metric.body_fat}% • Muscle Mass: {metric.muscle_mass}kg
+                      <div className="space-y-1">
+                        <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                          Weight: {metric.weight}kg
+                        </div>
+                        {metric.body_fat && (
+                          <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                            Body Fat: {metric.body_fat}%
+                          </div>
+                        )}
+                        {metric.muscle_mass && (
+                          <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                            Muscle Mass: {metric.muscle_mass}kg
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 ml-3">
