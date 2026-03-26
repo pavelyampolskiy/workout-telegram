@@ -520,11 +520,11 @@ const TDEEScreen = () => {
 
           {/* Goal Selection */}
           <div className="space-y-3">
-            <div className="relative">
+            <div className="flex items-center justify-between">
               <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
               <button
                 onClick={() => setShowGoalSheet(true)}
-                className="absolute -top-2 -right-4 p-1"
+                className="p-1"
               >
                 <span className="text-xs text-white/40">ⓘ</span>
               </button>
