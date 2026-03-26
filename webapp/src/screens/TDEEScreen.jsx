@@ -127,7 +127,6 @@ const TDEEScreen = () => {
   const [results, setResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showHistory, setShowHistory] = useState(false);
   const [tdeeHistory, setTdeeHistory] = useState([]);
 
   // Load saved data on mount
@@ -389,6 +388,35 @@ const TDEEScreen = () => {
     }
   };
 
+  // Save to history and collapse calculator
+  const saveAndCollapse = () => {
+    if (!userId || !results) return;
+    
+    const dataToSave = {
+      gender,
+      age,
+      weight,
+      height,
+      weightUnit,
+      heightUnit,
+      activityLevel,
+      goal,
+      customMacroProtein,
+      customMacroCarbs,
+      customMacroFat,
+      ...results,
+      savedAt: new Date().toISOString()
+    };
+    
+    try {
+      localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(dataToSave));
+      saveToHistory(dataToSave);
+      setShowResults(false); // Collapse calculator
+    } catch (e) {
+      console.error('Error saving TDEE data:', e);
+    }
+  };
+
   // Delete from history
   const deleteFromHistory = (id) => {
     if (!userId) return;
@@ -419,6 +447,13 @@ const TDEEScreen = () => {
     setActivityLevel(historyItem.activityLevel);
     setGoal(historyItem.goal);
     
+    // Load custom macros if they exist
+    if (historyItem.customMacroProtein !== undefined) {
+      setCustomMacroProtein(historyItem.customMacroProtein);
+      setCustomMacroCarbs(historyItem.customMacroCarbs);
+      setCustomMacroFat(historyItem.customMacroFat);
+    }
+    
     // Load results without saving to history again
     const resultsData = {
       bmr: historyItem.bmr,
@@ -434,14 +469,12 @@ const TDEEScreen = () => {
     
     setResults(resultsData);
     setShowResults(true);
-    setShowHistory(false);
   };
 
   // Create new measurement
   const createNewMeasurement = () => {
     setResults(null);
-    setShowResults(false);
-    setShowHistory(false);
+    setShowResults(true); // Open calculator
     // Reset form to defaults
     setGender('male');
     setAge('');
@@ -451,6 +484,9 @@ const TDEEScreen = () => {
     setHeightUnit('cm');
     setActivityLevel('moderate');
     setGoal('cutting');
+    setCustomMacroProtein(25);
+    setCustomMacroCarbs(50);
+    setCustomMacroFat(25);
   };
 
   return (
@@ -927,141 +963,79 @@ const TDEEScreen = () => {
               </div>
             )}
 
-            {/* Reset Button */}
+            {/* Save Button */}
             <div className={`transition-all duration-700 delay-300 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
               <button
-                onClick={() => {
-                  if (userId && results) {
-                    const dataToSave = {
-                      gender,
-                      age,
-                      weight,
-                      height,
-                      weightUnit,
-                      heightUnit,
-                      activityLevel,
-                      goal,
-                      ...results,
-                      savedAt: new Date().toISOString()
-                    };
-                    
-                    try {
-                      localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(dataToSave));
-                    } catch (e) {
-                      console.error('Error saving TDEE data:', e);
-                    }
-                  }
-                }}
-                className="w-full py-3 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all mb-3"
+                onClick={saveAndCollapse}
+                className="w-full py-3 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all"
               >
                 <span className={`font-bebas tracking-wider text-green-400`}>SAVE DATA</span>
-              </button>
-              
-              <button
-                onClick={() => {
-                  if (userId) {
-                    try {
-                      localStorage.removeItem(`tdee_data_${userId}`);
-                    } catch (e) {
-                      console.error('Error removing TDEE data:', e);
-                    }
-                  }
-                  setResults(null);
-                  setShowResults(false);
-                  // Reset form to defaults
-                  setGender('male');
-                  setAge('');
-                  setWeight('');
-                  setHeight('');
-                  setWeightUnit('kg');
-                  setHeightUnit('cm');
-                  setActivityLevel('moderate');
-                  setGoal('cutting');
-                }}
-                className="w-full py-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl transition-all"
-              >
-                <span className={`font-bebas tracking-wider text-red-400`}>RESET DATA</span>
               </button>
             </div>
           </div>
         )}
 
         {/* History Section */}
-        {results && (
-          <div className={`transition-all duration-700 delay-500 ${
-            showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        {tdeeHistory.length > 0 && (
+          <div className={`space-y-3 transition-all duration-700 ${
+            showResults ? 'opacity-50 translate-y-0' : 'opacity-100 translate-y-0'
           }`}>
-            <button
-              onClick={() => setShowHistory(!showHistory)}
-              className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
-            >
-              <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>VIEW HISTORY</span>
-            </button>
+            <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MEASUREMENT HISTORY</div>
             
-            {showHistory && (
-              <div className="mt-4 space-y-3 animate-in slide-in-from-top-2 duration-200">
-                {tdeeHistory.length > 0 ? (
-                  tdeeHistory.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className={`bg-white/5 rounded-xl p-4 border ${
-                        results.id === item.id ? 'border-blue-500/30' : 'border-transparent'
-                      }`}
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-sm font-bebas tracking-wider ${TEXT_PRIMARY}`}>
-                              {item.targetCalories} kcal/day
-                            </span>
-                            <span className={`text-xs ${TEXT_MUTED}`}>•</span>
-                            <span className={`text-xs ${TEXT_MUTED}`}>
-                              {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
-                            </span>
-                          </div>
-                          <div className={`text-xs ${TEXT_MUTED}`}>
-                            {new Date(item.calculatedAt).toLocaleDateString('en-US', { 
-                              day: 'numeric', 
-                              month: 'short', 
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => loadFromHistory(item)}
-                            className="p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-all"
-                          >
-                            <span className="text-xs text-blue-400">LOAD</span>
-                          </button>
-                          <button
-                            onClick={() => deleteFromHistory(item.id)}
-                            className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-all"
-                          >
-                            <span className="text-xs text-red-400">🗑</span>
-                          </button>
-                        </div>
-                      </div>
+            {tdeeHistory.map((item, index) => (
+              <div
+                key={item.id}
+                className={`bg-white/5 rounded-xl p-4 border ${
+                  results && results.id === item.id ? 'border-blue-500/30' : 'border-transparent'
+                }`}
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-sm font-bebas tracking-wider ${TEXT_PRIMARY}`}>
+                        {item.targetCalories} kcal/day
+                      </span>
+                      <span className={`text-xs ${TEXT_MUTED}`}>•</span>
+                      <span className={`text-xs ${TEXT_MUTED}`}>
+                        {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
+                      </span>
                     </div>
-                  ))
-                ) : (
-                  <div className={`text-center py-4 ${TEXT_MUTED}`}>
-                    <span className="text-xs">No history yet</span>
+                    <div className={`text-xs ${TEXT_MUTED}`}>
+                      {new Date(item.calculatedAt).toLocaleDateString('en-US', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
                   </div>
-                )}
-                
-                <button
-                  onClick={createNewMeasurement}
-                  className="w-full py-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all"
-                >
-                  <span className={`font-bebas tracking-wider text-blue-400`}>CREATE NEW</span>
-                </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => loadFromHistory(item)}
+                      className="p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-all"
+                    >
+                      <span className="text-xs text-blue-400">LOAD</span>
+                    </button>
+                    <button
+                      onClick={() => deleteFromHistory(item.id)}
+                      className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-all"
+                    >
+                      <span className="text-xs text-red-400">🗑</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-            )}
+            ))}
+            
+            <button
+              onClick={createNewMeasurement}
+              className="w-full py-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all"
+            >
+              <span className={`font-bebas tracking-wider text-blue-400`}>CREATE NEW</span>
+            </button>
           </div>
         )}
       </div>
