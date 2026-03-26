@@ -132,14 +132,18 @@ export default function BodyMetricsWidget() {
           </div>
         )}
         
-        {/* Параметры каждый на новой строке */}
+        {/* Вес крупным текстом */}
         {latestMetrics?.weight && (
-          <div className="space-y-1 text-xs text-white">
-            <div>Weight: {latestMetrics.weight}kg</div>
-            {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
-            {latestMetrics?.muscle_mass && <div>Muscle: {latestMetrics.muscle_mass}kg</div>}
+          <div className="text-lg font-bebas text-white mb-2">
+            {latestMetrics.weight}kg
           </div>
         )}
+        
+        {/* Остальные метрики вертикальным списком */}
+        <div className="space-y-1 text-xs text-white">
+          {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
+          {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
+        </div>
         
         {!latestMetrics?.weight && (
           <div className="text-xs text-white/60">
