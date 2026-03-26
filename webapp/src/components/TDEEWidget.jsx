@@ -101,19 +101,19 @@ export default function TDEEWidget() {
         >
           <div className="grid grid-cols-3 gap-2">
             <div className="text-center">
-              <div className="text-xs text-white/40">Protein</div>
+              <div className="text-sm font-bebas tracking-wider text-white/40">Protein</div>
               <div className="text-xs text-white/90 font-medium">
                 {tdeeData.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
               </div>
             </div>
             <div className="text-center">
-              <div className="text-xs text-white/40">Carbohydrates</div>
+              <div className="text-sm font-bebas tracking-wider text-white/40">Carbohydrates</div>
               <div className="text-xs text-white/90 font-medium">
                 {tdeeData.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
               </div>
             </div>
             <div className="text-center">
-              <div className="text-xs text-white/40">Fats</div>
+              <div className="text-sm font-bebas tracking-wider text-white/40">Fats</div>
               <div className="text-xs text-white/90 font-medium">
                 {tdeeData.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
               </div>
