@@ -388,7 +388,7 @@ const TDEEScreen = () => {
     }
   };
 
-  // Save to history and collapse calculator
+  // Save to history and navigate back
   const saveAndCollapse = () => {
     if (!userId || !results) return;
     
@@ -411,7 +411,7 @@ const TDEEScreen = () => {
     try {
       localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(dataToSave));
       saveToHistory(dataToSave);
-      setShowResults(false); // Collapse calculator
+      navigate('tdee-history'); // Navigate back to TDEE History
     } catch (e) {
       console.error('Error saving TDEE data:', e);
     }
@@ -511,70 +511,7 @@ const TDEEScreen = () => {
         </div>
 
         {/* History Card */}
-        {results && (
-          <div className="bg-white/5 rounded-xl p-4 mb-6">
-            <div className="space-y-3">
-              <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>LAST CALCULATION</div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className={`text-xs ${TEXT_MUTED}`}>
-                    {results.calculatedAt && new Date(results.calculatedAt).toLocaleDateString('en-US', { 
-                      day: 'numeric', 
-                      month: 'short', 
-                      year: 'numeric' 
-                    })}
-                  </div>
-                  <div className={`text-lg font-bebas tracking-wider ${TEXT_PRIMARY} mt-1`}>
-                    {results.targetCalories} kcal per day • TDEE {results.tdee} • {results.goal?.name?.replace(/[^\w\s]/gi, '').trim() || 'Cutting'}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      // Reset form and start new measurement
-                      setAge('');
-                      setWeight('');
-                      setHeight('');
-                      setActivityLevel('moderate');
-                      setGoal('cutting');
-                      setResults(null);
-                      setShowResults(false);
-                    }}
-                    className="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 transition-all"
-                  >
-                    <span className="text-xs font-bebas tracking-wider text-white/80">NEW</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (userId) {
-                        try {
-                          localStorage.removeItem(`tdee_data_${userId}`);
-                        } catch (e) {
-                          console.error('Error removing TDEE data:', e);
-                        }
-                      }
-                      setResults(null);
-                      setShowResults(false);
-                      // Reset form to defaults
-                      setGender('male');
-                      setAge('');
-                      setWeight('');
-                      setHeight('');
-                      setWeightUnit('kg');
-                      setHeightUnit('cm');
-                      setActivityLevel('moderate');
-                      setGoal('cutting');
-                    }}
-                    className="px-3 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 transition-all"
-                  >
-                    <span className="text-xs font-bebas tracking-wider text-red-400">RESET</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
+        
         {/* Form Content */}
         <div className="space-y-6">
           {/* Gender Toggle */}
