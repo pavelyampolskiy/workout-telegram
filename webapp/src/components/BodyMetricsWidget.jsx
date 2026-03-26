@@ -49,15 +49,18 @@ export default function BodyMetricsWidget() {
   if (loading) {
     return (
       <button
-        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
+        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
         disabled
       >
+        {/* Заголовок */}
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
           Body Metrics
         </div>
-        <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent">
-          <div className="text-xs text-white/40">Loading...</div>
+        
+        {/* Сообщение о загрузке */}
+        <div className="text-xs text-white/40">
+          Loading...
         </div>
       </button>
     );
@@ -71,36 +74,19 @@ export default function BodyMetricsWidget() {
         className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
       >
-        {/* Заголовок с иконкой */}
-        <div className="flex items-center gap-3 w-full">
-          <span className="shrink-0 flex items-center justify-center text-white/25">
-            <MetricsIcon />
-          </span>
-          <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-            Body Metrics
-          </div>
+        {/* Заголовок */}
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+          Body Metrics
         </div>
         
-        {/* Внутренняя карточка с призывом */}
-        <div className="w-full">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate('metrics');
-            }}
-            className="w-full px-3 py-2 rounded-lg text-left"
-            style={{ background: 'rgba(255,255,255,0.05)' }}
-          >
-            <div className="text-xs text-white/60">
-              <div className="flex justify-between items-center">
-                <span>No measurements yet</span>
-                <span style={{ color: '#6b7280' }}>📊</span>
-              </div>
-              <div className="text-xs text-white/40 mt-1">
-                Tap to add first measurement
-              </div>
-            </div>
-          </button>
+        {/* Сообщение о отсутствии данных */}
+        <div className="text-xs text-white/40">
+          No measurements yet
+        </div>
+        
+        {/* Призыв к действию */}
+        <div className="text-xs text-white/60">
+          Tap to add first measurement
         </div>
       </button>
     );
@@ -110,26 +96,35 @@ export default function BodyMetricsWidget() {
   return (
     <button
       onClick={() => navigate('metrics')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
+      {/* Заголовок */}
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
         Body Metrics
       </div>
       
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-left">
-        <div className="text-xs text-white/92">
-          {latestMetrics?.weight && (
-            <div className="text-xs text-white/40 mb-1">
-              Last: {formatDate(latestMetrics.date.split('T')[0])}
-            </div>
-          )}
-          {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
-          {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
-          {latestMetrics?.muscle_mass && <div>Muscle: {latestMetrics.muscle_mass}kg</div>}
+      {/* Дата последнего измерения */}
+      {latestMetrics?.weight && (
+        <div className="text-xs text-white/40">
+          Last: {formatDate(latestMetrics.date.split('T')[0])}
         </div>
-      </div>
-      {!latestMetrics?.weight && 'No data'}
+      )}
+      
+      {/* Параметры в одной строке */}
+      {latestMetrics?.weight && (
+        <div className="flex flex-wrap gap-2 text-xs text-white">
+          <span>Weight: {latestMetrics.weight}kg</span>
+          {latestMetrics?.body_fat && <span>Body Fat: {latestMetrics.body_fat}%</span>}
+          {latestMetrics?.muscle_mass && <span>Muscle: {latestMetrics.muscle_mass}kg</span>}
+        </div>
+      )}
+      
+      {!latestMetrics?.weight && (
+        <div className="text-xs text-white/40">
+          No measurements yet
+        </div>
+      )}
     </button>
   );
 }
