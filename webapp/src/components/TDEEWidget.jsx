@@ -118,6 +118,23 @@ export default function TDEEWidget() {
           </div>
         </div>
       </div>
+
+      {/* Calculate New Button */}
+      <div className="w-full pt-2">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('tdee');
+          }}
+          className="w-full px-3 py-2 rounded-lg flex items-center justify-center gap-2 transition-all"
+          style={{ background: 'rgba(255,255,255,0.025)' }}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-white/60">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          <span className="text-xs font-bebas tracking-wider text-white/60">Calculate New</span>
+        </button>
+      </div>
     </button>
   );
 }
