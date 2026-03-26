@@ -67,23 +67,59 @@ export default function SupplementsWidget() {
   let displayText = '';
   
   if (hasSupplements) {
-    if (activeSupplements.length <= 3) {
+    if (activeSupplements.length <= 4) {
       displayText = activeSupplements.join('\n');
     } else {
-      displayText = `${activeSupplements.slice(0, 3).join('\n')} +${activeSupplements.length - 3}`;
+      // Показываем первые 4 и количество остальных
+      displayText = `${activeSupplements.slice(0, 4).join('\n')}\n+${activeSupplements.length - 4} more`;
     }
   }
 
-  // Если нет добавок, не показываем кнопку совсем
+  // Если нет добавок, показываем плейсхолдер
   if (!hasSupplements) {
-    return null;
+    return (
+      <button
+        onClick={() => navigate('supplements')}
+        className="card-press py-8 pl-8 pr-4 min-h-[100px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+        style={{ background: 'rgba(255,255,255,0.025)' }}
+      >
+        {/* Заголовок */}
+        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+          Current supplements
+        </div>
+        
+        {/* Плейсхолдер */}
+        <div className="flex-1 flex flex-col items-center justify-center text-center py-4">
+          <div className="w-8 h-8 mb-2 text-white/20">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(15 12 12)"/>
+              <path d="M12 7v10M8 9l8 0M8 15l8 0"/>
+            </svg>
+          </div>
+          <div className="text-xs text-white/40 mb-3">
+            Ещё нет добавок
+          </div>
+        </div>
+        
+        {/* CTA кнопка + Add Supplement */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('supplements');
+          }}
+          className="w-full px-3 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all text-xs font-bebas tracking-wider"
+        >
+          + Add Supplement
+        </button>
+      </button>
+    );
   }
 
   return (
     <button
       onClick={() => navigate('supplements')}
       className="card-press py-8 pl-8 pr-4 min-h-[100px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
+      style={{ background: 'rgba(255,255,255,0.025)' }}
     >
       {/* Заголовок */}
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -91,17 +127,30 @@ export default function SupplementsWidget() {
       </div>
       
       {/* Плашка со списком добавок */}
+      <div className="flex-1 w-full">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('supplements');
+          }}
+          className="w-full px-3 py-2 rounded-lg text-left"
+          style={{ background: 'rgba(255,255,255,0.05)' }}
+        >
+          <div className="text-xs text-white/92 whitespace-pre-line max-h-[80px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+            {displayText}
+          </div>
+        </button>
+      </div>
+      
+      {/* CTA кнопка + Add Supplement */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           navigate('supplements');
         }}
-        className="w-full px-3 py-2 rounded-lg text-left"
-        style={{ background: 'rgba(255,255,255,0.05)' }}
+        className="w-full px-3 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all text-xs font-bebas tracking-wider"
       >
-        <div className="text-xs text-white/92 whitespace-pre-line">
-          {displayText}
-        </div>
+        + Add Supplement
       </button>
     </button>
   );
