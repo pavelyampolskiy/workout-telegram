@@ -207,14 +207,17 @@ export default function MetricsScreen() {
         {/* Content */}
         <div className="flex-1 overflow-y-auto space-y-6">
           {/* Quick Add */}
-          <div className="flex justify-center mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <button
               onClick={handleAdd}
-              className="card-press p-3 rounded-lg"
+              className="card-press p-3 rounded-lg shrink-0"
               style={{ background: 'rgba(255,255,255,0.1)' }}
             >
               <PlusIcon />
             </button>
+            <div className="font-bebas text-base text-white/25 shrink-0 tracking-wider" style={{ letterSpacing: 'normal' }}>
+              Add new
+            </div>
           </div>
 
           {/* Full Metrics List */}

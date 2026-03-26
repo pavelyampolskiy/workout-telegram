@@ -78,21 +78,28 @@ export default function TDEEHistoryScreen() {
     <>
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <button onClick={() => navigate('home')} className="text-white/60 hover:text-white transition-colors">
-              <BackIcon />
-            </button>
-            <h1 className="font-bebas text-white text-2xl" style={{ letterSpacing: '0.05em' }}>
-              TDEE History
-            </h1>
-          </div>
-          <button
-            onClick={() => navigate('tdee')}
-            className="px-4 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all text-xs font-bebas tracking-wider"
-          >
-            Calculate New
+        <div className="flex items-center gap-3 mb-6">
+          <button onClick={() => navigate('home')} className="text-white/60 hover:text-white transition-colors">
+            <BackIcon />
           </button>
+          <h1 className="font-bebas text-white text-2xl" style={{ letterSpacing: '0.05em' }}>
+            TDEE History
+          </h1>
+        </div>
+        
+        {/* History section with Calculate button */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bebas text-white text-lg" style={{ letterSpacing: '0.05em' }}>
+              History
+            </h2>
+            <button
+              onClick={() => navigate('tdee')}
+              className="px-6 py-3 rounded-lg bg-white/20 hover:bg-white/30 transition-all text-sm font-bebas tracking-wider text-white"
+            >
+              Calculate New
+            </button>
+          </div>
         </div>
 
         {history.length === 0 ? (
@@ -155,9 +162,9 @@ export default function TDEEHistoryScreen() {
                   
                   <button
                     onClick={() => deleteFromHistory(item.id)}
-                    className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-all"
+                    className="shrink-0 p-1 text-white/40 hover:text-red-400 active:text-red-400 transition-colors"
                   >
-                    <span className="text-red-400"><TrashIcon /></span>
+                    <TrashIcon />
                   </button>
                 </div>
               </div>
