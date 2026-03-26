@@ -28,7 +28,7 @@ export default function TDEEWidget() {
     return (
       <button
         className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
-        style={{ background: 'rgba(255,255,255,0.03)' }}
+        style={{ background: 'rgba(255,255,255,0.025)' }}
         disabled
       >
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -46,8 +46,8 @@ export default function TDEEWidget() {
     return (
       <button
         onClick={() => navigate('tdee')}
-        className="btn-widget-style card-press w-full h-full flex flex-col justify-center items-center p-4"
-        style={{ background: 'rgba(255,255,255,0.03)' }}
+        className="card-press w-full h-full flex flex-col justify-center items-center p-4"
+        style={{ background: 'rgba(255,255,255,0.025)' }}
       >
         {/* Header with title only */}
         <div className="w-full text-center">
@@ -72,8 +72,8 @@ export default function TDEEWidget() {
   return (
     <button
       onClick={() => navigate('tdee')}
-      className="btn-widget-style card-press w-full h-full flex flex-col justify-center items-center p-4"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
+      className="card-press w-full h-full flex flex-col justify-center items-center p-4"
+      style={{ background: 'rgba(255,255,255,0.025)' }}
     >
       {/* Header */}
       <div className="w-full text-center mb-2">
