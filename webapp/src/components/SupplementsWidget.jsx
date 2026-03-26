@@ -84,8 +84,8 @@ export default function SupplementsWidget() {
         Current supplements
       </div>
       
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-        <div className="text-xs text-white/92 whitespace-pre-line">
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-left">
+        <div className="text-xs text-white/92">
           {displayText}
         </div>
       </div>

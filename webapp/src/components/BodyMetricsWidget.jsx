@@ -117,19 +117,19 @@ export default function BodyMetricsWidget() {
         Body Metrics
       </div>
       
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-        <div className="text-xs text-white whitespace-pre-line text-right">
+      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-left">
+        <div className="text-xs text-white/92">
           {latestMetrics?.weight && (
-            <div className="text-xs text-white/40 mb-1 text-right">
-              Last measurement {formatDate(latestMetrics.date.split('T')[0])}
+            <div className="text-xs text-white/40 mb-1">
+              Last: {formatDate(latestMetrics.date.split('T')[0])}
             </div>
           )}
           {latestMetrics?.weight && <div>Weight: {latestMetrics.weight}kg</div>}
           {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
-          {latestMetrics?.muscle_mass && <div>Muscle Mass: {latestMetrics.muscle_mass}kg</div>}
-          {!latestMetrics?.weight && 'No data'}
+          {latestMetrics?.muscle_mass && <div>Muscle: {latestMetrics.muscle_mass}kg</div>}
         </div>
       </div>
+      {!latestMetrics?.weight && 'No data'}
     </button>
   );
 }
