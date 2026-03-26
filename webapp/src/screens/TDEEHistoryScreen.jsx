@@ -55,12 +55,12 @@ export default function TDEEHistoryScreen() {
   if (loading) {
     return (
       <>
-        <ScreenBg image="/history-bg.jpg" overlay="bg-black/70" />
+        <ScreenBg image="/gym-bg.jpg" overlay="bg-black/70" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
           {/* Header */}
           <div className="mb-6">
             <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
-              TDEE History
+              TDEE Calculator
             </h1>
           </div>
           <div className="flex justify-center py-8">
@@ -73,12 +73,12 @@ export default function TDEEHistoryScreen() {
 
   return (
     <>
-      <ScreenBg image="/history-bg.jpg" overlay="bg-black/70" />
+      <ScreenBg image="/gym-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
         {/* Header */}
         <div className="mb-6">
           <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
-            TDEE History
+            TDEE Calculator
           </h1>
         </div>
         

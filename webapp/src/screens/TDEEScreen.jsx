@@ -488,7 +488,7 @@ const TDEEScreen = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
-      <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/70" />
+      <ScreenBg bgType="gym" />
       
       {/* Main Content */}
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
