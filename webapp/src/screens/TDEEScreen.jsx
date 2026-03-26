@@ -115,6 +115,13 @@ const TDEEScreen = () => {
   const [goal, setGoal] = useState('cutting');
   const [showInfoSheet, setShowInfoSheet] = useState(false);
   const [showGoalSheet, setShowGoalSheet] = useState(false);
+  
+  // Macro adjustment states
+  const [showMacroAdjustment, setShowMacroAdjustment] = useState(false);
+  const [customMacroProtein, setCustomMacroProtein] = useState(25);
+  const [customMacroCarbs, setCustomMacroCarbs] = useState(50);
+  const [customMacroFat, setCustomMacroFat] = useState(25);
+  const [macroError, setMacroError] = useState('');
 
   // Results state
   const [results, setResults] = useState(null);
@@ -284,6 +291,63 @@ const TDEEScreen = () => {
       setTimeout(() => setShowResults(true), 50);
     }
   }, [gender, age, weight, height, weightUnit, heightUnit, activityLevel, goal]);
+
+  // Validate macro totals
+  const validateMacroTotals = (protein, carbs, fat) => {
+    const total = protein + carbs + fat;
+    if (total > 100) {
+      setMacroError(`Total cannot exceed 100%. Current: ${total}%`);
+    } else if (total < 100) {
+      setMacroError(`Total must be exactly 100%. Current: ${total}%`);
+    } else {
+      setMacroError('');
+    }
+  };
+
+  // Apply macro adjustment
+  const applyMacroAdjustment = () => {
+    if (!results) return;
+    
+    const total = customMacroProtein + customMacroCarbs + customMacroFat;
+    if (total !== 100) {
+      setMacroError(`Total must be exactly 100%. Current: ${total}%`);
+      return;
+    }
+
+    // Recalculate macros based on new percentages
+    const targetCalories = results.targetCalories;
+    const proteinKcal = Math.round(targetCalories * (customMacroProtein / 100));
+    const carbsKcal = Math.round(targetCalories * (customMacroCarbs / 100));
+    const fatKcal = Math.round(targetCalories * (customMacroFat / 100));
+    
+    const proteinG = Math.round(proteinKcal / 4);
+    const carbsG = Math.round(carbsKcal / 4);
+    const fatG = Math.round(fatKcal / 9);
+
+    // Update results with new macros
+    const updatedResults = {
+      ...results,
+      protein: { grams: proteinG, kcal: proteinKcal },
+      carbs: { grams: carbsG, kcal: carbsKcal },
+      fat: { grams: fatG, kcal: fatKcal }
+    };
+
+    setResults(updatedResults);
+    setMacroError('');
+    
+    // Trigger animation
+    setShowResults(false);
+    setTimeout(() => setShowResults(true), 50);
+  };
+
+  // Initialize macro adjustment with current values when results change
+  useEffect(() => {
+    if (results) {
+      setCustomMacroProtein(Math.round((results.protein.kcal / results.targetCalories) * 100));
+      setCustomMacroCarbs(Math.round((results.carbs.kcal / results.targetCalories) * 100));
+      setCustomMacroFat(Math.round((results.fat.kcal / results.targetCalories) * 100));
+    }
+  }, [results]);
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -652,6 +716,103 @@ const TDEEScreen = () => {
                   <span className={`text-xs ${TEXT_MUTED}`}>{Math.round((results.fat.kcal / results.targetCalories) * 100)}%</span>
                 </div>
               </div>
+            </div>
+
+            {/* Macro Adjustment */}
+            <div className={`space-y-3 transition-all duration-700 delay-200 ${
+              showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MACRO ADJUSTMENT</span>
+                  <button
+                    onClick={() => setShowMacroAdjustment(!showMacroAdjustment)}
+                    className="p-1"
+                  >
+                    <span className={`text-xs ${TEXT_MUTED} transition-transform ${showMacroAdjustment ? 'rotate-180' : ''}`}>
+                      ▼
+                    </span>
+                  </button>
+                </div>
+              </div>
+              
+              {showMacroAdjustment && (
+                <div className="space-y-4 animate-in slide-in-from-top-2 duration-200">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>PROTEIN %</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={customMacroProtein}
+                        onChange={(e) => {
+                          const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+                          setCustomMacroProtein(value);
+                          validateMacroTotals(value, customMacroCarbs, customMacroFat);
+                        }}
+                        className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-white/20"
+                        placeholder="25"
+                      />
+                    </div>
+                    <div>
+                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>CARBS %</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={customMacroCarbs}
+                        onChange={(e) => {
+                          const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+                          setCustomMacroCarbs(value);
+                          validateMacroTotals(customMacroProtein, value, customMacroFat);
+                        }}
+                        className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-white/20"
+                        placeholder="50"
+                      />
+                    </div>
+                    <div>
+                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>FATS %</label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value={customMacroFat}
+                        onChange={(e) => {
+                          const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+                          setCustomMacroFat(value);
+                          validateMacroTotals(customMacroProtein, customMacroCarbs, value);
+                        }}
+                        className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-white/20"
+                        placeholder="25"
+                      />
+                    </div>
+                  </div>
+                  
+                  {macroError && (
+                    <div className="bg-red-500/10 rounded-lg p-3 border border-red-500/20">
+                      <p className={`text-xs ${TEXT_MUTED}`}>{macroError}</p>
+                    </div>
+                  )}
+                  
+                  <div className="flex justify-between items-center">
+                    <span className={`text-xs ${TEXT_MUTED}`}>
+                      Total: {customMacroProtein + customMacroCarbs + customMacroFat}%
+                    </span>
+                    <button
+                      onClick={applyMacroAdjustment}
+                      disabled={customMacroProtein + customMacroCarbs + customMacroFat !== 100}
+                      className={`px-4 py-2 rounded-lg transition-all ${
+                        customMacroProtein + customMacroCarbs + customMacroFat === 100
+                          ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-400'
+                          : 'bg-white/5 text-white/40 cursor-not-allowed'
+                      }`}
+                    >
+                      <span className="text-xs font-bebas tracking-wider">APPLY</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Recomp Note */}
