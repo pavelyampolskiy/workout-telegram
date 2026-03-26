@@ -58,11 +58,9 @@ export default function TDEEHistoryScreen() {
       <>
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/70" />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-          <div className="flex items-center gap-3 mb-6">
-            <button onClick={() => navigate('home')} className="text-white/60 hover:text-white transition-colors">
-              <BackIcon />
-            </button>
-            <h1 className="font-bebas text-white text-2xl" style={{ letterSpacing: '0.05em' }}>
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
               TDEE History
             </h1>
           </div>
@@ -78,28 +76,28 @@ export default function TDEEHistoryScreen() {
     <>
       <ScreenBg image="/gym-bg.jpg" overlay="bg-black/70" />
       <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
-        <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate('home')} className="text-white/60 hover:text-white transition-colors">
-            <BackIcon />
-          </button>
-          <h1 className="font-bebas text-white text-2xl" style={{ letterSpacing: '0.05em' }}>
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
             TDEE History
           </h1>
         </div>
         
-        {/* History section with Calculate button */}
+        {/* Calculate New Button */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bebas text-white text-lg" style={{ letterSpacing: '0.05em' }}>
-              History
-            </h2>
-            <button
-              onClick={() => navigate('tdee')}
-              className="px-6 py-3 rounded-lg bg-white/20 hover:bg-white/30 transition-all text-sm font-bebas tracking-wider text-white"
-            >
-              Calculate New
-            </button>
-          </div>
+          <button
+            onClick={() => navigate('tdee')}
+            className="w-full px-6 py-4 rounded-xl bg-white/25 hover:bg-white/35 transition-all text-lg font-bebas tracking-wider text-white"
+          >
+            Calculate New
+          </button>
+        </div>
+        
+        {/* History section */}
+        <div className="mb-6">
+          <h2 className="font-bebas text-white text-lg mb-4" style={{ letterSpacing: '0.05em' }}>
+            History
+          </h2>
         </div>
 
         {history.length === 0 ? (
