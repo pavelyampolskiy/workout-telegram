@@ -228,15 +228,11 @@ export default function MetricsScreen() {
                 <div key={metric.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <div className={`font-bebas text-xs tracking-wider ${TEXT_SECONDARY} mb-1`}>
+                      <div className={`font-bebas text-xs tracking-wider text-white/25 mb-1`}>
                         {formatDate(metric.date.split('T')[0]).toUpperCase()}
                       </div>
-                      <h3 className={`font-bebas text-lg tracking-wider ${TEXT_PRIMARY} mb-2`}>
-                        {metric.weight}kg
-                      </h3>
-                      <div className="space-y-1">
-                        {metric.body_fat && <div className="text-white/25 text-sm" style={{ letterSpacing: 'normal' }}>Body Fat: {metric.body_fat}%</div>}
-                        {metric.muscle_mass && <div className="text-white/25 text-sm" style={{ letterSpacing: 'normal' }}>Muscle Mass: {metric.muscle_mass}kg</div>}
+                      <div className="font-bebas text-lg tracking-wider text-white mb-2">
+                        Weight: {metric.weight}kg • Body Fat: {metric.body_fat}% • Muscle Mass: {metric.muscle_mass}kg
                       </div>
                     </div>
                     <div className="flex items-center gap-2 ml-3">
