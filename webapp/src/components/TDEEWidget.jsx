@@ -34,7 +34,7 @@ export default function TDEEWidget() {
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
           TDEE
         </div>
-        <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent">
+        <div className="px-3 py-1 rounded-lg bg-white/10">
           <div className="text-xs text-white/40">Loading...</div>
         </div>
       </button>
