@@ -46,7 +46,6 @@ export default function TDEEHistoryScreen() {
       const updatedHistory = history.filter(item => item.id !== id);
       setHistory(updatedHistory);
       localStorage.setItem(`tdee_history_${userId}`, JSON.stringify(updatedHistory));
-      showToast('Measurement deleted', 'success');
     } catch (e) {
       console.error('Error deleting from history:', e);
       showToast('Error deleting measurement', 'error');
