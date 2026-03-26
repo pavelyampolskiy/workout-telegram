@@ -977,69 +977,6 @@ const TDEEScreen = () => {
           </div>
         )}
 
-        {/* History Section */}
-        {tdeeHistory.length > 0 && (
-          <div className={`space-y-3 transition-all duration-700 ${
-            showResults ? 'opacity-50 translate-y-0' : 'opacity-100 translate-y-0'
-          }`}>
-            <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MEASUREMENT HISTORY</div>
-            
-            {tdeeHistory.map((item, index) => (
-              <div
-                key={item.id}
-                className={`bg-white/5 rounded-xl p-4 border ${
-                  results && results.id === item.id ? 'border-blue-500/30' : 'border-transparent'
-                }`}
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className={`text-sm font-bebas tracking-wider ${TEXT_PRIMARY}`}>
-                        {item.targetCalories} kcal/day
-                      </span>
-                      <span className={`text-xs ${TEXT_MUTED}`}>•</span>
-                      <span className={`text-xs ${TEXT_MUTED}`}>
-                        {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
-                      </span>
-                    </div>
-                    <div className={`text-xs ${TEXT_MUTED}`}>
-                      {new Date(item.calculatedAt).toLocaleDateString('en-US', { 
-                        day: 'numeric', 
-                        month: 'short', 
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => loadFromHistory(item)}
-                      className="p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-all"
-                    >
-                      <span className="text-xs text-blue-400">LOAD</span>
-                    </button>
-                    <button
-                      onClick={() => deleteFromHistory(item.id)}
-                      className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-all"
-                    >
-                      <span className="text-xs text-red-400">🗑</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-            
-            <button
-              onClick={createNewMeasurement}
-              className="w-full py-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all"
-            >
-              <span className={`font-bebas tracking-wider text-blue-400`}>CREATE NEW</span>
-            </button>
-          </div>
-        )}
-      </div>
-
       {/* Info Bottom Sheet */}
       {showInfoSheet && (
         <div 
@@ -1131,6 +1068,7 @@ const TDEEScreen = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };
