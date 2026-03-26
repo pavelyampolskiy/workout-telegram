@@ -604,9 +604,9 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
+                    className="bg-blue-500 h-2 rounded-full transition-all duration-600"
                     style={{ 
-                      width: showResults ? '100%' : '0%'
+                      width: showResults ? `${(results.protein.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
                   />
                 </div>
@@ -623,9 +623,9 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
+                    className="bg-green-500 h-2 rounded-full transition-all duration-600"
                     style={{ 
-                      width: showResults ? '100%' : '0%'
+                      width: showResults ? `${(results.carbs.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
                   />
                 </div>
@@ -642,9 +642,9 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
+                    className="bg-yellow-500 h-2 rounded-full transition-all duration-600"
                     style={{ 
-                      width: showResults ? '100%' : '0%'
+                      width: showResults ? `${(results.fat.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
                   />
                 </div>
