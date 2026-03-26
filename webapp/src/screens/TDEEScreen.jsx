@@ -323,7 +323,11 @@ const TDEEScreen = () => {
   const applyMacroAdjustment = () => {
     if (!results) return;
     
-    const total = customMacroProtein + customMacroCarbs + customMacroFat;
+    const protein = customMacroProtein || 0;
+    const carbs = customMacroCarbs || 0;
+    const fat = customMacroFat || 0;
+    const total = protein + carbs + fat;
+    
     if (total !== 100) {
       setMacroError(`Total must be exactly 100%. Current: ${total}%`);
       return;
@@ -331,9 +335,9 @@ const TDEEScreen = () => {
 
     // Recalculate macros based on new percentages
     const targetCalories = results.targetCalories;
-    const proteinKcal = Math.round(targetCalories * (customMacroProtein / 100));
-    const carbsKcal = Math.round(targetCalories * (customMacroCarbs / 100));
-    const fatKcal = Math.round(targetCalories * (customMacroFat / 100));
+    const proteinKcal = Math.round(targetCalories * (protein / 100));
+    const carbsKcal = Math.round(targetCalories * (carbs / 100));
+    const fatKcal = Math.round(targetCalories * (fat / 100));
     
     const proteinG = Math.round(proteinKcal / 4);
     const carbsG = Math.round(carbsKcal / 4);
@@ -818,9 +822,15 @@ const TDEEScreen = () => {
                         max="100"
                         value={customMacroProtein}
                         onChange={(e) => {
-                          const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
-                          setCustomMacroProtein(value);
-                          validateMacroTotals(value, customMacroCarbs, customMacroFat);
+                          const rawValue = e.target.value;
+                          if (rawValue === '') {
+                            setCustomMacroProtein('');
+                            validateMacroTotals(0, customMacroCarbs, customMacroFat);
+                          } else {
+                            const value = Math.max(0, Math.min(100, parseInt(rawValue) || 0));
+                            setCustomMacroProtein(value);
+                            validateMacroTotals(value, customMacroCarbs, customMacroFat);
+                          }
                         }}
                         className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
                         placeholder="25"
@@ -834,9 +844,15 @@ const TDEEScreen = () => {
                         max="100"
                         value={customMacroCarbs}
                         onChange={(e) => {
-                          const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
-                          setCustomMacroCarbs(value);
-                          validateMacroTotals(customMacroProtein, value, customMacroFat);
+                          const rawValue = e.target.value;
+                          if (rawValue === '') {
+                            setCustomMacroCarbs('');
+                            validateMacroTotals(customMacroProtein, 0, customMacroFat);
+                          } else {
+                            const value = Math.max(0, Math.min(100, parseInt(rawValue) || 0));
+                            setCustomMacroCarbs(value);
+                            validateMacroTotals(customMacroProtein, value, customMacroFat);
+                          }
                         }}
                         className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
                         placeholder="50"
@@ -850,9 +866,15 @@ const TDEEScreen = () => {
                         max="100"
                         value={customMacroFat}
                         onChange={(e) => {
-                          const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
-                          setCustomMacroFat(value);
-                          validateMacroTotals(customMacroProtein, customMacroCarbs, value);
+                          const rawValue = e.target.value;
+                          if (rawValue === '') {
+                            setCustomMacroFat('');
+                            validateMacroTotals(customMacroProtein, customMacroCarbs, 0);
+                          } else {
+                            const value = Math.max(0, Math.min(100, parseInt(rawValue) || 0));
+                            setCustomMacroFat(value);
+                            validateMacroTotals(customMacroProtein, customMacroCarbs, value);
+                          }
                         }}
                         className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
                         placeholder="25"
@@ -868,13 +890,13 @@ const TDEEScreen = () => {
                   
                   <div className="flex justify-between items-center">
                     <span className={`text-xs ${TEXT_MUTED}`}>
-                      Total: {customMacroProtein + customMacroCarbs + customMacroFat}%
+                      Total: {(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0)}%
                     </span>
                     <button
                       onClick={applyMacroAdjustment}
-                      disabled={customMacroProtein + customMacroCarbs + customMacroFat !== 100}
+                      disabled={(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) !== 100}
                       className={`px-4 py-2 rounded-lg transition-all ${
-                        customMacroProtein + customMacroCarbs + customMacroFat === 100
+                        (customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) === 100
                           ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-400'
                           : 'bg-white/5 text-white/40 cursor-not-allowed'
                       }`}
