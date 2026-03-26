@@ -44,15 +44,18 @@ export default function SupplementsWidget() {
   if (loading) {
     return (
       <button
-        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
+        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
         disabled
       >
+        {/* Заголовок */}
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
           Current supplements
         </div>
-        <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent">
-          <div className="text-xs text-white/40">Loading...</div>
+        
+        {/* Сообщение о загрузке */}
+        <div className="text-xs text-white/40">
+          Loading...
         </div>
       </button>
     );
@@ -77,17 +80,17 @@ export default function SupplementsWidget() {
   return (
     <button
       onClick={() => navigate('supplements')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
+      {/* Заголовок */}
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
         Current supplements
       </div>
       
-      <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-left">
-        <div className="text-xs text-white/92">
-          {displayText}
-        </div>
+      {/* Список добавок */}
+      <div className="text-xs text-white/92">
+        {displayText}
       </div>
     </button>
   );
