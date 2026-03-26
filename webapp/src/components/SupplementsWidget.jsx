@@ -44,7 +44,7 @@ export default function SupplementsWidget() {
   if (loading) {
     return (
       <button
-        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
         disabled
       >
@@ -77,7 +77,7 @@ export default function SupplementsWidget() {
   return (
     <button
       onClick={() => navigate('supplements')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-start items-center min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
