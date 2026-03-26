@@ -49,7 +49,7 @@ export default function BodyMetricsWidget() {
   if (loading) {
     return (
       <button
-        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+        className="card-press py-12 pl-8 pr-4 min-h-[120px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
         disabled
       >
@@ -73,7 +73,7 @@ export default function BodyMetricsWidget() {
     return (
       <button
         onClick={() => navigate('metrics')}
-        className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+        className="card-press py-12 pl-8 pr-4 min-h-[120px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
       >
         {/* Заголовок */}
@@ -108,7 +108,7 @@ export default function BodyMetricsWidget() {
   return (
     <button
       onClick={() => navigate('metrics')}
-      className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
+      className="card-press py-12 pl-8 pr-4 min-h-[120px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
       {/* Заголовок */}
