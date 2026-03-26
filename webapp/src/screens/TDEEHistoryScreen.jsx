@@ -125,19 +125,22 @@ export default function TDEEHistoryScreen() {
               >
                 <div className="flex justify-between items-start gap-3">
                   <div className="flex-1 min-w-0">
+                    {/* Дата */}
+                    <div className="text-sm text-white/60 mb-2">
+                      {formatDate(item.savedAt.split('T')[0])}
+                    </div>
+                    
+                    {/* Калории и цель */}
                     <div className="flex items-center gap-4 mb-2">
                       <div className="text-2xl font-bebas text-white/90">
                         {item.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal
                       </div>
                       <div className="text-sm text-white/60">
-                        {formatDate(item.savedAt.split('T')[0])}
+                        {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
                       </div>
                     </div>
                     
-                    <div className="text-sm text-white/60 mb-2">
-                      Goal: {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
-                    </div>
-                    
+                    {/* Макроданные */}
                     <div className="grid grid-cols-3 gap-4 text-xs">
                       <div>
                         <div className="text-white/40 mb-1">Protein</div>
