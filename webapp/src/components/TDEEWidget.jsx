@@ -27,7 +27,7 @@ export default function TDEEWidget() {
   if (loading) {
     return (
       <button
-        className="btn-active-style card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+        className="btn-widget-style card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
         style={{ background: 'rgba(255,255,255,0.03)' }}
         disabled
       >
@@ -46,7 +46,7 @@ export default function TDEEWidget() {
     return (
       <button
         onClick={() => navigate('tdee')}
-        className="btn-active-style card-press w-full h-full flex flex-col justify-center items-center p-4"
+        className="btn-widget-style card-press w-full h-full flex flex-col justify-center items-center p-4"
         style={{ background: 'rgba(255,255,255,0.03)' }}
       >
         {/* Header with title only */}
@@ -72,7 +72,7 @@ export default function TDEEWidget() {
   return (
     <button
       onClick={() => navigate('tdee')}
-      className="btn-active-style card-press w-full h-full flex flex-col justify-center items-center p-4"
+      className="btn-widget-style card-press w-full h-full flex flex-col justify-center items-center p-4"
       style={{ background: 'rgba(255,255,255,0.03)' }}
     >
       {/* Header */}

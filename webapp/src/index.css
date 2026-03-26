@@ -138,6 +138,20 @@ input[type='number']::-webkit-outer-spin-button {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
   }
 
+  /* ── Кнопки виджетов без shimmer эффекта ────────────────── */
+  .btn-widget-style {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    transition: transform 0.1s ease;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 30px rgba(255, 255, 255, 0.08);
+  }
+  .btn-widget-style:active {
+    transform: scale(0.97);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  }
+
   /* ── Gradient text (Ready?, New Workout) ──────────────────────────────────────── */
   .text-gradient-head {
     background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0.55) 100%);
