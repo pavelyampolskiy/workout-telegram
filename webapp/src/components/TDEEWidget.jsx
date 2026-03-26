@@ -71,7 +71,7 @@ export default function TDEEWidget() {
   // Show TDEE results summary
   return (
     <button
-      onClick={() => navigate('tdee')}
+      onClick={() => navigate('tdee-history')}
       className="card-press w-full h-full flex flex-col justify-center items-center p-4"
       style={{ background: 'rgba(255,255,255,0.025)' }}
     >
@@ -117,6 +117,17 @@ export default function TDEEWidget() {
             </div>
           </div>
         </div>
+        
+        {/* Calculate button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate('tdee');
+          }}
+          className="w-full px-3 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all text-xs font-bebas tracking-wider mt-2"
+        >
+          Calculate New
+        </button>
       </div>
     </button>
   );
