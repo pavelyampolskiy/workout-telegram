@@ -54,7 +54,7 @@ export default function SupplementsWidget() {
         </div>
         
         {/* Плашка с загрузкой */}
-        <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'rgba(255,255,255,0.05)' }}>
+        <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'none' }}>
           <div className="text-xs text-white/40">
             Loading...
           </div>
@@ -81,7 +81,7 @@ export default function SupplementsWidget() {
       <button
         onClick={() => navigate('supplements')}
         className="card-press py-8 pl-8 pr-4 min-h-[100px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
-        style={{ background: 'rgba(255,255,255,0.025)' }}
+        style={{ background: 'none' }}
       >
         {/* Заголовок */}
         <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -119,7 +119,7 @@ export default function SupplementsWidget() {
     <button
       onClick={() => navigate('supplements')}
       className="card-press py-8 pl-8 pr-4 min-h-[100px] flex flex-col justify-start items-start min-w-0 rounded-xl gap-2 w-full"
-      style={{ background: 'rgba(255,255,255,0.025)' }}
+      style={{ background: 'none' }}
     >
       {/* Заголовок */}
       <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -134,7 +134,7 @@ export default function SupplementsWidget() {
             navigate('supplements');
           }}
           className="w-full px-3 py-2 rounded-lg text-left"
-          style={{ background: 'rgba(255,255,255,0.05)' }}
+          style={{ background: 'none' }}
         >
           <div className="text-xs text-white/92 whitespace-pre-line max-h-[80px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
             {displayText}
