@@ -521,13 +521,15 @@ const TDEEScreen = () => {
           {/* Goal Selection */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
-              <button
-                onClick={() => setShowGoalSheet(true)}
-                className="p-1"
-              >
-                <span className="text-xs text-white/40">ⓘ</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowGoalSheet(true)}
+                  className="p-1"
+                >
+                  <span className="text-xs text-white/40">ⓘ</span>
+                </button>
+                <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(goals).map(([key, goalData]) => (
