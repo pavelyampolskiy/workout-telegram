@@ -99,7 +99,7 @@ export default function SupplementsWidget() {
         className="w-full px-3 py-2 rounded-lg text-left"
         style={{ background: 'rgba(255,255,255,0.05)' }}
       >
-        <div className="text-xs text-white/92">
+        <div className="text-xs text-white/92 whitespace-pre-line">
           {displayText}
         </div>
       </button>

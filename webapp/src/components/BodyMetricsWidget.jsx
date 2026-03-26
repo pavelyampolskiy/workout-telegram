@@ -132,12 +132,12 @@ export default function BodyMetricsWidget() {
           </div>
         )}
         
-        {/* Параметры в одной строке */}
+        {/* Параметры каждый на новой строке */}
         {latestMetrics?.weight && (
-          <div className="flex flex-wrap gap-2 text-xs text-white">
-            <span>Weight: {latestMetrics.weight}kg</span>
-            {latestMetrics?.body_fat && <span>Body Fat: {latestMetrics.body_fat}%</span>}
-            {latestMetrics?.muscle_mass && <span>Muscle: {latestMetrics.muscle_mass}kg</span>}
+          <div className="space-y-1 text-xs text-white">
+            <div>Weight: {latestMetrics.weight}kg</div>
+            {latestMetrics?.body_fat && <div>Body Fat: {latestMetrics.body_fat}%</div>}
+            {latestMetrics?.muscle_mass && <div>Muscle: {latestMetrics.muscle_mass}kg</div>}
           </div>
         )}
         
