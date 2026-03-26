@@ -128,7 +128,7 @@ export default function BodyMetricsWidget() {
         {/* Дата последнего измерения */}
         {latestMetrics?.weight && (
           <div className="text-xs text-white/40 mb-1">
-            Last: {formatDate(latestMetrics.date.split('T')[0])}
+            {formatDate(latestMetrics.date.split('T')[0])}
           </div>
         )}
         
