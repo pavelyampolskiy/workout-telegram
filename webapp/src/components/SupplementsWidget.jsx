@@ -53,9 +53,11 @@ export default function SupplementsWidget() {
           Current supplements
         </div>
         
-        {/* Сообщение о загрузке */}
-        <div className="text-xs text-white/40">
-          Loading...
+        {/* Плашка с загрузкой */}
+        <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'rgba(255,255,255,0.05)' }}>
+          <div className="text-xs text-white/40">
+            Loading...
+          </div>
         </div>
       </button>
     );
@@ -88,10 +90,19 @@ export default function SupplementsWidget() {
         Current supplements
       </div>
       
-      {/* Список добавок */}
-      <div className="text-xs text-white/92">
-        {displayText}
-      </div>
+      {/* Плашка со списком добавок */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate('supplements');
+        }}
+        className="w-full px-3 py-2 rounded-lg text-left"
+        style={{ background: 'rgba(255,255,255,0.05)' }}
+      >
+        <div className="text-xs text-white/92">
+          {displayText}
+        </div>
+      </button>
     </button>
   );
 }
