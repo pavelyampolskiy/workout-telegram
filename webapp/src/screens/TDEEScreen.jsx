@@ -283,10 +283,7 @@ const TDEEScreen = () => {
       setResults(resultsWithTimestamp);
       setShowResults(true);
       
-      // Save to history
-      saveToHistory(resultsWithTimestamp);
-
-      // Save to legacy storage for widget compatibility
+      // Save to legacy storage for widget compatibility (but not to history yet)
       if (userId) {
         try {
           localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(resultsWithTimestamp));
