@@ -97,7 +97,7 @@ const FigmaScreen = () => {
                 <input
                   type="text"
                   placeholder="https://www.figma.com/file/..."
-                  className="w-full bg-black/50 border border-white/20 rounded-lg px-3 py-2 text-white text-sm font-bebas"
+                  className="w-full bg-black/50 rounded-lg px-3 py-2 text-white text-sm font-bebas"
                   onChange={(e) => {
                     // Можно сохранить URL в localStorage
                     localStorage.setItem('figmaUrl', e.target.value);
@@ -132,7 +132,7 @@ const FigmaScreen = () => {
                   <h3 className="font-bebas text-white/60 text-sm mb-2">Styles ({styles?.styles?.length || 0}):</h3>
                   <div className="bg-black/30 rounded-lg p-3 max-h-64 overflow-y-auto">
                     {styles?.styles?.map((style, index) => (
-                      <div key={index} className="mb-2 pb-2 border-b border-white/10 last:border-0">
+                      <div key={index} className="mb-2 pb-2 last:border-0">
                         <p className="text-white/60 text-xs font-bebas">{style.name}</p>
                         <p className="text-white/40 text-xs font-bebas">{style.style_type}</p>
                       </div>

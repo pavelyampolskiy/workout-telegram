@@ -185,7 +185,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
                     aspect-square rounded-lg text-xs font-bebas tracking-wider transition-all
                     ${!day.date ? 'invisible cursor-default' : ''}
                     ${day.isDisabled ? 'text-white/20 cursor-not-allowed' : ''}
-                    ${day.isSelected ? 'bg-white/20 text-white border border-white/30' : ''}
+                    ${day.isSelected ? 'bg-white/20 text-white' : ''}
                     ${!day.isDisabled && !day.isSelected && day.date ? 'text-white hover:bg-white/10 cursor-pointer' : ''}
                   `}
                 >
@@ -195,7 +195,7 @@ export default function CustomCalendar({ selectedDate, onDateChange, maxDate, mi
             </div>
 
             {/* Кнопка закрытия */}
-            <div className="mt-4 pt-3 border-t border-white/10">
+            <div className="mt-4 pt-3">
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-full py-2 rounded-lg text-white text-xs font-bebas tracking-wider hover:bg-white/10 transition-colors"

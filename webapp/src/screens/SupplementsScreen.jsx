@@ -383,7 +383,7 @@ export default function SupplementsScreen() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
                   placeholder="Supplement name"
                 />
               </div>
@@ -394,7 +394,7 @@ export default function SupplementsScreen() {
                   type="text"
                   value={formData.dosage}
                   onChange={(e) => setFormData({...formData, dosage: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
                   placeholder="e.g: 5g"
                 />
               </div>
@@ -405,7 +405,7 @@ export default function SupplementsScreen() {
                   type="number"
                   value={formData.duration_days}
                   onChange={(e) => setFormData({...formData, duration_days: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
                   placeholder="Leave empty for infinite"
                 />
               </div>

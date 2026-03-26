@@ -295,7 +295,7 @@ export default function MetricsScreen() {
                   step="0.1"
                   value={formData.weight}
                   onChange={(e) => setFormData({...formData, weight: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
                   placeholder="75.5"
                 />
               </div>
@@ -307,7 +307,7 @@ export default function MetricsScreen() {
                   step="0.1"
                   value={formData.body_fat}
                   onChange={(e) => setFormData({...formData, body_fat: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
                   placeholder="12.5"
                 />
               </div>
@@ -319,7 +319,7 @@ export default function MetricsScreen() {
                   step="0.1"
                   value={formData.muscle_mass}
                   onChange={(e) => setFormData({...formData, muscle_mass: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 border border-white/10 text-white text-sm"
+                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
                   placeholder="38.0"
                 />
               </div>

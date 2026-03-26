@@ -888,7 +888,7 @@ const TDEEScreen = () => {
                           setCustomMacroProtein(value);
                           validateMacroTotals(value, customMacroCarbs, customMacroFat);
                         }}
-                        className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
                         placeholder="25"
                       />
                     </div>
@@ -904,7 +904,7 @@ const TDEEScreen = () => {
                           setCustomMacroCarbs(value);
                           validateMacroTotals(customMacroProtein, value, customMacroFat);
                         }}
-                        className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
                         placeholder="50"
                       />
                     </div>
@@ -920,7 +920,7 @@ const TDEEScreen = () => {
                           setCustomMacroFat(value);
                           validateMacroTotals(customMacroProtein, customMacroCarbs, value);
                         }}
-                        className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-center focus:outline-none focus:border-white/20"
+                        className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
                         placeholder="25"
                       />
                     </div>
@@ -1047,7 +1047,7 @@ const TDEEScreen = () => {
           onClick={() => setShowInfoSheet(false)}
         >
           <div 
-            className="bg-black/95 backdrop-blur-lg w-full max-w-lg rounded-t-3xl p-6 border-t border-white/10"
+            className="bg-black/95 backdrop-blur-lg w-full max-w-lg rounded-t-3xl p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-12 h-1 bg-white/30 rounded-full mx-auto mb-6"></div>
@@ -1085,7 +1085,7 @@ const TDEEScreen = () => {
           onClick={() => setShowGoalSheet(false)}
         >
           <div 
-            className="bg-black/95 backdrop-blur-lg w-full max-w-lg rounded-t-3xl p-6 border-t border-white/10"
+            className="bg-black/95 backdrop-blur-lg w-full max-w-lg rounded-t-3xl p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-12 h-1 bg-white/30 rounded-full mx-auto mb-6"></div>

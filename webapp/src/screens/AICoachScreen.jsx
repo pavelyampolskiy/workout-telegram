@@ -176,7 +176,7 @@ export default function AICoachScreen() {
         )}
 
         {/* Info Card */}
-        <div className="rounded-2xl p-4 bg-white/[0.02] border border-white/10">
+        <div className="rounded-2xl p-4 bg-white/[0.02]">
           <div className="flex items-start gap-3">
             <span className="text-blue-400 text-xl">🤖</span>
             <div>
