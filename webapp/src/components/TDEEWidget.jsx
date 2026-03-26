@@ -117,17 +117,6 @@ export default function TDEEWidget() {
             </div>
           </div>
         </div>
-        
-        {/* Calculate button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate('tdee');
-          }}
-          className="w-full px-3 py-2 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-all text-xs font-bebas tracking-wider mt-2"
-        >
-          Calculate New
-        </button>
       </div>
     </button>
   );
