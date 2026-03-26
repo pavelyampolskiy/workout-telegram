@@ -46,6 +46,14 @@ export default function TDEEHistoryScreen() {
       const updatedHistory = history.filter(item => item.id !== id);
       setHistory(updatedHistory);
       localStorage.setItem(`tdee_history_${userId}`, JSON.stringify(updatedHistory));
+      
+      // Update legacy storage for widget to show the latest entry
+      if (updatedHistory.length > 0) {
+        localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(updatedHistory[0]));
+      } else {
+        // Clear widget data if no history left
+        localStorage.removeItem(`tdee_data_${userId}`);
+      }
     } catch (e) {
       console.error('Error deleting from history:', e);
       showToast('Error deleting measurement', 'error');
