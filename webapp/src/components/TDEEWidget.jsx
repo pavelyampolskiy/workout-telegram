@@ -87,7 +87,7 @@ export default function TDEEWidget() {
         <div className="text-center mb-2">
           <div className="flex items-center justify-center gap-2 text-2xl font-bebas tracking-wider text-white/90 mb-1">
             <span>{tdeeData.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</span>
-            <span className="text-lg font-bebas tracking-wider text-white/90">kcal per day</span>
+            <span className="text-2xl font-bebas tracking-wider text-white/90">kcal per day</span>
             <span className="text-2xl font-bebas tracking-wider text-white/90">
               {tdeeData.goal ? (typeof tdeeData.goal === 'string' ? tdeeData.goal : tdeeData.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
             </span>
