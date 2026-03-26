@@ -127,23 +127,46 @@ const TDEEScreen = () => {
   const [results, setResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showHistory, setShowHistory] = useState(false);
+  const [tdeeHistory, setTdeeHistory] = useState([]);
 
   // Load saved data on mount
   useEffect(() => {
     if (!userId) return;
     
     try {
-      const savedData = localStorage.getItem(`tdee_data_${userId}`);
-      if (savedData) {
-        const data = JSON.parse(savedData);
-        if (data.gender) setGender(data.gender);
-        if (data.age) setAge(data.age);
-        if (data.weight) setWeight(data.weight);
-        if (data.height) setHeight(data.height);
-        if (data.weightUnit) setWeightUnit(data.weightUnit);
-        if (data.heightUnit) setHeightUnit(data.heightUnit);
-        if (data.activityLevel) setActivityLevel(data.activityLevel);
-        if (data.goal) setGoal(data.goal);
+      // Load history
+      const historyData = localStorage.getItem(`tdee_history_${userId}`);
+      if (historyData) {
+        const history = JSON.parse(historyData);
+        setTdeeHistory(history);
+        
+        // Load latest measurement if exists
+        if (history.length > 0) {
+          const latest = history[0];
+          if (latest.gender) setGender(latest.gender);
+          if (latest.age) setAge(latest.age);
+          if (latest.weight) setWeight(latest.weight);
+          if (latest.height) setHeight(latest.height);
+          if (latest.weightUnit) setWeightUnit(latest.weightUnit);
+          if (latest.heightUnit) setHeightUnit(latest.heightUnit);
+          if (latest.activityLevel) setActivityLevel(latest.activityLevel);
+          if (latest.goal) setGoal(latest.goal);
+        }
+      } else {
+        // Load legacy data for migration
+        const savedData = localStorage.getItem(`tdee_data_${userId}`);
+        if (savedData) {
+          const data = JSON.parse(savedData);
+          if (data.gender) setGender(data.gender);
+          if (data.age) setAge(data.age);
+          if (data.weight) setWeight(data.weight);
+          if (data.height) setHeight(data.height);
+          if (data.weightUnit) setWeightUnit(data.weightUnit);
+          if (data.heightUnit) setHeightUnit(data.heightUnit);
+          if (data.activityLevel) setActivityLevel(data.activityLevel);
+          if (data.goal) setGoal(data.goal);
+        }
       }
     } catch (e) {
       console.error('Error loading TDEE data:', e);
@@ -255,20 +278,16 @@ const TDEEScreen = () => {
       const resultsWithTimestamp = {
         ...calculationResults,
         calculatedAt: new Date().toISOString(),
-        gender,
-        age,
-        weight,
-        height,
-        weightUnit,
-        heightUnit,
-        activityLevel,
-        goal
+        id: Date.now().toString()
       };
       
       setResults(resultsWithTimestamp);
       setShowResults(true);
+      
+      // Save to history
+      saveToHistory(resultsWithTimestamp);
 
-      // Save to localStorage
+      // Save to legacy storage for widget compatibility
       if (userId) {
         try {
           localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(resultsWithTimestamp));
@@ -277,7 +296,7 @@ const TDEEScreen = () => {
         }
       }
 
-      // Smooth scroll to results
+      // Scroll to results
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -348,6 +367,91 @@ const TDEEScreen = () => {
       setCustomMacroFat(Math.round((results.fat.kcal / results.targetCalories) * 100));
     }
   }, [results]);
+
+  // Save to history
+  const saveToHistory = (resultsData) => {
+    if (!userId) return;
+    
+    try {
+      const historyEntry = {
+        ...resultsData,
+        savedAt: new Date().toISOString(),
+        id: Date.now().toString()
+      };
+      
+      const updatedHistory = [historyEntry, ...tdeeHistory.filter(item => item.id !== historyEntry.id)];
+      const limitedHistory = updatedHistory.slice(0, 10); // Keep only last 10 measurements
+      
+      setTdeeHistory(limitedHistory);
+      localStorage.setItem(`tdee_history_${userId}`, JSON.stringify(limitedHistory));
+    } catch (e) {
+      console.error('Error saving to TDEE history:', e);
+    }
+  };
+
+  // Delete from history
+  const deleteFromHistory = (id) => {
+    if (!userId) return;
+    
+    try {
+      const updatedHistory = tdeeHistory.filter(item => item.id !== id);
+      setTdeeHistory(updatedHistory);
+      localStorage.setItem(`tdee_history_${userId}`, JSON.stringify(updatedHistory));
+      
+      // If deleting the current measurement, clear results
+      if (results && results.id === id) {
+        setResults(null);
+        setShowResults(false);
+      }
+    } catch (e) {
+      console.error('Error deleting from TDEE history:', e);
+    }
+  };
+
+  // Load measurement from history
+  const loadFromHistory = (historyItem) => {
+    setGender(historyItem.gender);
+    setAge(historyItem.age);
+    setWeight(historyItem.weight);
+    setHeight(historyItem.height);
+    setWeightUnit(historyItem.weightUnit);
+    setHeightUnit(historyItem.heightUnit);
+    setActivityLevel(historyItem.activityLevel);
+    setGoal(historyItem.goal);
+    
+    // Load results without saving to history again
+    const resultsData = {
+      bmr: historyItem.bmr,
+      tdee: historyItem.tdee,
+      targetCalories: historyItem.targetCalories,
+      protein: historyItem.protein,
+      carbs: historyItem.carbs,
+      fat: historyItem.fat,
+      goal: historyItem.goal,
+      calculatedAt: historyItem.calculatedAt,
+      id: historyItem.id
+    };
+    
+    setResults(resultsData);
+    setShowResults(true);
+    setShowHistory(false);
+  };
+
+  // Create new measurement
+  const createNewMeasurement = () => {
+    setResults(null);
+    setShowResults(false);
+    setShowHistory(false);
+    // Reset form to defaults
+    setGender('male');
+    setAge('');
+    setWeight('');
+    setHeight('');
+    setWeightUnit('kg');
+    setHeightUnit('cm');
+    setActivityLevel('moderate');
+    setGoal('cutting');
+  };
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -881,6 +985,83 @@ const TDEEScreen = () => {
                 <span className={`font-bebas tracking-wider text-red-400`}>RESET DATA</span>
               </button>
             </div>
+          </div>
+        )}
+
+        {/* History Section */}
+        {results && (
+          <div className={`transition-all duration-700 delay-500 ${
+            showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
+            <button
+              onClick={() => setShowHistory(!showHistory)}
+              className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+            >
+              <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>VIEW HISTORY</span>
+            </button>
+            
+            {showHistory && (
+              <div className="mt-4 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                {tdeeHistory.length > 0 ? (
+                  tdeeHistory.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className={`bg-white/5 rounded-xl p-4 border ${
+                        results.id === item.id ? 'border-blue-500/30' : 'border-transparent'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`text-sm font-bebas tracking-wider ${TEXT_PRIMARY}`}>
+                              {item.targetCalories} kcal/day
+                            </span>
+                            <span className={`text-xs ${TEXT_MUTED}`}>•</span>
+                            <span className={`text-xs ${TEXT_MUTED}`}>
+                              {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
+                            </span>
+                          </div>
+                          <div className={`text-xs ${TEXT_MUTED}`}>
+                            {new Date(item.calculatedAt).toLocaleDateString('en-US', { 
+                              day: 'numeric', 
+                              month: 'short', 
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => loadFromHistory(item)}
+                            className="p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-all"
+                          >
+                            <span className="text-xs text-blue-400">LOAD</span>
+                          </button>
+                          <button
+                            onClick={() => deleteFromHistory(item.id)}
+                            className="p-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-all"
+                          >
+                            <span className="text-xs text-red-400">🗑</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className={`text-center py-4 ${TEXT_MUTED}`}>
+                    <span className="text-xs">No history yet</span>
+                  </div>
+                )}
+                
+                <button
+                  onClick={createNewMeasurement}
+                  className="w-full py-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-all"
+                >
+                  <span className={`font-bebas tracking-wider text-blue-400`}>CREATE NEW</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
