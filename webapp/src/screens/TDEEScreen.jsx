@@ -385,10 +385,7 @@ const TDEEScreen = () => {
                     })}
                   </div>
                   <div className={`text-lg font-bebas tracking-wider ${TEXT_PRIMARY} mt-1`}>
-                    {results.targetCalories} kcal per day
-                  </div>
-                  <div className={`text-xs ${TEXT_MUTED} mt-1`}>
-                    {results.goal?.name?.replace(/[^\w\s]/gi, '').trim() || 'Cutting'}
+                    {results.targetCalories} kcal per day • {results.goal?.name?.replace(/[^\w\s]/gi, '').trim() || 'Cutting'}
                   </div>
                 </div>
                 <div className="flex gap-2">
