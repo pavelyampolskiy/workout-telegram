@@ -524,7 +524,7 @@ const TDEEScreen = () => {
               <label className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>GOAL</label>
               <button
                 onClick={() => setShowGoalSheet(true)}
-                className="absolute -top-1 -right-4 p-1"
+                className="absolute -top-2 -right-4 p-1"
               >
                 <span className="text-xs text-white/40">ⓘ</span>
               </button>
