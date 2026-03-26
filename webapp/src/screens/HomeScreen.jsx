@@ -446,7 +446,7 @@ export default function HomeScreen() {
       {
         id: 'body-metrics',
         type: 'widget',
-        size: { cols: 2, rows: 1 },
+        size: { cols: 1, rows: 1 },
         content: (
           <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
             <BodyMetricsWidget />
@@ -456,7 +456,7 @@ export default function HomeScreen() {
       {
         id: 'supplements',
         type: 'widget',
-        size: { cols: 2, rows: 1 },
+        size: { cols: 1, rows: 1 },
         content: (
           <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
             <SupplementsWidget />
@@ -557,13 +557,13 @@ export default function HomeScreen() {
       {
         id: 'supplements',
         type: 'widget',
-        size: { cols: 2, rows: 1 },
+        size: { cols: 1, rows: 1 },
         content: <SupplementsWidget />
       },
       {
         id: 'body-metrics',
         type: 'widget',
-        size: { cols: 2, rows: 1 },
+        size: { cols: 1, rows: 1 },
         content: <BodyMetricsWidget />
       }
     ];
