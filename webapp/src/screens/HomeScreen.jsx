@@ -390,7 +390,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('history')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
@@ -405,7 +405,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('program')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
@@ -420,7 +420,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('stats')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
@@ -435,7 +435,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('achievements')}
-            className="w-full h-full flex flex-row justify-between items-center p-4 relative"
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
@@ -501,7 +501,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !editMode && navigate('history')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={editMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
