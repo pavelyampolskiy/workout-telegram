@@ -377,7 +377,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
+            <span className="shrink-0 flex items-center justify-center text-white"><HistoryIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
@@ -392,7 +392,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
+            <span className="shrink-0 flex items-center justify-center text-white"><StatsIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
           </button>
         )
@@ -407,7 +407,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
+            <span className="shrink-0 flex items-center justify-center text-white"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
           </button>
         )
@@ -422,7 +422,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
+            <span className="shrink-0 flex items-center justify-center text-white"><ProgramIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
           </button>
         )
@@ -643,7 +643,7 @@ export default function HomeScreen() {
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/25">
+                <span className="shrink-0 flex items-center justify-center text-white">
                   <ProgressPhotosIcon />
                 </span>
                 <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -669,7 +669,7 @@ export default function HomeScreen() {
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/25">
+                <span className="shrink-0 flex items-center justify-center text-white">
                   <SthenosAIIcon />
                 </span>
                 <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
