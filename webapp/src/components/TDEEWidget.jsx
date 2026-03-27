@@ -31,7 +31,7 @@ export default function TDEEWidget() {
         style={{ background: 'none' }}
         disabled
       >
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
           TDEE
         </div>
         <div className="px-3 py-1 rounded-lg bg-white/10">
@@ -51,7 +51,7 @@ export default function TDEEWidget() {
       >
         {/* Header with title only */}
         <div className="w-full text-center">
-          <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+          <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
             TDEE
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function TDEEWidget() {
     >
       {/* Header */}
       <div className="w-full text-center mb-2">
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
           TDEE
         </div>
       </div>

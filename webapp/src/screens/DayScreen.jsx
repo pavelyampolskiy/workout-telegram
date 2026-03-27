@@ -592,7 +592,7 @@ const cancelRemoval = () => {
             </div>
           </div>
 
-          <p className="font-sans text-white/25 text-xs mb-2">Add a note (optional)</p>
+          <p className="font-sans text-white/45 text-xs mb-2">Add a note (optional)</p>
           <textarea
             value={note}
             onChange={e => setNote(e.target.value)}

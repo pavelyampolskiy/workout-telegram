@@ -49,7 +49,7 @@ export default function SupplementsWidget() {
         disabled
       >
         {/* Заголовок */}
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
           Current supplements
         </div>
         
@@ -84,7 +84,7 @@ export default function SupplementsWidget() {
         style={{ background: 'none' }}
       >
         {/* Заголовок */}
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
           Current supplements
         </div>
         
@@ -113,7 +113,7 @@ export default function SupplementsWidget() {
       style={{ background: 'none' }}
     >
       {/* Заголовок */}
-      <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+      <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
         Current supplements
       </div>
       

@@ -208,7 +208,7 @@ export default function HistoryScreen() {
           <HistorySkeleton />
         ) : items.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/45">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
               <rect x="9" y="3" width="6" height="4" rx="1"/>
               <path d="M9 12h6M9 16h4"/>
@@ -225,12 +225,12 @@ export default function HistoryScreen() {
               const totalMin = group.reduce((s, w) => s + (w.duration_min || 0), 0);
               const cardStyle = 'py-2 px-2 flex flex-col items-center justify-center';
               const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
-              const labelStyle = 'font-bebas text-white/25 shrink-0 whitespace-nowrap mt-1';
+              const labelStyle = 'font-bebas text-white/45 shrink-0 whitespace-nowrap mt-1';
 
               return (
                 <div key={monthKey}>
                   <div
-                    className="font-bebas text-white/25 shrink-0 whitespace-nowrap mb-2"
+                    className="font-bebas text-white/45 shrink-0 whitespace-nowrap mb-2"
                     style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
                   >
                     {monthLabel}
@@ -278,7 +278,7 @@ export default function HistoryScreen() {
                                   </span>
                                 )}
                                 <span
-                                  className="font-bebas text-white/25 shrink-0 whitespace-nowrap"
+                                  className="font-bebas text-white/45 shrink-0 whitespace-nowrap"
                                   style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
                                 >
                                   {formatDate(w.date).toUpperCase()}

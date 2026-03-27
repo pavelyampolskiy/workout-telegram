@@ -102,7 +102,7 @@ export default function AchievementsScreen() {
               Achievements
             </h1>
             <div className="text-center py-16 px-4">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/25">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 mx-auto mb-4 text-white/45">
                 <path d="M6 9H4a2 2 0 01-2-2V5a2 2 0 012-2h2M18 9h2a2 2 0 002-2V5a2 2 0 00-2-2h-2"/>
                 <path d="M6 3h12v6a6 6 0 01-12 0V3zM12 15v4M8 22h8M8 19h8"/>
               </svg>
@@ -119,7 +119,7 @@ export default function AchievementsScreen() {
 
             {/* Unlocked — каждая цель отдельной плашкой, яркость +25% к базовой */}
             <div
-              className="font-bebas text-white/25 shrink-0 whitespace-nowrap mb-2"
+              className="font-bebas text-white/45 shrink-0 whitespace-nowrap mb-2"
               style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
             >
               UNLOCKED
@@ -140,7 +140,7 @@ export default function AchievementsScreen() {
 
             {/* In Progress — каждая цель отдельной плашкой */}
             <div
-              className="font-bebas text-white/25 shrink-0 whitespace-nowrap mb-2"
+              className="font-bebas text-white/45 shrink-0 whitespace-nowrap mb-2"
               style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
             >
               IN PROGRESS

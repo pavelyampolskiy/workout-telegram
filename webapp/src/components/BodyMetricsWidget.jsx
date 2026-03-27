@@ -54,7 +54,7 @@ export default function BodyMetricsWidget() {
         disabled
       >
         {/* Заголовок */}
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
           Body Metrics
         </div>
         
@@ -77,7 +77,7 @@ export default function BodyMetricsWidget() {
         style={{ background: 'none' }}
       >
         {/* Заголовок */}
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
           Body Metrics
         </div>
         
@@ -112,7 +112,7 @@ export default function BodyMetricsWidget() {
       style={{ background: 'none' }}
     >
       {/* Заголовок */}
-      <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+      <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
         Body Metrics
       </div>
       

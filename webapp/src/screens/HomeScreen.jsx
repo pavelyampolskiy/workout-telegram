@@ -201,7 +201,7 @@ function StatusWidget({ userId }) {
       {parts.map((p, i) => (
         <span
           key={i}
-          className="font-bebas text-white/25 shrink-0 whitespace-nowrap"
+          className="font-bebas text-white/45 shrink-0 whitespace-nowrap"
           style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
         >
           {p}
@@ -341,8 +341,8 @@ export default function HomeScreen() {
         className="w-full h-full flex flex-row justify-between items-center p-4"
         disabled={isEditMode}
       >
-        <span className="shrink-0 flex items-center justify-center text-white/25">{config.icon}</span>
-        <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>{config.label}</div>
+        <span className="shrink-0 flex items-center justify-center text-white/45">{config.icon}</span>
+        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>{config.label}</div>
       </button>
     );
   };
@@ -377,8 +377,8 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25 self-center"><HistoryIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
+            <span className="shrink-0 flex items-center justify-center text-white/45 self-center"><HistoryIcon /></span>
+            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
       },
@@ -392,8 +392,8 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+            <span className="shrink-0 flex items-center justify-center text-white/45"><StatsIcon /></span>
+            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
           </button>
         )
       },
@@ -407,8 +407,8 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25 self-center"><TrophyIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
+            <span className="shrink-0 flex items-center justify-center text-white/45 self-center"><TrophyIcon /></span>
+            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
           </button>
         )
       },
@@ -422,8 +422,8 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
+            <span className="shrink-0 flex items-center justify-center text-white/45"><ProgramIcon /></span>
+            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
           </button>
         )
       },
@@ -542,7 +542,7 @@ export default function HomeScreen() {
               <>
                 <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
                   <div className="font-bebas font-light leading-none w-full min-w-0 overflow-hidden flex flex-col items-start gap-0" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                    <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
+                    <span className="text-white/45 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
                     <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
                   </div>
                   <div className="mt-6 w-full flex justify-start">
@@ -569,7 +569,7 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
-                  className="w-full text-center font-bebas text-white/25 py-2 shrink-0"
+                  className="w-full text-center font-bebas text-white/45 py-2 shrink-0"
                   style={{ fontSize: '0.82rem', letterSpacing: '0.08em', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}
                   type="button"
                 >
@@ -588,7 +588,7 @@ export default function HomeScreen() {
               <div className="rounded-xl p-4 w-full" style={{ background: CARD_BG }}>
                 <div className="font-bebas font-light leading-none w-full min-w-0 overflow-hidden flex flex-row justify-between items-center gap-4" style={{ fontSize: 'clamp(14px, 7.5vw, 32px)', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                   <div className="flex flex-col items-start gap-0">
-                    <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
+                    <span className="text-white/45 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>ARE YOU</span>
                     <span className="text-white shrink-0" style={{ fontSize: '1.95em', letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>READY?</span>
                   </div>
                   {latestAchievement && (
@@ -645,10 +645,10 @@ export default function HomeScreen() {
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
+                <span className="shrink-0 flex items-center justify-center text-white/45 self-center">
                   <ProgressPhotosIcon />
                 </span>
-                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
                   Progress Photos
                 </div>
               </div>
@@ -669,10 +669,10 @@ export default function HomeScreen() {
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
+                <span className="shrink-0 flex items-center justify-center text-white/45 self-center">
                   <SthenosAIIcon />
                 </span>
-                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
                   SthenOS AI Laboratory
                 </div>
               </div>
