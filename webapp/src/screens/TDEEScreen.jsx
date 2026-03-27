@@ -746,7 +746,7 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-blue-500 h-2 rounded-full transition-all duration-600"
+                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
                     style={{ 
                       width: showResults ? `${(results.protein.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
@@ -757,15 +757,15 @@ const TDEEScreen = () => {
                 </div>
               </div>
 
-              {/* Carbs */}
+              {/* Carbohydrates */}
               <div className="bg-white/5 rounded-xl p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>Carbs</span>
+                  <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>Carbohydrates</span>
                   <span className={`text-sm ${TEXT_SECONDARY}`}>{results.carbs.grams}g / {results.carbs.kcal} kcal</span>
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-green-500 h-2 rounded-full transition-all duration-600"
+                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
                     style={{ 
                       width: showResults ? `${(results.carbs.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
@@ -784,7 +784,7 @@ const TDEEScreen = () => {
                 </div>
                 <div className="w-full bg-white/10 rounded-full h-2">
                   <div 
-                    className="bg-yellow-500 h-2 rounded-full transition-all duration-600"
+                    className="bg-white/60 h-2 rounded-full transition-all duration-600"
                     style={{ 
                       width: showResults ? `${(results.fat.kcal / results.targetCalories) * 100}%` : '0%'
                     }}
@@ -840,7 +840,7 @@ const TDEEScreen = () => {
                       />
                     </div>
                     <div>
-                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>CARBS %</label>
+                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>CARBOHYDRATES %</label>
                       <input
                         type="number"
                         min="0"
@@ -928,9 +928,9 @@ const TDEEScreen = () => {
             }`}>
               <button
                 onClick={saveAndCollapse}
-                className="w-full py-3 bg-green-500/10 hover:bg-green-500/20 rounded-xl transition-all"
+                className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
               >
-                <span className={`font-bebas tracking-wider text-green-400`}>SAVE DATA</span>
+                <span className={`font-bebas tracking-wider text-white/60`}>SAVE DATA</span>
               </button>
             </div>
           </div>
