@@ -115,6 +115,25 @@ const ProgressPhotosScreen = () => {
     setViewMode('compare');
   };
 
+  const handleCompareSelect = (photo) => {
+    if (!compareLeft) {
+      setCompareLeft(photo);
+      showToast('First photo selected. Select second photo to compare.', 'success');
+    } else if (!compareRight) {
+      if (photo.id === compareLeft.id) {
+        showToast('Select a different photo for comparison', 'error');
+        return;
+      }
+      setCompareRight(photo);
+      openCompareMode(compareLeft, photo);
+    } else {
+      // Reset comparison
+      setCompareLeft(photo);
+      setCompareRight(null);
+      showToast('First photo selected. Select second photo to compare.', 'success');
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
@@ -159,11 +178,28 @@ const ProgressPhotosScreen = () => {
             </svg>
           </button>
           <h1 className={`text-xl font-bebas tracking-wider ${TEXT_PRIMARY}`}>PROGRESS PHOTOS</h1>
-          <button onClick={handleAddPhoto} className="text-white/60">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-          </button>
+          <div className="flex gap-2">
+            {photos.length >= 2 && (
+              <button
+                onClick={() => {
+                  // Reset comparison state
+                  setCompareLeft(null);
+                  setCompareRight(null);
+                  showToast('Select first photo to compare', 'success');
+                }}
+                className="text-white/60"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+              </button>
+            )}
+            <button onClick={handleAddPhoto} className="text-white/60">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Photos Gallery */}
@@ -185,12 +221,29 @@ const ProgressPhotosScreen = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {photos.map((photo) => (
+            {photos.map((photo) => {
+            const isSelected = compareLeft?.id === photo.id || compareRight?.id === photo.id;
+            const isLeftSelected = compareLeft?.id === photo.id;
+            
+            return (
               <div
                 key={photo.id}
-                onClick={() => openPhotoView(photo)}
-                className="bg-white/5 rounded-xl p-4 flex items-center gap-4 cursor-pointer hover:bg-white/10 transition-all"
+                onClick={() => {
+                  if (compareLeft || compareRight) {
+                    handleCompareSelect(photo);
+                  } else {
+                    openPhotoView(photo);
+                  }
+                }}
+                className={`bg-white/5 rounded-xl p-4 flex items-center gap-4 cursor-pointer hover:bg-white/10 transition-all relative ${
+                  isSelected ? 'ring-2 ring-white/30' : ''
+                }`}
               >
+                {isSelected && (
+                  <div className="absolute top-2 right-2">
+                    <div className={`w-2 h-2 rounded-full ${isLeftSelected ? 'bg-blue-400' : 'bg-green-400'}`} />
+                  </div>
+                )}
                 <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                   <img src={photo.image} alt="Progress" className="w-full h-full object-cover" />
                 </div>
@@ -216,7 +269,8 @@ const ProgressPhotosScreen = () => {
                   </svg>
                 </button>
               </div>
-            ))}
+            );
+          })}
           </div>
         )}
 

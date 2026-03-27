@@ -23,6 +23,7 @@ import AICoachScreen from './screens/AICoachScreen';
 import FigmaScreen from './screens/FigmaScreen';
 import TDEEScreen from './screens/TDEEScreen';
 import TDEEHistoryScreen from './screens/TDEEHistoryScreen';
+import ProgressPhotosScreen from './screens/ProgressPhotosScreen';
 
 const AppCtx = createContext(null);
 export const useApp = () => useContext(AppCtx);
@@ -48,6 +49,7 @@ const SCREENS = {
   figma: FigmaScreen,
   tdee: TDEEScreen,
   'tdee-history': TDEEHistoryScreen,
+  'progress-photos': ProgressPhotosScreen,
 };
 
 // Error boundary to catch rendering errors instead of blank screen

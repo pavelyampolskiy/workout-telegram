@@ -91,6 +91,14 @@ const TDEEIcon = () => (
   </svg>
 );
 
+const ProgressPhotosIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+    <circle cx="8.5" cy="8.5" r="1.5"/>
+    <polyline points="21,15 16,10 5,21"/>
+  </svg>
+);
+
 // Timer component for workout duration
 const WorkoutTimer = ({ startedAt }) => {
   const [elapsed, setElapsed] = useState(0);
@@ -432,6 +440,21 @@ export default function HomeScreen() {
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+          </button>
+        )
+      },
+      {
+        id: 'progress-photos',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => !isEditMode && navigateFn('progress-photos')}
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={isEditMode}
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgressPhotosIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Progress Photos</div>
           </button>
         )
       },
