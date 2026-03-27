@@ -548,6 +548,7 @@ const TDEEScreen = () => {
             
             <div className="space-y-3">
               <div>
+                <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>AGE</label>
                 <input
                   type="number"
                   value={age}
@@ -561,6 +562,7 @@ const TDEEScreen = () => {
               </div>
 
               <div>
+                <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>WEIGHT</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -598,6 +600,7 @@ const TDEEScreen = () => {
               </div>
 
               <div>
+                <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>HEIGHT</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -897,7 +900,7 @@ const TDEEScreen = () => {
 
             {/* Recomp Note */}
             {goal === 'recomp' && (
-              <div className={`bg-yellow-500/10 p-4 transition-all duration-700 delay-200 ${
+              <div className={`bg-white/5 border-l-4 border-white/30 p-4 transition-all duration-700 delay-200 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
                 <div className={`text-xs ${TEXT_SECONDARY} leading-relaxed`}>
@@ -912,9 +915,9 @@ const TDEEScreen = () => {
             }`}>
               <button
                 onClick={saveAndCollapse}
-                className="w-full py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all"
+                className="w-full py-3 bg-white hover:bg-white/90 text-black rounded-xl transition-all"
               >
-                <span className={`font-bebas tracking-wider text-white/60`}>SAVE DATA</span>
+                <span className="font-bebas tracking-wider text-lg">SAVE DATA</span>
               </button>
             </div>
           </div>
