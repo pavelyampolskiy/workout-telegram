@@ -131,52 +131,64 @@ export default function TDEEHistoryScreen() {
             {history.map((item) => (
               <div
                 key={item.id}
-                className="rounded-xl p-4 text-left"
-                style={{ background: 'rgba(255,255,255,0.025)' }}
+                className="tdee-history-card rounded-xl p-4 text-left"
+                style={{ 
+                  background: 'rgba(255,255,255,0.025)',
+                  height: '140px',
+                  display: 'grid',
+                  gridTemplateRows: 'auto 1fr auto',
+                  gap: '8px',
+                  alignItems: 'start'
+                }}
               >
-                <div className="flex justify-between items-start gap-3">
-                  <div className="flex-1 min-w-0">
-                    {/* Дата */}
-                    <div className="text-sm text-white/60 mb-2">
-                      {formatDate(item.savedAt.split('T')[0])}
+                {/* Row 1: Дата */}
+                <div className="date-row" style={{ minHeight: '20px' }}>
+                  <div className="text-sm text-white/60">
+                    {formatDate(item.savedAt.split('T')[0])}
+                  </div>
+                </div>
+                
+                {/* Row 2: Калории, цель и кнопка удаления */}
+                <div className="content-row flex items-center justify-between" style={{ minHeight: '32px' }}>
+                  <div className="flex items-center gap-4">
+                    <div className="text-lg font-bebas text-white/90" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
+                      {item.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal
                     </div>
-                    
-                    {/* Калории и цель */}
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="text-lg font-bebas text-white/90">
-                        {item.targetCalories?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} kcal
-                      </div>
-                      <div className="text-lg font-bebas text-white/90">
-                        {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
-                      </div>
-                    </div>
-                    
-                    {/* Макроданные */}
-                    <div className="grid grid-cols-3 gap-4 text-xs">
-                      <div>
-                        <div className="text-xs text-white/40 mb-1">Protein</div>
-                        <div className="text-lg font-bebas text-white/90 font-medium">{item.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g</div>
-                        <div className="text-xs text-white/40">{item.protein?.calories} kcal</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-white/40 mb-1">Carbs</div>
-                        <div className="text-lg font-bebas text-white/90 font-medium">{item.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g</div>
-                        <div className="text-xs text-white/40">{item.carbs?.calories} kcal</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-white/40 mb-1">Fats</div>
-                        <div className="text-lg font-bebas text-white/90 font-medium">{item.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g</div>
-                        <div className="text-xs text-white/40">{item.fat?.calories} kcal</div>
-                      </div>
+                    <div className="text-lg font-bebas text-white/90" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
+                      {item.goal ? (typeof item.goal === 'string' ? item.goal : item.goal.name?.replace(/[^\w\s]/gi, '').trim()) : 'Cutting'}
                     </div>
                   </div>
-                  
                   <button
                     onClick={() => deleteFromHistory(item.id)}
                     className="shrink-0 p-1 text-white/40 hover:text-red-400 active:text-red-400 transition-colors"
                   >
                     <TrashIcon />
                   </button>
+                </div>
+                
+                {/* Row 3: Макроданные */}
+                <div className="macros-row grid grid-cols-3 gap-3" style={{ minHeight: '48px' }}>
+                  <div>
+                    <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Protein</div>
+                    <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
+                      {item.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+                    </div>
+                    <div className="text-xs text-white/40">{item.protein?.calories} kcal</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Carbs</div>
+                    <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
+                      {item.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+                    </div>
+                    <div className="text-xs text-white/40">{item.carbs?.calories} kcal</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Fats</div>
+                    <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
+                      {item.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
+                    </div>
+                    <div className="text-xs text-white/40">{item.fat?.calories} kcal</div>
+                  </div>
                 </div>
               </div>
             ))}
