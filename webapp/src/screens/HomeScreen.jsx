@@ -639,7 +639,7 @@ export default function HomeScreen() {
               onClick={() => navigate('progress-photos')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)'
+                background: 'rgba(0, 0, 0, 0.3)'
               }}
             >
               <div className="flex items-center gap-3">
@@ -665,7 +665,7 @@ export default function HomeScreen() {
               onClick={() => navigate('ai-coach')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)'
+                background: 'rgba(0, 0, 0, 0.3)'
               }}
             >
               <div className="flex items-center gap-3">
