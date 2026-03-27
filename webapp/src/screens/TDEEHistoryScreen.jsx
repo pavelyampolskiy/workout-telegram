@@ -20,6 +20,7 @@ export default function TDEEHistoryScreen() {
   const { navigate, userId, showToast } = useApp();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteModal, setDeleteModal] = useState({ show: false, itemId: null });
 
   useEffect(() => {
     if (!userId) return;
@@ -42,8 +43,14 @@ export default function TDEEHistoryScreen() {
   }, [userId]);
 
   const deleteFromHistory = (id) => {
+    setDeleteModal({ show: true, itemId: id });
+  };
+
+  const confirmDelete = () => {
+    if (!deleteModal.itemId) return;
+    
     try {
-      const updatedHistory = history.filter(item => item.id !== id);
+      const updatedHistory = history.filter(item => item.id !== deleteModal.itemId);
       setHistory(updatedHistory);
       localStorage.setItem(`tdee_history_${userId}`, JSON.stringify(updatedHistory));
       
@@ -54,10 +61,18 @@ export default function TDEEHistoryScreen() {
         // Clear widget data if no history left
         localStorage.removeItem(`tdee_data_${userId}`);
       }
+      
+      showToast('Measurement deleted successfully', 'success');
     } catch (e) {
       console.error('Error deleting from history:', e);
       showToast('Error deleting measurement', 'error');
+    } finally {
+      setDeleteModal({ show: false, itemId: null });
     }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModal({ show: false, itemId: null });
   };
 
   if (loading) {
@@ -192,6 +207,44 @@ export default function TDEEHistoryScreen() {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          onClick={cancelDelete}
+        >
+          <div 
+            className="bg-black/95 backdrop-blur-lg w-full max-w-sm mx-4 rounded-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 mx-auto mb-4 text-red-400">
+                <TrashIcon />
+              </div>
+              <h3 className="text-xl font-bebas tracking-wider text-white mb-2">Delete Measurement</h3>
+              <p className="text-white/60 text-sm">
+                Are you sure you want to delete this TDEE measurement? This action cannot be undone.
+              </p>
+            </div>
+            
+            <div className="space-y-3">
+              <button
+                onClick={confirmDelete}
+                className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl transition-all text-white font-bebas tracking-wider"
+              >
+                Delete
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all text-white font-bebas tracking-wider"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
