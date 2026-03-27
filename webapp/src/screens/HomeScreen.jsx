@@ -456,6 +456,66 @@ export default function HomeScreen() {
             <TDEEWidget />
           </div>
         )
+      },
+      {
+        id: 'progress-photos',
+        type: 'button',
+        size: { cols: 4, rows: 1 }, // Полноширинный элемент
+        content: (
+          <button
+            onClick={() => !isEditMode && navigateFn('progress-photos')}
+            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+            disabled={isEditMode}
+            style={{
+              background: 'rgba(0, 0, 0, 0.3)'
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
+                <ProgressPhotosIcon />
+              </span>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                Progress Photos
+              </div>
+            </div>
+            
+            <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+              <div className="text-xs text-white whitespace-pre-line text-right">
+                <span className="text-white/60">Track your transformation</span>
+              </div>
+            </div>
+          </button>
+        )
+      },
+      {
+        id: 'sthenos-ai',
+        type: 'button',
+        size: { cols: 4, rows: 1 }, // Полноширинный элемент
+        content: (
+          <button
+            onClick={() => !isEditMode && navigateFn('ai-coach')}
+            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+            disabled={isEditMode}
+            style={{
+              background: 'rgba(0, 0, 0, 0.3)'
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
+                <SthenosAIIcon />
+              </span>
+              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                SthenOS AI Laboratory
+              </div>
+            </div>
+            
+            <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+              <div className="text-xs text-white whitespace-pre-line text-right">
+                <span className="text-white/60">in progress...</span>
+              </div>
+            </div>
+          </button>
+        )
       }
     ];
   };
@@ -632,65 +692,30 @@ export default function HomeScreen() {
             onLayoutChange={setGridItems}
             editMode={editMode}
           />
-          
-          {/* Progress Photos Widget */}
           <div className="mt-4">
             <button
-              onClick={() => navigate('progress-photos')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+              onClick={() => setEditMode(!editMode)}
+              className="card-press py-3 px-4 w-full flex flex-row justify-center items-center rounded-xl"
               style={{
-                background: 'rgba(0, 0, 0, 0.3)'
+                background: 'rgba(255, 255, 255, 0.05)'
               }}
             >
-              <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/25">
-                  <ProgressPhotosIcon />
-                </span>
-                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-                  Progress Photos
-                </div>
-              </div>
-              
-              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-                <div className="text-xs text-white whitespace-pre-line text-right">
-                  <span className="text-white/60">Track your transformation</span>
+              <div className="flex items-center gap-2">
+                {editMode ? (
+                  <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                  </svg>
+                )}
+                <div className="font-bebas text-base text-white/60" style={{ letterSpacing: 'normal' }}>
+                  {editMode ? 'Done' : 'Edit Dashboard'}
                 </div>
               </div>
             </button>
-          </div>
-          
-          {/* Sthenos AI Laboratory Button */}
-          <div className="mt-4">
-            <button
-              onClick={() => navigate('ai-coach')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-              style={{
-                background: 'rgba(0, 0, 0, 0.3)'
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/25">
-                  <SthenosAIIcon />
-                </span>
-                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-                  SthenOS AI Laboratory
-                </div>
-              </div>
-              
-              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-                <div className="text-xs text-white whitespace-pre-line text-right">
-                  <span className="text-white/60">in progress...</span>
-                </div>
-              </div>
-            </button>
-          </div>
-          
-          {/* Edit Dashboard */}
-          <div className="mt-4 text-center">
-            <EditModeToggle 
-              enabled={editMode}
-              onToggle={() => setEditMode(!editMode)}
-            />
           </div>
         </div>
           {unfinished && showDismissConfirm && createPortal(
