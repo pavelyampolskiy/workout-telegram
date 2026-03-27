@@ -68,7 +68,7 @@ export default function TDEEHistoryScreen() {
           {/* Header */}
           <div className="mb-6">
             <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
-              TDEE Calculator
+              TDEE Progress
             </h1>
           </div>
           <div className="flex justify-center py-8">
@@ -86,7 +86,7 @@ export default function TDEEHistoryScreen() {
         {/* Header */}
         <div className="mb-6">
           <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
-            TDEE Calculator
+            TDEE Progress
           </h1>
         </div>
         
@@ -94,19 +94,16 @@ export default function TDEEHistoryScreen() {
         <div className="mb-6">
           <button
             onClick={() => navigate('tdee')}
-            className="w-full px-8 py-4 rounded-xl bg-white/22 hover:bg-white/28 transition-all flex items-center justify-center gap-2 text-lg font-bebas tracking-wider text-white"
+            className="w-full px-8 py-4 rounded-xl bg-white/22 hover:bg-white/28 transition-all text-lg font-bebas tracking-wider text-white"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-white/90">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-            Calculate New
+            New TDEE Plan
           </button>
         </div>
         
-        {/* History section */}
+        {/* Progress section */}
         <div className="mb-6">
           <h2 className="font-bebas text-white text-lg mb-4" style={{ letterSpacing: '0.05em' }}>
-            History
+            Progress
           </h2>
         </div>
 

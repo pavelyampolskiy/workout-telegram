@@ -500,7 +500,7 @@ const TDEEScreen = () => {
         <div className="flex items-center justify-between mb-4">
           <div className="relative">
             <h1 className="font-bebas text-white pt-6" style={PAGE_HEADING_STYLE}>
-              TDEE Calculator
+              TDEE Plan
               <button
                 onClick={() => setShowInfoSheet(true)}
                 className="absolute -top-2 -right-4 p-1"
