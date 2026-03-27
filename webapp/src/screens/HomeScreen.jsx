@@ -456,66 +456,6 @@ export default function HomeScreen() {
             <TDEEWidget />
           </div>
         )
-      },
-      {
-        id: 'progress-photos',
-        type: 'button',
-        size: { cols: 4, rows: 1 }, // Полноширинный элемент
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('progress-photos')}
-            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-            disabled={isEditMode}
-            style={{
-              background: 'rgba(0, 0, 0, 0.3)'
-            }}
-          >
-            <div className="flex items-center gap-3">
-              <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
-                <ProgressPhotosIcon />
-              </span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-                Progress Photos
-              </div>
-            </div>
-            
-            <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-              <div className="text-xs text-white whitespace-pre-line text-right">
-                <span className="text-white/60">Track your transformation</span>
-              </div>
-            </div>
-          </button>
-        )
-      },
-      {
-        id: 'sthenos-ai',
-        type: 'button',
-        size: { cols: 4, rows: 1 }, // Полноширинный элемент
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('ai-coach')}
-            className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-            disabled={isEditMode}
-            style={{
-              background: 'rgba(0, 0, 0, 0.3)'
-            }}
-          >
-            <div className="flex items-center gap-3">
-              <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
-                <SthenosAIIcon />
-              </span>
-              <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
-                SthenOS AI Laboratory
-              </div>
-            </div>
-            
-            <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-              <div className="text-xs text-white whitespace-pre-line text-right">
-                <span className="text-white/60">in progress...</span>
-              </div>
-            </div>
-          </button>
-        )
       }
     ];
   };
@@ -692,6 +632,54 @@ export default function HomeScreen() {
             onLayoutChange={setGridItems}
             editMode={editMode}
           />
+          <div className="mt-4">
+            <button
+              onClick={() => navigate('progress-photos')}
+              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+              style={{
+                background: 'rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
+                  <ProgressPhotosIcon />
+                </span>
+                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                  Progress Photos
+                </div>
+              </div>
+              
+              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+                <div className="text-xs text-white whitespace-pre-line text-right">
+                  <span className="text-white/60">Track your transformation</span>
+                </div>
+              </div>
+            </button>
+          </div>
+          <div className="mt-4">
+            <button
+              onClick={() => navigate('ai-coach')}
+              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+              style={{
+                background: 'rgba(0, 0, 0, 0.3)'
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="shrink-0 flex items-center justify-center text-white/25 self-center">
+                  <SthenosAIIcon />
+                </span>
+                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
+                  SthenOS AI Laboratory
+                </div>
+              </div>
+              
+              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+                <div className="text-xs text-white whitespace-pre-line text-right">
+                  <span className="text-white/60">in progress...</span>
+                </div>
+              </div>
+            </button>
+          </div>
           <div className="mt-4">
             <button
               onClick={() => setEditMode(!editMode)}
