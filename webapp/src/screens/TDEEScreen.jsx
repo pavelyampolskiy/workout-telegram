@@ -714,25 +714,7 @@ const TDEEScreen = () => {
               </div>
             </div>
 
-            {/* Details */}
-            <div className={`space-y-4 transition-all duration-700 delay-75 ${
-              showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-              <div className="bg-white/5 rounded-xl p-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className={`text-2xl font-bebas tracking-wider ${TEXT_PRIMARY}`}>{results.bmr}</div>
-                    <div className={`text-xs ${TEXT_MUTED}`}>at complete rest</div>
-                  </div>
-                  <div className="text-right">
-                    <div className={`text-2xl font-bebas tracking-wider ${TEXT_PRIMARY}`}>{results.tdee}</div>
-                    <div className={`text-xs ${TEXT_MUTED}`}>with activity</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Macros */}
+            {/* Macronutrients */}
             <div className={`space-y-4 transition-all duration-700 delay-150 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
