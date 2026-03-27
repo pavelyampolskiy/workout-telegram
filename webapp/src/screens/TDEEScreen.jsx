@@ -882,7 +882,7 @@ const TDEEScreen = () => {
                       disabled={(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) !== 100}
                       className={`px-4 py-2 rounded-lg transition-all ${
                         (customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) === 100
-                          ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-400'
+                          ? 'bg-green-500/20 hover:bg-green-500/30 text-green-400'
                           : 'bg-white/5 text-white/40 cursor-not-allowed'
                       }`}
                     >
