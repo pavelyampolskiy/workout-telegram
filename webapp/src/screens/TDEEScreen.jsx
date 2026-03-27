@@ -689,7 +689,7 @@ const TDEEScreen = () => {
         </div>
 
         {/* Calculate Button */}
-        <div className="mb-6">
+        <div className="mb-8">
           <button
             onClick={handleCalculate}
             className="w-full py-4 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
@@ -700,7 +700,7 @@ const TDEEScreen = () => {
 
         {/* Results Section */}
         {results && (
-          <div ref={resultsRef} className="mt-12 space-y-6">
+          <div ref={resultsRef} className="space-y-6">
             {/* Hero Card - Target Calories */}
             <div className={`bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 transition-all duration-700 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
