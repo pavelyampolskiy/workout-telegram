@@ -130,7 +130,7 @@ export default function TDEEHistoryScreen() {
                 key={item.id}
                 className="tdee-history-card rounded-xl p-4 text-left"
                 style={{ 
-                  background: 'rgba(255,255,255,0.025)',
+                  background: 'rgba(255,255,255,0.0225)',
                   height: '140px',
                   display: 'grid',
                   gridTemplateRows: 'auto 1fr auto',
