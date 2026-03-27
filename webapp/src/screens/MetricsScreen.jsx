@@ -33,6 +33,7 @@ export default function MetricsScreen() {
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingMetric, setEditingMetric] = useState(null);
+  const [deleteModal, setDeleteModal] = useState({ show: false, itemId: null });
   const [formData, setFormData] = useState({
     weight: '',
     body_fat: '',
@@ -163,23 +164,39 @@ export default function MetricsScreen() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
+    setDeleteModal({ show: true, itemId: id });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteModal.itemId) return;
+    
     try {
       // Пытаемся удалить с сервера
       try {
-        await api.deleteBodyMetric(id);
-        const newMetrics = metrics.filter(m => m.id !== id);
+        await api.deleteBodyMetric(deleteModal.itemId);
+        const newMetrics = metrics.filter(m => m.id !== deleteModal.itemId);
         setMetrics(newMetrics);
         localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
+        showToast('Measurement deleted successfully', 'success');
       } catch (serverError) {
-        // Если сервер недоступен, удаляем локально
-        const newMetrics = metrics.filter(m => m.id !== id);
+        // Если сервер не доступен, удаляем только из localStorage
+        console.warn('Server unavailable, deleting from localStorage only:', serverError);
+        const newMetrics = metrics.filter(m => m.id !== deleteModal.itemId);
         setMetrics(newMetrics);
         localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
+        showToast('Measurement deleted successfully', 'success');
       }
-    } catch (error) {
-      showToast('Error deleting metric');
+    } catch (e) {
+      console.error('Error deleting metric:', e);
+      showToast('Error deleting measurement', 'error');
+    } finally {
+      setDeleteModal({ show: false, itemId: null });
     }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModal({ show: false, itemId: null });
   };
 
   if (loading) {
@@ -336,6 +353,44 @@ export default function MetricsScreen() {
               <button
                 onClick={() => setShowAddModal(false)}
                 className={`flex-1 py-3 font-bebas tracking-wider text-sm rounded-[14px] ${TEXT_TERTIARY}`}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={cancelDelete}
+        >
+          <div 
+            className="bg-black/95 backdrop-blur-lg w-full max-w-sm mx-4 rounded-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 mx-auto mb-4 text-red-400">
+                <TrashIcon />
+              </div>
+              <h3 className="text-xl font-bebas tracking-wider text-white mb-2">Delete Measurement</h3>
+              <p className="text-white/60 text-sm">
+                Are you sure you want to delete this body measurement? This action cannot be undone.
+              </p>
+            </div>
+            
+            <div className="space-y-3">
+              <button
+                onClick={confirmDelete}
+                className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-white font-bebas tracking-wider"
+              >
+                Delete
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all text-white font-bebas tracking-wider"
               >
                 Cancel
               </button>
