@@ -715,12 +715,13 @@ const TDEEScreen = () => {
             </div>
 
             {/* Macronutrients */}
-            <div className={`space-y-4 transition-all duration-700 delay-150 ${
+            <div className={`transition-all duration-700 delay-150 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
-              <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY}`}>MACRONUTRIENTS</div>
+              <div className={`text-sm font-bebas tracking-wider ${TEXT_SECONDARY} mb-4`}>MACRONUTRIENTS</div>
               
-              {/* Protein */}
+              <div className="space-y-3">
+                {/* Protein */}
               <div className="bg-white/5 rounded-xl p-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className={`font-bebas tracking-wider ${TEXT_PRIMARY}`}>Protein</span>
@@ -775,6 +776,7 @@ const TDEEScreen = () => {
                 <div className="text-right mt-1">
                   <span className={`text-xs ${TEXT_MUTED}`}>{Math.round((results.fat.kcal / results.targetCalories) * 100)}%</span>
                 </div>
+              </div>
               </div>
             </div>
 
