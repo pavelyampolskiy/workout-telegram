@@ -100,18 +100,10 @@ const ProgressPhotosIcon = () => (
 
 const SthenosAIIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    {/* Контур мозга */}
+    {/* Простой контур мозга */}
     <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z"/>
-    {/* Нейроны и соединения */}
-    <circle cx="12" cy="8" r="1"/>
-    <circle cx="9" cy="10" r="0.5"/>
-    <circle cx="15" cy="10" r="0.5"/>
-    <circle cx="10" cy="13" r="0.5"/>
-    <circle cx="14" cy="13" r="0.5"/>
-    <line x1="12" y1="8" x2="9" y2="10"/>
-    <line x1="12" y1="8" x2="15" y2="10"/>
-    <line x1="12" y1="8" x2="10" y2="13"/>
-    <line x1="12" y1="8" x2="14" y2="13"/>
+    {/* Простой мозговой штрих */}
+    <path d="M9 11c1-1 2-1 3 0s2 1 3 0"/>
   </svg>
 );
 
@@ -655,7 +647,7 @@ export default function HomeScreen() {
                 <span className="shrink-0 flex items-center justify-center text-white">
                   <ProgressPhotosIcon />
                 </span>
-                <div className="font-bebas text-base text-white/80 shrink-0" style={{ letterSpacing: 'normal' }}>
+                <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
                   Progress Photos
                 </div>
               </div>
