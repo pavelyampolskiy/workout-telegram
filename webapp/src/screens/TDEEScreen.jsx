@@ -90,7 +90,7 @@ const sliderStyles = `
 `;
 
 const TDEEScreen = () => {
-  const { navigate, goBack, userId } = useApp();
+  const { navigate, replace, goBack, userId } = useApp();
   const resultsRef = useRef(null);
 
   // Inject slider styles
@@ -412,7 +412,7 @@ const TDEEScreen = () => {
     try {
       localStorage.setItem(`tdee_data_${userId}`, JSON.stringify(dataToSave));
       saveToHistory(dataToSave);
-      navigate('tdee-history'); // Navigate back to TDEE History
+      replace('tdee-history'); // Replace current screen with TDEE History
     } catch (e) {
       console.error('Error saving TDEE data:', e);
     }
