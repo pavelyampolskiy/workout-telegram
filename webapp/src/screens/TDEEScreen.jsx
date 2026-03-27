@@ -963,20 +963,6 @@ const TDEEScreen = () => {
         </div>
       )}
 
-      {/* Calculate New Button */}
-      <div className="px-5 pb-5">
-        <button
-          onClick={() => navigate('tdee-history')}
-          className="w-full px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
-          style={{ background: 'rgba(255,255,255,0.025)' }}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-white/60">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-          <span className="text-lg font-bebas tracking-wider text-white/60">Calculate New</span>
-        </button>
-      </div>
-
       {/* Goal Info Bottom Sheet */}
       {showGoalSheet && (
         <div 
