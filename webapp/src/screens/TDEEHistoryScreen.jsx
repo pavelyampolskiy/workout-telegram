@@ -211,7 +211,7 @@ export default function TDEEHistoryScreen() {
       {/* Delete Confirmation Modal */}
       {deleteModal.show && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
           onClick={cancelDelete}
         >
           <div 
@@ -231,7 +231,7 @@ export default function TDEEHistoryScreen() {
             <div className="space-y-3">
               <button
                 onClick={confirmDelete}
-                className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 rounded-xl transition-all text-white font-bebas tracking-wider"
+                className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-white font-bebas tracking-wider"
               >
                 Delete
               </button>
