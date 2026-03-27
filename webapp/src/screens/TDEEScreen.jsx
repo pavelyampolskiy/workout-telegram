@@ -975,13 +975,12 @@ const TDEEScreen = () => {
       <div className="px-5 pb-5">
         <button
           onClick={() => navigate('tdee-history')}
-          className="w-full px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
-          style={{ background: 'rgba(255,255,255,0.025)' }}
+          className="w-full px-8 py-4 rounded-xl flex items-center justify-center gap-2 transition-all bg-white/22 hover:bg-white/30"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-white/60">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-white/90">
             <path d="M12 5v14M5 12h14"/>
           </svg>
-          <span className="text-lg font-bebas tracking-wider text-white/60">Calculate New</span>
+          <span className="text-lg font-bebas tracking-wider text-white/90">Calculate New</span>
         </button>
       </div>
 
