@@ -657,8 +657,10 @@ const TDEEScreen = () => {
             </div>
           </div>
 
+        {/* Goal, Calculate and Results Section */}
+        <div className="space-y-6">
           {/* Goal Selection */}
-          <div className="space-y-3 mb-8">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <button
@@ -686,21 +688,20 @@ const TDEEScreen = () => {
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Calculate Button */}
-        <div className="mb-8">
-          <button
-            onClick={handleCalculate}
-            className="w-full py-4 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
-          >
-            <span className={`font-bebas tracking-wider text-lg ${TEXT_PRIMARY}`}>CALCULATE</span>
-          </button>
-        </div>
+          {/* Calculate Button */}
+          <div>
+            <button
+              onClick={handleCalculate}
+              className="w-full py-4 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
+            >
+              <span className={`font-bebas tracking-wider text-lg ${TEXT_PRIMARY}`}>CALCULATE</span>
+            </button>
+          </div>
 
-        {/* Results Section */}
-        {results && (
-          <div ref={resultsRef} className="space-y-6">
+          {/* Results Section */}
+          {results && (
+            <div ref={resultsRef} className="space-y-6">
             {/* Hero Card - Target Calories */}
             <div className={`bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 transition-all duration-700 ${
               showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
@@ -1026,6 +1027,8 @@ const TDEEScreen = () => {
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
     </div>
   );
