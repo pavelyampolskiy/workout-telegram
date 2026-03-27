@@ -219,21 +219,27 @@ export default function HomeScreen() {
   useEffect(() => {
     console.log('Loading dashboard layout...');
     
-    // Временно создаем всегда стандартную конфигурацию для гарантии работы
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      // Принудительно очищаем старую конфигурацию для добавления новых виджетов
+      localStorage.removeItem(`dashboard_layout_${userId}`);
+      console.log('Cleared old layout');
+    }
+    
+    // Создаем стандартную конфигурацию с новыми виджетами
     const defaultItems = createGridItems(editMode, navigate);
     console.log('Created default items:', defaultItems.length);
     setGridItems(defaultItems);
     
-    const userId = localStorage.getItem('userId');
     if (userId) {
-      // Сохраняем стандартную конфигурацию
+      // Сохраняем новую конфигурацию
       const itemsToSave = defaultItems.map(item => ({
         id: item.id,
         type: item.type,
         size: item.size,
       }));
       localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
-      console.log('Saved default layout');
+      console.log('Saved new layout with all widgets');
     }
   }, []); // Только при монтировании
 
@@ -377,6 +383,7 @@ export default function HomeScreen() {
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
       },
@@ -386,12 +393,27 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('stats')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            onClick={() => !isEditMode && navigateFn('stats')}
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+          </button>
+        )
+      },
+      {
+        id: 'progress-photos',
+        type: 'button',
+        size: { cols: 1, rows: 1 },
+        content: (
+          <button
+            onClick={() => !isEditMode && navigateFn('progress-photos')}
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={isEditMode}
+          >
+            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgressPhotosIcon /></span>
+            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Progress Photos</div>
           </button>
         )
       },
@@ -401,9 +423,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('achievements')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            onClick={() => !isEditMode && navigateFn('achievements')}
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
@@ -416,9 +438,9 @@ export default function HomeScreen() {
         size: { cols: 1, rows: 1 },
         content: (
           <button
-            onClick={() => !editMode && navigate('program')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
+            onClick={() => !isEditMode && navigateFn('program')}
+            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
@@ -429,16 +451,34 @@ export default function HomeScreen() {
         id: 'supplements',
         type: 'widget',
         size: { cols: 1, rows: 1 },
-        content: <SupplementsWidget />
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <SupplementsWidget />
+          </div>
+        )
       },
       {
         id: 'body-metrics',
         type: 'widget',
         size: { cols: 1, rows: 1 },
-        content: <BodyMetricsWidget />
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <BodyMetricsWidget />
+          </div>
+        )
+      },
+      {
+        id: 'tdee',
+        type: 'widget',
+        size: { cols: 2, rows: 1 },
+        content: (
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <TDEEWidget />
+          </div>
+        )
       }
     ];
-  }
+  };
 
   useEffect(() => {
     if (!userId) return;
