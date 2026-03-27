@@ -222,20 +222,18 @@ export default function HomeScreen() {
     
     try {
       const savedLayout = localStorage.getItem(`dashboard_layout_${userId}`);
-      console.log('Found saved layout:', savedLayout);
       
       if (savedLayout) {
         const parsed = JSON.parse(savedLayout);
-        console.log('Found saved layout:', parsed.map(item => item.id));
         
-        // Создаем все элементы в сохраненном порядке
+        // Создаем все элементы
         const allItems = createGridItems(editMode, navigate);
         const itemMap = {};
         allItems.forEach(item => {
           itemMap[item.id] = item;
         });
         
-        // Восстанавливаем только сохраненные элементы
+        // Восстанавливаем сохраненные элементы
         const restoredItems = parsed.map(savedItem => {
           const item = itemMap[savedItem.id];
           if (item) {
@@ -247,28 +245,15 @@ export default function HomeScreen() {
           return null;
         }).filter(Boolean);
         
-        // Добавляем новые виджеты которых еще нет в сохраненной конфигурации
-        const existingIds = new Set(restoredItems.map(item => item.id));
-        const newItems = allItems.filter(item => !existingIds.has(item.id));
-        
-        const finalItems = [...restoredItems, ...newItems];
-        
-        if (finalItems.length > 0) {
-          setGridItems(finalItems);
-          console.log('Layout updated with new widgets');
-          // Сохраняем обновленную конфигурацию
-          const itemsToSave = finalItems.map(item => ({
-            id: item.id,
-            type: item.type,
-            size: item.size,
-          }));
-          localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
+        if (restoredItems.length > 0) {
+          setGridItems(restoredItems);
+          console.log('Layout restored successfully');
           return;
         }
       }
     
-    // Если нет сохраненного, создаем стандартный
-    console.log('No saved layout, creating default');
+    // Если нет сохраненного или ошибка, создаем стандартный
+    console.log('Creating default layout');
     const defaultItems = createGridItems(editMode, navigate);
     setGridItems(defaultItems);
     
@@ -282,7 +267,8 @@ export default function HomeScreen() {
     } catch (e) {
       console.error('Error loading layout:', e);
       // При ошибке создаем стандартную конфигурацию
-      setGridItems(createGridItems(editMode, navigate));
+      const defaultItems = createGridItems(editMode, navigate);
+      setGridItems(defaultItems);
     }
   }, []); // Только при монтировании
 
@@ -426,128 +412,6 @@ export default function HomeScreen() {
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
-          </button>
-        )
-      },
-      {
-        id: 'program',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('program')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgramIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
-          </button>
-        )
-      },
-      {
-        id: 'stats',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('stats')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><StatsIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
-          </button>
-        )
-      },
-      {
-        id: 'progress-photos',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('progress-photos')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgressPhotosIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Progress Photos</div>
-          </button>
-        )
-      },
-      {
-        id: 'achievements',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('achievements')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><TrophyIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
-          </button>
-        )
-      },
-      {
-        id: 'body-metrics',
-        type: 'widget',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
-            <BodyMetricsWidget />
-          </div>
-        )
-      },
-      {
-        id: 'supplements',
-        type: 'widget',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
-            <SupplementsWidget />
-          </div>
-        )
-      },
-      {
-        id: 'body-metrics',
-        type: 'widget',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
-            <BodyMetricsWidget />
-          </div>
-        )
-      },
-      {
-        id: 'tdee',
-        type: 'widget',
-        size: { cols: 2, rows: 1 },
-        content: (
-          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
-            <TDEEWidget />
-          </div>
-        )
-      },
-    ];
-  };
-
-  // Default grid items configuration
-  function getDefaultGridItems() {
-    return [
-      {
-        id: 'history',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !editMode && navigate('history')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={editMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><HistoryIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
       },
@@ -768,11 +632,6 @@ export default function HomeScreen() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Rest Timer Widget */}
-        <div className="shrink-0 pt-4">
-          <RestTimerWidget />
         </div>
 
         {/* Пустое место */}
