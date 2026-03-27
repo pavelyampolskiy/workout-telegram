@@ -220,26 +220,58 @@ export default function HomeScreen() {
     console.log('Loading dashboard layout...');
     
     const userId = localStorage.getItem('userId');
-    if (userId) {
-      // Принудительно очищаем старую конфигурацию для добавления новых виджетов
-      localStorage.removeItem(`dashboard_layout_${userId}`);
-      console.log('Cleared old layout');
-    }
+    if (!userId) return;
     
-    // Создаем стандартную конфигурацию с новыми виджетами
+    try {
+      const savedLayout = localStorage.getItem(`dashboard_layout_${userId}`);
+      
+      if (savedLayout) {
+        const parsed = JSON.parse(savedLayout);
+        console.log('Found saved layout with', parsed.length, 'items');
+        
+        // Создаем все элементы
+        const allItems = createGridItems(editMode, navigate);
+        const itemMap = {};
+        allItems.forEach(item => {
+          itemMap[item.id] = item;
+        });
+        
+        // Восстанавливаем сохраненные элементы
+        const restoredItems = parsed.map(savedItem => {
+          const item = itemMap[savedItem.id];
+          if (item) {
+            return {
+              ...item,
+              size: savedItem.size || item.size
+            };
+          }
+          return null;
+        }).filter(Boolean);
+        
+        if (restoredItems.length > 0) {
+          setGridItems(restoredItems);
+          console.log('Layout restored successfully');
+          return;
+        }
+      }
+    
+    // Если нет сохраненного, создаем стандартный
+    console.log('Creating default layout');
     const defaultItems = createGridItems(editMode, navigate);
-    console.log('Created default items:', defaultItems.length);
     setGridItems(defaultItems);
     
-    if (userId) {
-      // Сохраняем новую конфигурацию
-      const itemsToSave = defaultItems.map(item => ({
-        id: item.id,
-        type: item.type,
-        size: item.size,
-      }));
-      localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
-      console.log('Saved new layout with all widgets');
+    // Сохраняем стандартную конфигурацию
+    const itemsToSave = defaultItems.map(item => ({
+      id: item.id,
+      type: item.type,
+      size: item.size,
+    }));
+    localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
+    } catch (e) {
+      console.error('Error loading layout:', e);
+      // При ошибке создаем стандартную конфигурацию
+      const defaultItems = createGridItems(editMode, navigate);
+      setGridItems(defaultItems);
     }
   }, []); // Только при монтировании
 
@@ -637,6 +669,11 @@ export default function HomeScreen() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Rest Timer Widget */}
+        <div className="shrink-0 pt-4">
+          <RestTimerWidget />
         </div>
 
         {/* Пустое место */}
