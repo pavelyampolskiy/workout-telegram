@@ -100,17 +100,6 @@ export default function SupplementsWidget() {
             Ещё нет добавок
           </div>
         </div>
-        
-        {/* CTA кнопка + Add Supplement */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate('supplements');
-          }}
-          className="w-full px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/60 hover:text-white transition-all text-xs font-bebas tracking-wider"
-        >
-          + Add Supplement
-        </button>
       </button>
     );
   }
@@ -141,17 +130,6 @@ export default function SupplementsWidget() {
           </div>
         </button>
       </div>
-      
-      {/* CTA кнопка + Add Supplement */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate('supplements');
-        }}
-        className="w-full px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/60 hover:text-white transition-all text-xs font-bebas tracking-wider"
-      >
-        + Add Supplement
-      </button>
     </button>
   );
 }
