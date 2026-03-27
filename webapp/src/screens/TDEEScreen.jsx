@@ -169,6 +169,28 @@ const TDEEScreen = () => {
           if (data.activityLevel) setActivityLevel(data.activityLevel);
           if (data.goal) setGoal(data.goal);
         }
+        
+        // Load data from Body Metrics if fields are empty
+        const bodyMetricsData = localStorage.getItem(`body_metrics_${userId}`);
+        if (bodyMetricsData) {
+          const bodyMetrics = JSON.parse(bodyMetricsData);
+          const latestMetric = bodyMetrics[bodyMetrics.length - 1];
+          
+          if (latestMetric) {
+            // Only fill if fields are currently empty
+            if (!weight && latestMetric.weight) setWeight(latestMetric.weight);
+            if (!height && latestMetric.height) {
+              if (latestMetric.height_unit === 'cm') {
+                setHeight(latestMetric.height);
+                setHeightUnit('cm');
+              } else if (latestMetric.height_unit === 'inches') {
+                setHeight(latestMetric.height);
+                setHeightUnit('inches');
+              }
+            }
+            if (!bodyFat && latestMetric.body_fat) setBodyFat(latestMetric.body_fat);
+          }
+        }
       }
     } catch (e) {
       console.error('Error loading TDEE data:', e);
@@ -490,12 +512,37 @@ const TDEEScreen = () => {
   const createNewMeasurement = () => {
     setResults(null);
     setShowResults(true); // Open calculator
-    // Reset form to defaults
+    
+    // Load current data from Body Metrics
+    if (userId) {
+      try {
+        const bodyMetricsData = localStorage.getItem(`body_metrics_${userId}`);
+        if (bodyMetricsData) {
+          const bodyMetrics = JSON.parse(bodyMetricsData);
+          const latestMetric = bodyMetrics[bodyMetrics.length - 1];
+          
+          if (latestMetric) {
+            if (latestMetric.weight) setWeight(latestMetric.weight);
+            if (latestMetric.height) {
+              if (latestMetric.height_unit === 'cm') {
+                setHeight(latestMetric.height);
+                setHeightUnit('cm');
+              } else if (latestMetric.height_unit === 'inches') {
+                setHeight(latestMetric.height);
+                setHeightUnit('inches');
+              }
+            }
+            if (latestMetric.body_fat) setBodyFat(latestMetric.body_fat);
+          }
+        }
+      } catch (e) {
+        console.error('Error loading Body Metrics:', e);
+      }
+    }
+    
+    // Reset other fields to defaults
     setGender('male');
     setAge('');
-    setWeight('');
-    setHeight('');
-    setBodyFat('');
     setWeightUnit('kg');
     setHeightUnit('cm');
     setActivityLevel('moderate');
