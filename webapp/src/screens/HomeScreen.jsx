@@ -377,7 +377,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white"><HistoryIcon /></span>
+            <span className="shrink-0 flex items-center justify-center text-white/25 self-center"><HistoryIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
@@ -407,7 +407,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white"><TrophyIcon /></span>
+            <span className="shrink-0 flex items-center justify-center text-white/25 self-center"><TrophyIcon /></span>
             <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
           </button>
         )
