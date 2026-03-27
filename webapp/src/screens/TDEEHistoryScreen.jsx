@@ -68,7 +68,7 @@ export default function TDEEHistoryScreen() {
           {/* Header */}
           <div className="mb-6">
             <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
-              TDEE Progress
+              TDEE plan
             </h1>
           </div>
           <div className="flex justify-center py-8">
@@ -86,7 +86,7 @@ export default function TDEEHistoryScreen() {
         {/* Header */}
         <div className="mb-6">
           <h1 className="font-bebas text-white text-2xl pt-6" style={{ letterSpacing: '0.05em' }}>
-            TDEE Progress
+            TDEE plan
           </h1>
         </div>
         
@@ -103,7 +103,7 @@ export default function TDEEHistoryScreen() {
         {/* Progress section */}
         <div className="mb-6">
           <h2 className="font-bebas text-white text-lg mb-4" style={{ letterSpacing: '0.05em' }}>
-            Progress
+            History
           </h2>
         </div>
 
