@@ -652,7 +652,7 @@ export default function HomeScreen() {
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/60">
+                <span className="shrink-0 flex items-center justify-center text-white">
                   <ProgressPhotosIcon />
                 </span>
                 <div className="font-bebas text-base text-white/80 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -678,7 +678,7 @@ export default function HomeScreen() {
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/60">
+                <span className="shrink-0 flex items-center justify-center text-white">
                   <SthenosAIIcon />
                 </span>
                 <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
