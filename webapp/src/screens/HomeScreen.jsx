@@ -428,21 +428,6 @@ export default function HomeScreen() {
         )
       },
       {
-        id: 'progress-photos',
-        type: 'button',
-        size: { cols: 1, rows: 1 },
-        content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('progress-photos')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><ProgressPhotosIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Progress Photos</div>
-          </button>
-        )
-      },
-      {
         id: 'achievements',
         type: 'button',
         size: { cols: 1, rows: 1 },
@@ -683,6 +668,32 @@ export default function HomeScreen() {
             onLayoutChange={setGridItems}
             editMode={editMode}
           />
+          
+          {/* Progress Photos Widget */}
+          <div className="mt-4">
+            <button
+              onClick={() => navigate('progress-photos')}
+              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
+              style={{
+                background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.075) 0%, rgba(16, 185, 129, 0.075) 100%)'
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="shrink-0 flex items-center justify-center text-white/60">
+                  <ProgressPhotosIcon />
+                </span>
+                <div className="font-bebas text-base text-white/80 shrink-0" style={{ letterSpacing: 'normal' }}>
+                  Progress Photos
+                </div>
+              </div>
+              
+              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
+                <div className="text-xs text-white whitespace-pre-line text-right">
+                  <span className="text-white/60">Track your transformation</span>
+                </div>
+              </div>
+            </button>
+          </div>
           
           {/* Sthenos AI Laboratory Button */}
           <div className="mt-4">
