@@ -898,16 +898,25 @@ const TDEEScreen = () => {
               )}
             </div>
 
-            {/* Recomp Note */}
-            {goal === 'recomp' && (
-              <div className={`bg-white/5 border-l-4 border-white/30 p-4 transition-all duration-700 delay-200 ${
-              showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-                <div className={`text-xs ${TEXT_SECONDARY} leading-relaxed`}>
-                  Eat at TDEE. Scale progress will be minimal — fat leaves, muscle grows. Focus on mirror and measurements, not scale number. Protein is top priority.
+            {/* Goal-Specific Advice */}
+            {(() => {
+              const goalAdvice = {
+                cutting: "Calorie deficit (-400). Focus on protein intake to preserve muscle. Scale will drop, mirror shows definition. Strength may decrease slightly.",
+                weight_loss: "Calorie deficit (-600). Faster weight loss, higher muscle loss risk. Monitor strength and energy. Consider recomp if losing strength quickly.",
+                recomp: "Eat at TDEE. Scale progress will be minimal — fat leaves, muscle grows. Focus on mirror and measurements, not scale number. Protein is top priority.",
+                bulk: "Calorie surplus (+300). Eat in surplus to build muscle. Some fat gain is normal. Focus on progressive overload in training. Scale will increase."
+              };
+              
+              return (
+                <div className={`bg-white/5 border-l-4 border-white/30 p-4 transition-all duration-700 delay-200 ${
+                  showResults ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                }`}>
+                  <div className={`text-xs ${TEXT_SECONDARY} leading-relaxed`}>
+                    {goalAdvice[goal]}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Save Button */}
             <div className={`transition-all duration-700 delay-300 ${
