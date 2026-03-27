@@ -452,7 +452,11 @@ export default function HomeScreen() {
         type: 'widget',
         size: { cols: 2, rows: 1 },
         content: (
-          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+          <div style={{ 
+            pointerEvents: isEditMode ? 'none' : 'auto', 
+            opacity: isEditMode ? 0.6 : 1,
+            background: isEditMode ? CARD_BG : 'transparent' // Добавляем фон в Edit Mode
+          }}>
             <TDEEWidget />
           </div>
         )
