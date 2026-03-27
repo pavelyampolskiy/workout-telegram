@@ -89,7 +89,7 @@ export default function SupplementsWidget() {
         </div>
         
         {/* Данные на одном уровне с заголовком */}
-        <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'none' }}>
+        <div className="w-full pl-0 py-2 rounded-lg text-left" style={{ background: 'none' }}>
           <div className="flex flex-col items-center justify-center text-center py-4">
             <div className="w-8 h-8 mb-2 text-white/20">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -118,7 +118,7 @@ export default function SupplementsWidget() {
       </div>
       
       {/* Данные на одном уровне с заголовком */}
-      <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'none' }}>
+      <div className="w-full pl-0 py-2 rounded-lg text-left" style={{ background: 'none' }}>
         <div className="text-xs text-white/92 whitespace-pre-line max-h-[80px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {displayText}
         </div>

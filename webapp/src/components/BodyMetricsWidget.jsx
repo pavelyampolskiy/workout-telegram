@@ -117,7 +117,7 @@ export default function BodyMetricsWidget() {
       </div>
       
       {/* Данные на одном уровне с заголовком */}
-      <div className="w-full px-3 py-2 rounded-lg text-left" style={{ background: 'none' }}>
+      <div className="w-full pl-0 py-2 rounded-lg text-left" style={{ background: 'none' }}>
         {/* Параметры каждый на новой строке */}
         {latestMetrics?.weight && (
           <div className="space-y-1 text-xs text-white">
