@@ -218,61 +218,23 @@ export default function HomeScreen() {
   useEffect(() => {
     console.log('Loading dashboard layout...');
     
-    const userId = localStorage.getItem('userId');
-    if (!userId) return;
-    
-    try {
-      const savedLayout = localStorage.getItem(`dashboard_layout_${userId}`);
-      
-      if (savedLayout) {
-        const parsed = JSON.parse(savedLayout);
-        console.log('Found saved layout with', parsed.length, 'items');
-        
-        // Создаем все элементы
-        const allItems = createGridItems(editMode, navigate);
-        const itemMap = {};
-        allItems.forEach(item => {
-          itemMap[item.id] = item;
-        });
-        
-        // Восстанавливаем сохраненные элементы
-        const restoredItems = parsed.map(savedItem => {
-          const item = itemMap[savedItem.id];
-          if (item) {
-            return {
-              ...item,
-              size: savedItem.size || item.size
-            };
-          }
-          return null;
-        }).filter(Boolean);
-        
-        if (restoredItems.length > 0) {
-          setGridItems(restoredItems);
-          console.log('Layout restored successfully');
-          return;
-        }
-      }
-    
-    // Если нет сохраненного, создаем стандартный
-    console.log('Creating default layout');
+    // Просто создаем и устанавливаем стандартную конфигурацию
     const defaultItems = createGridItems(editMode, navigate);
+    console.log('Created default items:', defaultItems.length);
     setGridItems(defaultItems);
     
-    // Сохраняем стандартную конфигурацию
-    const itemsToSave = defaultItems.map(item => ({
-      id: item.id,
-      type: item.type,
-      size: item.size,
-    }));
-    localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
-    } catch (e) {
-      console.error('Error loading layout:', e);
-      // При ошибке создаем стандартную конфигурацию
-      const defaultItems = createGridItems(editMode, navigate);
-      setGridItems(defaultItems);
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      // Сохраняем конфигурацию для будущего использования
+      const itemsToSave = defaultItems.map(item => ({
+        id: item.id,
+        type: item.type,
+        size: item.size,
+      }));
+      localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
+      console.log('Saved layout');
     }
-  }, []); // Только при монтировании
+  }, [editMode, navigate]); // Добавляем зависимости
 
   // Обновляем блокировку при смене editMode
   useEffect(() => {
@@ -657,12 +619,6 @@ export default function HomeScreen() {
 
         {/* Низ: адаптивная сетка */}
         <div className="shrink-0 pt-4">
-          {/* Отладочная информация */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="text-white/40 text-xs mb-2">
-              Grid items: {gridItems.length} | Edit mode: {editMode ? 'ON' : 'OFF'}
-            </div>
-          )}
           <DragDropGrid 
             items={gridItems}
             onLayoutChange={setGridItems}
