@@ -5,7 +5,7 @@ import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_MUTED } from '../shared';
 
 const ProgressPhotosScreen = () => {
-  const { userId, navigate, showToast } = useApp();
+  const { userId, navigate } = useApp();
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [viewMode, setViewMode] = useState('single'); // single, compare, slider
@@ -41,7 +41,6 @@ const ProgressPhotosScreen = () => {
       setPhotos(updatedPhotos);
     } catch (e) {
       console.error('Error saving progress photos:', e);
-      showToast('Error saving photos', 'error');
     }
   };
 
@@ -85,13 +84,11 @@ const ProgressPhotosScreen = () => {
 
         const updatedPhotos = [...photos, newPhoto];
         savePhotos(updatedPhotos);
-        showToast('Progress photo added!', 'success');
       };
       
       reader.readAsDataURL(file);
     } catch (e) {
       console.error('Error processing photo:', e);
-      showToast('Error processing photo', 'error');
     }
 
     // Reset file input
@@ -101,7 +98,6 @@ const ProgressPhotosScreen = () => {
   const handleDeletePhoto = (photoId) => {
     const updatedPhotos = photos.filter(p => p.id !== photoId);
     savePhotos(updatedPhotos);
-    showToast('Photo deleted', 'success');
   };
 
   const openPhotoView = (photo) => {
@@ -109,28 +105,19 @@ const ProgressPhotosScreen = () => {
     setViewMode('single');
   };
 
-  const openCompareMode = (leftPhoto, rightPhoto) => {
-    setCompareLeft(leftPhoto);
-    setCompareRight(rightPhoto);
-    setViewMode('compare');
-  };
-
   const handleCompareSelect = (photo) => {
     if (!compareLeft) {
       setCompareLeft(photo);
-      showToast('First photo selected. Select second photo to compare.', 'success');
     } else if (!compareRight) {
       if (photo.id === compareLeft.id) {
-        showToast('Select a different photo for comparison', 'error');
         return;
       }
       setCompareRight(photo);
-      openCompareMode(compareLeft, photo);
+      setViewMode('compare');
     } else {
       // Reset comparison
       setCompareLeft(photo);
       setCompareRight(null);
-      showToast('First photo selected. Select second photo to compare.', 'success');
     }
   };
 
@@ -185,7 +172,6 @@ const ProgressPhotosScreen = () => {
                   // Reset comparison state
                   setCompareLeft(null);
                   setCompareRight(null);
-                  showToast('Select first photo to compare', 'success');
                 }}
                 className="text-white/60"
               >
