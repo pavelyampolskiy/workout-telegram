@@ -548,7 +548,7 @@ export default function HomeScreen() {
                 <button
                   onClick={handleContinue}
                   className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center mt-8"
-                  style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
+                  style={{ background: 'rgba(0, 0, 0, 0.3)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
@@ -609,7 +609,7 @@ export default function HomeScreen() {
                 <button
                   onClick={handleNewWorkout}
                   className="card-press w-full mt-8 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
+                  style={{ background: 'rgba(0, 0, 0, 0.3)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
                   <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
