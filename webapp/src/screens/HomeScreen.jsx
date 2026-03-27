@@ -215,58 +215,75 @@ export default function HomeScreen() {
   const dismissModalRef = useRef(null);
   useFocusTrap(dismissModalRef, !!(unfinished && showDismissConfirm));
 
-  // Initialize grid items after component mount
+  // Загрузка и восстановление конфигурации сетки
   useEffect(() => {
-    console.log('HomeScreen mounted, loading saved layout...');
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
     
-    // Пытаемся загрузить сохраненный порядок
     try {
-      const saved = localStorage.getItem('grid_layout');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.length > 0) {
-          console.log('Found saved layout:', parsed.map(item => item.id));
-          
-          // Создаем все элементы в сохраненном порядке
-          const allItems = createGridItems(editMode, navigate);
-          const itemMap = {};
-          allItems.forEach(item => {
-            itemMap[item.id] = item;
-          });
-          
-          // Восстанавливаем порядок и добавляем новые элементы
-          const restoredItems = parsed.map(savedItem => {
-            const fullItem = itemMap[savedItem.id];
-            if (fullItem) {
-              return fullItem;
-            }
-            return null;
-          }).filter(item => item !== null);
-          
-          // Добавляем TDEE виджет, если его нет в восстановленных элементах
-          const hasTDEE = restoredItems.some(item => item.id === 'tdee');
-          if (!hasTDEE) {
-            const tdeeItem = itemMap['tdee'];
-            if (tdeeItem) {
-              restoredItems.push(tdeeItem);
-              console.log('Added TDEE widget to existing layout');
-            }
+      const savedLayout = localStorage.getItem(`dashboard_layout_${userId}`);
+      console.log('Found saved layout:', savedLayout);
+      
+      if (savedLayout) {
+        const parsed = JSON.parse(savedLayout);
+        console.log('Found saved layout:', parsed.map(item => item.id));
+        
+        // Создаем все элементы в сохраненном порядке
+        const allItems = createGridItems(editMode, navigate);
+        const itemMap = {};
+        allItems.forEach(item => {
+          itemMap[item.id] = item;
+        });
+        
+        // Восстанавливаем только сохраненные элементы
+        const restoredItems = parsed.map(savedItem => {
+          const item = itemMap[savedItem.id];
+          if (item) {
+            return {
+              ...item,
+              size: savedItem.size || item.size
+            };
           }
-          
-          if (restoredItems.length > 0) {
-            setGridItems(restoredItems);
-            console.log('Layout restored successfully');
-            return;
-          }
+          return null;
+        }).filter(Boolean);
+        
+        // Добавляем новые виджеты которых еще нет в сохраненной конфигурации
+        const existingIds = new Set(restoredItems.map(item => item.id));
+        const newItems = allItems.filter(item => !existingIds.has(item.id));
+        
+        const finalItems = [...restoredItems, ...newItems];
+        
+        if (finalItems.length > 0) {
+          setGridItems(finalItems);
+          console.log('Layout updated with new widgets');
+          // Сохраняем обновленную конфигурацию
+          const itemsToSave = finalItems.map(item => ({
+            id: item.id,
+            type: item.type,
+            size: item.size,
+          }));
+          localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
+          return;
         }
       }
-    } catch (error) {
-      console.error('Failed to load saved layout:', error);
-    }
     
     // Если нет сохраненного, создаем стандартный
     console.log('No saved layout, creating default');
-    setGridItems(createGridItems(editMode, navigate));
+    const defaultItems = createGridItems(editMode, navigate);
+    setGridItems(defaultItems);
+    
+    // Сохраняем стандартную конфигурацию
+    const itemsToSave = defaultItems.map(item => ({
+      id: item.id,
+      type: item.type,
+      size: item.size,
+    }));
+    localStorage.setItem(`dashboard_layout_${userId}`, JSON.stringify(itemsToSave));
+    } catch (e) {
+      console.error('Error loading layout:', e);
+      // При ошибке создаем стандартную конфигурацию
+      setGridItems(createGridItems(editMode, navigate));
+    }
   }, []); // Только при монтировании
 
   // Обновляем блокировку при смене editMode
@@ -494,18 +511,13 @@ export default function HomeScreen() {
         )
       },
       {
-        id: 'figma',
-        type: 'button',
+        id: 'body-metrics',
+        type: 'widget',
         size: { cols: 1, rows: 1 },
         content: (
-          <button
-            onClick={() => !isEditMode && navigateFn('figma')}
-            className="w-full h-full flex flex-row justify-between items-center p-4"
-            disabled={isEditMode}
-          >
-            <span className="shrink-0 flex items-center justify-center text-white/25"><FigmaIcon /></span>
-            <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>Figma</div>
-          </button>
+          <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
+            <BodyMetricsWidget />
+          </div>
         )
       },
       {
