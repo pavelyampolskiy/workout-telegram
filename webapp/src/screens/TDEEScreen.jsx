@@ -109,6 +109,7 @@ const TDEEScreen = () => {
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [bodyFat, setBodyFat] = useState(''); // Optional body fat percentage
   const [weightUnit, setWeightUnit] = useState('kg'); // kg or lbs
   const [heightUnit, setHeightUnit] = useState('cm'); // cm or inches
   const [activityLevel, setActivityLevel] = useState('moderate');
@@ -147,6 +148,7 @@ const TDEEScreen = () => {
           if (latest.age) setAge(latest.age);
           if (latest.weight) setWeight(latest.weight);
           if (latest.height) setHeight(latest.height);
+          if (latest.bodyFat) setBodyFat(latest.bodyFat);
           if (latest.weightUnit) setWeightUnit(latest.weightUnit);
           if (latest.heightUnit) setHeightUnit(latest.heightUnit);
           if (latest.activityLevel) setActivityLevel(latest.activityLevel);
@@ -161,6 +163,7 @@ const TDEEScreen = () => {
           if (data.age) setAge(data.age);
           if (data.weight) setWeight(data.weight);
           if (data.height) setHeight(data.height);
+          if (data.bodyFat) setBodyFat(data.bodyFat);
           if (data.weightUnit) setWeightUnit(data.weightUnit);
           if (data.heightUnit) setHeightUnit(data.heightUnit);
           if (data.activityLevel) setActivityLevel(data.activityLevel);
@@ -204,10 +207,19 @@ const TDEEScreen = () => {
     bulk: { name: 'Bulk', delta: 300, desc: 'Muscle mass gain' }
   };
 
-  // Calculate BMR using Mifflin-St Jeor formula
+  // Calculate BMR using Mifflin-St Jeor or Katch-McArdle formula
   const calculateBMR = () => {
-    const ageNum = parseInt(age);
     const weightNum = convertWeightToKg(weight, weightUnit);
+    
+    // Use Katch-McArdle formula if body fat is provided (more accurate)
+    if (bodyFat && bodyFat.trim() !== '') {
+      const bodyFatNum = parseFloat(bodyFat);
+      const leanMass = weightNum * (1 - bodyFatNum / 100);
+      return 370 + 21.6 * leanMass; // Katch-McArdle formula
+    }
+    
+    // Fall back to Mifflin-St Jeor formula
+    const ageNum = parseInt(age);
     const heightNum = convertHeightToCm(height, heightUnit);
 
     if (gender === 'male') {
@@ -398,6 +410,7 @@ const TDEEScreen = () => {
       age,
       weight,
       height,
+      bodyFat,
       weightUnit,
       heightUnit,
       activityLevel,
@@ -443,6 +456,7 @@ const TDEEScreen = () => {
     setAge(historyItem.age);
     setWeight(historyItem.weight);
     setHeight(historyItem.height);
+    setBodyFat(historyItem.bodyFat || '');
     setWeightUnit(historyItem.weightUnit);
     setHeightUnit(historyItem.heightUnit);
     setActivityLevel(historyItem.activityLevel);
@@ -481,6 +495,7 @@ const TDEEScreen = () => {
     setAge('');
     setWeight('');
     setHeight('');
+    setBodyFat('');
     setWeightUnit('kg');
     setHeightUnit('cm');
     setActivityLevel('moderate');
@@ -635,6 +650,21 @@ const TDEEScreen = () => {
                   </div>
                 </div>
                 {errors.height && <p className="mt-1 text-xs text-red-400">{errors.height}</p>}
+              </div>
+
+              <div>
+                <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>BODY FAT % (Optional)</label>
+                <input
+                  type="number"
+                  value={bodyFat}
+                  onChange={(e) => setBodyFat(e.target.value)}
+                  placeholder="12"
+                  step="0.1"
+                  min="0"
+                  max="100"
+                  className="w-full px-4 py-3 bg-white/5 rounded-xl text-white placeholder-white/40 transition-all focus:bg-white/10 focus:outline-none"
+                />
+                <p className="mt-1 text-xs text-white/30">More accurate BMR calculation if known</p>
               </div>
             </div>
           </div>
