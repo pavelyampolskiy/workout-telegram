@@ -173,7 +173,7 @@ export default function TDEEHistoryScreen() {
                     <div className="text-xs text-white/40">{item.protein?.calories} kcal</div>
                   </div>
                   <div>
-                    <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Carbs</div>
+                    <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Carbohydrates</div>
                     <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
                       {item.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
                     </div>
