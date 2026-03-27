@@ -390,12 +390,6 @@ export default function HomeScreen() {
           <BodyMetricsWidget />
         </div>
       );
-    } else if (id === 'rest-timer') {
-      return (
-        <div style={{ pointerEvents: isEditMode ? 'none' : 'auto', opacity: isEditMode ? 0.6 : 1 }}>
-          <RestTimerWidget />
-        </div>
-      );
     }
     return null;
   };
