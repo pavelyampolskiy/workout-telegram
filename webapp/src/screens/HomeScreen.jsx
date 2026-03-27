@@ -11,7 +11,6 @@ import { HomeStatsSkeleton } from '../components/Skeleton';
 import SupplementsWidget from '../components/SupplementsWidget';
 import BodyMetricsWidget from '../components/BodyMetricsWidget';
 import TDEEWidget from '../components/TDEEWidget';
-import RestTimerWidget from '../components/RestTimerWidget';
 import DragDropGrid from '../components/DragDropGrid';
 import EditModeToggle from '../components/EditModeToggle';
 import FigmaScreen from '../screens/FigmaScreen';
@@ -669,11 +668,6 @@ export default function HomeScreen() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Rest Timer Widget */}
-        <div className="shrink-0 pt-4">
-          <RestTimerWidget />
         </div>
 
         {/* Пустое место */}
