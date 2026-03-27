@@ -189,11 +189,11 @@ const TDEEScreen = () => {
 
   // Activity levels with coefficients
   const activityLevels = {
-    sedentary: { name: 'Sedentary', desc: 'No exercise, office work', coefficient: 1.2 },
-    light: { name: 'Light', desc: '1-3 workouts per week', coefficient: 1.375 },
-    moderate: { name: 'Moderate', desc: '3-5 workouts per week', coefficient: 1.55 },
-    high: { name: 'High', desc: '6-7 workouts per week', coefficient: 1.725 },
-    very_high: { name: 'Very High', desc: '2 workouts per day', coefficient: 1.9 }
+    sedentary: { name: 'Sedentary', desc: 'Office/desk job, no exercise', coefficient: 1.2 },
+    light: { name: 'Light', desc: '1-3 workouts/week or desk job + daily walks', coefficient: 1.375 },
+    moderate: { name: 'Moderate', desc: '3-5 workouts/week or active job (waiter, courier)', coefficient: 1.55 },
+    high: { name: 'High', desc: '6-7 workouts/week or physical job + regular training', coefficient: 1.725 },
+    very_high: { name: 'Very High', desc: '2x daily training or hard physical job + daily training', coefficient: 1.9 }
   };
 
   // Goals with calorie deltas
