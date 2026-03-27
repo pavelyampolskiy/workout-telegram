@@ -96,7 +96,7 @@ export default function TDEEHistoryScreen() {
             onClick={() => navigate('tdee')}
             className="w-full px-8 py-4 rounded-xl bg-white/22 hover:bg-white/28 transition-all text-lg font-bebas tracking-wider text-white"
           >
-            New TDEE Plan
+            Calculate new TDEE plan
           </button>
         </div>
         
