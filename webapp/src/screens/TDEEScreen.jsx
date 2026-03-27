@@ -686,14 +686,6 @@ const TDEEScreen = () => {
               ))}
             </div>
           </div>
-
-          {/* Calculate Button */}
-          <button
-            onClick={handleCalculate}
-            className="w-full py-4 bg-white/10 hover:bg-white/15 rounded-xl transition-all"
-          >
-            <span className={`font-bebas tracking-wider text-lg ${TEXT_PRIMARY}`}>CALCULATE</span>
-          </button>
         </div>
 
         {/* Results Section */}
