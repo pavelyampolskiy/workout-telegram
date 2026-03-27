@@ -100,10 +100,9 @@ const ProgressPhotosIcon = () => (
 
 const SthenosAIIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    {/* Простой контур мозга */}
-    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7z"/>
-    {/* Простой мозговой штрих */}
-    <path d="M9 11c1-1 2-1 3 0s2 1 3 0"/>
+    {/* Лампочка */}
+    <path d="M12 2v4m0 12a4 4 0 01-4 4h8a4 4 0 01-4-4"/>
+    <path d="M12 2L9.5 4.5M12 2l2.5 2.5M9 11c1-1 2-1 3 0s2 1 3 0"/>
   </svg>
 );
 
@@ -640,11 +639,11 @@ export default function HomeScreen() {
               onClick={() => navigate('progress-photos')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
               style={{
-                background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.075) 0%, rgba(16, 185, 129, 0.075) 100%)'
+                background: 'rgba(255, 255, 255, 0.05)'
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white">
+                <span className="shrink-0 flex items-center justify-center text-white/25">
                   <ProgressPhotosIcon />
                 </span>
                 <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
@@ -666,11 +665,11 @@ export default function HomeScreen() {
               onClick={() => navigate('ai-coach')}
               className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
               style={{
-                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.075) 0%, rgba(147, 51, 234, 0.075) 100%)'
+                background: 'rgba(255, 255, 255, 0.05)'
               }}
             >
               <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white">
+                <span className="shrink-0 flex items-center justify-center text-white/25">
                   <SthenosAIIcon />
                 </span>
                 <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>
