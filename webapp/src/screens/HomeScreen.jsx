@@ -684,9 +684,6 @@ export default function HomeScreen() {
             <button
               onClick={() => setEditMode(!editMode)}
               className="card-press py-3 px-4 w-full flex flex-row justify-center items-center rounded-xl"
-              style={{
-                background: 'rgba(255, 255, 255, 0.05)'
-              }}
             >
               <div className="flex items-center gap-2">
                 {editMode ? (
