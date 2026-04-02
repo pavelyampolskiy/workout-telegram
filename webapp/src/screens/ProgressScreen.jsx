@@ -194,7 +194,25 @@ export default function ProgressScreen() {
                     if (!q) return true;
                     const name = (ex.name || '').toLowerCase();
                     const grp = (ex.grp || ex.group || '').toLowerCase();
-                    return name.includes(q) || grp.includes(q);
+                    
+                    // Normalize muscle group names for better matching
+                    const normalizeGroup = (group) => {
+                      const normalized = group.toLowerCase();
+                      // Handle common variations
+                      if (normalized.includes('leg')) return 'legs';
+                      if (normalized.includes('back')) return 'back';
+                      if (normalized.includes('chest')) return 'chest';
+                      if (normalized.includes('bicep')) return 'biceps';
+                      if (normalized.includes('tricep')) return 'triceps';
+                      if (normalized.includes('shoulder')) return 'shoulders';
+                      if (normalized.includes('ab')) return 'abs';
+                      return normalized;
+                    };
+                    
+                    const normalizedGrp = normalizeGroup(grp);
+                    const normalizedQuery = normalizeGroup(q);
+                    
+                    return name.includes(q) || grp.includes(q) || normalizedGrp === normalizedQuery;
                   })
                   .map((ex, i) => (
                     <button
