@@ -178,14 +178,39 @@ export default function ProgressScreen() {
 
           {open && (
             <div className="absolute top-full left-0 right-0 z-10 mt-1 rounded-2xl overflow-hidden shadow-xl max-h-[30rem] flex flex-col backdrop-blur-xl" style={{ background: 'rgba(18,18,18,0.28)' }}>
+              {/* Muscle group quick filter buttons */}
+              <div className="p-2 shrink-0 border-b border-white/10">
+                <div className="flex flex-wrap gap-1.5">
+                  {['LEGS', 'BACK', 'CHEST', 'BICEPS', 'TRICEPS', 'SHOULDERS', 'ABS'].map(group => (
+                    <button
+                      key={group}
+                      onClick={() => setSearchQuery(group.toLowerCase())}
+                      className="px-2.5 py-1.5 rounded-lg text-xs font-bebas tracking-wider transition-colors bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/70"
+                    >
+                      {group}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
               <div className="p-2 shrink-0">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by name or muscle group…"
-                  className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 outline-none focus:ring-0"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by name or muscle group…"
+                    className="w-full rounded-xl px-3 py-2.5 text-sm font-sans bg-black/50 text-white placeholder-white/30 outline-none focus:ring-0"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-2.5 text-white/40 hover:text-white/60 text-xs"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="overflow-y-auto flex-1 min-h-0">
                 {program
