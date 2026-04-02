@@ -50,6 +50,8 @@ export default function DayScreen() {
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [durationMin, setDurationMin] = useState(null);
   const [showAddExercise, setShowAddExercise] = useState(false);
+  const [availableExercises, setAvailableExercises] = useState([]);
+  const [loadingExercises, setLoadingExercises] = useState(false);
   const [customExName, setCustomExName] = useState('');
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [customExercises, setCustomExercises] = useState([]);
@@ -907,58 +909,21 @@ const cancelRemoval = () => {
           <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
             
-            {/* Muscle group selector */}
-            <div className="mb-4">
-              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Muscle Group</label>
-              <div className="flex flex-wrap gap-2">
-                {MUSCLE_GROUPS.map(grp => (
-                  <button
-                    key={grp}
-                    onClick={() => setCustomExGroup(grp)}
-                    className={`px-3 py-1.5 rounded-lg font-bebas tracking-wider text-sm transition-colors ${
-                      customExGroup === grp
-                        ? 'bg-white/20 text-white'
-                        : 'bg-white/5 text-white/50'
-                    }`}
-                  >
-                    {grp}
-                  </button>
-                ))}
-              </div>
+            <div className="text-xs text-white/40 mb-3 font-bebas tracking-wider">
+              Choose existing exercise or add new:
             </div>
-
-            {/* Exercise name input */}
-            <div className="mb-5">
-              <label className="text-xs text-white/40 mb-2 block font-bebas tracking-wider">Exercise Name</label>
-              <ExerciseNameInput
-                value={customExName}
-                onChange={setCustomExName}
-                onSelectSuggestion={(item) => { setCustomExName(item.name); setCustomExGroup(item.grp); }}
-                userId={userId}
-                placeholder="e.g. Dumbbell Curls"
-                className="w-full appearance-none bg-black/50 rounded-xl px-3 py-3 text-white placeholder-white/25 outline-none font-bebas tracking-wider"
-              />
+            
+            <div className="space-y-2 mb-4">
+              <div className="text-white/60 text-sm">Existing exercises coming soon...</div>
             </div>
-
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={handleAddCustomExercise}
-                disabled={!customExName.trim() || addingEx}
-                className="card-press w-full text-white/90 font-bebas tracking-wider text-base py-3 rounded-xl disabled:opacity-40"
-                style={CARD_BTN_STYLE}
-              >
-                {addingEx ? (
-                  <span className="inline-flex items-center justify-center gap-2">
-                    <Spinner size={18} />
-                    Adding…
-                  </span>
-                ) : (
-                  'Add Exercise'
-                )}
+            
+            <div className="border-t border-white/10 pt-4">
+              <button className="w-full card-press py-3 rounded-xl text-white/90 font-bebas tracking-wider mb-2" style={CARD_BTN_STYLE}>
+                Add New Exercise
               </button>
               <button
                 onClick={() => { setShowAddExercise(false); setCustomExName(''); }}
-                className="w-full text-white/50 active:text-white/80 py-3 font-bebas tracking-wider text-sm transition-colors"
+                className="w-full text-white/50 py-3 font-bebas tracking-wider text-sm transition-colors"
               >
                 Cancel
               </button>
