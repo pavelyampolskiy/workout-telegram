@@ -220,8 +220,8 @@ export default function ProgressScreen() {
           progress.length === 0 ? (
             <div className="text-center text-white/30 py-8">
               <div className="flex justify-center mb-3 text-white/30">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
+                  <path d="M6.5 12h11M4 9.5h2.5v5H4zM17.5 9.5H20v5h-2.5zM2 10.5h2v3H2zM20 10.5h2v3h-2z"/>
                 </svg>
               </div>
               <p className="font-bebas text-sm">No data yet for {selected.name}</p>
