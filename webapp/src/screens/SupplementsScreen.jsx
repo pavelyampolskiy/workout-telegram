@@ -211,7 +211,13 @@ export default function SupplementsScreen() {
     );
   }
 
-  const popularSupplements = Array.isArray(supplements) ? supplements.filter(s => s.is_preset) : [];
+  const popularSupplements = Array.isArray(supplements) ? supplements.filter(s => {
+  // Fix typo: "popolar" should be "popular"
+  if (s.category === 'popolar') {
+    s.category = 'popular';
+  }
+  return s.is_preset;
+}) : [];
   const customSupplements = Array.isArray(supplements) ? supplements.filter(s => !s.is_preset) : [];
 
   return (
