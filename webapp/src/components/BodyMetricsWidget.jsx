@@ -90,13 +90,8 @@ export default function BodyMetricsWidget() {
           className="w-full px-3 py-2 rounded-lg text-left"
           style={{ background: 'none' }}
         >
-          <div className="text-xs text-white/60">
-            <div className="flex justify-between items-center">
-              <span>No measurements yet</span>
-            </div>
-            <div className="text-xs text-white/40 mt-1">
-              Tap to add first measurement
-            </div>
+          <div className="text-xs text-white/40">
+            Tap to add first measurement
           </div>
         </button>
       </button>
@@ -127,13 +122,8 @@ export default function BodyMetricsWidget() {
         )}
         
         {!latestMetrics?.weight && (
-          <div className="text-xs text-white/60">
-            <div className="flex justify-between items-center">
-              <span>No measurements yet</span>
-            </div>
-            <div className="text-xs text-white/40 mt-1">
-              Tap to add first measurement
-            </div>
+          <div className="text-xs text-white/40">
+            Tap to add first measurement
           </div>
         )}
       </div>
