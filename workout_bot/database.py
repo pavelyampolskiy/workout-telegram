@@ -183,6 +183,11 @@ def init_db():
                 to_name TEXT NOT NULL
             )
         """)
+        # Migration: add is_active to supplements if missing
+        try:
+            conn.execute("ALTER TABLE supplements ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1")
+        except Exception:
+            pass
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
