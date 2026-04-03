@@ -271,15 +271,26 @@ export default function DayScreen() {
       const exercises = [];
       const seen = new Set();
       
-      // Add exercises from all program days
-      for (const day of ['DAY_A', 'DAY_B', 'DAY_C']) {
-        for (const ex of (programData[day] || [])) {
+      // Add exercises from ALL program days dynamically
+      const allDays = Object.keys(programData).filter(key => 
+        key.startsWith('DAY_') || key.startsWith('CUSTOM_')
+      );
+      
+      console.log('Loading exercises from days:', allDays);
+      console.log('Program data:', programData);
+      
+      for (const day of allDays) {
+        const dayExercises = programData[day] || [];
+        console.log(`Day ${day} has ${dayExercises.length} exercises`);
+        for (const ex of dayExercises) {
           if (!seen.has(ex.name)) {
             seen.add(ex.name);
             exercises.push(ex);
           }
         }
       }
+      
+      console.log('Total exercises found:', exercises.length);
       
       // Filter out exercises already in current workout
       const currentNames = program?.map(ex => ex.name) || [];
