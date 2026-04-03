@@ -1039,7 +1039,7 @@ const cancelRemoval = () => {
                       value={customExName}
                       onChange={e => setCustomExName(e.target.value)}
                       placeholder="e.g. Bulgarian Split Squat"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/90 text-sm font-bebas tracking-wider placeholder:text-white/20 focus:outline-none focus:border-white/30"
+                      className="w-full bg-white/5 rounded-xl px-4 py-3 text-white/90 text-sm font-bebas tracking-wider placeholder:text-white/20 focus:outline-none"
                     />
                   </div>
                   <div>
@@ -1051,8 +1051,8 @@ const cancelRemoval = () => {
                           onClick={() => setCustomExGroup(g)}
                           className={`py-2.5 rounded-xl font-bebas text-sm tracking-wider transition-colors ${
                             customExGroup === g
-                              ? 'bg-white/20 text-white border border-white/30'
-                              : 'bg-white/5 text-white/50 border border-white/10'
+                              ? 'bg-white/20 text-white'
+                              : 'bg-white/5 text-white/50'
                           }`}
                         >
                           {g}
