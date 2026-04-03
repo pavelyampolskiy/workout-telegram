@@ -400,6 +400,7 @@ export default function HomeScreen() {
       {
         id: 'achievements',
         type: 'button',
+        noBackground: true,
         size: { cols: 1, rows: 1 },
         content: (
           <button
@@ -614,7 +615,7 @@ export default function HomeScreen() {
                 </div>
                 <button
                   onClick={handleNewWorkout}
-                  className="card-press w-full mt-8 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
+                  className="card-press w-full mt-2 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>

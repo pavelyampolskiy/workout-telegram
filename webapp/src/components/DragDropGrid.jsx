@@ -118,8 +118,8 @@ export default function DragDropGrid({ items, onLayoutChange, editMode = false }
       touchAction: editMode ? 'pan-y' : 'auto'
     };
     
-    // Применяем фон только для обычных элементов, не для control
-    if (item.type !== 'control') {
+    // Применяем фон только для обычных элементов, не для control и не для noBackground
+    if (item.type !== 'control' && !item.noBackground) {
       baseStyle.background = 'rgba(255,255,255,0.03)';
     }
     
