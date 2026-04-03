@@ -56,6 +56,7 @@ export default function DayScreen() {
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [customExercises, setCustomExercises] = useState([]);
   const [addingEx, setAddingEx] = useState(false);
+  const [showNewExForm, setShowNewExForm] = useState(false);
   const [savingWorkout, setSavingWorkout] = useState(false); // for "Save Workout" → note screen
   const [retryTrigger, setRetryTrigger] = useState(0);
   const [elapsedSec, setElapsedSec] = useState(0);
@@ -364,6 +365,7 @@ export default function DayScreen() {
       }));
       setCustomExName('');
       setShowAddExercise(false);
+      setShowNewExForm(false);
     } catch (e) {
       showToast(e.message);
     } finally {
@@ -979,49 +981,105 @@ const cancelRemoval = () => {
           <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6 max-h-[80vh] flex flex-col">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
 
-            <div className="flex-1 overflow-y-auto space-y-1 mb-4">
-              {loadingExercises ? (
-                <div className="text-center text-white/40 py-4">
-                  Loading...
+            {!showNewExForm ? (
+              <>
+                <div className="flex-1 overflow-y-auto space-y-1 mb-4">
+                  {loadingExercises ? (
+                    <div className="text-center text-white/40 py-4">Loading...</div>
+                  ) : availableExercises.length > 0 ? (
+                    Object.entries(
+                      availableExercises.reduce((acc, ex) => {
+                        const d = (ex.fromDay || '').replace('DAY_', 'Day ').replace(/_/g, ' ');
+                        (acc[d] = acc[d] || []).push(ex);
+                        return acc;
+                      }, {})
+                    ).map(([dayName, exs]) => (
+                      <div key={dayName}>
+                        <div className="text-xs text-white/30 font-bebas tracking-wider mt-3 mb-1 px-1">{dayName}</div>
+                        {exs.map((exercise, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSelectExistingExercise(exercise)}
+                            className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors mb-1"
+                          >
+                            <div className="font-bebas text-sm text-white/90">{exercise.name}</div>
+                            <div className="text-xs text-white/40">{exercise.group}</div>
+                          </button>
+                        ))}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center text-white/40 py-4">All exercises already added</div>
+                  )}
                 </div>
-              ) : availableExercises.length > 0 ? (
-                // Group by day for clear structure
-                Object.entries(
-                  availableExercises.reduce((acc, ex) => {
-                    const d = (ex.fromDay || '').replace('DAY_', 'Day ').replace(/_/g, ' ');
-                    (acc[d] = acc[d] || []).push(ex);
-                    return acc;
-                  }, {})
-                ).map(([dayName, exs]) => (
-                  <div key={dayName}>
-                    <div className="text-xs text-white/30 font-bebas tracking-wider mt-3 mb-1 px-1">{dayName}</div>
-                    {exs.map((exercise, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleSelectExistingExercise(exercise)}
-                        className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors mb-1"
-                      >
-                        <div className="font-bebas text-sm text-white/90">{exercise.name}</div>
-                        <div className="text-xs text-white/40">{exercise.group}</div>
-                      </button>
-                    ))}
-                  </div>
-                ))
-              ) : (
-                <div className="text-center text-white/40 py-4">
-                  All exercises already added
-                </div>
-              )}
-            </div>
 
-            <div className="border-t border-white/10 pt-4">
-              <button
-                onClick={() => { setShowAddExercise(false); setAvailableExercises([]); }}
-                className="w-full text-white/50 py-3 font-bebas tracking-wider text-sm transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
+                <div className="border-t border-white/10 pt-4 space-y-2">
+                  <button
+                    onClick={() => setShowNewExForm(true)}
+                    className="w-full card-press py-3 rounded-xl text-white/90 font-bebas tracking-wider flex items-center justify-center gap-2"
+                    style={CARD_BTN_STYLE}
+                  >
+                    <PlusIcon /> Create New Exercise
+                  </button>
+                  <button
+                    onClick={() => { setShowAddExercise(false); setAvailableExercises([]); setShowNewExForm(false); }}
+                    className="w-full text-white/50 py-3 font-bebas tracking-wider text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex-1 overflow-y-auto space-y-4">
+                  <div>
+                    <label className="text-xs text-white/40 font-bebas tracking-wider mb-1 block">Exercise Name</label>
+                    <input
+                      type="text"
+                      value={customExName}
+                      onChange={e => setCustomExName(e.target.value)}
+                      placeholder="e.g. Bulgarian Split Squat"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/90 text-sm font-bebas tracking-wider placeholder:text-white/20 focus:outline-none focus:border-white/30"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs text-white/40 font-bebas tracking-wider mb-2 block">Muscle Group</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {MUSCLE_GROUPS.map(g => (
+                        <button
+                          key={g}
+                          onClick={() => setCustomExGroup(g)}
+                          className={`py-2.5 rounded-xl font-bebas text-sm tracking-wider transition-colors ${
+                            customExGroup === g
+                              ? 'bg-white/20 text-white border border-white/30'
+                              : 'bg-white/5 text-white/50 border border-white/10'
+                          }`}
+                        >
+                          {g}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-white/10 pt-4 mt-4 space-y-2">
+                  <button
+                    onClick={handleAddCustomExercise}
+                    disabled={!customExName.trim() || addingEx}
+                    className="w-full card-press py-3 rounded-xl text-white/90 font-bebas tracking-wider disabled:opacity-30"
+                    style={CARD_BTN_STYLE}
+                  >
+                    {addingEx ? 'Adding...' : `Add — ${customExGroup}`}
+                  </button>
+                  <button
+                    onClick={() => { setShowNewExForm(false); setCustomExName(''); }}
+                    className="w-full text-white/50 py-3 font-bebas tracking-wider text-sm"
+                  >
+                    Back to list
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
