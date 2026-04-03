@@ -239,7 +239,7 @@ export default function SupplementsScreen() {
           {/* Popular supplements */}
           {popularSupplements.length > 0 && (
             <div>
-              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Popular</h2>
+              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Current Supplements</h2>
               <div className="space-y-3">
                 {popularSupplements.map(supplement => (
                   <div key={supplement.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
