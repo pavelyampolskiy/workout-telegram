@@ -131,7 +131,13 @@ export default function App() {
         try { tg.setBackgroundColor('#000000'); } catch (_) {}
         // On viewport change (rotation, keyboard), just re‑expand instead of forcing fullscreen.
         try { tg.onEvent('viewportChanged', () => { doExpand(); }); } catch (_) {}
-        const uid = tg.initDataUnsafe?.user?.id;
+        const uid = tg.initDataUnsafe?.user?.id ?? (() => {
+          try {
+            const params = new URLSearchParams(tg.initData);
+            const user = JSON.parse(params.get('user') || '{}');
+            return user.id || null;
+          } catch { return null; }
+        })();
         if (uid) {
           setUserId(Number(uid));
         } else {
