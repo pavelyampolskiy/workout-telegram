@@ -883,10 +883,13 @@ async def get_supplements(user_id: int):
 
 @app.get("/api/supplements/active")
 async def get_active_supplements(user_id: int):
-    active = database.get_active_supplements(user_id)
-    return {
-        "names": [s["name"] for s in active]
-    }
+    import logging, traceback
+    try:
+        active = database.get_active_supplements(user_id)
+        return {"names": [s["name"] for s in active]}
+    except Exception as e:
+        logging.error("get_active_supplements error: %s\n%s", e, traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/supplements")
