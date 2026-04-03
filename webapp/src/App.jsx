@@ -137,6 +137,10 @@ export default function App() {
             const user = JSON.parse(params.get('user') || '{}');
             return user.id || null;
           } catch { return null; }
+        })() ?? (() => {
+          const p = new URLSearchParams(window.location.search);
+          const v = parseInt(p.get('uid'));
+          return isNaN(v) ? null : v;
         })();
         if (uid) {
           setUserId(Number(uid));

@@ -15,7 +15,7 @@ async def cmd_start(msg: Message):
     kb = InlineKeyboardMarkup(inline_keyboard=[[
         InlineKeyboardButton(
             text="🏋️ Open Workout App",
-            web_app=WebAppInfo(url=WEBAPP_URL),
+            web_app=WebAppInfo(url=f"{WEBAPP_URL}?uid={msg.from_user.id}"),
         )
     ]])
     await msg.answer("Tap the button to open the app.", reply_markup=kb)
