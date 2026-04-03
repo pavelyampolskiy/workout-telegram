@@ -646,13 +646,8 @@ export default function HomeScreen() {
                 background: 'rgba(0, 0, 0, 0.3)'
               }}
             >
-              <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/45 self-center">
-                  <ProgressPhotosIcon />
-                </span>
-                <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
-                  Progress Photos
-                </div>
+              <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
+                Progress Photos
               </div>
               
               <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
@@ -670,13 +665,8 @@ export default function HomeScreen() {
                 background: 'rgba(0, 0, 0, 0.3)'
               }}
             >
-              <div className="flex items-center gap-3">
-                <span className="shrink-0 flex items-center justify-center text-white/45 self-center">
-                  <SthenosAIIcon />
-                </span>
-                <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
-                  SthenOS AI Laboratory
-                </div>
+              <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
+                SthenOS AI Laboratory
               </div>
               
               <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
