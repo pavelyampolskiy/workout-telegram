@@ -275,26 +275,24 @@ export default function DayScreen() {
       const allDays = Object.keys(programData).filter(key => 
         key.startsWith('DAY_') || 
         key.startsWith('CUSTOM_') ||
-        key.includes('DAY') ||
-        key !== 'user_id' // исключаем служебные поля
+        key.includes('DAY')
       );
       
-      console.log('All available keys in programData:', Object.keys(programData));
-      console.log('Filtered days:', allDays);
-      console.log('Program data:', programData);
+      console.log('Found days:', allDays);
       
       for (const day of allDays) {
         const dayExercises = programData[day] || [];
-        console.log(`Day ${day} has ${dayExercises.length} exercises`);
+        console.log(`${day}: ${dayExercises.length} exercises`);
         for (const ex of dayExercises) {
           if (!seen.has(ex.name)) {
             seen.add(ex.name);
             exercises.push(ex);
+            console.log(`  - ${ex.name} (${ex.group})`);
           }
         }
       }
       
-      console.log('Total exercises found:', exercises.length);
+      console.log(`Total unique exercises: ${exercises.length}`);
       
       // Filter out exercises already in current workout
       const currentNames = program?.map(ex => ex.name) || [];
