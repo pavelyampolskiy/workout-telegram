@@ -535,6 +535,11 @@ export default function HomeScreen() {
 
       {/* Content: главная кнопка сверху, четыре кнопки внизу */}
       <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
+        {/* DEBUG: temporary user_id display */}
+        <div className="shrink-0 text-center py-1" style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontFamily: 'monospace' }}>
+          uid={userId} | tg={String(!!window.Telegram?.WebApp)} | uid_url={new URLSearchParams(window.location.search).get('uid')}
+        </div>
+
         {/* Верх: ARE YOU READY? + главная кнопка (New Workout / Continue) */}
         <div className="shrink-0 flex flex-col gap-4">
           <div className="pt-6 w-full">
