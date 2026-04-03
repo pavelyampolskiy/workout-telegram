@@ -271,14 +271,31 @@ export default function DayScreen() {
       const exercises = [];
       const seen = new Set();
       
+      // Show ALL keys in programData for debugging
+      console.log('=== ALL KEYS IN PROGRAM DATA ===');
+      const allKeys = Object.keys(programData);
+      console.log('All keys:', allKeys);
+      
+      // Show content of each key
+      for (const key of allKeys) {
+        const value = programData[key];
+        if (Array.isArray(value)) {
+          console.log(`${key}: ${value.length} exercises`);
+          value.forEach((ex, i) => console.log(`  ${i+1}. ${ex.name}`));
+        } else {
+          console.log(`${key}: ${typeof value} = ${value}`);
+        }
+      }
+      console.log('=== END KEYS ===');
+      
       // Add exercises from ALL program days dynamically
-      const allDays = Object.keys(programData).filter(key => 
+      const allDays = allKeys.filter(key => 
         key.startsWith('DAY_') || 
         key.startsWith('CUSTOM_') ||
         key.includes('DAY')
       );
       
-      console.log('Found days:', allDays);
+      console.log('Filtered days to load:', allDays);
       
       for (const day of allDays) {
         const dayExercises = programData[day] || [];
