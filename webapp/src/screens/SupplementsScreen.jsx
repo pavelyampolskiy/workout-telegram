@@ -211,7 +211,13 @@ export default function SupplementsScreen() {
     );
   }
 
-  const popularSupplements = Array.isArray(supplements) ? supplements.filter(s => s.is_preset) : [];
+  const popularSupplements = Array.isArray(supplements) ? supplements.filter(s => {
+  // Fix typo: "popolar" should be "popular"
+  if (s.category === 'popolar') {
+    s.category = 'popular';
+  }
+  return s.is_preset;
+}) : [];
   const customSupplements = Array.isArray(supplements) ? supplements.filter(s => !s.is_preset) : [];
 
   return (
@@ -233,7 +239,7 @@ export default function SupplementsScreen() {
           {/* Popular supplements */}
           {popularSupplements.length > 0 && (
             <div>
-              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Popular</h2>
+              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Current Supplements</h2>
               <div className="space-y-3">
                 {popularSupplements.map(supplement => (
                   <div key={supplement.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>

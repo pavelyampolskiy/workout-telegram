@@ -263,61 +263,35 @@ export default function DayScreen() {
 
   const loadAvailableExercises = async () => {
     if (!userId) return;
-    
+
     setLoadingExercises(true);
     try {
-      // Load program exercises
       const programData = await api.getProgram(userId);
       const exercises = [];
       const seen = new Set();
-      
-      // Show ALL keys in programData for debugging
-      console.log('=== ALL KEYS IN PROGRAM DATA ===');
-      const allKeys = Object.keys(programData);
-      console.log('All keys:', allKeys);
-      
-      // Show content of each key
-      for (const key of allKeys) {
-        const value = programData[key];
-        if (Array.isArray(value)) {
-          console.log(`${key}: ${value.length} exercises`);
-          value.forEach((ex, i) => console.log(`  ${i+1}. ${ex.name}`));
-        } else {
-          console.log(`${key}: ${typeof value} = ${value}`);
-        }
-      }
-      console.log('=== END KEYS ===');
-      
-      // Add exercises from ALL program days dynamically
-      const allDays = allKeys.filter(key => 
-        key.startsWith('DAY_') || 
-        key.startsWith('CUSTOM_') ||
-        key.includes('DAY')
+
+      const allDays = Object.keys(programData).filter(key =>
+        key.startsWith('DAY_') || key.startsWith('CUSTOM_') || key.includes('DAY')
       );
-      
-      console.log('Filtered days to load:', allDays);
-      
-      for (const day of allDays) {
-        const dayExercises = programData[day] || [];
-        console.log(`${day}: ${dayExercises.length} exercises`);
-        for (const ex of dayExercises) {
+
+      for (const d of allDays) {
+        for (const ex of (programData[d] || [])) {
           if (!seen.has(ex.name)) {
             seen.add(ex.name);
-            exercises.push(ex);
-            console.log(`  - ${ex.name} (${ex.group})`);
+            exercises.push({ ...ex, fromDay: d });
           }
         }
       }
-      
-      console.log(`Total unique exercises: ${exercises.length}`);
-      
-      // Filter out exercises already in current workout
-      const currentNames = program?.map(ex => ex.name) || [];
-      const available = exercises.filter(ex => !currentNames.includes(ex.name));
-      
+
+      // Filter out exercises already in the current workout (program + custom added)
+      const currentNames = new Set([
+        ...(program?.filter((_, i) => !removedExercises.includes(i)).map(ex => ex.name) || []),
+        ...customExercises.map(ex => ex.name),
+      ]);
+      const available = exercises.filter(ex => !currentNames.has(ex.name));
+
       setAvailableExercises(available);
     } catch (e) {
-      console.error('Error loading exercises:', e);
       setAvailableExercises([]);
     } finally {
       setLoadingExercises(false);
@@ -1004,38 +978,43 @@ const cancelRemoval = () => {
         <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black">
           <div className="modal-content mx-6 w-full max-w-sm bg-black/90 rounded-2xl p-6 max-h-[80vh] flex flex-col">
             <h3 className="font-bebas text-lg tracking-wider text-white/90 mb-4">Add Exercise</h3>
-            
-            <div className="text-xs text-white/40 mb-3 font-bebas tracking-wider">
-              Choose from existing exercises:
-            </div>
-            
-            <div className="flex-1 overflow-y-auto space-y-2 mb-4">
+
+            <div className="flex-1 overflow-y-auto space-y-1 mb-4">
               {loadingExercises ? (
                 <div className="text-center text-white/40 py-4">
                   Loading...
                 </div>
               ) : availableExercises.length > 0 ? (
-                availableExercises.map((exercise, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleSelectExistingExercise(exercise)}
-                    className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-                  >
-                    <div className="font-bebas text-sm text-white/90">{exercise.name}</div>
-                    <div className="text-xs text-white/40">{exercise.group}</div>
-                  </button>
+                // Group by day for clear structure
+                Object.entries(
+                  availableExercises.reduce((acc, ex) => {
+                    const d = (ex.fromDay || '').replace('DAY_', 'Day ').replace(/_/g, ' ');
+                    (acc[d] = acc[d] || []).push(ex);
+                    return acc;
+                  }, {})
+                ).map(([dayName, exs]) => (
+                  <div key={dayName}>
+                    <div className="text-xs text-white/30 font-bebas tracking-wider mt-3 mb-1 px-1">{dayName}</div>
+                    {exs.map((exercise, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSelectExistingExercise(exercise)}
+                        className="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors mb-1"
+                      >
+                        <div className="font-bebas text-sm text-white/90">{exercise.name}</div>
+                        <div className="text-xs text-white/40">{exercise.group}</div>
+                      </button>
+                    ))}
+                  </div>
                 ))
               ) : (
                 <div className="text-center text-white/40 py-4">
-                  No exercises available
+                  All exercises already added
                 </div>
               )}
             </div>
-            
+
             <div className="border-t border-white/10 pt-4">
-              <button className="w-full card-press py-3 rounded-xl text-white/90 font-bebas tracking-wider mb-2" style={CARD_BTN_STYLE}>
-                Add New Exercise
-              </button>
               <button
                 onClick={() => { setShowAddExercise(false); setAvailableExercises([]); }}
                 className="w-full text-white/50 py-3 font-bebas tracking-wider text-sm transition-colors"

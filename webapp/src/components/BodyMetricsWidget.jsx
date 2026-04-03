@@ -92,7 +92,6 @@ export default function BodyMetricsWidget() {
     );
   }
 
-  const displayText = latestMetrics.weight 
   return (
     <button
       onClick={() => navigate('metrics')}
