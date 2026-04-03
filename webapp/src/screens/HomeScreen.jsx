@@ -676,28 +676,13 @@ export default function HomeScreen() {
               </div>
             </button>
           </div>
-          <div className="mt-4">
-            <button
-              onClick={() => setEditMode(!editMode)}
-              className="card-press py-3 px-4 w-full flex flex-row justify-center items-center rounded-xl"
-            >
-              <div className="flex items-center gap-2">
-                {editMode ? (
-                  <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                    <path d="M20 6L9 17l-5-5"/>
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4 text-white/60" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                  </svg>
-                )}
-                <div className="font-bebas text-base text-white/60" style={{ letterSpacing: 'normal' }}>
-                  {editMode ? 'Done' : 'Edit Dashboard'}
-                </div>
-              </div>
-            </button>
-          </div>
+          <button
+            onClick={() => setEditMode(!editMode)}
+            className="w-full text-center font-bebas text-white/50 py-3 text-lg transition-colors"
+            style={{ letterSpacing: '0.05em' }}
+          >
+            {editMode ? 'Done' : 'Edit Dashboard'}
+          </button>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
