@@ -475,8 +475,10 @@ export default function HomeScreen() {
       .then(data => {
         console.log('Achievements data:', data);
         if (data && data.unlocked && data.unlocked.length > 0) {
-          // Get the most recent unlocked achievement
-          const latestAchievement = data.unlocked[0];
+          // Get the hardest unlocked achievement (highest threshold)
+          const latestAchievement = data.unlocked.reduce((best, ach) =>
+            ach.threshold > best.threshold ? ach : best
+          );
           console.log('Latest achievement:', latestAchievement);
           setLatestAchievement(latestAchievement);
         } else {
