@@ -90,15 +90,9 @@ export default function SupplementsWidget() {
         
         {/* Данные на одном уровне с заголовком */}
         <div className="w-full pl-0 py-2 rounded-lg text-left" style={{ background: 'none' }}>
-          <div className="flex flex-col items-center justify-center text-center py-4">
-            <div className="w-8 h-8 mb-2 text-white/20">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-                <ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(15 12 12)"/>
-                <path d="M12 7v10M8 9l8 0M8 15l8 0"/>
-              </svg>
-            </div>
+          <div className="flex flex-col items-start justify-center py-4">
             <div className="text-xs text-white/40">
-              Ещё нет добавок
+              No supplements yet
             </div>
           </div>
         </div>
