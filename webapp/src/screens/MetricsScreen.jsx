@@ -342,17 +342,18 @@ export default function MetricsScreen() {
               </div>
             </div>
 
-            <div className="flex gap-2 mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className={`flex-1 card-press font-bebas tracking-wider text-sm py-3 rounded-[14px] ${TEXT_PRIMARY} disabled:opacity-50`}
+                className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90 disabled:opacity-50"
+                style={{ background: 'rgba(255,255,255,0.05)' }}
               >
                 {submitting ? <Spinner size={16} /> : 'Add'}
               </button>
               <button
                 onClick={() => setShowAddModal(false)}
-                className={`flex-1 py-3 font-bebas tracking-wider text-sm rounded-[14px] ${TEXT_TERTIARY}`}
+                className="w-full py-3 font-bebas tracking-wider text-white/45"
               >
                 Cancel
               </button>
@@ -384,13 +385,14 @@ export default function MetricsScreen() {
             <div className="space-y-3">
               <button
                 onClick={confirmDelete}
-                className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-white font-bebas tracking-wider"
+                className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90"
+                style={{ background: 'rgba(255,255,255,0.05)' }}
               >
                 Delete
               </button>
               <button
                 onClick={cancelDelete}
-                className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all text-white font-bebas tracking-wider"
+                className="w-full py-3 font-bebas tracking-wider text-white/45"
               >
                 Cancel
               </button>

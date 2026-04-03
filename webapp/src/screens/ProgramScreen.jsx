@@ -239,19 +239,13 @@ export default function ProgramScreen() {
               placeholder="Day name"
               autoFocus
             />
-            <div className="flex gap-2 mt-4">
-              <button
-                type="button"
-                onClick={closeAddDay}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider text-white/70 hover:text-white transition-colors"
-              >
-                Cancel
-              </button>
+            <div className="flex flex-col gap-2 mt-4">
               <button
                 type="button"
                 onClick={submitAddDay}
                 disabled={!newDayLabel.trim() || adding}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{ background: 'rgba(255,255,255,0.05)' }}
               >
                 {adding ? (
                   <>
@@ -261,6 +255,13 @@ export default function ProgramScreen() {
                 ) : (
                   'Add'
                 )}
+              </button>
+              <button
+                type="button"
+                onClick={closeAddDay}
+                className="w-full py-3 font-bebas tracking-wider text-white/45"
+              >
+                Cancel
               </button>
             </div>
           </div>
@@ -287,19 +288,13 @@ export default function ProgramScreen() {
               placeholder="Day name"
               autoFocus
             />
-            <div className="flex gap-2 mt-4">
-              <button
-                type="button"
-                onClick={closeRename}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider text-white/70 hover:text-white transition-colors"
-              >
-                Cancel
-              </button>
+            <div className="flex flex-col gap-2 mt-4">
               <button
                 type="button"
                 onClick={submitRename}
                 disabled={!renameValue.trim() || renaming}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-white/20 text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{ background: 'rgba(255,255,255,0.05)' }}
               >
                 {renaming ? (
                   <>
@@ -309,6 +304,13 @@ export default function ProgramScreen() {
                 ) : (
                   'Save'
                 )}
+              </button>
+              <button
+                type="button"
+                onClick={closeRename}
+                className="w-full py-3 font-bebas tracking-wider text-white/45"
+              >
+                Cancel
               </button>
             </div>
           </div>
@@ -327,19 +329,13 @@ export default function ProgramScreen() {
           >
             <div className="font-bebas text-white/90 tracking-wider mb-1">Delete day</div>
             <p className="text-white/50 text-sm font-sans mb-4">Remove "{deleteDay.label}"? Its exercises will be deleted. Past workouts stay in history.</p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => setDeleteDay(null)}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider text-white/70 hover:text-white transition-colors"
-              >
-                Cancel
-              </button>
+            <div className="flex flex-col gap-2">
               <button
                 type="button"
                 onClick={submitDeleteDay}
                 disabled={deleting}
-                className="flex-1 py-2.5 rounded-xl font-bebas tracking-wider bg-red-500/20 text-red-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{ background: 'rgba(255,255,255,0.05)' }}
               >
                 {deleting ? (
                   <>
@@ -349,6 +345,13 @@ export default function ProgramScreen() {
                 ) : (
                   'Delete'
                 )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setDeleteDay(null)}
+                className="w-full py-3 font-bebas tracking-wider text-white/45"
+              >
+                Cancel
               </button>
             </div>
           </div>
