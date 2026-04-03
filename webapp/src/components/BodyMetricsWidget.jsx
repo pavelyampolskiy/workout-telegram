@@ -81,19 +81,13 @@ export default function BodyMetricsWidget() {
           Body Metrics
         </div>
         
-        {/* Плашка с сообщением */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            navigate('metrics');
-          }}
-          className="w-full px-3 py-2 rounded-lg text-left"
-          style={{ background: 'none' }}
-        >
-          <div className="text-xs text-white/40">
-            Tap to add first measurement
+        <div className="w-full pl-0 py-2 rounded-lg text-left" style={{ background: 'none' }}>
+          <div className="flex flex-col items-start justify-center py-4">
+            <div className="text-xs text-white/40">
+              Tap to add first measurement
+            </div>
           </div>
-        </button>
+        </div>
       </button>
     );
   }
@@ -122,8 +116,12 @@ export default function BodyMetricsWidget() {
         )}
         
         {!latestMetrics?.weight && (
-          <div className="text-xs text-white/40">
-            Tap to add first measurement
+          <div className="w-full pl-0 py-2 rounded-lg text-left" style={{ background: 'none' }}>
+            <div className="flex flex-col items-start justify-center py-4">
+              <div className="text-xs text-white/40">
+                Tap to add first measurement
+              </div>
+            </div>
           </div>
         )}
       </div>
