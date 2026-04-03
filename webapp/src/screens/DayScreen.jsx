@@ -273,10 +273,14 @@ export default function DayScreen() {
       
       // Add exercises from ALL program days dynamically
       const allDays = Object.keys(programData).filter(key => 
-        key.startsWith('DAY_') || key.startsWith('CUSTOM_')
+        key.startsWith('DAY_') || 
+        key.startsWith('CUSTOM_') ||
+        key.includes('DAY') ||
+        key !== 'user_id' // исключаем служебные поля
       );
       
-      console.log('Loading exercises from days:', allDays);
+      console.log('All available keys in programData:', Object.keys(programData));
+      console.log('Filtered days:', allDays);
       console.log('Program data:', programData);
       
       for (const day of allDays) {
