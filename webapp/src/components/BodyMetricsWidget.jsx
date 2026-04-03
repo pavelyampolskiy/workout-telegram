@@ -93,7 +93,6 @@ export default function BodyMetricsWidget() {
           <div className="text-xs text-white/60">
             <div className="flex justify-between items-center">
               <span>No measurements yet</span>
-              <span style={{ color: '#6b7280' }}>📊</span>
             </div>
             <div className="text-xs text-white/40 mt-1">
               Tap to add first measurement
@@ -131,7 +130,6 @@ export default function BodyMetricsWidget() {
           <div className="text-xs text-white/60">
             <div className="flex justify-between items-center">
               <span>No measurements yet</span>
-              <span style={{ color: '#6b7280' }}>📊</span>
             </div>
             <div className="text-xs text-white/40 mt-1">
               Tap to add first measurement
