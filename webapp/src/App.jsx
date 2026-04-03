@@ -154,7 +154,12 @@ export default function App() {
           setUserId(parseInt(localId));
         }
       } else {
-        // PWA or browser mode
+        // PWA or browser mode — check ?uid= from bot URL first
+        const urlUid = parseInt(new URLSearchParams(window.location.search).get('uid'));
+        if (!isNaN(urlUid) && urlUid > 0) {
+          setUserId(urlUid);
+          return;
+        }
         let localId = localStorage.getItem('local_user_id');
         if (!localId) {
           localId = String(-Math.floor(Date.now() / 1000));
