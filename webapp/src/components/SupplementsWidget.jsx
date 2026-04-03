@@ -14,6 +14,7 @@ export default function SupplementsWidget() {
   const { navigate, userId } = useApp();
   const [activeSupplements, setActiveSupplements] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [debugErr, setDebugErr] = useState(null);
 
   useEffect(() => {
     if (!userId) return;
@@ -25,7 +26,8 @@ export default function SupplementsWidget() {
       .then(data => {
         setActiveSupplements(data.names || []);
       })
-      .catch(() => {
+      .catch((e) => {
+        setDebugErr(e?.message || String(e));
         // Если сервер недоступен, загружаем из localStorage
         const localSupplements = localStorage.getItem(`supplements_${userId}`);
         if (localSupplements) {
@@ -100,6 +102,7 @@ export default function SupplementsWidget() {
             <div className="text-xs text-white/40">
               Ещё нет добавок
             </div>
+            {debugErr && <div className="text-xs text-red-400/80 mt-1 break-all">{debugErr}</div>}
           </div>
         </div>
       </button>
