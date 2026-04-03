@@ -862,7 +862,7 @@ async def send_daily_reminders(request: ReminderRequest):
 
 @app.get("/api/supplements")
 async def get_supplements(user_id: int):
-    supplements = database.get_supplements(user_id)
+    supplements = db_ops.get_supplements(user_id)
     return {
         "items": [
             {
@@ -890,7 +890,7 @@ async def get_active_supplements(user_id: int):
 @app.post("/api/supplements")
 async def create_supplement(user_id: int, data: dict):
     try:
-        supplement_id = database.create_supplement(
+        supplement_id = db_ops.create_supplement(
             user_id=user_id,
             name=data["name"],
             dosage=data["dosage"],
@@ -907,7 +907,7 @@ async def create_supplement(user_id: int, data: dict):
 @app.put("/api/supplements/{supplement_id}")
 async def update_supplement(supplement_id: int, data: dict):
     try:
-        database.update_supplement(supplement_id, **data)
+        db_ops.update_supplement(supplement_id, **data)
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -916,7 +916,7 @@ async def update_supplement(supplement_id: int, data: dict):
 @app.delete("/api/supplements/{supplement_id}")
 async def delete_supplement(supplement_id: int):
     try:
-        database.delete_supplement(supplement_id)
+        db_ops.delete_supplement(supplement_id)
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -925,7 +925,7 @@ async def delete_supplement(supplement_id: int):
 @app.get("/api/supplements/preset")
 async def get_preset_supplements():
     return {
-        "items": database.get_preset_supplements()
+        "items": db_ops.get_preset_supplements()
     }
 
 
