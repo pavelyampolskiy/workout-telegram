@@ -135,7 +135,7 @@ const WorkoutTimer = ({ startedAt }) => {
   };
   
   return (
-    <span className="font-bebas text-white/60" style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>
+    <span className="font-bebas text-white/40" style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>
       {formatTime(elapsed)}
     </span>
   );
