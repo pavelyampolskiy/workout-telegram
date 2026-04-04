@@ -7,7 +7,7 @@ import { ErrorScreen } from '../components/ErrorScreen';
 import { Spinner } from '../components/Spinner';
 import { DaySkeleton } from '../components/Skeleton';
 import { ExerciseNameInput } from '../components/ExerciseNameInput';
-import { CARD_BTN_STYLE, PRIMARY_CARD_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE, fmtTime } from '../shared';
+import { CARD_BTN_STYLE, SECONDARY_CARD_STYLE, PAGE_HEADING_STYLE, fmtTime } from '../shared';
 import { MUSCLE_GROUPS } from '../constants';
 import { ConfirmModal } from '../components/ConfirmModal';
 
@@ -777,8 +777,7 @@ const cancelRemoval = () => {
                           console.log('Remove clicked:', ex.name);
                           handleRemoveExercise(ex.name);
                         }}
-                        className="text-white/60 text-sm font-bebas px-3 py-1 rounded-xl transition-colors shrink-0"
-                        style={CARD_BTN_STYLE}
+                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded hover:bg-red-500/40 transition-colors shrink-0 remove-button-pulse"
                       >
                         Remove
                       </button>
@@ -875,8 +874,7 @@ const cancelRemoval = () => {
                           console.log('Remove custom clicked:', ex.name);
                           handleRemoveCustomExercise(ex.id);
                         }}
-                        className="text-white/60 text-sm font-bebas px-3 py-1 rounded-xl transition-colors shrink-0"
-                        style={CARD_BTN_STYLE}
+                        className="text-red-400 text-sm font-bebas px-3 py-1 bg-red-500/30 rounded hover:bg-red-500/40 transition-colors shrink-0 remove-button-pulse"
                       >
                         Remove
                       </button>
@@ -905,8 +903,8 @@ const cancelRemoval = () => {
           {/* Delete Exercise button */}
           <button
             onClick={() => setEditMode(!editMode)}
-            className="card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors"
-            style={editMode ? { background: 'rgba(255,255,255,0.08)' } : SECONDARY_CARD_STYLE}
+            className={`card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${editMode ? 'done-button-active' : ''}`}
+            style={SECONDARY_CARD_STYLE}
           >
             <span className={ICON_WRAPPER}>
               {editMode ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -944,8 +942,7 @@ const cancelRemoval = () => {
           <button
             onClick={handleSaveWorkout}
             disabled={savingWorkout || editMode}
-            className={`card-press w-full text-white/90 font-bebas tracking-wider text-lg py-4 rounded-2xl disabled:opacity-50 flex items-center justify-center gap-2 ${editMode ? 'save-workout-disabled' : ''}`}
-            style={PRIMARY_CARD_STYLE}
+            className={`btn-active-style card-press w-full text-white/92 font-bebas tracking-wider text-lg py-4 rounded-[14px] disabled:opacity-50 flex items-center justify-center gap-2 ${editMode ? 'save-workout-disabled' : ''}`}
           >
             {savingWorkout ? (
               <>
@@ -1091,11 +1088,47 @@ const cancelRemoval = () => {
   );
 }
 
+// Add CSS for edit mode and Done button animation
 const style = document.createElement('style');
 style.textContent = `
   .edit-mode {
     position: relative;
   }
+  
+  .done-button-active {
+    animation: pulse 2s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.1)) !important;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
+  }
+  
+  .remove-button-pulse {
+    animation: pulse-red 2s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1)) !important;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3) !important;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    }
+    50% { 
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+    }
+  }
+  
+  @keyframes pulse-red {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+    50% { 
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+    }
+  }
+  
   .save-workout-disabled {
     opacity: 0.3 !important;
     pointer-events: none !important;
