@@ -85,37 +85,11 @@ Error generating stack: `+r.message+`
   }
   
   .done-button-active {
-    animation: pulse 2s ease-in-out infinite;
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(34, 197, 94, 0.1)) !important;
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
   }
-  
+
   .remove-button-pulse {
-    animation: pulse-red 2s ease-in-out infinite;
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.1)) !important;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3) !important;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { 
-      transform: scale(1);
-      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
-    }
-    50% { 
-      transform: scale(1.02);
-      box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
-    }
-  }
-  
-  @keyframes pulse-red {
-    0%, 100% { 
-      transform: scale(1);
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
-    }
-    50% { 
-      transform: scale(1.02);
-      box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
-    }
+    background: rgba(255, 255, 255, 0.06) !important;
   }
   
   .save-workout-disabled {
