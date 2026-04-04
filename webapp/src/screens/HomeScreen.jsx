@@ -374,7 +374,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('history')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/45 self-center"><HistoryIcon /></span>
@@ -389,7 +389,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('stats')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/45"><StatsIcon /></span>
@@ -405,7 +405,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('achievements')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4 relative"
+            className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4 relative"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/45 self-center"><TrophyIcon /></span>
@@ -420,7 +420,7 @@ export default function HomeScreen() {
         content: (
           <button
             onClick={() => !isEditMode && navigateFn('program')}
-            className="card-press w-full h-full flex flex-row justify-between items-center p-4"
+            className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
             <span className="shrink-0 flex items-center justify-center text-white/45"><ProgramIcon /></span>
