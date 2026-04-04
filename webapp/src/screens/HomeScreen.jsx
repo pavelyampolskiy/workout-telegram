@@ -597,7 +597,7 @@ export default function HomeScreen() {
                   {latestAchievement && (
                     <button
                       className="card-press py-2 px-3 flex flex-row justify-between items-center rounded-xl opacity-80"
-                      style={{ background: 'rgba(255,255,255,0.06)', fontSize: 'clamp(9px, 4vw, 20px)' }}
+                      style={{ fontSize: 'clamp(9px, 4vw, 20px)' }}
                       onClick={() => navigate('achievements')}
                     >
                       <span className="shrink-0 flex items-center justify-center text-white/30 mr-2"><TrophyIcon style={{ width: '0.7em', height: '0.7em' }} /></span>
