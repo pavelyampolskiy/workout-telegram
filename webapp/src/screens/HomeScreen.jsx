@@ -400,7 +400,6 @@ export default function HomeScreen() {
       {
         id: 'achievements',
         type: 'button',
-        noBackground: true,
         size: { cols: 1, rows: 1 },
         content: (
           <button
