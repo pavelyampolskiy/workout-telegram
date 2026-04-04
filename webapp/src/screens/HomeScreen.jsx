@@ -595,7 +595,6 @@ export default function HomeScreen() {
                   </div>
                   {latestAchievement && (
                     <div className="py-2 px-3 flex flex-row items-center opacity-80" style={{ fontSize: 'clamp(9px, 4vw, 20px)' }}>
-                      <span className="shrink-0 flex items-center justify-center text-white/30 mr-2"><TrophyIcon style={{ width: '0.7em', height: '0.7em' }} /></span>
                       <div className="flex flex-col items-end gap-0">
                         <span className="text-white/40 text-xs font-bebas tracking-wider" style={{ fontSize: '0.7em' }}>Latest Achievement</span>
                         <span className="text-white/60 text-sm font-bebas tracking-wider" style={{ fontSize: '0.8em' }}>
