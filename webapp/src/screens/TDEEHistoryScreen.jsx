@@ -231,13 +231,14 @@ export default function TDEEHistoryScreen() {
             <div className="space-y-3">
               <button
                 onClick={confirmDelete}
-                className="w-full py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-white font-bebas tracking-wider"
+                className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90"
+                style={{ background: 'rgba(255,255,255,0.05)' }}
               >
                 Delete
               </button>
               <button
                 onClick={cancelDelete}
-                className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all text-white font-bebas tracking-wider"
+                className="w-full py-3 font-bebas tracking-wider text-white/45"
               >
                 Cancel
               </button>

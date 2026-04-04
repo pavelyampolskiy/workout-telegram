@@ -118,13 +118,14 @@ export default function RecoveryCheckScreen() {
           <div className="space-y-3">
             <button
               onClick={handleContinue}
-              className="btn-active-style card-press w-full rounded-[14px] py-4 px-4 text-center font-bebas tracking-wider text-white/90 text-xl"
+              className="btn-active-style card-press w-full rounded-[14px] py-4 px-4 text-center font-bebas tracking-wider text-white/92 text-lg"
             >
               Start Workout
             </button>
             <button
               onClick={() => navigate('home')}
-              className="w-full text-white font-bebas tracking-wider py-2 text-lg"
+              className="w-full text-center font-bebas text-white/50 py-3 transition-colors text-lg"
+              style={{ letterSpacing: '0.05em' }}
             >
               Back to Home
             </button>
