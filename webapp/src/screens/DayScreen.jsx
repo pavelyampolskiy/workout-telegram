@@ -906,12 +906,12 @@ const cancelRemoval = () => {
             className={`card-press flex-1 rounded-2xl p-4 text-left flex items-center gap-3 transition-colors ${editMode ? 'done-button-active' : ''}`}
             style={SECONDARY_CARD_STYLE}
           >
-            <span className={ICON_WRAPPER}>
+            <span className={editMode ? 'shrink-0 text-green-400' : ICON_WRAPPER}>
               {editMode ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
                 <path d="M20 6L9 17l-5-5"/>
               </svg> : <TrashIcon />}
             </span>
-            <div className={`font-bebas tracking-wider text-base ${editMode ? 'text-white' : 'text-white/70'}`}>
+            <div className={`font-bebas tracking-wider text-base ${editMode ? 'text-green-400' : 'text-white/70'}`}>
               {editMode ? 'Done' : 'Delete Exercise'}
             </div>
           </button>
