@@ -81,6 +81,8 @@ export default function ExerciseScreen() {
   const [restTimer, setRestTimer] = useState(null);
   const [restDuration, setRestDuration] = useState(getStoredRestDuration);
   const [customRestInput, setCustomRestInput] = useState('');
+  const [maxWeight, setMaxWeight] = useState(0);
+  const [newRecord, setNewRecord] = useState(null);
 
   const weightRef = useRef(null);
 
@@ -159,6 +161,7 @@ export default function ExerciseScreen() {
         setSets(setsData);
         setLastDate(lastData.date);
         setLastSets(lastData.sets);
+        setMaxWeight(lastData.max_weight || 0);
         
         // Auto-fill from last workout's first set (if no sets done yet)
         if (setsData.length === 0 && lastData.sets?.length > 0) {
@@ -206,7 +209,14 @@ export default function ExerciseScreen() {
       const { id } = await api.addSet(exDbId, w, r);
       const updated = [...sets, { id, set_number: sets.length + 1, weight: w, reps: r }];
       setSets(updated);
-      window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      // Check for new personal record
+      if (w > 0 && w > maxWeight) {
+        setNewRecord({ weight: w, previous: maxWeight });
+        setMaxWeight(w);
+        window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+      } else {
+        window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('light');
+      }
       setJustSaved(true);
       setTimeout(() => setJustSaved(false), 400);
       setRestEndTime(Date.now() + restDuration * 1000);
@@ -583,6 +593,45 @@ export default function ExerciseScreen() {
         </div>
       </div>
       </div>
+
+      {/* New Record popup */}
+      {newRecord && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-6"
+          style={{ background: 'rgba(0,0,0,0.75)' }}
+          onClick={() => setNewRecord(null)}
+        >
+          <div
+            className="new-record-pop w-full max-w-sm rounded-3xl p-8 flex flex-col items-center text-center"
+            style={{ background: 'linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,165,0,0.10) 100%)', border: '1px solid rgba(255,215,0,0.25)', backdropFilter: 'blur(20px)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="text-5xl mb-3" style={{ filter: 'drop-shadow(0 0 12px rgba(255,215,0,0.5))' }}>
+              <svg viewBox="0 0 24 24" fill="none" className="w-14 h-14" stroke="rgba(255,215,0,0.9)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </div>
+            <div className="font-bebas text-3xl tracking-wide" style={{ color: 'rgba(255,215,0,0.95)', textShadow: '0 0 20px rgba(255,215,0,0.3)' }}>
+              New Record!
+            </div>
+            <div className="font-bebas text-5xl text-white mt-2 tracking-wider">
+              {fmtW(newRecord.weight)} kg
+            </div>
+            {newRecord.previous > 0 && (
+              <div className="font-bebas text-base text-white/50 mt-1 tracking-wider">
+                Previous best: {fmtW(newRecord.previous)} kg
+              </div>
+            )}
+            <button
+              onClick={() => setNewRecord(null)}
+              className="mt-6 px-8 py-2.5 rounded-xl font-bebas tracking-wider text-base text-white/90"
+              style={{ background: 'rgba(255,255,255,0.12)' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

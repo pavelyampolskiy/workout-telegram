@@ -606,6 +606,24 @@ def get_last_exercise_sets(user_id: int, exercise_name: str, exclude_workout_id:
         return row["date"], sets
 
 
+def get_exercise_max_weight(user_id: int, exercise_name: str, exclude_workout_id: int) -> float:
+    """Return the all-time max weight for an exercise (excluding current workout)."""
+    with db() as conn:
+        row = conn.execute(
+            """
+            SELECT MAX(ws.weight) as max_weight
+            FROM workout_sets ws
+            JOIN workout_exercises we ON ws.workout_exercise_id = we.id
+            JOIN workouts w ON we.workout_id = w.id
+            WHERE w.user_id = ? AND LOWER(we.name) = LOWER(?) AND w.id != ?
+            """,
+            (user_id, exercise_name, exclude_workout_id),
+        ).fetchone()
+        if row and row["max_weight"] is not None:
+            return float(row["max_weight"])
+        return 0.0
+
+
 # ── Day Customizations ──────────────────────────────────────────────────────────
 
 def save_day_customization(user_id: int, day_type: str, removed_exercises: list, added_exercises: list):

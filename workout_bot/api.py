@@ -296,11 +296,13 @@ def get_last_exercise(ex_id: int, user_id: int, exclude_wid: int):
     if not ex:
         raise HTTPException(status_code=404, detail="Not found")
     last_date, last_sets = db_ops.get_last_exercise_sets(user_id, ex["name"], exclude_wid)
+    max_weight = db_ops.get_exercise_max_weight(user_id, ex["name"], exclude_wid)
     if not last_date:
-        return {"date": None, "sets": []}
+        return {"date": None, "sets": [], "max_weight": max_weight}
     return {
         "date": last_date,
         "sets": [{"weight": s["weight"], "reps": s["reps"]} for s in last_sets],
+        "max_weight": max_weight,
     }
 
 
