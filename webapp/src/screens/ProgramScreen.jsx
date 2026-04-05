@@ -181,7 +181,7 @@ export default function ProgramScreen() {
                 <button
                   type="button"
                   onClick={(e) => openRename(e, day)}
-                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white hover:text-white/80 active:text-white transition-colors"
+                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-white/60 active:text-white transition-colors"
                   aria-label="Rename day"
                 >
                   <PencilIcon />
@@ -189,7 +189,7 @@ export default function ProgramScreen() {
                 <button
                   type="button"
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeleteDay({ id: day.id, label: day.label, key: day.key }); }}
-                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white hover:text-red-400/80 active:text-red-400 transition-colors"
+                  className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-white/40 hover:text-red-400/80 active:text-red-400 transition-colors"
                   aria-label="Delete day"
                 >
                   <TrashIcon />
