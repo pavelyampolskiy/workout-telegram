@@ -553,7 +553,7 @@ export default function HomeScreen() {
                 </div>
                 <button
                   onClick={handleContinue}
-                  className="card-press w-full rounded-xl py-12 px-4 flex flex-row justify-between items-center mt-8"
+                  className="card-press w-full rounded-xl py-12 pl-8 pr-4 flex flex-row justify-between items-center mt-8"
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}>
@@ -579,7 +579,7 @@ export default function HomeScreen() {
                 </button>
                 <button
                   onClick={() => setShowDismissConfirm(true)}
-                  className="w-full py-12 px-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl mt-2"
+                  className="w-full py-12 pl-8 pr-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl mt-2"
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
@@ -609,7 +609,7 @@ export default function HomeScreen() {
                 </div>
                 <button
                   onClick={handleNewWorkout}
-                  className="card-press w-full mt-2 py-4 px-4 flex flex-row justify-between items-center rounded-xl"
+                  className="card-press w-full mt-2 py-4 pl-8 pr-4 flex flex-row justify-between items-center rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
                   <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
