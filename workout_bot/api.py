@@ -1,5 +1,6 @@
 # api.py
 import asyncio
+import os
 import pathlib
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +16,8 @@ from program import PROGRAM
 app = FastAPI(title="Workout API")
 
 DIST_DIR = pathlib.Path(__file__).resolve().parent.parent / "webapp" / "dist"
+
+ADMIN_USER_ID = int(os.getenv("ADMIN_USER_ID", "0"))
 
 # Bot instance (set by bot.py on startup)
 _bot = None
@@ -37,7 +40,8 @@ app.add_middleware(
 # ── Program ───────────────────────────────────────────────────────────────────
 
 def _program_for_user(user_id: int):
-    """Build program dict for user: each day_key -> list of { group, name, target_sets }. Uses user_program if set, else PROGRAM default."""
+    """Build program dict for user: each day_key -> list of { group, name, target_sets }.
+    Fallback order: user's custom → admin's program → hardcoded PROGRAM."""
     days = db_ops.get_custom_days(user_id)
     if not days:
         _seed_default_days(user_id)
@@ -48,10 +52,14 @@ def _program_for_user(user_id: int):
         custom = db_ops.get_user_program(user_id, key)
         if custom:
             out[key] = [{"group": r["grp"], "name": r["name"], "target_sets": r["target_sets"]} for r in custom]
-        elif key in PROGRAM:
-            out[key] = [{"group": x["group"], "name": x["name"], "target_sets": x["target_sets"]} for x in PROGRAM[key]]
         else:
-            out[key] = []
+            admin_prog = db_ops.get_user_program(ADMIN_USER_ID, key) if ADMIN_USER_ID else []
+            if admin_prog:
+                out[key] = [{"group": r["grp"], "name": r["name"], "target_sets": r["target_sets"]} for r in admin_prog]
+            elif key in PROGRAM:
+                out[key] = [{"group": x["group"], "name": x["name"], "target_sets": x["target_sets"]} for x in PROGRAM[key]]
+            else:
+                out[key] = []
     return out
 
 
@@ -88,7 +96,13 @@ DEFAULT_DAYS = [
 
 
 def _seed_default_days(user_id: int):
-    """Insert default days for a user who has none yet."""
+    """Insert default days for a user who has none yet. Copies admin's days if available."""
+    if ADMIN_USER_ID and user_id != ADMIN_USER_ID:
+        admin_days = db_ops.get_custom_days(ADMIN_USER_ID)
+        if admin_days:
+            for d in admin_days:
+                db_ops.create_custom_day(user_id, d["key"], d["label"], d["sort_order"])
+            return
     for i, d in enumerate(DEFAULT_DAYS):
         db_ops.create_custom_day(user_id, d["key"], d["label"], i)
 
