@@ -967,6 +967,57 @@ async def get_preset_supplements():
     }
 
 
+# ── Body Metrics ─────────────────────────────────────────────────────────────
+
+@app.get("/api/body-metrics")
+def get_body_metrics(user_id: int):
+    metrics = db_ops.get_body_metrics(user_id)
+    return {"items": metrics}
+
+
+class BodyMetricBody(BaseModel):
+    user_id: int
+    date: Optional[str] = None
+    weight: Optional[float] = None
+    body_fat: Optional[float] = None
+    muscle_mass: Optional[float] = None
+    chest: Optional[float] = None
+    waist: Optional[float] = None
+    arms: Optional[float] = None
+    hips: Optional[float] = None
+
+
+@app.post("/api/body-metrics")
+def create_body_metric(body: BodyMetricBody):
+    data = {k: v for k, v in body.model_dump().items() if k != "user_id" and v is not None}
+    metric_id = db_ops.create_body_metric(body.user_id, data)
+    return {"id": metric_id}
+
+
+class BodyMetricUpdate(BaseModel):
+    date: Optional[str] = None
+    weight: Optional[float] = None
+    body_fat: Optional[float] = None
+    muscle_mass: Optional[float] = None
+    chest: Optional[float] = None
+    waist: Optional[float] = None
+    arms: Optional[float] = None
+    hips: Optional[float] = None
+
+
+@app.put("/api/body-metrics/{metric_id}")
+def update_body_metric(metric_id: int, body: BodyMetricUpdate):
+    data = {k: v for k, v in body.model_dump().items() if v is not None}
+    db_ops.update_body_metric(metric_id, data)
+    return {"ok": True}
+
+
+@app.delete("/api/body-metrics/{metric_id}")
+def delete_body_metric(metric_id: int):
+    db_ops.delete_body_metric(metric_id)
+    return {"ok": True}
+
+
 # ── Serve frontend SPA ────────────────────────────────────────────────────────
 
 if DIST_DIR.is_dir():
