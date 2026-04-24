@@ -212,7 +212,7 @@ function StatusWidget({ userId }) {
 }
 
 export default function HomeScreen() {
-  const { navigate, userId, setActiveWorkout, recoveryData, showToast } = useApp();
+  const { navigate, userId, setActiveWorkout, showToast } = useApp();
   const [unfinished, setUnfinished] = useState(null);
   const [showDismissConfirm, setShowDismissConfirm] = useState(false);
   const [dismissing, setDismissing] = useState(false);
@@ -508,23 +508,11 @@ export default function HomeScreen() {
     navigate('day', { day: unfinished.type, dayLabel: unfinished.label });
   };
 
-  const isRecoveryDoneToday = () => {
-    const ts = recoveryData?.timestamp;
-    if (!ts) return false;
-    const d = new Date(ts);
-    const today = new Date();
-    return d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear();
-  };
-
   const handleNewWorkout = () => {
     if (window.Telegram?.WebApp?.HapticFeedback) {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
-    if (isRecoveryDoneToday()) {
-      navigate('workout');
-    } else {
-      navigate('recovery-check');
-    }
+    navigate('workout');
   };
 
   return (

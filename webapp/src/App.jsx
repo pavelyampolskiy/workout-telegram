@@ -13,7 +13,6 @@ import HistoryDetailScreen from './screens/HistoryDetailScreen';
 import StatsScreen from './screens/StatsScreen';
 import ProgressScreen from './screens/ProgressScreen';
 import AchievementsScreen from './screens/AchievementsScreen';
-import RecoveryCheckScreen from './screens/RecoveryCheckScreen';
 import ProgramScreen from './screens/ProgramScreen';
 import ProgramDayScreen from './screens/ProgramDayScreen';
 import SupplementsScreen from './screens/SupplementsScreen';
@@ -39,7 +38,6 @@ const SCREENS = {
   stats: StatsScreen,
   progress: ProgressScreen,
   achievements: AchievementsScreen,
-  'recovery-check': RecoveryCheckScreen,
   program: ProgramScreen,
   'program-day': ProgramDayScreen,
   supplements: SupplementsScreen,
@@ -89,7 +87,6 @@ export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
   const [activeWorkout, setActiveWorkout] = useState(null);
-  const [recoveryData, setRecoveryData] = useState(null); // { score, modifier, timestamp }
   const [toast, setToast] = useState(null);
   const [countdown, setCountdown] = useState(null); // { step, targetScreen, targetParams }
 
@@ -336,8 +333,6 @@ export default function App() {
         params: current.params,
         activeWorkout,
         setActiveWorkout,
-        recoveryData,
-        setRecoveryData,
         showToast,
       }}
     >
