@@ -200,14 +200,7 @@ export default function SupplementsScreen() {
     );
   }
 
-  const popularSupplements = Array.isArray(supplements) ? supplements.filter(s => {
-  // Fix typo: "popolar" should be "popular"
-  if (s.category === 'popolar') {
-    s.category = 'popular';
-  }
-  return s.is_preset;
-}) : [];
-  const customSupplements = Array.isArray(supplements) ? supplements.filter(s => !s.is_preset) : [];
+  const allSupplements = Array.isArray(supplements) ? supplements : [];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -225,42 +218,8 @@ export default function SupplementsScreen() {
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto space-y-6">
-          {/* Popular supplements */}
-          {popularSupplements.length > 0 && (
-            <div>
-              <h2 className={`font-bebas text-lg tracking-wider mb-3 ${TEXT_SECONDARY}`}>Current Supplements</h2>
-              <div className="space-y-3">
-                {popularSupplements.map(supplement => (
-                  <div key={supplement.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`font-bebas text-base tracking-wider ${TEXT_PRIMARY} truncate`}>{supplement.name}</h3>
-                        <div className="font-bebas font-light leading-none mt-2" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
-                          <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{supplement.dosage}</span>
-                        </div>
-                        {supplement.duration_days && (
-                          <div className={`text-xs ${TEXT_TERTIARY} mt-2`}>Course: {supplement.duration_days} days</div>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 ml-3">
-                        <button
-                          onClick={() => handleDelete(supplement.id)}
-                          className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
-                        >
-                          <TrashIcon />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Custom supplements */}
           <div>
-            {/* Плашка My Supplements с добавками внутри */}
-            <div className="card-press py-12 pl-8 pr-4 min-h-0 rounded-xl gap-2 mb-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
+            <div className="py-12 pl-8 pr-4 min-h-0 rounded-xl gap-2 mb-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <button
@@ -273,50 +232,40 @@ export default function SupplementsScreen() {
                   <div className="font-bebas text-base text-white/25 shrink-0" style={{ letterSpacing: 'normal' }}>My Supplements</div>
                 </div>
               </div>
-              
-              {/* Добавки внутри плашки */}
-              {customSupplements.length > 0 ? (
+
+              {allSupplements.length > 0 ? (
                 <div className="space-y-2">
-                  {customSupplements.map(supplement => (
-                    <button
+                  {allSupplements.map(supplement => (
+                    <div
                       key={supplement.id}
-                      onClick={() => navigate('supplements')}
-                      className="card-press w-full rounded-lg p-3 text-left"
+                      className="w-full rounded-lg p-3 text-left"
                       style={{ background: 'rgba(255,255,255,0.05)' }}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 space-y-1">
-                          <div className="flex items-baseline gap-2 flex-wrap">
-                            <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
-                              {supplement.name}
-                            </span>
-                          </div>
+                          <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
+                            {supplement.name}
+                          </span>
                           <div className="font-bebas font-light leading-none" style={{ fontSize: '0.8em', textShadow: '0 1px 3px rgba(0,0,0,0.7)' }}>
                             <span className="text-white/25 shrink-0" style={{ letterSpacing: 'normal', textShadow: '0 1px 2px rgba(0,0,0,0.8)' }}>{supplement.dosage}</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 ml-3">
                           <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleEdit(supplement);
-                            }}
+                            onClick={() => handleEdit(supplement)}
                             className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
                           >
                             <EditIcon />
                           </button>
                           <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(supplement.id);
-                            }}
+                            onClick={() => handleDelete(supplement.id)}
                             className={`shrink-0 p-1 ${TEXT_TERTIARY}`}
                           >
                             <TrashIcon />
                           </button>
                         </div>
                       </div>
-                    </button>
+                    </div>
                   ))}
                 </div>
               ) : (
