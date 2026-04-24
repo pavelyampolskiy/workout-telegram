@@ -682,7 +682,7 @@ const cancelRemoval = () => {
           </button>
           <button
             onClick={() => setShowNote(false)}
-            className="w-full mt-1 text-white/40 py-1 font-bebas tracking-wider text-sm"
+            className="btn-active-style card-press w-full mt-2 text-white/40 font-bebas tracking-wider text-lg py-4 rounded-[14px]"
           >
             Back to Workout
           </button>
