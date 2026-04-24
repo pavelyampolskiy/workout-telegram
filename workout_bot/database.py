@@ -762,7 +762,7 @@ def update_workout_note(workout_id: int, text: str):
 def stats_period(user_id: int, since: date):
     with db() as conn:
         rows = conn.execute(
-            "SELECT type, COUNT(*) as cnt FROM workouts WHERE user_id=? AND date>=? GROUP BY type",
+            "SELECT type, COUNT(*) as cnt FROM workouts WHERE user_id=? AND date>=? AND finished_at IS NOT NULL GROUP BY type",
             (user_id, since.isoformat()),
         ).fetchall()
     total = sum(r["cnt"] for r in rows)
@@ -774,7 +774,7 @@ def stats_frequency(user_id: int, weeks: int = 4):
     since = date.today() - timedelta(weeks=weeks)
     with db() as conn:
         total = conn.execute(
-            "SELECT COUNT(*) as cnt FROM workouts WHERE user_id=? AND date>=?",
+            "SELECT COUNT(*) as cnt FROM workouts WHERE user_id=? AND date>=? AND finished_at IS NOT NULL",
             (user_id, since.isoformat()),
         ).fetchone()["cnt"]
     avg = round(total / weeks, 1)
