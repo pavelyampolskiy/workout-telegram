@@ -36,6 +36,7 @@ export default function SupplementsScreen() {
   const [formData, setFormData] = useState({
     name: '',
     dosage: '',
+    intake_time: '',
     duration_days: '',
     is_preset: false,
     category: 'custom'
@@ -52,34 +53,21 @@ export default function SupplementsScreen() {
 
   const loadData = async () => {
     if (!userId) return;
-    
+
     try {
-      console.log('Loading supplements for user:', userId);
-      
       const [suppsRes, presetRes] = await Promise.all([
         api.getSupplements(userId),
         api.getPresetSupplements()
       ]);
-      
-      console.log('API responses:', { suppsRes, presetRes });
-      
-      // Правильно обрабатываем ответ API
+
       const userSupplements = Array.isArray(suppsRes?.items) ? suppsRes.items : Array.isArray(suppsRes) ? suppsRes : [];
       const presetSupplementsList = Array.isArray(presetRes?.items) ? presetRes.items : Array.isArray(presetRes) ? presetRes : [];
-      
-      console.log('Processed supplements:', { userSupplements, presetSupplementsList });
-      
+
       setSupplements(userSupplements);
       setPresetSupplements(presetSupplementsList);
-      
-      // Debug: проверяем что загрузилось
-      console.log('Preset supplements loaded:', presetSupplementsList);
-      console.log('User supplements loaded:', userSupplements);
     } catch (error) {
       console.error('Error loading supplements:', error);
-      console.log('Using fallback data');
-      
-      // Если API недоступен, используем локальные предустановленные добавки
+
       setPresetSupplements([
         {name: "Protein", dosage: "", intake_time: "After workout"},
         {name: "Creatine", dosage: "", intake_time: "Any time"},
@@ -87,15 +75,13 @@ export default function SupplementsScreen() {
         {name: "Omega-3", dosage: "", intake_time: "With meal"},
         {name: "Pre-workout", dosage: "", intake_time: "30 min before workout"},
       ]);
-      
-      // Загружаем добавки из localStorage если сервер недоступен
+
       const localSupplements = localStorage.getItem(`supplements_${userId}`);
       if (localSupplements) {
         setSupplements(JSON.parse(localSupplements));
       } else {
         setSupplements([]);
       }
-      // Не показываем toast для 500 ошибки, чтобы не мешать пользователю
     } finally {
       setLoading(false);
     }
@@ -106,6 +92,7 @@ export default function SupplementsScreen() {
     setFormData({
       name: '',
       dosage: '',
+      intake_time: '',
       duration_days: '',
       is_preset: false,
       category: 'custom'
@@ -186,6 +173,7 @@ export default function SupplementsScreen() {
     setFormData({
       name: supplement.name,
       dosage: supplement.dosage,
+      intake_time: supplement.intake_time || '',
       duration_days: supplement.duration_days || '',
       is_preset: supplement.is_preset,
       category: supplement.category
@@ -197,6 +185,7 @@ export default function SupplementsScreen() {
     setFormData({
       name: preset.name,
       dosage: preset.dosage,
+      intake_time: preset.intake_time || '',
       duration_days: '',
       is_preset: true,
       category: 'popular'

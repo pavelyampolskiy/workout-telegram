@@ -910,7 +910,7 @@ async def create_supplement(user_id: int, data: dict):
             user_id=user_id,
             name=data["name"],
             dosage=data["dosage"],
-            intake_time=data["intake_time"],
+            intake_time=data.get("intake_time", ""),
             duration_days=data.get("duration_days"),
             is_preset=data.get("is_preset", False),
             category=data.get("category", "custom"),
