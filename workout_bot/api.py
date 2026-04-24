@@ -903,27 +903,46 @@ async def get_active_supplements(user_id: int):
     return {"names": [s["name"] for s in active]}
 
 
+class SupplementBody(BaseModel):
+    user_id: int
+    name: str
+    dosage: str
+    intake_time: str = ""
+    duration_days: Optional[int] = None
+    is_preset: bool = False
+    category: str = "custom"
+
+
 @app.post("/api/supplements")
-async def create_supplement(user_id: int, data: dict):
+async def create_supplement(body: SupplementBody):
     try:
         supplement_id = db_ops.create_supplement(
-            user_id=user_id,
-            name=data["name"],
-            dosage=data["dosage"],
-            intake_time=data.get("intake_time", ""),
-            duration_days=data.get("duration_days"),
-            is_preset=data.get("is_preset", False),
-            category=data.get("category", "custom"),
+            user_id=body.user_id,
+            name=body.name,
+            dosage=body.dosage,
+            intake_time=body.intake_time,
+            duration_days=body.duration_days,
+            is_preset=body.is_preset,
+            category=body.category,
         )
         return {"id": supplement_id}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
+class SupplementUpdate(BaseModel):
+    name: Optional[str] = None
+    dosage: Optional[str] = None
+    intake_time: Optional[str] = None
+    duration_days: Optional[int] = None
+    is_active: Optional[bool] = None
+
+
 @app.put("/api/supplements/{supplement_id}")
-async def update_supplement(supplement_id: int, data: dict):
+async def update_supplement(supplement_id: int, body: SupplementUpdate):
     try:
-        db_ops.update_supplement(supplement_id, **data)
+        updates = {k: v for k, v in body.model_dump().items() if v is not None}
+        db_ops.update_supplement(supplement_id, **updates)
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
