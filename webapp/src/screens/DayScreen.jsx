@@ -222,39 +222,28 @@ export default function DayScreen() {
       ? Math.round((Date.now() - activeWorkout.startedAt) / 60000)
       : null;
     setDurationMin(mins);
-    setSavingWorkout(true);
-    try {
-      const completionDate = activeWorkout?.isBackdated 
-        ? activeWorkout.backdateDate 
-        : undefined;
-      
-      await api.finishWorkout(workoutId, completionDate);
-      // Clear active workout from localStorage when finishing
-      localStorage.removeItem(`activeWorkout_${userId}`);
-      // Clear custom exercises from localStorage when finishing
-      localStorage.removeItem(`customExercises_${workoutId}`);
-      localStorage.removeItem(`removedExercises_${workoutId}`);
-      setShowNote(true);
-    } catch (e) {
-      showToast(e.message);
-    }
-    setSavingWorkout(false);
+    setShowNote(true);
   };
 
   const handleDone = async () => {
     setSavingWorkout(true);
     try {
-      // Save note and rating if provided
-      if (note.trim() || rating !== 3) {
-        if (note.trim()) {
-          await api.addNote(workoutId, note);
-        }
-        if (rating !== 3) {
-          await api.saveRating(workoutId, rating);
-        }
+      const completionDate = activeWorkout?.isBackdated
+        ? activeWorkout.backdateDate
+        : undefined;
+
+      await api.finishWorkout(workoutId, completionDate);
+      localStorage.removeItem(`activeWorkout_${userId}`);
+      localStorage.removeItem(`customExercises_${workoutId}`);
+      localStorage.removeItem(`removedExercises_${workoutId}`);
+
+      if (note.trim()) {
+        await api.addNote(workoutId, note);
       }
-      
-      // Go to home screen
+      if (rating !== 3) {
+        await api.saveRating(workoutId, rating);
+      }
+
       resetTo('home');
     } catch (e) {
       showToast(e.message);
@@ -644,7 +633,7 @@ const cancelRemoval = () => {
       <div className="min-h-screen relative flex flex-col overflow-hidden">
         <ScreenBg image="/gym-bg.jpg" overlay="bg-black/65" blur={3} scale={1} />
         <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto pb-36">
-          <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Workout saved!</h1>
+          <h1 className="font-bebas text-white pt-6 mb-2" style={PAGE_HEADING_STYLE}>Finish Workout</h1>
           {durationMin !== null && durationMin > 0 && (
             <p className="text-white/55 text-sm mb-5 font-bebas tracking-wider">{durationMin} min</p>
           )}
@@ -692,10 +681,10 @@ const cancelRemoval = () => {
             )}
           </button>
           <button
-            onClick={() => resetTo('home')}
+            onClick={() => setShowNote(false)}
             className="w-full mt-1 text-white/40 py-1 font-bebas tracking-wider text-sm"
           >
-            Skip
+            Back to Workout
           </button>
         </div>
       </div>
