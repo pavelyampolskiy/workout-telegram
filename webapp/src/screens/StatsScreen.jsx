@@ -159,9 +159,9 @@ export default function StatsScreen() {
     async function load() {
       try {
         const [week, month, year, freq, months] = await Promise.all([
-          api.getStats(userId, 7, true), // true = current calendar week (Mon–today)
-          api.getStats(userId, 30),
-          api.getStats(userId, 365),
+          api.getStats(userId, 7, true),
+          api.getStats(userId, 0, false, true),
+          api.getStats(userId, 0, false, false, true),
           api.getFrequency(userId),
           api.getFrequencyMonths(userId),
         ]);
@@ -229,8 +229,8 @@ export default function StatsScreen() {
     setLoading(true);
     Promise.all([
       api.getStats(userId, 7, true),
-      api.getStats(userId, 30),
-      api.getStats(userId, 365),
+      api.getStats(userId, 0, false, true),
+      api.getStats(userId, 0, false, false, true),
       api.getFrequency(userId),
       api.getFrequencyMonths(userId),
     ])

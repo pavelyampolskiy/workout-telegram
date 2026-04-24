@@ -434,11 +434,14 @@ def update_note(workout_id: int, body: TextBody):
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/stats")
-def get_stats(user_id: int, days: int = 7, calendar_week: bool = False):
+def get_stats(user_id: int, days: int = 7, calendar_week: bool = False, calendar_month: bool = False, calendar_year: bool = False):
     today = date.today()
     if calendar_week:
-        # Current calendar week (Monday = start of week)
         since = today - timedelta(days=today.weekday())
+    elif calendar_month:
+        since = today.replace(day=1)
+    elif calendar_year:
+        since = today.replace(month=1, day=1)
     else:
         since = today - timedelta(days=days)
     total, by_type = db_ops.stats_period(user_id, since)
