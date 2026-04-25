@@ -90,22 +90,6 @@ const TDEEIcon = () => (
   </svg>
 );
 
-const ProgressPhotosIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-    <circle cx="8.5" cy="8.5" r="1.5"/>
-    <polyline points="21,15 16,10 5,21"/>
-  </svg>
-);
-
-const SthenosAIIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-    {/* Лампочка */}
-    <path d="M12 2v4m0 12a4 4 0 01-4 4h8a4 4 0 01-4-4"/>
-    <path d="M12 2L9.5 4.5M12 2l2.5 2.5M9 11c1-1 2-1 3 0s2 1 3 0"/>
-  </svg>
-);
-
 // Timer component for workout duration
 const WorkoutTimer = ({ startedAt }) => {
   const [elapsed, setElapsed] = useState(0);
@@ -622,43 +606,6 @@ export default function HomeScreen() {
             editMode={editMode}
           />
           <div className="mt-4">
-            <button
-              onClick={() => navigate('progress-photos')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-              style={{
-                background: 'rgba(0, 0, 0, 0.3)'
-              }}
-            >
-              <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
-                Progress Photos
-              </div>
-              
-              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-                <div className="text-xs text-white whitespace-pre-line text-right">
-                  <span className="text-white/60">Track your transformation</span>
-                </div>
-              </div>
-            </button>
-          </div>
-          <div className="mt-4">
-            <button
-              onClick={() => navigate('ai-coach')}
-              className="card-press py-12 pl-8 pr-4 min-h-0 flex flex-row justify-between items-center min-w-0 rounded-xl gap-2 w-full"
-              style={{
-                background: 'rgba(0, 0, 0, 0.3)'
-              }}
-            >
-              <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>
-                SthenOS AI Laboratory
-              </div>
-              
-              <div className="px-3 py-1 rounded-lg bg-white/10 border border-transparent min-w-0 flex-1 text-right">
-                <div className="text-xs text-white whitespace-pre-line text-right">
-                  <span className="text-white/60">in progress...</span>
-                </div>
-              </div>
-            </button>
-          </div>
           <button
             onClick={() => setEditMode(!editMode)}
             className="w-full text-center font-bebas text-white/45 py-2 shrink-0 transition-colors"
@@ -666,6 +613,7 @@ export default function HomeScreen() {
           >
             {editMode ? 'Done' : 'Edit Dashboard'}
           </button>
+          </div>
         </div>
           {unfinished && showDismissConfirm && createPortal(
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5 bg-black/80 backdrop-blur-xl" style={{ WebkitBackdropFilter: 'blur(24px)' }} role="dialog" aria-modal="true">
