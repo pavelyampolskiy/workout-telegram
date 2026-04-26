@@ -27,6 +27,7 @@ export default function HistoryDetailScreen() {
   const [customExGroup, setCustomExGroup] = useState('CHEST');
   const [addingEx, setAddingEx] = useState(false);
   const [editNote, setEditNote] = useState('');
+  const [editCardio, setEditCardio] = useState(null);
   useEffect(() => {
     if (!workoutId) return;
     api.getWorkout(workoutId)
@@ -226,31 +227,163 @@ export default function HistoryDetailScreen() {
                 </div>
               )}
             </div>
-            {workout.type !== 'CARDIO' && (
-              <button
-                onClick={() => {
-                  if (!editMode) {
-                    setEditNote(workout.note || '');
-                  } else if (editNote !== (workout.note || '')) {
+            <button
+              onClick={() => {
+                if (!editMode) {
+                  setEditNote(workout.note || '');
+                  if (workout.type === 'CARDIO' && workout.cardio) {
+                    setEditCardio({
+                      activity_type: workout.cardio.activity_type || '',
+                      duration_seconds: workout.cardio.duration_seconds || 0,
+                      distance: workout.cardio.distance != null ? String(workout.cardio.distance) : '',
+                      distance_unit: workout.cardio.distance_unit || 'km',
+                      calories: workout.cardio.calories != null ? String(workout.cardio.calories) : '',
+                      avg_heart_rate: workout.cardio.avg_heart_rate != null ? String(workout.cardio.avg_heart_rate) : '',
+                      avg_watts: workout.cardio.avg_watts != null ? String(workout.cardio.avg_watts) : '',
+                      notes: workout.cardio.notes || '',
+                    });
+                  }
+                } else {
+                  if (workout.type !== 'CARDIO' && editNote !== (workout.note || '')) {
                     api.updateNote(workoutId, editNote.trim()).then(() => {
                       setWorkout(prev => ({ ...prev, note: editNote.trim() || null }));
                     }).catch(e => showToast(e.message));
                   }
-                  setEditMode(!editMode);
-                }}
-                className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
-              >
-                {editMode ? 'Done' : 'Edit'}
-              </button>
-            )}
+                  if (workout.type === 'CARDIO' && editCardio) {
+                    const data = {
+                      activity_type: editCardio.activity_type || 'Other',
+                      duration_seconds: editCardio.duration_seconds,
+                      distance: editCardio.distance.trim() ? parseFloat(editCardio.distance.replace(',', '.')) : null,
+                      distance_unit: editCardio.distance_unit,
+                      calories: editCardio.calories.trim() ? parseInt(editCardio.calories) : null,
+                      avg_heart_rate: editCardio.avg_heart_rate.trim() ? parseInt(editCardio.avg_heart_rate) : null,
+                      avg_watts: editCardio.avg_watts.trim() ? parseInt(editCardio.avg_watts) : null,
+                      notes: editCardio.notes.trim(),
+                    };
+                    api.updateCardio(workoutId, data).then(() => {
+                      setWorkout(prev => ({ ...prev, cardio: data }));
+                    }).catch(e => showToast(e.message));
+                  }
+                  setEditCardio(null);
+                }
+                setEditMode(!editMode);
+              }}
+              className={`font-bebas tracking-wider text-sm px-3 py-1 rounded-lg transition-colors ${editMode ? 'bg-white/20 text-white' : 'text-white/50'}`}
+            >
+              {editMode ? 'Done' : 'Edit'}
+            </button>
           </div>
         </div>
 
         {/* Cardio */}
-        {workout.type === 'CARDIO' && workout.cardio && (
+        {workout.type === 'CARDIO' && workout.cardio && !editMode && (
           <div className="backdrop-blur-sm rounded-2xl p-4 mb-3" style={DARK_CARD_STYLE}>
-            <div className="font-sans text-white/40 text-sm mb-1">Cardio</div>
-            <p className="text-white/80 text-sm">{workout.cardio}</p>
+            {workout.cardio.activity_type && (
+              <div className="font-bebas tracking-wider text-base text-white mb-2">{workout.cardio.activity_type}</div>
+            )}
+            <div className="flex flex-wrap gap-3 text-white/60 text-sm font-sans">
+              {workout.cardio.duration_seconds > 0 && (
+                <span>{Math.floor(workout.cardio.duration_seconds / 60)} min</span>
+              )}
+              {workout.cardio.distance != null && (
+                <span>{workout.cardio.distance} {workout.cardio.distance_unit || 'km'}</span>
+              )}
+              {workout.cardio.calories != null && <span>{workout.cardio.calories} kcal</span>}
+              {workout.cardio.avg_heart_rate != null && <span>{workout.cardio.avg_heart_rate} bpm</span>}
+              {workout.cardio.avg_watts != null && <span>{workout.cardio.avg_watts} W</span>}
+            </div>
+            {workout.cardio.notes && (
+              <p className="text-white/50 text-sm mt-2 font-sans">{workout.cardio.notes}</p>
+            )}
+          </div>
+        )}
+        {workout.type === 'CARDIO' && editMode && editCardio && (
+          <div className="backdrop-blur-sm rounded-2xl p-4 mb-3 space-y-3" style={DARK_CARD_STYLE}>
+            <div>
+              <p className="font-sans text-white/35 text-[10px] uppercase tracking-wider mb-2">Activity</p>
+              <div className="flex flex-wrap gap-2">
+                {['Running','Cycling','Swimming','Walking','Rowing','Elliptical','Other'].map(a => (
+                  <button
+                    key={a}
+                    type="button"
+                    onClick={() => setEditCardio(prev => ({ ...prev, activity_type: prev.activity_type === a ? '' : a }))}
+                    className={`px-2.5 py-1.5 rounded-lg font-sans text-xs transition-colors ${
+                      editCardio.activity_type === a ? 'bg-white/20 text-white' : 'bg-white/5 text-white/50'
+                    }`}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Distance</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={editCardio.distance}
+                  onChange={e => setEditCardio(prev => ({ ...prev, distance: e.target.value.replace(/[^0-9.,]/g, '') }))}
+                  className="w-20 bg-white/10 rounded px-2 py-1.5 text-white text-sm"
+                />
+                {['km','mi','m'].map(u => (
+                  <button
+                    key={u}
+                    type="button"
+                    onClick={() => setEditCardio(prev => ({ ...prev, distance_unit: u }))}
+                    className={`px-2 py-1 rounded text-xs font-sans ${
+                      editCardio.distance_unit === u ? 'bg-white/20 text-white' : 'bg-white/5 text-white/50'
+                    }`}
+                  >
+                    {u}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Calories</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={editCardio.calories}
+                  onChange={e => setEditCardio(prev => ({ ...prev, calories: e.target.value.replace(/[^0-9]/g, '') }))}
+                  placeholder="kcal"
+                  className="w-full bg-white/10 rounded px-2 py-1.5 text-white text-sm placeholder-white/25"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Avg HR</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={editCardio.avg_heart_rate}
+                  onChange={e => setEditCardio(prev => ({ ...prev, avg_heart_rate: e.target.value.replace(/[^0-9]/g, '') }))}
+                  placeholder="bpm"
+                  className="w-full bg-white/10 rounded px-2 py-1.5 text-white text-sm placeholder-white/25"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Avg W</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={editCardio.avg_watts}
+                  onChange={e => setEditCardio(prev => ({ ...prev, avg_watts: e.target.value.replace(/[^0-9]/g, '') }))}
+                  placeholder="watts"
+                  className="w-full bg-white/10 rounded px-2 py-1.5 text-white text-sm placeholder-white/25"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Notes</label>
+              <textarea
+                value={editCardio.notes}
+                onChange={e => setEditCardio(prev => ({ ...prev, notes: e.target.value }))}
+                placeholder="Notes..."
+                className="w-full appearance-none bg-white/10 rounded-xl p-3 text-white/80 placeholder-white/25 resize-none h-16 outline-none text-sm font-sans"
+              />
+            </div>
           </div>
         )}
 

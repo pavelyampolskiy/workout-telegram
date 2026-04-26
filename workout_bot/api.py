@@ -257,7 +257,16 @@ def get_workout(workout_id: int):
         "rating": w["rating"],
         "exercises": exercises,
         "prev_exercises": prev_exercises,
-        "cardio": cardio["text"] if cardio else None,
+        "cardio": {
+            "activity_type": cardio["activity_type"],
+            "duration_seconds": cardio["duration_seconds"],
+            "distance": cardio["distance"],
+            "distance_unit": cardio["distance_unit"],
+            "calories": cardio["calories"],
+            "avg_heart_rate": cardio["avg_heart_rate"],
+            "avg_watts": cardio["avg_watts"],
+            "notes": cardio["notes"],
+        } if cardio else None,
         "note": note["text"] if note else None,
     }
 
@@ -266,7 +275,7 @@ def get_workout(workout_id: int):
 def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None):
     rows, has_more = db_ops.get_history(user_id, offset, limit, workout_type=type)
     return {
-        "items": [{"id": r["id"], "date": r["date"], "type": r["type"], "started_at": r["started_at"], "total_sets": r["total_sets"], "total_volume": r["total_volume"], "duration_min": r["duration_min"]} for r in rows],
+        "items": [{"id": r["id"], "date": r["date"], "type": r["type"], "started_at": r["started_at"], "total_sets": r["total_sets"], "total_volume": r["total_volume"], "duration_min": r["duration_min"], "cardio_activity": r["cardio_activity"]} for r in rows],
         "has_more": has_more,
     }
 
@@ -405,15 +414,46 @@ class TextBody(BaseModel):
     text: str
 
 
+class CardioBody(BaseModel):
+    activity_type: str = ""
+    duration_seconds: int = 0
+    distance: Optional[float] = None
+    distance_unit: str = "km"
+    calories: Optional[int] = None
+    avg_heart_rate: Optional[int] = None
+    avg_watts: Optional[int] = None
+    notes: str = ""
+
+
 @app.post("/api/workouts/{workout_id}/cardio")
-def add_cardio(workout_id: int, body: TextBody):
-    cid = db_ops.add_cardio(workout_id, body.text)
+def add_cardio(workout_id: int, body: CardioBody):
+    cid = db_ops.add_cardio(
+        workout_id,
+        activity_type=body.activity_type,
+        duration_seconds=body.duration_seconds,
+        distance=body.distance,
+        distance_unit=body.distance_unit,
+        calories=body.calories,
+        avg_heart_rate=body.avg_heart_rate,
+        avg_watts=body.avg_watts,
+        notes=body.notes,
+    )
     return {"id": cid}
 
 
 @app.put("/api/workouts/{workout_id}/cardio")
-def update_cardio(workout_id: int, body: TextBody):
-    db_ops.update_cardio(workout_id, body.text)
+def update_cardio(workout_id: int, body: CardioBody):
+    db_ops.update_cardio(
+        workout_id,
+        activity_type=body.activity_type,
+        duration_seconds=body.duration_seconds,
+        distance=body.distance,
+        distance_unit=body.distance_unit,
+        calories=body.calories,
+        avg_heart_rate=body.avg_heart_rate,
+        avg_watts=body.avg_watts,
+        notes=body.notes,
+    )
     return {"ok": True}
 
 
