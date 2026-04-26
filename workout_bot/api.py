@@ -265,6 +265,8 @@ def get_workout(workout_id: int):
             "calories": cardio["calories"],
             "avg_heart_rate": cardio["avg_heart_rate"],
             "avg_watts": cardio["avg_watts"],
+            "avg_speed": cardio.get("avg_speed"),
+            "difficulty_level": cardio.get("difficulty_level"),
             "notes": cardio["notes"],
         } if cardio else None,
         "note": note["text"] if note else None,
@@ -422,6 +424,8 @@ class CardioBody(BaseModel):
     calories: Optional[int] = None
     avg_heart_rate: Optional[int] = None
     avg_watts: Optional[int] = None
+    avg_speed: Optional[float] = None
+    difficulty_level: Optional[int] = None
     notes: str = ""
 
 
@@ -436,6 +440,8 @@ def add_cardio(workout_id: int, body: CardioBody):
         calories=body.calories,
         avg_heart_rate=body.avg_heart_rate,
         avg_watts=body.avg_watts,
+        avg_speed=body.avg_speed,
+        difficulty_level=body.difficulty_level,
         notes=body.notes,
     )
     return {"id": cid}
@@ -452,6 +458,8 @@ def update_cardio(workout_id: int, body: CardioBody):
         calories=body.calories,
         avg_heart_rate=body.avg_heart_rate,
         avg_watts=body.avg_watts,
+        avg_speed=body.avg_speed,
+        difficulty_level=body.difficulty_level,
         notes=body.notes,
     )
     return {"ok": True}

@@ -19,8 +19,10 @@ const ACTIVITIES = [
   { key: 'Other', label: 'Other' },
 ];
 
-const DISTANCE_UNITS = ['km', 'mi', 'm'];
-const SHOW_WATTS = ['Cycling', 'Rowing'];
+const DISTANCE_UNITS = ['km', 'mi', 'm', 'floors'];
+const SHOW_WATTS = ['Cycling', 'Rowing', 'Stepper'];
+const SHOW_SPEED = ['Stepper'];
+const SHOW_LEVEL = ['Stepper', 'Elliptical', 'Cycling'];
 const SHOW_HR = ['Running', 'Cycling', 'Swimming', 'Walking', 'Rowing', 'Elliptical', 'Stepper'];
 
 export default function CardioScreen() {
@@ -32,6 +34,8 @@ export default function CardioScreen() {
   const [calories, setCalories] = useState('');
   const [avgHeartRate, setAvgHeartRate] = useState('');
   const [avgWatts, setAvgWatts] = useState('');
+  const [avgSpeed, setAvgSpeed] = useState('');
+  const [difficultyLevel, setDifficultyLevel] = useState('');
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -62,6 +66,8 @@ export default function CardioScreen() {
               setCalories(w.cardio.calories != null ? String(w.cardio.calories) : '');
               setAvgHeartRate(w.cardio.avg_heart_rate != null ? String(w.cardio.avg_heart_rate) : '');
               setAvgWatts(w.cardio.avg_watts != null ? String(w.cardio.avg_watts) : '');
+              setAvgSpeed(w.cardio.avg_speed != null ? String(w.cardio.avg_speed) : '');
+              setDifficultyLevel(w.cardio.difficulty_level != null ? String(w.cardio.difficulty_level) : '');
               setNotes(w.cardio.notes || '');
             }
           });
@@ -131,9 +137,12 @@ export default function CardioScreen() {
     const next = activityType === key ? '' : key;
     setActivityType(next);
     if (next === 'Swimming' && distanceUnit === 'km') setDistanceUnit('m');
-    if (next !== 'Swimming' && distanceUnit === 'm') setDistanceUnit('km');
+    if (next === 'Stepper' && !['floors'].includes(distanceUnit)) setDistanceUnit('floors');
+    if (next !== 'Swimming' && next !== 'Stepper' && (distanceUnit === 'm' || distanceUnit === 'floors')) setDistanceUnit('km');
     if (!SHOW_WATTS.includes(next)) setAvgWatts('');
     if (!SHOW_HR.includes(next)) setAvgHeartRate('');
+    if (!SHOW_SPEED.includes(next)) setAvgSpeed('');
+    if (!SHOW_LEVEL.includes(next)) setDifficultyLevel('');
   };
 
   const handleSave = async () => {
@@ -147,6 +156,8 @@ export default function CardioScreen() {
         calories: calories.trim() ? parseInt(calories) : null,
         avg_heart_rate: avgHeartRate.trim() ? parseInt(avgHeartRate) : null,
         avg_watts: avgWatts.trim() ? parseInt(avgWatts) : null,
+        avg_speed: avgSpeed.trim() ? parseFloat(avgSpeed.replace(',', '.')) : null,
+        difficulty_level: difficultyLevel.trim() ? parseInt(difficultyLevel) : null,
         notes: notes.trim(),
       };
       await api.addCardio(workoutId, data);
@@ -344,6 +355,36 @@ export default function CardioScreen() {
               value={avgWatts}
               onChange={e => setAvgWatts(e.target.value.replace(/[^0-9]/g, ''))}
               placeholder="watts"
+              className={inputClass}
+            />
+          </div>
+        )}
+
+        {/* Avg Speed (spm) */}
+        {SHOW_SPEED.includes(activityType) && (
+          <div className="mb-4">
+            <label className={labelClass}>Avg Speed</label>
+            <input
+              type="text"
+              inputMode="decimal"
+              value={avgSpeed}
+              onChange={e => setAvgSpeed(e.target.value.replace(/[^0-9.,]/g, ''))}
+              placeholder="spm"
+              className={inputClass}
+            />
+          </div>
+        )}
+
+        {/* Difficulty Level */}
+        {SHOW_LEVEL.includes(activityType) && (
+          <div className="mb-4">
+            <label className={labelClass}>Difficulty Level</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={difficultyLevel}
+              onChange={e => setDifficultyLevel(e.target.value.replace(/[^0-9]/g, ''))}
+              placeholder="level"
               className={inputClass}
             />
           </div>

@@ -240,6 +240,8 @@ export default function HistoryDetailScreen() {
                       calories: workout.cardio.calories != null ? String(workout.cardio.calories) : '',
                       avg_heart_rate: workout.cardio.avg_heart_rate != null ? String(workout.cardio.avg_heart_rate) : '',
                       avg_watts: workout.cardio.avg_watts != null ? String(workout.cardio.avg_watts) : '',
+                      avg_speed: workout.cardio.avg_speed != null ? String(workout.cardio.avg_speed) : '',
+                      difficulty_level: workout.cardio.difficulty_level != null ? String(workout.cardio.difficulty_level) : '',
                       notes: workout.cardio.notes || '',
                     });
                   }
@@ -258,6 +260,8 @@ export default function HistoryDetailScreen() {
                       calories: editCardio.calories.trim() ? parseInt(editCardio.calories) : null,
                       avg_heart_rate: editCardio.avg_heart_rate.trim() ? parseInt(editCardio.avg_heart_rate) : null,
                       avg_watts: editCardio.avg_watts.trim() ? parseInt(editCardio.avg_watts) : null,
+                      avg_speed: editCardio.avg_speed.trim() ? parseFloat(editCardio.avg_speed.replace(',', '.')) : null,
+                      difficulty_level: editCardio.difficulty_level.trim() ? parseInt(editCardio.difficulty_level) : null,
                       notes: editCardio.notes.trim(),
                     };
                     api.updateCardio(workoutId, data).then(() => {
@@ -291,6 +295,8 @@ export default function HistoryDetailScreen() {
               {workout.cardio.calories != null && <span>{workout.cardio.calories} kcal</span>}
               {workout.cardio.avg_heart_rate != null && <span>{workout.cardio.avg_heart_rate} bpm</span>}
               {workout.cardio.avg_watts != null && <span>{workout.cardio.avg_watts} W</span>}
+              {workout.cardio.avg_speed != null && <span>{workout.cardio.avg_speed} spm</span>}
+              {workout.cardio.difficulty_level != null && <span>Level {workout.cardio.difficulty_level}</span>}
             </div>
             {workout.cardio.notes && (
               <p className="text-white/50 text-sm mt-2 font-sans">{workout.cardio.notes}</p>
@@ -326,7 +332,7 @@ export default function HistoryDetailScreen() {
                   onChange={e => setEditCardio(prev => ({ ...prev, distance: e.target.value.replace(/[^0-9.,]/g, '') }))}
                   className="w-20 bg-white/10 rounded px-2 py-1.5 text-white text-sm"
                 />
-                {['km','mi','m'].map(u => (
+                {['km','mi','m','floors'].map(u => (
                   <button
                     key={u}
                     type="button"
@@ -371,6 +377,30 @@ export default function HistoryDetailScreen() {
                   value={editCardio.avg_watts}
                   onChange={e => setEditCardio(prev => ({ ...prev, avg_watts: e.target.value.replace(/[^0-9]/g, '') }))}
                   placeholder="watts"
+                  className="w-full bg-white/10 rounded px-2 py-1.5 text-white text-sm placeholder-white/25"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Speed</label>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={editCardio.avg_speed}
+                  onChange={e => setEditCardio(prev => ({ ...prev, avg_speed: e.target.value.replace(/[^0-9.,]/g, '') }))}
+                  placeholder="spm"
+                  className="w-full bg-white/10 rounded px-2 py-1.5 text-white text-sm placeholder-white/25"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Level</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={editCardio.difficulty_level}
+                  onChange={e => setEditCardio(prev => ({ ...prev, difficulty_level: e.target.value.replace(/[^0-9]/g, '') }))}
+                  placeholder="level"
                   className="w-full bg-white/10 rounded px-2 py-1.5 text-white text-sm placeholder-white/25"
                 />
               </div>
