@@ -302,7 +302,7 @@ export default function HistoryDetailScreen() {
             <div>
               <p className="font-sans text-white/35 text-[10px] uppercase tracking-wider mb-2">Activity</p>
               <div className="flex flex-wrap gap-2">
-                {['Running','Cycling','Swimming','Walking','Rowing','Elliptical','Other'].map(a => (
+                {['Running','Cycling','Swimming','Walking','Rowing','Elliptical','Stepper','Other'].map(a => (
                   <button
                     key={a}
                     type="button"

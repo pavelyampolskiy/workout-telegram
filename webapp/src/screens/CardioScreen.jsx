@@ -15,12 +15,13 @@ const ACTIVITIES = [
   { key: 'Walking', label: 'Walking' },
   { key: 'Rowing', label: 'Rowing' },
   { key: 'Elliptical', label: 'Elliptical' },
+  { key: 'Stepper', label: 'Stepper' },
   { key: 'Other', label: 'Other' },
 ];
 
 const DISTANCE_UNITS = ['km', 'mi', 'm'];
 const SHOW_WATTS = ['Cycling', 'Rowing'];
-const SHOW_HR = ['Running', 'Cycling', 'Swimming', 'Walking', 'Rowing', 'Elliptical'];
+const SHOW_HR = ['Running', 'Cycling', 'Swimming', 'Walking', 'Rowing', 'Elliptical', 'Stepper'];
 
 export default function CardioScreen() {
   const { userId, resetTo, goBack, showToast, activeWorkout } = useApp();
