@@ -264,7 +264,7 @@ export default function HistoryScreen() {
                             <div className="min-w-0 space-y-1">
                               <div className="flex items-baseline gap-2 flex-wrap">
                                 <span className="font-bebas text-white/92 leading-none text-base tracking-wider">
-                                  {fmtWorkoutType(w.type)}{w.type === 'CARDIO' && w.cardio_activity ? ` — ${w.cardio_activity}` : ''}
+                                  {fmtWorkoutType(w.type)}{w.type === 'CARDIO' && w.cardio_activity ? ` ${w.cardio_activity}` : ''}
                                 </span>
                                 {isPastWorkout(w) && (
                                   <span className="font-bebas text-emerald-400/80 shrink-0 whitespace-nowrap text-xs px-1.5 py-0.5 rounded" 
