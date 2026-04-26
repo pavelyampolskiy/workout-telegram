@@ -98,7 +98,14 @@ def init_db():
             CREATE TABLE IF NOT EXISTS cardio_entries (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
-                text TEXT NOT NULL
+                activity_type TEXT NOT NULL DEFAULT '',
+                duration_seconds INTEGER NOT NULL DEFAULT 0,
+                distance REAL,
+                distance_unit TEXT NOT NULL DEFAULT 'km',
+                calories INTEGER,
+                avg_heart_rate INTEGER,
+                avg_watts INTEGER,
+                notes TEXT NOT NULL DEFAULT ''
             );
 
             CREATE TABLE IF NOT EXISTS workout_notes (
@@ -162,6 +169,32 @@ def init_db():
                 """)
                 conn.execute("DROP TABLE workout_sets")
                 conn.execute("ALTER TABLE workout_sets_new RENAME TO workout_sets")
+        except Exception:
+            pass
+        # Migration: cardio_entries from single text field to structured columns
+        try:
+            cardio_cols = {row[1] for row in conn.execute("PRAGMA table_info(cardio_entries)").fetchall()}
+            if 'text' in cardio_cols and 'activity_type' not in cardio_cols:
+                conn.execute("""
+                    CREATE TABLE cardio_entries_new (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+                        activity_type TEXT NOT NULL DEFAULT '',
+                        duration_seconds INTEGER NOT NULL DEFAULT 0,
+                        distance REAL,
+                        distance_unit TEXT NOT NULL DEFAULT 'km',
+                        calories INTEGER,
+                        avg_heart_rate INTEGER,
+                        avg_watts INTEGER,
+                        notes TEXT NOT NULL DEFAULT ''
+                    )
+                """)
+                conn.execute("""
+                    INSERT INTO cardio_entries_new (id, workout_id, notes)
+                    SELECT id, workout_id, text FROM cardio_entries
+                """)
+                conn.execute("DROP TABLE cardio_entries")
+                conn.execute("ALTER TABLE cardio_entries_new RENAME TO cardio_entries")
         except Exception:
             pass
         # Migration: user_program table for per-user program templates
@@ -391,10 +424,12 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: st
                    COALESCE(w.created_at, MIN(ws.ts)) AS started_at,
                    COUNT(ws.id) AS total_sets,
                    COALESCE(CAST(SUM(ws.weight * ws.reps) AS INTEGER), 0) AS total_volume,
-                   CAST((julianday(w.finished_at) - julianday(COALESCE(w.created_at, MIN(ws.ts)))) * 1440 AS INTEGER) AS duration_min
+                   CAST((julianday(w.finished_at) - julianday(COALESCE(w.created_at, MIN(ws.ts)))) * 1440 AS INTEGER) AS duration_min,
+                   ce.activity_type AS cardio_activity
             FROM workouts w
             LEFT JOIN workout_exercises we ON we.workout_id = w.id
             LEFT JOIN workout_sets ws ON ws.workout_exercise_id = we.id
+            LEFT JOIN cardio_entries ce ON ce.workout_id = w.id
             WHERE w.user_id = ? {type_clause}
             GROUP BY w.id, w.date, w.type
             ORDER BY w.date DESC, w.id DESC
@@ -523,27 +558,40 @@ def get_set(set_id: int):
 
 # ── Cardio ────────────────────────────────────────────────────────────────────
 
-def add_cardio(workout_id: int, text: str) -> int:
+def add_cardio(workout_id: int, activity_type: str = "", duration_seconds: int = 0,
+               distance=None, distance_unit: str = "km", calories=None,
+               avg_heart_rate=None, avg_watts=None, notes: str = "") -> int:
     with db() as conn:
         cur = conn.execute(
-            "INSERT INTO cardio_entries (workout_id, text) VALUES (?,?)",
-            (workout_id, text),
+            """INSERT INTO cardio_entries
+               (workout_id, activity_type, duration_seconds, distance, distance_unit,
+                calories, avg_heart_rate, avg_watts, notes)
+               VALUES (?,?,?,?,?,?,?,?,?)""",
+            (workout_id, activity_type, duration_seconds, distance, distance_unit,
+             calories, avg_heart_rate, avg_watts, notes),
         )
         return cur.lastrowid
 
 
 def get_cardio(workout_id: int):
     with db() as conn:
-        return conn.execute(
+        r = conn.execute(
             "SELECT * FROM cardio_entries WHERE workout_id=?", (workout_id,)
         ).fetchone()
+        return dict(r) if r else None
 
 
-def update_cardio(workout_id: int, text: str):
+def update_cardio(workout_id: int, activity_type: str = "", duration_seconds: int = 0,
+                  distance=None, distance_unit: str = "km", calories=None,
+                  avg_heart_rate=None, avg_watts=None, notes: str = ""):
     with db() as conn:
         conn.execute(
-            "UPDATE cardio_entries SET text=? WHERE workout_id=?",
-            (text, workout_id),
+            """UPDATE cardio_entries
+               SET activity_type=?, duration_seconds=?, distance=?, distance_unit=?,
+                   calories=?, avg_heart_rate=?, avg_watts=?, notes=?
+               WHERE workout_id=?""",
+            (activity_type, duration_seconds, distance, distance_unit,
+             calories, avg_heart_rate, avg_watts, notes, workout_id),
         )
 
 

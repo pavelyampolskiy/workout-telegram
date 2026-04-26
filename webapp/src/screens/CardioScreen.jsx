@@ -18,12 +18,20 @@ const ACTIVITIES = [
   { key: 'Other', label: 'Other' },
 ];
 
+const DISTANCE_UNITS = ['km', 'mi', 'm'];
+const SHOW_WATTS = ['Cycling', 'Rowing'];
+const SHOW_HR = ['Running', 'Cycling', 'Swimming', 'Walking', 'Rowing', 'Elliptical'];
+
 export default function CardioScreen() {
   const { userId, resetTo, goBack, showToast, activeWorkout } = useApp();
   const [workoutId, setWorkoutId] = useState(null);
-  const [text, setText] = useState('');
   const [activityType, setActivityType] = useState('');
   const [distance, setDistance] = useState('');
+  const [distanceUnit, setDistanceUnit] = useState('km');
+  const [calories, setCalories] = useState('');
+  const [avgHeartRate, setAvgHeartRate] = useState('');
+  const [avgWatts, setAvgWatts] = useState('');
+  const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [started, setStarted] = useState(false);
@@ -31,12 +39,9 @@ export default function CardioScreen() {
   const [elapsed, setElapsed] = useState(0);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(false);
-  const [countdownStep, setCountdownStep] = useState(null); // 0..4 (READY? 1 2 3 GO!)
+  const [countdownStep, setCountdownStep] = useState(null);
   const intervalRef = useRef(null);
   const countdownRef = useRef(null);
-  
-  // Проверяем если это backdated workout
-  const isBackdated = activeWorkout?.isBackdated || false;
 
   useEffect(() => {
     api.getUnfinishedWorkout(userId)
@@ -49,7 +54,15 @@ export default function CardioScreen() {
           setStartedAt(created);
           setStarted(true);
           return api.getWorkout(data.workout.id).then(w => {
-            if (w.cardio) setText(w.cardio);
+            if (w.cardio) {
+              setActivityType(w.cardio.activity_type || '');
+              setDistance(w.cardio.distance != null ? String(w.cardio.distance) : '');
+              setDistanceUnit(w.cardio.distance_unit || 'km');
+              setCalories(w.cardio.calories != null ? String(w.cardio.calories) : '');
+              setAvgHeartRate(w.cardio.avg_heart_rate != null ? String(w.cardio.avg_heart_rate) : '');
+              setAvgWatts(w.cardio.avg_watts != null ? String(w.cardio.avg_watts) : '');
+              setNotes(w.cardio.notes || '');
+            }
           });
         }
       })
@@ -57,7 +70,6 @@ export default function CardioScreen() {
       .finally(() => setLoading(false));
   }, [userId, showToast]);
 
-  // Timer tick
   useEffect(() => {
     if (!started || !startedAt) return;
     const tick = () => setElapsed(Math.floor((Date.now() - startedAt) / 1000));
@@ -70,7 +82,7 @@ export default function CardioScreen() {
     try {
       if (starting || countdownStep != null) return;
       setStarting(true);
-      const { id } = await api.createWorkout(userId, 'CARDIO'); // Без даты для обычных тренировок
+      const { id } = await api.createWorkout(userId, 'CARDIO');
       setWorkoutId(id);
       setCountdownStep(0);
     } catch (e) {
@@ -80,13 +92,11 @@ export default function CardioScreen() {
     }
   };
 
-  // Pre-start countdown (match strength countdown style)
   useEffect(() => {
     if (countdownStep == null) return;
 
     const STEPS = ['READY?', '1', '2', '3', 'GO!'];
 
-    // Finished → start session
     if (countdownStep >= STEPS.length) {
       setCountdownStep(null);
       setStartedAt(Date.now());
@@ -95,7 +105,6 @@ export default function CardioScreen() {
       return;
     }
 
-    // Haptic each tick
     try {
       const style =
         countdownStep === 0
@@ -117,29 +126,35 @@ export default function CardioScreen() {
     };
   }, []);
 
-  const buildSaveText = () => {
-    const durationMin = Math.floor(elapsed / 60);
-    const timePart = durationMin + ' min' + (distance.trim() ? ', ' + distance.trim().replace(/,/g, '.') + ' km' : '');
-    const parts = [];
-    if (activityType) parts.push(activityType);
-    parts.push(timePart);
-    if (text.trim()) parts.push(text.trim());
-    return parts.join(' — ');
+  const handleActivityChange = (key) => {
+    const next = activityType === key ? '' : key;
+    setActivityType(next);
+    if (next === 'Swimming' && distanceUnit === 'km') setDistanceUnit('m');
+    if (next !== 'Swimming' && distanceUnit === 'm') setDistanceUnit('km');
+    if (!SHOW_WATTS.includes(next)) setAvgWatts('');
+    if (!SHOW_HR.includes(next)) setAvgHeartRate('');
   };
 
   const handleSave = async () => {
-    const toSave = buildSaveText();
-    if (!toSave.trim()) return;
     setSaving(true);
     try {
-      await api.addCardio(workoutId, toSave.trim());
-      
-      const completionDate = activeWorkout?.isBackdated 
-        ? activeWorkout.backdateDate 
+      const data = {
+        activity_type: activityType || 'Other',
+        duration_seconds: elapsed,
+        distance: distance.trim() ? parseFloat(distance.replace(',', '.')) : null,
+        distance_unit: distanceUnit,
+        calories: calories.trim() ? parseInt(calories) : null,
+        avg_heart_rate: avgHeartRate.trim() ? parseInt(avgHeartRate) : null,
+        avg_watts: avgWatts.trim() ? parseInt(avgWatts) : null,
+        notes: notes.trim(),
+      };
+      await api.addCardio(workoutId, data);
+
+      const completionDate = activeWorkout?.isBackdated
+        ? activeWorkout.backdateDate
         : undefined;
-      
+
       await api.finishWorkout(workoutId, completionDate);
-      // Clear active workout from localStorage when finishing
       localStorage.removeItem(`activeWorkout_${userId}`);
       resetTo('home');
     } catch (e) {
@@ -164,7 +179,6 @@ export default function CardioScreen() {
     );
   }
 
-  // Pre-start screen
   if (!started) {
     return (
       <div className="min-h-screen relative flex flex-col overflow-hidden">
@@ -214,15 +228,17 @@ export default function CardioScreen() {
     );
   }
 
-  // Active session
   const durationMin = Math.floor(elapsed / 60);
-  const canSave = !!workoutId && (durationMin > 0 || text.trim() || distance.trim() || activityType);
+  const canSave = !!workoutId && (durationMin > 0 || notes.trim() || distance.trim() || activityType);
+
+  const inputClass = "w-full max-w-[120px] appearance-none bg-black/50 rounded-xl px-3 py-2 text-white placeholder-white/25 outline-none text-base font-sans";
+  const labelClass = "block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1";
 
   return (
     <div className="min-h-screen relative flex flex-col overflow-hidden">
       <ScreenBg image="/cardio-bg.jpg" overlay="bg-black/70" scale={1} position="top" lockViewport />
 
-      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto">
+      <div className="relative z-10 flex-1 min-h-0 p-5 safe-top-lg overflow-y-auto pb-28">
         <div className="pt-6 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 text-white">
@@ -232,7 +248,6 @@ export default function CardioScreen() {
               <h1 className="font-bebas text-white leading-none" style={PAGE_HEADING_STYLE}>Cardio</h1>
             </div>
             <div className="text-right">
-              {/* Match strength workout timer style (Day A/B/C) */}
               <span className="text-sm font-bebas tracking-widest text-white/60 tabular-nums">{fmtTime(elapsed)}</span>
             </div>
           </div>
@@ -246,7 +261,7 @@ export default function CardioScreen() {
               <button
                 key={a.key}
                 type="button"
-                onClick={() => setActivityType(activityType === a.key ? '' : a.key)}
+                onClick={() => handleActivityChange(a.key)}
                 className={`px-3 py-2 rounded-xl font-sans text-sm transition-colors ${
                   activityType === a.key
                     ? 'bg-white/20 text-white'
@@ -259,35 +274,94 @@ export default function CardioScreen() {
           </div>
         </div>
 
-        {/* Distance (optional) */}
+        {/* Distance + unit */}
         <div className="mb-4">
-          <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Distance, km</label>
+          <label className={labelClass}>Distance</label>
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              inputMode="decimal"
+              value={distance}
+              onChange={e => setDistance(e.target.value.replace(/[^0-9.,]/g, ''))}
+              placeholder="e.g. 5"
+              className={inputClass}
+            />
+            <div className="flex gap-1">
+              {DISTANCE_UNITS.map(u => (
+                <button
+                  key={u}
+                  type="button"
+                  onClick={() => setDistanceUnit(u)}
+                  className={`px-2.5 py-1.5 rounded-lg font-sans text-xs transition-colors ${
+                    distanceUnit === u
+                      ? 'bg-white/20 text-white'
+                      : 'bg-white/5 text-white/50'
+                  }`}
+                >
+                  {u}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Calories */}
+        <div className="mb-4">
+          <label className={labelClass}>Calories</label>
           <input
             type="text"
-            inputMode="decimal"
-            value={distance}
-            onChange={e => setDistance(e.target.value.replace(/[^0-9.,]/g, ''))}
-            placeholder="e.g. 5 or 3.5"
-            className="w-full max-w-[120px] appearance-none bg-black/50 rounded-xl px-3 py-2 text-white placeholder-white/25 outline-none text-base font-sans"
+            inputMode="numeric"
+            value={calories}
+            onChange={e => setCalories(e.target.value.replace(/[^0-9]/g, ''))}
+            placeholder="kcal"
+            className={inputClass}
           />
         </div>
+
+        {/* Avg Heart Rate */}
+        {SHOW_HR.includes(activityType) && (
+          <div className="mb-4">
+            <label className={labelClass}>Avg Heart Rate</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={avgHeartRate}
+              onChange={e => setAvgHeartRate(e.target.value.replace(/[^0-9]/g, ''))}
+              placeholder="bpm"
+              className={inputClass}
+            />
+          </div>
+        )}
+
+        {/* Avg Watts */}
+        {SHOW_WATTS.includes(activityType) && (
+          <div className="mb-4">
+            <label className={labelClass}>Avg Power</label>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={avgWatts}
+              onChange={e => setAvgWatts(e.target.value.replace(/[^0-9]/g, ''))}
+              placeholder="watts"
+              className={inputClass}
+            />
+          </div>
+        )}
 
         {/* Notes */}
         <div className="mb-4">
-          <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-1">Notes</label>
+          <label className={labelClass}>Notes</label>
           <textarea
-            value={text}
-            onChange={e => setText(e.target.value)}
-            placeholder="E.g. Treadmill, felt good, intervals…"
+            value={notes}
+            onChange={e => setNotes(e.target.value)}
+            placeholder="E.g. Treadmill, felt good, intervals..."
             className="w-full appearance-none bg-black/50 rounded-xl p-4 text-white placeholder-white/25 resize-none h-28 outline-none text-base font-sans"
-            autoFocus
           />
         </div>
+      </div>
 
-        <p className="mb-4 text-[11px] text-white/35 font-sans">
-          Session will be saved as: activity, duration from timer, distance (if set), and your notes.
-        </p>
-
+      {/* Save button - fixed bottom */}
+      <div className="fixed bottom-0 left-0 right-0 max-w-lg mx-auto p-5 pt-4 pb-6 safe-bottom z-20 bg-gradient-to-t from-black via-black/95 to-transparent">
         <button
           onClick={handleSave}
           disabled={saving || !canSave || !workoutId}
@@ -296,7 +370,7 @@ export default function CardioScreen() {
           {saving ? (
             <span className="inline-flex items-center justify-center gap-2">
               <Spinner size={20} />
-              Saving…
+              Saving...
             </span>
           ) : (
             'Save Cardio'

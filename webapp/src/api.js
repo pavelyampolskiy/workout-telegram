@@ -64,7 +64,8 @@ export const api = {
   updateSet: (set_id, weight, reps) => req('PUT', `/api/sets/${set_id}`, { weight, reps }),
   deleteSet: (set_id) => req('DELETE', `/api/sets/${set_id}`),
 
-  addCardio: (workout_id, text) => req('POST', `/api/workouts/${workout_id}/cardio`, { text }),
+  addCardio: (workout_id, data) => req('POST', `/api/workouts/${workout_id}/cardio`, data),
+  updateCardio: (workout_id, data) => req('PUT', `/api/workouts/${workout_id}/cardio`, data),
   finishWorkout: (id, completion_date) => 
     req('PATCH', `/api/workouts/${id}/finish`, { completion_date }),
   saveRating: (workout_id, rating) => req('PATCH', `/api/workouts/${workout_id}/rating`, { rating }),
