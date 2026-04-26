@@ -431,7 +431,13 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: st
                    COUNT(ws.id) AS total_sets,
                    COALESCE(CAST(SUM(ws.weight * ws.reps) AS INTEGER), 0) AS total_volume,
                    CAST((julianday(w.finished_at) - julianday(COALESCE(w.created_at, MIN(ws.ts)))) * 1440 AS INTEGER) AS duration_min,
-                   ce.activity_type AS cardio_activity
+                   ce.activity_type AS cardio_activity,
+                   ce.distance AS cardio_distance,
+                   ce.distance_unit AS cardio_distance_unit,
+                   ce.calories AS cardio_calories,
+                   ce.avg_watts AS cardio_watts,
+                   ce.avg_speed AS cardio_speed,
+                   ce.difficulty_level AS cardio_level
             FROM workouts w
             LEFT JOIN workout_exercises we ON we.workout_id = w.id
             LEFT JOIN workout_sets ws ON ws.workout_exercise_id = we.id

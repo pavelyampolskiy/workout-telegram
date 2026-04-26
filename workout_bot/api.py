@@ -277,7 +277,18 @@ def get_workout(workout_id: int):
 def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None):
     rows, has_more = db_ops.get_history(user_id, offset, limit, workout_type=type)
     return {
-        "items": [{"id": r["id"], "date": r["date"], "type": r["type"], "started_at": r["started_at"], "total_sets": r["total_sets"], "total_volume": r["total_volume"], "duration_min": r["duration_min"], "cardio_activity": r["cardio_activity"]} for r in rows],
+        "items": [{
+            "id": r["id"], "date": r["date"], "type": r["type"],
+            "started_at": r["started_at"], "total_sets": r["total_sets"],
+            "total_volume": r["total_volume"], "duration_min": r["duration_min"],
+            "cardio_activity": r["cardio_activity"],
+            "cardio_distance": r["cardio_distance"],
+            "cardio_distance_unit": r["cardio_distance_unit"],
+            "cardio_calories": r["cardio_calories"],
+            "cardio_watts": r["cardio_watts"],
+            "cardio_speed": r["cardio_speed"],
+            "cardio_level": r["cardio_level"],
+        } for r in rows],
         "has_more": has_more,
     }
 

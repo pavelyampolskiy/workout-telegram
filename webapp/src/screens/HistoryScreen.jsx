@@ -286,14 +286,26 @@ export default function HistoryScreen() {
                               </div>
                               <div className="flex items-center flex-wrap gap-3 font-sans text-white/35 text-xs">
                                 {w.duration_min > 0 && <span>{w.duration_min} min</span>}
-                                {w.total_sets > 0 && (
-                                  <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
-                                )}
-                                {w.total_volume > 0 && (
-                                  <span className="inline-flex items-center gap-1.5">
-                                    <span>{fmtVol(w.total_volume)}</span>
-                                    <VolumeChange items={items} index={items.indexOf(w)} totalVolume={w.total_volume} />
-                                  </span>
+                                {w.type === 'CARDIO' ? (
+                                  <>
+                                    {w.cardio_distance != null && <span>{w.cardio_distance} {w.cardio_distance_unit || 'km'}</span>}
+                                    {w.cardio_calories != null && <span>{w.cardio_calories} kcal</span>}
+                                    {w.cardio_watts != null && <span>{w.cardio_watts} W</span>}
+                                    {w.cardio_speed != null && <span>{w.cardio_speed} spm</span>}
+                                    {w.cardio_level != null && <span>lvl {w.cardio_level}</span>}
+                                  </>
+                                ) : (
+                                  <>
+                                    {w.total_sets > 0 && (
+                                      <span>{w.total_sets} set{w.total_sets !== 1 ? 's' : ''}</span>
+                                    )}
+                                    {w.total_volume > 0 && (
+                                      <span className="inline-flex items-center gap-1.5">
+                                        <span>{fmtVol(w.total_volume)}</span>
+                                        <VolumeChange items={items} index={items.indexOf(w)} totalVolume={w.total_volume} />
+                                      </span>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             </div>
