@@ -490,6 +490,65 @@ def update_note(workout_id: int, body: TextBody):
     return {"ok": True}
 
 
+# ── Body Metrics ─────────────────────────────────────────────────────────────
+
+class BodyMetricBody(BaseModel):
+    user_id: int
+    date: Optional[str] = None
+    weight: Optional[float] = None
+    body_fat: Optional[float] = None
+    muscle_mass: Optional[float] = None
+    chest: Optional[float] = None
+    waist: Optional[float] = None
+    arms: Optional[float] = None
+    hips: Optional[float] = None
+
+
+class BodyMetricUpdate(BaseModel):
+    date: Optional[str] = None
+    weight: Optional[float] = None
+    body_fat: Optional[float] = None
+    muscle_mass: Optional[float] = None
+    chest: Optional[float] = None
+    waist: Optional[float] = None
+    arms: Optional[float] = None
+    hips: Optional[float] = None
+
+
+@app.get("/api/body-metrics")
+def get_body_metrics(user_id: int):
+    return db_ops.get_body_metrics(user_id)
+
+
+@app.post("/api/body-metrics")
+def create_body_metric(body: BodyMetricBody):
+    data = body.model_dump(exclude={"user_id"}, exclude_none=True)
+    mid = db_ops.create_body_metric(body.user_id, data)
+    return {"id": mid}
+
+
+@app.put("/api/body-metrics/{metric_id}")
+def update_body_metric(metric_id: int, body: BodyMetricUpdate):
+    data = body.model_dump(exclude_none=True)
+    db_ops.update_body_metric(metric_id, data)
+    return {"ok": True}
+
+
+@app.delete("/api/body-metrics/{metric_id}")
+def delete_body_metric(metric_id: int):
+    db_ops.delete_body_metric(metric_id)
+    return {"ok": True}
+
+
+@app.get("/api/body-metrics/reminder")
+def body_metrics_reminder(user_id: int):
+    today = date.today()
+    day = today.day
+    show = day >= 28 or day <= 2
+    done = db_ops.has_body_metric_this_month(user_id) if show else False
+    return {"show_reminder": show and not done}
+
+
 # ── Stats ─────────────────────────────────────────────────────────────────────
 
 @app.get("/api/stats")

@@ -227,6 +227,21 @@ def init_db():
             conn.execute("ALTER TABLE supplements ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1")
         except Exception:
             pass
+        # Body metrics table
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS body_metrics (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                date TEXT NOT NULL,
+                weight REAL,
+                body_fat REAL,
+                muscle_mass REAL,
+                chest REAL,
+                waist REAL,
+                arms REAL,
+                hips REAL
+            )
+        """)
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -1231,3 +1246,63 @@ def get_preset_supplements():
         {"name": "Omega-3", "dosage": "", "intake_time": "With meal"},
         {"name": "Pre-workout", "dosage": "", "intake_time": "30 min before workout"},
     ]
+
+
+# ── Body Metrics ─────────────────────────────────────────────────────────────
+
+def get_body_metrics(user_id: int):
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM body_metrics WHERE user_id=? ORDER BY date DESC",
+            (user_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def create_body_metric(user_id: int, data: dict) -> int:
+    fields = ["user_id", "date"]
+    values = [user_id, data.get("date", date.today().isoformat())]
+    for col in ("weight", "body_fat", "muscle_mass", "chest", "waist", "arms", "hips"):
+        if col in data and data[col] is not None:
+            fields.append(col)
+            values.append(data[col])
+    placeholders = ",".join("?" * len(fields))
+    with db() as conn:
+        cur = conn.execute(
+            f"INSERT INTO body_metrics ({','.join(fields)}) VALUES ({placeholders})",
+            values,
+        )
+        return cur.lastrowid
+
+
+def update_body_metric(metric_id: int, data: dict):
+    allowed = {"date", "weight", "body_fat", "muscle_mass", "chest", "waist", "arms", "hips"}
+    fields = []
+    values = []
+    for k, v in data.items():
+        if k in allowed:
+            fields.append(f"{k}=?")
+            values.append(v)
+    if not fields:
+        return
+    values.append(metric_id)
+    with db() as conn:
+        conn.execute(
+            f"UPDATE body_metrics SET {','.join(fields)} WHERE id=?",
+            values,
+        )
+
+
+def delete_body_metric(metric_id: int):
+    with db() as conn:
+        conn.execute("DELETE FROM body_metrics WHERE id=?", (metric_id,))
+
+
+def has_body_metric_this_month(user_id: int) -> bool:
+    first_of_month = date.today().replace(day=1).isoformat()
+    with db() as conn:
+        row = conn.execute(
+            "SELECT COUNT(*) as cnt FROM body_metrics WHERE user_id=? AND date>=?",
+            (user_id, first_of_month),
+        ).fetchone()
+        return row["cnt"] > 0
