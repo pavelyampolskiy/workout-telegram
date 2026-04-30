@@ -96,12 +96,17 @@ function SplashScreen({ onDone }) {
     <div
       className={`fixed inset-0 z-[100] bg-black flex items-center justify-center transition-opacity duration-300 ${fading ? 'opacity-0' : 'opacity-100'}`}
     >
-      <h1
-        className="font-bebas text-white tracking-[0.25em] leading-none animate-pulse"
-        style={{ fontSize: 'clamp(48px, 12vw, 80px)' }}
-      >
-        STHEN OS
-      </h1>
+      <div className="flex flex-col items-center gap-3 animate-pulse">
+        <h1
+          className="font-bebas text-white tracking-[0.25em] leading-none"
+          style={{ fontSize: 'clamp(48px, 12vw, 80px)' }}
+        >
+          STHEN OS
+        </h1>
+        <p className="font-sans text-white/30 text-[10px] tracking-[0.3em] uppercase">
+          Strength. Tolerance. Health. Energy. Neural.
+        </p>
+      </div>
     </div>
   );
 }
