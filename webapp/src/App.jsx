@@ -83,12 +83,36 @@ class ErrorBoundary extends Component {
   }
 }
 
+function SplashScreen({ onDone }) {
+  const [fading, setFading] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setFading(true), 1200);
+    const t2 = setTimeout(onDone, 1500);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [onDone]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] bg-black flex items-center justify-center transition-opacity duration-300 ${fading ? 'opacity-0' : 'opacity-100'}`}
+    >
+      <h1
+        className="font-bebas text-white tracking-[0.25em] leading-none animate-pulse"
+        style={{ fontSize: 'clamp(48px, 12vw, 80px)' }}
+      >
+        STHEN OS
+      </h1>
+    </div>
+  );
+}
+
 export default function App() {
   const [stack, setStack] = useState([{ screen: 'home', params: {} }]);
   const [userId, setUserId] = useState(null);
   const [activeWorkout, setActiveWorkout] = useState(null);
   const [toast, setToast] = useState(null);
-  const [countdown, setCountdown] = useState(null); // { step, targetScreen, targetParams }
+  const [countdown, setCountdown] = useState(null);
+  const [showSplash, setShowSplash] = useState(true);
 
   const showToast = useCallback((msg) => setToast(msg), []);
   const dismissToast = useCallback(() => setToast(null), []);
@@ -336,6 +360,7 @@ export default function App() {
         showToast,
       }}
     >
+      {showSplash && <SplashScreen onDone={() => setShowSplash(false)} />}
       <div className="min-h-screen text-white max-w-lg mx-auto overflow-hidden relative z-[1]" onClick={requestFullscreenOnTap} data-build="cardio-fix-v2">
         <Toast message={toast} onClose={dismissToast} visible={!!toast} />
         <div key={current.screen} className="min-h-screen relative">
