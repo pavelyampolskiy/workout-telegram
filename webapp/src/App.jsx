@@ -103,7 +103,7 @@ function SplashScreen({ onDone }) {
         >
           STHEN OS
         </h1>
-        <p className="font-sans text-white/30 text-[10px] tracking-[0.3em] uppercase">
+        <p className="font-bebas text-white tracking-[0.14em]" style={{ fontSize: 'clamp(14px, 3.5vw, 20px)' }}>
           Strength. Tolerance. Health. Energy. Neural.
         </p>
       </div>
