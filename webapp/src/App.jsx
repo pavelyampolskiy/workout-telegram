@@ -97,7 +97,7 @@ function SplashScreen({ onDone }) {
       className={`fixed inset-0 z-[100] bg-black flex items-center justify-center transition-opacity duration-300 ${fading ? 'opacity-0' : 'opacity-100'}`}
     >
       <div className="flex flex-col items-center gap-3 animate-pulse">
-        <h1 className="font-bebas text-white tracking-[0.14em] leading-none text-[96px]">
+        <h1 className="font-bebas text-white tracking-[0.14em] leading-none text-[90px]">
           STHEN OS
         </h1>
         <p className="font-bebas text-white/50 tracking-[0.14em] leading-none text-[13px]">
