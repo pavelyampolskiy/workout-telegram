@@ -502,6 +502,9 @@ class BodyMetricBody(BaseModel):
     waist: Optional[float] = None
     arms: Optional[float] = None
     hips: Optional[float] = None
+    neck: Optional[float] = None
+    thighs: Optional[float] = None
+    calves: Optional[float] = None
 
 
 class BodyMetricUpdate(BaseModel):
@@ -513,6 +516,9 @@ class BodyMetricUpdate(BaseModel):
     waist: Optional[float] = None
     arms: Optional[float] = None
     hips: Optional[float] = None
+    neck: Optional[float] = None
+    thighs: Optional[float] = None
+    calves: Optional[float] = None
 
 
 @app.get("/api/body-metrics")

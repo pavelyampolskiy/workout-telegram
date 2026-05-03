@@ -239,9 +239,17 @@ def init_db():
                 chest REAL,
                 waist REAL,
                 arms REAL,
-                hips REAL
+                hips REAL,
+                neck REAL,
+                thighs REAL,
+                calves REAL
             )
         """)
+        for col in ['neck', 'thighs', 'calves']:
+            try:
+                conn.execute(f"ALTER TABLE body_metrics ADD COLUMN {col} REAL")
+            except Exception:
+                pass
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -1262,7 +1270,7 @@ def get_body_metrics(user_id: int):
 def create_body_metric(user_id: int, data: dict) -> int:
     fields = ["user_id", "date"]
     values = [user_id, data.get("date", date.today().isoformat())]
-    for col in ("weight", "body_fat", "muscle_mass", "chest", "waist", "arms", "hips"):
+    for col in ("weight", "body_fat", "muscle_mass", "chest", "waist", "arms", "hips", "neck", "thighs", "calves"):
         if col in data and data[col] is not None:
             fields.append(col)
             values.append(data[col])
@@ -1276,7 +1284,7 @@ def create_body_metric(user_id: int, data: dict) -> int:
 
 
 def update_body_metric(metric_id: int, data: dict):
-    allowed = {"date", "weight", "body_fat", "muscle_mass", "chest", "waist", "arms", "hips"}
+    allowed = {"date", "weight", "body_fat", "muscle_mass", "chest", "waist", "arms", "hips", "neck", "thighs", "calves"}
     fields = []
     values = []
     for k, v in data.items():

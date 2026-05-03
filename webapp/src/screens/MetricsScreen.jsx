@@ -4,6 +4,7 @@ import { api } from '../api';
 import ScreenBg from '../ScreenBg';
 import { TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_MUTED, formatDate } from '../shared';
 import { Spinner } from '../components/Spinner';
+import { Tabs } from '../components/Tabs';
 import metricsBg from '../assets/body-metrics-bg.jpg';
 
 const PAGE_HEADING_STYLE = { fontSize: 'clamp(24px, 8vw, 48px)', letterSpacing: '0.05em' };
@@ -27,35 +28,47 @@ const TrashIcon = () => (
   </svg>
 );
 
+const TABS = [
+  { key: 'weight', label: 'Weight' },
+  { key: 'measurements', label: 'Measurements' },
+];
+
+const MEASUREMENT_FIELDS = [
+  { key: 'neck', label: 'Neck' },
+  { key: 'chest', label: 'Chest' },
+  { key: 'waist', label: 'Waist' },
+  { key: 'arms', label: 'Arms (biceps)' },
+  { key: 'hips', label: 'Hips' },
+  { key: 'thighs', label: 'Thighs' },
+  { key: 'calves', label: 'Calves' },
+];
+
+const EMPTY_FORM = {
+  weight: '', body_fat: '', muscle_mass: '',
+  neck: '', chest: '', waist: '', arms: '', hips: '', thighs: '', calves: '',
+};
+
 export default function MetricsScreen() {
   const { navigate, userId, showToast, goBack } = useApp();
   const [metrics, setMetrics] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('weight');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingMetric, setEditingMetric] = useState(null);
   const [deleteModal, setDeleteModal] = useState({ show: false, itemId: null });
-  const [formData, setFormData] = useState({
-    weight: '',
-    body_fat: '',
-    muscle_mass: '',
-    chest: '',
-    waist: '',
-    arms: '',
-    hips: ''
-  });
+  const [formData, setFormData] = useState({ ...EMPTY_FORM });
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
-    
+
     setLoading(true);
-    
+
     api.getBodyMetrics(userId)
       .then(data => {
         setMetrics(data.metrics || []);
       })
       .catch(() => {
-        // Fallback на localStorage
         const localMetrics = localStorage.getItem(`body_metrics_${userId}`);
         if (localMetrics) {
           setMetrics(JSON.parse(localMetrics));
@@ -70,15 +83,7 @@ export default function MetricsScreen() {
 
   const handleAdd = () => {
     setEditingMetric(null);
-    setFormData({
-      weight: '',
-      body_fat: '',
-      muscle_mass: '',
-      chest: '',
-      waist: '',
-      arms: '',
-      hips: ''
-    });
+    setFormData({ ...EMPTY_FORM });
     setShowAddModal(true);
   };
 
@@ -88,55 +93,62 @@ export default function MetricsScreen() {
       weight: metric.weight || '',
       body_fat: metric.body_fat || '',
       muscle_mass: metric.muscle_mass || '',
+      neck: metric.neck || '',
       chest: metric.chest || '',
       waist: metric.waist || '',
       arms: metric.arms || '',
-      hips: metric.hips || ''
+      hips: metric.hips || '',
+      thighs: metric.thighs || '',
+      calves: metric.calves || '',
     });
     setShowAddModal(true);
   };
 
   const handleSubmit = async () => {
-    if (!formData.weight) {
-      showToast('Please enter weight');
-      return;
+    if (activeTab === 'weight') {
+      if (!formData.weight) {
+        showToast('Please enter weight');
+        return;
+      }
+    } else {
+      const hasAny = MEASUREMENT_FIELDS.some(f => formData[f.key]);
+      if (!hasAny) {
+        showToast('Please enter at least one measurement');
+        return;
+      }
     }
 
     setSubmitting(true);
     try {
       const data = {
-        ...formData,
-        weight: parseFloat(formData.weight),
+        weight: formData.weight ? parseFloat(formData.weight) : null,
         body_fat: formData.body_fat ? parseFloat(formData.body_fat) : null,
         muscle_mass: formData.muscle_mass ? parseFloat(formData.muscle_mass) : null,
+        neck: formData.neck ? parseFloat(formData.neck) : null,
         chest: formData.chest ? parseFloat(formData.chest) : null,
         waist: formData.waist ? parseFloat(formData.waist) : null,
         arms: formData.arms ? parseFloat(formData.arms) : null,
         hips: formData.hips ? parseFloat(formData.hips) : null,
-        date: new Date().toISOString()
+        thighs: formData.thighs ? parseFloat(formData.thighs) : null,
+        calves: formData.calves ? parseFloat(formData.calves) : null,
+        date: new Date().toISOString(),
       };
 
       if (editingMetric) {
-        // Редактирование существующего измерения
         try {
-          const result = await api.updateBodyMetric(editingMetric.id, data);
+          await api.updateBodyMetric(editingMetric.id, data);
           const newMetrics = metrics.map(m => m.id === editingMetric.id ? { ...data, id: editingMetric.id, user_id: userId } : m);
           setMetrics(newMetrics);
           localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
           setShowAddModal(false);
         } catch (serverError) {
-          // Если сервер недоступен, редактируем локально
-          const updatedMetric = {
-            ...editingMetric,
-            ...data
-          };
+          const updatedMetric = { ...editingMetric, ...data };
           const newMetrics = metrics.map(m => m.id === editingMetric.id ? updatedMetric : m);
           setMetrics(newMetrics);
           localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
           setShowAddModal(false);
         }
       } else {
-        // Создание нового измерения
         try {
           const result = await api.createBodyMetric(userId, data);
           const newMetrics = [...metrics, { ...data, id: result.id, user_id: userId }];
@@ -144,13 +156,7 @@ export default function MetricsScreen() {
           localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
           setShowAddModal(false);
         } catch (serverError) {
-          // Если сервер недоступен, создаем локально
-          const newMetric = {
-            id: Date.now(),
-            user_id: userId,
-            ...data
-          };
-          
+          const newMetric = { id: Date.now(), user_id: userId, ...data };
           const newMetrics = [...metrics, newMetric];
           setMetrics(newMetrics);
           localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
@@ -170,9 +176,8 @@ export default function MetricsScreen() {
 
   const confirmDelete = async () => {
     if (!deleteModal.itemId) return;
-    
+
     try {
-      // Пытаемся удалить с сервера
       try {
         await api.deleteBodyMetric(deleteModal.itemId);
         const newMetrics = metrics.filter(m => m.id !== deleteModal.itemId);
@@ -180,7 +185,6 @@ export default function MetricsScreen() {
         localStorage.setItem(`body_metrics_${userId}`, JSON.stringify(newMetrics));
         showToast('Measurement deleted successfully', 'success');
       } catch (serverError) {
-        // Если сервер не доступен, удаляем только из localStorage
         console.warn('Server unavailable, deleting from localStorage only:', serverError);
         const newMetrics = metrics.filter(m => m.id !== deleteModal.itemId);
         setMetrics(newMetrics);
@@ -199,6 +203,11 @@ export default function MetricsScreen() {
     setDeleteModal({ show: false, itemId: null });
   };
 
+  const hasMeasurements = (m) =>
+    m.neck || m.chest || m.waist || m.arms || m.hips || m.thighs || m.calves;
+
+  const hasWeightData = (m) => m.weight;
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -207,19 +216,26 @@ export default function MetricsScreen() {
     );
   }
 
+  const filteredMetrics = activeTab === 'weight'
+    ? metrics.filter(m => hasWeightData(m))
+    : metrics.filter(m => hasMeasurements(m));
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ScreenBg image={metricsBg} overlay="bg-black/85" blur={3} scale={1} />
-      
+
       {/* Top gradient */}
       <div className="fixed inset-x-0 top-0 h-24 bg-gradient-to-b from-black/60 to-transparent" style={{ zIndex: 0 }} />
       <div className="fixed inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/60 to-transparent" style={{ zIndex: 0 }} />
 
       <div className="relative z-10 flex flex-col min-h-screen safe-top-lg safe-bottom p-5 max-w-lg mx-auto w-full">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <h1 className="font-bebas text-white pt-6 mb-5" style={PAGE_HEADING_STYLE}>Body Metrics</h1>
         </div>
+
+        {/* Tabs */}
+        <Tabs tabs={TABS} activeKey={activeTab} onSelect={setActiveTab} className="mb-5" />
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto space-y-6">
@@ -237,30 +253,48 @@ export default function MetricsScreen() {
             </div>
           </div>
 
-          {/* Full Metrics List */}
-          {metrics.length > 0 && (
+          {/* Metrics List */}
+          {filteredMetrics.length > 0 && (
             <div className="space-y-3">
-              <h3 className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>All Measurements</h3>
-              {metrics.slice().reverse().map(metric => (
+              <h3 className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                All Measurements
+              </h3>
+              {filteredMetrics.slice().reverse().map(metric => (
                 <div key={metric.id} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <div className={`font-bebas text-xs tracking-wider text-white/25 mb-1`}>
+                      <div className="font-bebas text-xs tracking-wider text-white/25 mb-1">
                         {formatDate(metric.date.split('T')[0]).toUpperCase()}
                       </div>
                       <div className="space-y-1">
-                        <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
-                          Weight: {metric.weight}kg
-                        </div>
-                        {metric.body_fat && (
-                          <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
-                            Body Fat: {metric.body_fat}%
-                          </div>
-                        )}
-                        {metric.muscle_mass && (
-                          <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
-                            Muscle Mass: {metric.muscle_mass}kg
-                          </div>
+                        {activeTab === 'weight' ? (
+                          <>
+                            <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                              Weight: {metric.weight}kg
+                            </div>
+                            {metric.body_fat != null && metric.body_fat !== '' && (
+                              <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                                Body Fat: {metric.body_fat}%
+                              </div>
+                            )}
+                            {metric.muscle_mass != null && metric.muscle_mass !== '' && (
+                              <div className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                                Muscle Mass: {metric.muscle_mass}kg
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            {MEASUREMENT_FIELDS.map(f => {
+                              const val = metric[f.key];
+                              if (val == null || val === '') return null;
+                              return (
+                                <div key={f.key} className={`font-bebas text-sm tracking-wider ${TEXT_SECONDARY}`}>
+                                  {f.label}: {val}cm
+                                </div>
+                              );
+                            })}
+                          </>
                         )}
                       </div>
                     </div>
@@ -286,10 +320,10 @@ export default function MetricsScreen() {
         </div>
       </div>
 
-      {/* Add Modal */}
+      {/* Add/Edit Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-5" role="dialog" aria-modal="true">
-          <div 
+          <div
             className="w-full max-w-sm rounded-2xl p-5"
             style={{
               background: 'rgba(0, 0, 0, 0.85)',
@@ -301,45 +335,63 @@ export default function MetricsScreen() {
             }}
           >
             <h3 className={`font-bebas text-lg tracking-wider mb-4 ${TEXT_PRIMARY}`}>
-  {editingMetric ? 'Edit Measurement' : 'Add Measurement'}
-</h3>
-            
+              {editingMetric ? 'Edit Measurement' : 'Add Measurement'}
+            </h3>
+
             <div className="space-y-3">
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Weight (kg) *</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={formData.weight}
-                  onChange={(e) => setFormData({...formData, weight: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
-                  placeholder="75.5"
-                />
-              </div>
-              
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Body Fat (%)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={formData.body_fat}
-                  onChange={(e) => setFormData({...formData, body_fat: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
-                  placeholder="12.5"
-                />
-              </div>
-              
-              <div>
-                <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Muscle Mass (kg)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={formData.muscle_mass}
-                  onChange={(e) => setFormData({...formData, muscle_mass: e.target.value})}
-                  className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
-                  placeholder="38.0"
-                />
-              </div>
+              {activeTab === 'weight' ? (
+                <>
+                  <div>
+                    <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Weight (kg) *</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.weight}
+                      onChange={(e) => setFormData({...formData, weight: e.target.value})}
+                      className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
+                      placeholder="75.5"
+                    />
+                  </div>
+                  <div>
+                    <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Body Fat (%)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.body_fat}
+                      onChange={(e) => setFormData({...formData, body_fat: e.target.value})}
+                      className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
+                      placeholder="12.5"
+                    />
+                  </div>
+                  <div>
+                    <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>Muscle Mass (kg)</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={formData.muscle_mass}
+                      onChange={(e) => setFormData({...formData, muscle_mass: e.target.value})}
+                      className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
+                      placeholder="38.0"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  {MEASUREMENT_FIELDS.map(f => (
+                    <div key={f.key}>
+                      <label className={`block text-xs font-bebas tracking-wider mb-1 ${TEXT_SECONDARY}`}>{f.label} (cm)</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={formData[f.key]}
+                        onChange={(e) => setFormData({...formData, [f.key]: e.target.value})}
+                        className="w-full px-3 py-2 rounded-lg bg-black/50 text-white text-sm"
+                        placeholder="0.0"
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
 
             <div className="flex flex-col gap-2 mt-4">
@@ -349,7 +401,7 @@ export default function MetricsScreen() {
                 className="card-press w-full py-3 rounded-xl font-bebas tracking-wider text-white/90 disabled:opacity-50"
                 style={{ background: 'rgba(255,255,255,0.05)' }}
               >
-                {submitting ? <Spinner size={16} /> : 'Add'}
+                {submitting ? <Spinner size={16} /> : (editingMetric ? 'Save' : 'Add')}
               </button>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -361,14 +413,14 @@ export default function MetricsScreen() {
           </div>
         </div>
       )}
-      
+
       {/* Delete Confirmation Modal */}
       {deleteModal.show && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
           onClick={cancelDelete}
         >
-          <div 
+          <div
             className="bg-black/95 backdrop-blur-lg w-full max-w-sm mx-4 rounded-2xl p-6"
             onClick={(e) => e.stopPropagation()}
           >
@@ -381,7 +433,7 @@ export default function MetricsScreen() {
                 Are you sure you want to delete this body measurement? This action cannot be undone.
               </p>
             </div>
-            
+
             <div className="space-y-3">
               <button
                 onClick={confirmDelete}
