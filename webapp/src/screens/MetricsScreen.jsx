@@ -66,7 +66,7 @@ export default function MetricsScreen() {
 
     api.getBodyMetrics(userId)
       .then(data => {
-        setMetrics(data.metrics || []);
+        setMetrics(Array.isArray(data) ? data : []);
       })
       .catch(() => {
         const localMetrics = localStorage.getItem(`body_metrics_${userId}`);
