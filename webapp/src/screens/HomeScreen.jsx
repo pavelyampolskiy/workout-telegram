@@ -175,9 +175,9 @@ function StatusWidget({ userId }) {
 
   const { lastDate, weekCount, total } = stats;
   const parts = [
-    `${total} workout${total !== 1 ? 's' : ''}`,
+    `${weekCount} workout${weekCount !== 1 ? 's' : ''}`,
     lastDate ? `Last ${daysAgoLabel(lastDate)}` : null,
-    `${weekCount} this week`,
+    `${total} total`,
   ].filter(Boolean);
 
   return (
