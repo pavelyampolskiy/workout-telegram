@@ -697,9 +697,13 @@ def get_achievements(user_id: int):
 
     existing_unlocks = db_ops.get_user_achievements(user_id)
 
-    if existing_unlocks and len(set(existing_unlocks.values())) == 1 and len(existing_unlocks) > 1:
+    unique_ts = set(existing_unlocks.values()) if existing_unlocks else set()
+    if existing_unlocks and len(unique_ts) < len(existing_unlocks):
         db_ops.clear_user_achievements(user_id)
         existing_unlocks = {}
+
+    values = {"workouts": total, "volume": total_volume, "weekly": week_count,
+              "cardio": cardio_count, "weekly_streak": weekly_streak["max"]}
 
     unlocked = []
     locked = []
@@ -708,27 +712,18 @@ def get_achievements(user_id: int):
     for ach in ACHIEVEMENTS:
         ach_type = ach.get("type", "workouts")
         threshold = ach["threshold"]
+        current = values.get(ach_type, total)
 
-        if ach_type == "volume":
-            earned = total_volume >= threshold
-            progress = min(total_volume / threshold, 1.0)
-        elif ach_type == "weekly":
-            earned = week_count >= threshold
-            progress = min(week_count / threshold, 1.0)
-        elif ach_type == "cardio":
-            earned = cardio_count >= threshold
-            progress = min(cardio_count / threshold, 1.0)
-        elif ach_type == "weekly_streak":
-            earned = weekly_streak["max"] >= threshold
-            progress = min(weekly_streak["max"] / threshold, 1.0)
-        else:
-            earned = total >= threshold
-            progress = min(total / threshold, 1.0)
+        if ach_type == "weekly_streak":
+            current = weekly_streak["max"]
+
+        earned = current >= threshold
+        progress = min(current / threshold, 1.0) if threshold else 1.0
 
         item = {**ach, "earned": earned, "progress": round(progress, 2)}
         if earned:
             if ach["id"] not in existing_unlocks:
-                newly_earned.append(ach)
+                newly_earned.append({**ach, "_ratio": current / threshold if threshold else 999})
             unlocked.append(item)
         else:
             locked.append(item)
@@ -736,6 +731,7 @@ def get_achievements(user_id: int):
     if newly_earned:
         from datetime import datetime
         if not existing_unlocks:
+            newly_earned.sort(key=lambda a: a["_ratio"], reverse=True)
             base = datetime(2025, 1, 1)
             for i, ach in enumerate(newly_earned):
                 ts = (base + timedelta(seconds=i)).isoformat()
