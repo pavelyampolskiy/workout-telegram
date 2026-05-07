@@ -325,8 +325,7 @@ export default function HomeScreen() {
         className="w-full h-full flex flex-row justify-between items-center p-4"
         disabled={isEditMode}
       >
-        <span className="shrink-0 flex items-center justify-center text-white/45">{config.icon}</span>
-        <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>{config.label}</div>
+        <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>{config.label}</div>
       </button>
     );
   };
@@ -529,12 +528,7 @@ export default function HomeScreen() {
                   className="card-press w-full rounded-xl py-12 pl-8 pr-4 flex flex-row justify-between items-center mt-8"
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
-                  <span className={ICON_WRAPPER}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ICON_STROKE} strokeLinecap="round" strokeLinejoin="round" style={{ width: '1em', height: '1em' }}>
-                      <path d="M5 3l14 9-14 9V3z"/>
-                    </svg>
-                  </span>
-                  <div className="flex flex-col items-end shrink-0 text-right">
+                  <div className="flex flex-col items-end shrink-0 text-right w-full">
                     <span className="font-bebas text-white" style={{ letterSpacing: 'normal' }}>Continue Workout</span>
                     <div className="flex items-center gap-2">
                       <span className={`font-bebas ${TEXT_MUTED}`} style={{ letterSpacing: 'normal', fontSize: '0.6em' }}>{unfinished.label || unfinished.type?.replace('DAY_', 'Day ') || 'Workout'}</span>
@@ -555,8 +549,7 @@ export default function HomeScreen() {
                   className="w-full py-12 pl-8 pr-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl mt-2"
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
-                  <span className="shrink-0 flex items-center justify-center text-white/40"><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                  <div className="font-bebas text-white/50 shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  <div className="font-bebas text-white/50 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>New Workout</div>
                 </button>
               </>
             ) : (
@@ -585,8 +578,7 @@ export default function HomeScreen() {
                   className="card-press w-full mt-2 py-4 pl-8 pr-4 flex flex-row justify-between items-center rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
-                  <span className={ICON_WRAPPER}><WorkoutIcon style={{ width: '1em', height: '1em' }} /></span>
-                  <div className="font-bebas text-white shrink-0" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  <div className="font-bebas text-white shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>New Workout</div>
                 </button>
               </div>
             )}
