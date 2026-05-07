@@ -545,7 +545,7 @@ export default function HomeScreen() {
                   className="w-full py-12 pl-8 pr-4 flex flex-row justify-between items-center card-press opacity-50 rounded-xl mt-2"
                   style={{ background: CARD_BG, fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
-                  <div className="font-bebas text-white/50 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  <div className="font-bebas text-white/50 shrink-0 w-full text-right" style={{ letterSpacing: 'normal' }}>New Workout</div>
                 </button>
               </>
             ) : (
@@ -574,7 +574,7 @@ export default function HomeScreen() {
                   className="card-press w-full mt-2 py-4 pl-8 pr-4 flex flex-row justify-between items-center rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.08)', fontSize: 'clamp(14px, 7.5vw, 32px)' }}
                 >
-                  <div className="font-bebas text-white shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>New Workout</div>
+                  <div className="font-bebas text-white shrink-0 w-full text-right" style={{ letterSpacing: 'normal' }}>New Workout</div>
                 </button>
               </div>
             )}
