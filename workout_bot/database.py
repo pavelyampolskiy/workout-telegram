@@ -1348,9 +1348,10 @@ def get_user_achievements(user_id: int):
         return {r["achievement_id"]: r["unlocked_at"] for r in rows}
 
 
-def unlock_achievement(user_id: int, achievement_id: str):
+def unlock_achievement(user_id: int, achievement_id: str, unlocked_at: str = None):
+    ts = unlocked_at or datetime.utcnow().isoformat()
     with db() as conn:
         conn.execute(
             "INSERT OR IGNORE INTO user_achievements (user_id, achievement_id, unlocked_at) VALUES (?, ?, ?)",
-            (user_id, achievement_id, datetime.utcnow().isoformat()),
+            (user_id, achievement_id, ts),
         )

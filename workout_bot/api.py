@@ -699,6 +699,7 @@ def get_achievements(user_id: int):
 
     unlocked = []
     locked = []
+    newly_earned = []
 
     for ach in ACHIEVEMENTS:
         ach_type = ach.get("type", "workouts")
@@ -723,12 +724,25 @@ def get_achievements(user_id: int):
         item = {**ach, "earned": earned, "progress": round(progress, 2)}
         if earned:
             if ach["id"] not in existing_unlocks:
-                db_ops.unlock_achievement(user_id, ach["id"])
-                existing_unlocks = db_ops.get_user_achievements(user_id)
-            item["unlocked_at"] = existing_unlocks.get(ach["id"])
+                newly_earned.append(ach)
             unlocked.append(item)
         else:
             locked.append(item)
+
+    if newly_earned:
+        from datetime import datetime
+        if not existing_unlocks:
+            base = datetime(2025, 1, 1)
+            for i, ach in enumerate(newly_earned):
+                ts = (base + timedelta(seconds=i)).isoformat()
+                db_ops.unlock_achievement(user_id, ach["id"], ts)
+        else:
+            for ach in newly_earned:
+                db_ops.unlock_achievement(user_id, ach["id"])
+        existing_unlocks = db_ops.get_user_achievements(user_id)
+
+    for item in unlocked:
+        item["unlocked_at"] = existing_unlocks.get(item["id"])
 
     return {"unlocked": unlocked, "locked": locked, "total_workouts": total, "total_volume": total_volume}
 
