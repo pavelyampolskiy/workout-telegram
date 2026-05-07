@@ -2,7 +2,7 @@
 import asyncio
 import os
 import pathlib
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -13,9 +13,18 @@ from typing import Optional
 import database as db_ops
 from program import PROGRAM
 
+import uuid as _uuid
+
 app = FastAPI(title="Workout API")
 
 DIST_DIR = pathlib.Path(__file__).resolve().parent.parent / "webapp" / "dist"
+
+def _uploads_dir() -> pathlib.Path:
+    mount = os.getenv("RAILWAY_VOLUME_MOUNT_PATH", "").rstrip("/")
+    base = pathlib.Path(mount) if mount else pathlib.Path(".")
+    d = base / "uploads"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
 
 ADMIN_USER_ID = int(os.getenv("ADMIN_USER_ID", "0"))
 
@@ -285,6 +294,7 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None
             "cardio_distance": r["cardio_distance"],
             "cardio_distance_unit": r["cardio_distance_unit"],
             "cardio_calories": r["cardio_calories"],
+            "cardio_hr": r["cardio_hr"],
             "cardio_watts": r["cardio_watts"],
             "cardio_speed": r["cardio_speed"],
             "cardio_level": r["cardio_level"],
@@ -474,6 +484,40 @@ def update_cardio(workout_id: int, body: CardioBody):
         notes=body.notes,
     )
     return {"ok": True}
+
+
+@app.post("/api/workouts/{workout_id}/cardio/photo")
+async def upload_cardio_photo(workout_id: int, file: UploadFile = File(...)):
+    ext = pathlib.Path(file.filename or "photo.jpg").suffix or ".jpg"
+    name = f"{workout_id}_{_uuid.uuid4().hex[:8]}{ext}"
+    path = _uploads_dir() / name
+    data = await file.read()
+    if len(data) > 10 * 1024 * 1024:
+        raise HTTPException(400, "File too large (max 10MB)")
+    path.write_bytes(data)
+    photo_url = f"/api/uploads/{name}"
+    db_ops.update_cardio_photo(workout_id, photo_url)
+    return {"url": photo_url}
+
+
+@app.delete("/api/workouts/{workout_id}/cardio/photo")
+def delete_cardio_photo(workout_id: int):
+    cardio = db_ops.get_cardio(workout_id)
+    if cardio and cardio.get("photo"):
+        fname = cardio["photo"].replace("/api/uploads/", "")
+        fpath = _uploads_dir() / fname
+        if fpath.exists():
+            fpath.unlink()
+    db_ops.update_cardio_photo(workout_id, None)
+    return {"ok": True}
+
+
+@app.get("/api/uploads/{filename}")
+def serve_upload(filename: str):
+    path = _uploads_dir() / filename
+    if not path.exists():
+        raise HTTPException(404, "Not found")
+    return FileResponse(path)
 
 
 # ── Notes ─────────────────────────────────────────────────────────────────────

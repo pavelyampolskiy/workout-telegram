@@ -221,7 +221,7 @@ export default function HistoryScreen() {
             {monthKeys.map((monthKey) => {
               const group = monthGroups[monthKey];
               const monthLabel = formatMonthLabel(group[0].date).toUpperCase();
-              const totalVolume = group.reduce((s, w) => s + (w.total_volume || 0), 0);
+              const totalVolume = group.reduce((s, w) => s + (w.type !== 'CARDIO' ? (w.total_volume || 0) : 0), 0);
               const totalMin = group.reduce((s, w) => s + (w.duration_min || 0), 0);
               const cardStyle = 'py-2 px-2 flex flex-col items-center justify-center';
               const valueStyle = 'font-bebas text-white/95 tracking-wide text-lg leading-none';
@@ -289,6 +289,7 @@ export default function HistoryScreen() {
                                 {w.type === 'CARDIO' ? (
                                   <>
                                     {w.cardio_distance != null && <span>{w.cardio_distance} {w.cardio_distance_unit || 'km'}</span>}
+                                    {w.cardio_hr != null && <span>{w.cardio_hr} bpm</span>}
                                     {w.cardio_calories != null && <span>{w.cardio_calories} kcal</span>}
                                     {w.cardio_watts != null && <span>{w.cardio_watts} W</span>}
                                     {w.cardio_speed != null && <span>{w.cardio_speed} spm</span>}

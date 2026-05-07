@@ -28,6 +28,8 @@ export default function HistoryDetailScreen() {
   const [addingEx, setAddingEx] = useState(false);
   const [editNote, setEditNote] = useState('');
   const [editCardio, setEditCardio] = useState(null);
+  const [editPhoto, setEditPhoto] = useState(null);
+  const [editPhotoPreview, setEditPhotoPreview] = useState(null);
   useEffect(() => {
     if (!workoutId) return;
     api.getWorkout(workoutId)
@@ -244,6 +246,8 @@ export default function HistoryDetailScreen() {
                       difficulty_level: workout.cardio.difficulty_level != null ? String(workout.cardio.difficulty_level) : '',
                       notes: workout.cardio.notes || '',
                     });
+                    setEditPhotoPreview(workout.cardio.photo || null);
+                    setEditPhoto(null);
                   }
                 } else {
                   if (workout.type !== 'CARDIO' && editNote !== (workout.note || '')) {
@@ -264,8 +268,16 @@ export default function HistoryDetailScreen() {
                       difficulty_level: editCardio.difficulty_level.trim() ? parseInt(editCardio.difficulty_level) : null,
                       notes: editCardio.notes.trim(),
                     };
-                    api.updateCardio(workoutId, data).then(() => {
-                      setWorkout(prev => ({ ...prev, cardio: data }));
+                    api.updateCardio(workoutId, data).then(async () => {
+                      let photoUrl = workout.cardio?.photo || null;
+                      if (editPhoto) {
+                        const res = await api.uploadCardioPhoto(workoutId, editPhoto).catch(() => null);
+                        if (res) photoUrl = res.url;
+                      } else if (!editPhotoPreview && workout.cardio?.photo) {
+                        await api.deleteCardioPhoto(workoutId).catch(() => {});
+                        photoUrl = null;
+                      }
+                      setWorkout(prev => ({ ...prev, cardio: { ...data, photo: photoUrl } }));
                     }).catch(e => showToast(e.message));
                   }
                   setEditCardio(null);
@@ -300,6 +312,9 @@ export default function HistoryDetailScreen() {
             </div>
             {workout.cardio.notes && (
               <p className="text-white/50 text-sm mt-2 font-sans">{workout.cardio.notes}</p>
+            )}
+            {workout.cardio.photo && (
+              <img src={workout.cardio.photo} alt="" className="w-full rounded-xl mt-3 object-cover max-h-64" />
             )}
           </div>
         )}
@@ -413,6 +428,39 @@ export default function HistoryDetailScreen() {
                 placeholder="Notes..."
                 className="w-full appearance-none bg-white/10 rounded-xl p-3 text-white/80 placeholder-white/25 resize-none h-16 outline-none text-sm font-sans"
               />
+            </div>
+            <div>
+              <label className="block font-sans text-white/35 text-[10px] uppercase tracking-wider mb-2">Photo</label>
+              {editPhotoPreview ? (
+                <div className="relative">
+                  <img src={editPhotoPreview} alt="" className="w-full rounded-xl object-cover max-h-48" />
+                  <button
+                    type="button"
+                    onClick={() => { setEditPhoto(null); setEditPhotoPreview(null); }}
+                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/70 flex items-center justify-center text-white/80"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                </div>
+              ) : (
+                <label className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-white/5 text-white/40 cursor-pointer">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
+                    <rect x="3" y="5" width="18" height="14" rx="2"/>
+                    <circle cx="12" cy="13" r="3"/>
+                    <path d="M9 5l1-2h4l1 2"/>
+                  </svg>
+                  <span className="font-sans text-xs">Add photo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={e => {
+                      const f = e.target.files?.[0];
+                      if (f) { setEditPhoto(f); setEditPhotoPreview(URL.createObjectURL(f)); }
+                    }}
+                  />
+                </label>
+              )}
             </div>
           </div>
         )}
