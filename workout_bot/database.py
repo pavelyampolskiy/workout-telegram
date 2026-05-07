@@ -458,6 +458,7 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: st
                    ce.distance AS cardio_distance,
                    ce.distance_unit AS cardio_distance_unit,
                    ce.calories AS cardio_calories,
+                   ce.avg_heart_rate AS cardio_hr,
                    ce.avg_watts AS cardio_watts,
                    ce.avg_speed AS cardio_speed,
                    ce.difficulty_level AS cardio_level

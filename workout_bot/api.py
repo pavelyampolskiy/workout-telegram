@@ -285,6 +285,7 @@ def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None
             "cardio_distance": r["cardio_distance"],
             "cardio_distance_unit": r["cardio_distance_unit"],
             "cardio_calories": r["cardio_calories"],
+            "cardio_hr": r["cardio_hr"],
             "cardio_watts": r["cardio_watts"],
             "cardio_speed": r["cardio_speed"],
             "cardio_level": r["cardio_level"],

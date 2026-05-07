@@ -289,6 +289,7 @@ export default function HistoryScreen() {
                                 {w.type === 'CARDIO' ? (
                                   <>
                                     {w.cardio_distance != null && <span>{w.cardio_distance} {w.cardio_distance_unit || 'km'}</span>}
+                                    {w.cardio_hr != null && <span>{w.cardio_hr} bpm</span>}
                                     {w.cardio_calories != null && <span>{w.cardio_calories} kcal</span>}
                                     {w.cardio_watts != null && <span>{w.cardio_watts} W</span>}
                                     {w.cardio_speed != null && <span>{w.cardio_speed} spm</span>}
