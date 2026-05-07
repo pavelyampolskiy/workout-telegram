@@ -262,7 +262,9 @@ def init_db():
                 UNIQUE(user_id, achievement_id)
             )
         """)
-        conn.execute("DELETE FROM user_achievements")
+        row = conn.execute("SELECT COUNT(*) as cnt FROM user_achievements WHERE unlocked_at < '2026-05-07'").fetchone()
+        if row["cnt"] > 0:
+            conn.execute("DELETE FROM user_achievements")
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -1364,36 +1366,39 @@ def clear_user_achievements(user_id: int):
 
 
 def get_achievement_unlock_date(user_id: int, ach_type: str, threshold: int):
-    with db() as conn:
-        if ach_type == "workouts":
-            row = conn.execute(
-                "SELECT date FROM workouts WHERE user_id=? AND finished=1 ORDER BY date ASC LIMIT 1 OFFSET ?",
-                (user_id, threshold - 1),
-            ).fetchone()
-            return row["date"] if row else None
-        elif ach_type == "volume":
-            rows = conn.execute(
-                """SELECT w.date, COALESCE(SUM(s.weight * s.reps), 0) as vol
-                   FROM workouts w
-                   LEFT JOIN exercises e ON e.workout_id = w.id
-                   LEFT JOIN sets s ON s.exercise_id = e.id
-                   WHERE w.user_id=? AND w.finished=1
-                   GROUP BY w.id ORDER BY w.date ASC""",
-                (user_id,),
-            ).fetchall()
-            cumulative = 0
-            for r in rows:
-                cumulative += r["vol"]
-                if cumulative >= threshold:
-                    return r["date"]
+    try:
+        with db() as conn:
+            if ach_type == "workouts":
+                row = conn.execute(
+                    "SELECT date FROM workouts WHERE user_id=? AND finished=1 ORDER BY date ASC LIMIT 1 OFFSET ?",
+                    (user_id, threshold - 1),
+                ).fetchone()
+                return row["date"] if row else None
+            elif ach_type == "volume":
+                rows = conn.execute(
+                    """SELECT w.date, COALESCE(SUM(s.weight * s.reps), 0) as vol
+                       FROM workouts w
+                       LEFT JOIN exercises e ON e.workout_id = w.id
+                       LEFT JOIN sets s ON s.exercise_id = e.id
+                       WHERE w.user_id=? AND w.finished=1
+                       GROUP BY w.id ORDER BY w.date ASC""",
+                    (user_id,),
+                ).fetchall()
+                cumulative = 0
+                for r in rows:
+                    cumulative += (r["vol"] or 0)
+                    if cumulative >= threshold:
+                        return r["date"]
+                return None
+            elif ach_type == "cardio":
+                row = conn.execute(
+                    """SELECT w.date FROM workouts w
+                       JOIN cardio_entries c ON c.workout_id = w.id
+                       WHERE w.user_id=? AND w.finished=1
+                       ORDER BY w.date ASC LIMIT 1 OFFSET ?""",
+                    (user_id, threshold - 1),
+                ).fetchone()
+                return row["date"] if row else None
             return None
-        elif ach_type == "cardio":
-            row = conn.execute(
-                """SELECT w.date FROM workouts w
-                   JOIN cardio_entries c ON c.workout_id = w.id
-                   WHERE w.user_id=? AND w.finished=1
-                   ORDER BY w.date ASC LIMIT 1 OFFSET ?""",
-                (user_id, threshold - 1),
-            ).fetchone()
-            return row["date"] if row else None
+    except Exception:
         return None
