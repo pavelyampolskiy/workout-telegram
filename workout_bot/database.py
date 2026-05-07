@@ -262,6 +262,7 @@ def init_db():
                 UNIQUE(user_id, achievement_id)
             )
         """)
+        conn.execute("DELETE FROM user_achievements WHERE unlocked_at LIKE '2025-01-01T00:00:%'")
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────

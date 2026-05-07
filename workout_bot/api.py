@@ -697,8 +697,7 @@ def get_achievements(user_id: int):
 
     existing_unlocks = db_ops.get_user_achievements(user_id)
 
-    unique_ts = set(existing_unlocks.values()) if existing_unlocks else set()
-    if existing_unlocks and len(unique_ts) < len(existing_unlocks):
+    if existing_unlocks and any(v.startswith("2025-01-01T00:00:") for v in existing_unlocks.values()):
         db_ops.clear_user_achievements(user_id)
         existing_unlocks = {}
 
