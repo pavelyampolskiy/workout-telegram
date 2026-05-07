@@ -66,6 +66,14 @@ export const api = {
 
   addCardio: (workout_id, data) => req('POST', `/api/workouts/${workout_id}/cardio`, data),
   updateCardio: (workout_id, data) => req('PUT', `/api/workouts/${workout_id}/cardio`, data),
+  uploadCardioPhoto: (workout_id, file) => {
+    const form = new FormData();
+    form.append('file', file);
+    const BASE = import.meta.env.VITE_API_URL || '';
+    return fetch(`${BASE}/api/workouts/${workout_id}/cardio/photo`, { method: 'POST', body: form })
+      .then(r => { if (!r.ok) throw new Error('Upload failed'); return r.json(); });
+  },
+  deleteCardioPhoto: (workout_id) => req('DELETE', `/api/workouts/${workout_id}/cardio/photo`),
   finishWorkout: (id, completion_date) => 
     req('PATCH', `/api/workouts/${id}/finish`, { completion_date }),
   saveRating: (workout_id, rating) => req('PATCH', `/api/workouts/${workout_id}/rating`, { rating }),

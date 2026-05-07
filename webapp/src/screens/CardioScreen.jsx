@@ -37,6 +37,8 @@ export default function CardioScreen() {
   const [avgSpeed, setAvgSpeed] = useState('');
   const [difficultyLevel, setDifficultyLevel] = useState('');
   const [notes, setNotes] = useState('');
+  const [photo, setPhoto] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [started, setStarted] = useState(false);
@@ -161,6 +163,9 @@ export default function CardioScreen() {
         notes: notes.trim(),
       };
       await api.addCardio(workoutId, data);
+      if (photo) {
+        await api.uploadCardioPhoto(workoutId, photo).catch(() => {});
+      }
 
       const completionDate = activeWorkout?.isBackdated
         ? activeWorkout.backdateDate
@@ -399,6 +404,41 @@ export default function CardioScreen() {
             placeholder="E.g. Treadmill, felt good, intervals..."
             className="w-full appearance-none bg-black/50 rounded-xl p-4 text-white placeholder-white/25 resize-none h-28 outline-none text-base font-sans"
           />
+        </div>
+
+        {/* Photo */}
+        <div className="mb-4">
+          <label className={labelClass}>Photo</label>
+          {photoPreview ? (
+            <div className="relative">
+              <img src={photoPreview} alt="" className="w-full rounded-xl object-cover max-h-48" />
+              <button
+                onClick={() => { setPhoto(null); setPhotoPreview(null); }}
+                className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/70 flex items-center justify-center text-white/80"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          ) : (
+            <label className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-black/50 text-white/40 cursor-pointer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <circle cx="12" cy="13" r="3"/>
+                <path d="M9 5l1-2h4l1 2"/>
+              </svg>
+              <span className="font-bebas tracking-wider">Add photo</span>
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={e => {
+                  const f = e.target.files?.[0];
+                  if (f) { setPhoto(f); setPhotoPreview(URL.createObjectURL(f)); }
+                }}
+              />
+            </label>
+          )}
         </div>
       </div>
 

@@ -301,6 +301,9 @@ export default function HistoryDetailScreen() {
             {workout.cardio.notes && (
               <p className="text-white/50 text-sm mt-2 font-sans">{workout.cardio.notes}</p>
             )}
+            {workout.cardio.photo && (
+              <img src={workout.cardio.photo} alt="" className="w-full rounded-xl mt-3 object-cover max-h-64" />
+            )}
           </div>
         )}
         {workout.type === 'CARDIO' && editMode && editCardio && (

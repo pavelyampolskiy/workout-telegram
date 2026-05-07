@@ -107,7 +107,8 @@ def init_db():
                 avg_watts INTEGER,
                 avg_speed REAL,
                 difficulty_level INTEGER,
-                notes TEXT NOT NULL DEFAULT ''
+                notes TEXT NOT NULL DEFAULT '',
+                photo TEXT
             );
 
             CREATE TABLE IF NOT EXISTS workout_notes (
@@ -201,6 +202,8 @@ def init_db():
                 conn.execute("ALTER TABLE cardio_entries ADD COLUMN avg_speed REAL")
             if 'difficulty_level' not in cardio_cols:
                 conn.execute("ALTER TABLE cardio_entries ADD COLUMN difficulty_level INTEGER")
+            if 'photo' not in cardio_cols:
+                conn.execute("ALTER TABLE cardio_entries ADD COLUMN photo TEXT")
         except Exception:
             pass
         # Migration: user_program table for per-user program templates
@@ -597,15 +600,15 @@ def get_set(set_id: int):
 def add_cardio(workout_id: int, activity_type: str = "", duration_seconds: int = 0,
                distance=None, distance_unit: str = "km", calories=None,
                avg_heart_rate=None, avg_watts=None, avg_speed=None,
-               difficulty_level=None, notes: str = "") -> int:
+               difficulty_level=None, notes: str = "", photo=None) -> int:
     with db() as conn:
         cur = conn.execute(
             """INSERT INTO cardio_entries
                (workout_id, activity_type, duration_seconds, distance, distance_unit,
-                calories, avg_heart_rate, avg_watts, avg_speed, difficulty_level, notes)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                calories, avg_heart_rate, avg_watts, avg_speed, difficulty_level, notes, photo)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
             (workout_id, activity_type, duration_seconds, distance, distance_unit,
-             calories, avg_heart_rate, avg_watts, avg_speed, difficulty_level, notes),
+             calories, avg_heart_rate, avg_watts, avg_speed, difficulty_level, notes, photo),
         )
         return cur.lastrowid
 
@@ -621,17 +624,25 @@ def get_cardio(workout_id: int):
 def update_cardio(workout_id: int, activity_type: str = "", duration_seconds: int = 0,
                   distance=None, distance_unit: str = "km", calories=None,
                   avg_heart_rate=None, avg_watts=None, avg_speed=None,
-                  difficulty_level=None, notes: str = ""):
+                  difficulty_level=None, notes: str = "", photo=None):
     with db() as conn:
         conn.execute(
             """UPDATE cardio_entries
                SET activity_type=?, duration_seconds=?, distance=?, distance_unit=?,
                    calories=?, avg_heart_rate=?, avg_watts=?, avg_speed=?,
-                   difficulty_level=?, notes=?
+                   difficulty_level=?, notes=?, photo=?
                WHERE workout_id=?""",
             (activity_type, duration_seconds, distance, distance_unit,
              calories, avg_heart_rate, avg_watts, avg_speed, difficulty_level,
-             notes, workout_id),
+             notes, photo, workout_id),
+        )
+
+
+def update_cardio_photo(workout_id: int, photo):
+    with db() as conn:
+        conn.execute(
+            "UPDATE cardio_entries SET photo=? WHERE workout_id=?",
+            (photo, workout_id),
         )
 
 
