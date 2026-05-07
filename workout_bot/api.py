@@ -697,6 +697,10 @@ def get_achievements(user_id: int):
 
     existing_unlocks = db_ops.get_user_achievements(user_id)
 
+    if existing_unlocks and len(set(existing_unlocks.values())) == 1 and len(existing_unlocks) > 1:
+        db_ops.clear_user_achievements(user_id)
+        existing_unlocks = {}
+
     unlocked = []
     locked = []
     newly_earned = []

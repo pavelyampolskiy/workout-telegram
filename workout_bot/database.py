@@ -1355,3 +1355,8 @@ def unlock_achievement(user_id: int, achievement_id: str, unlocked_at: str = Non
             "INSERT OR IGNORE INTO user_achievements (user_id, achievement_id, unlocked_at) VALUES (?, ?, ?)",
             (user_id, achievement_id, ts),
         )
+
+
+def clear_user_achievements(user_id: int):
+    with db() as conn:
+        conn.execute("DELETE FROM user_achievements WHERE user_id=?", (user_id,))
