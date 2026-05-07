@@ -360,8 +360,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/45 self-center"><HistoryIcon /></span>
-            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>History</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
       },
@@ -375,8 +374,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/45"><StatsIcon /></span>
-            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>Statistics</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>Statistics</div>
           </button>
         )
       },
@@ -390,8 +388,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4 relative"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/45 self-center"><TrophyIcon /></span>
-            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>Achievements</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>Achievements</div>
           </button>
         )
       },
@@ -405,8 +402,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
-            <span className="shrink-0 flex items-center justify-center text-white/45"><ProgramIcon /></span>
-            <div className="font-bebas text-base text-white/45 shrink-0" style={{ letterSpacing: 'normal' }}>My program</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>My program</div>
           </button>
         )
       },
