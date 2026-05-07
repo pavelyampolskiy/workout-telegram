@@ -740,7 +740,7 @@ def get_achievements(user_id: int):
     for item in unlocked:
         item["unlocked_at"] = existing_unlocks.get(item["id"])
 
-    return {"unlocked": unlocked, "locked": locked, "total_workouts": total, "total_volume": total_volume}
+    return {"unlocked": unlocked, "locked": locked, "total_workouts": total, "total_volume": total_volume, "_v": 3}
 
 
 # ── Rest Timer Notifications ─────────────────────────────────────────────────

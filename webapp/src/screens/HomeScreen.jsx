@@ -452,14 +452,14 @@ export default function HomeScreen() {
     // Load latest achievement
     api.getAchievements(userId)
       .then(data => {
-        console.log('Achievements data:', data);
+        console.log('Achievements RAW:', JSON.stringify(data.unlocked?.map(a => ({name: a.name, unlocked_at: a.unlocked_at})), null, 2), '_v:', data._v);
         if (data && data.unlocked && data.unlocked.length > 0) {
           const latestAchievement = data.unlocked.reduce((best, ach) => {
             if (!best.unlocked_at) return ach;
             if (!ach.unlocked_at) return best;
             return ach.unlocked_at > best.unlocked_at ? ach : best;
           });
-          console.log('Latest achievement:', latestAchievement);
+          console.log('PICKED latest:', latestAchievement.name, latestAchievement.unlocked_at);
           setLatestAchievement(latestAchievement);
         } else {
           console.log('No unlocked achievements found');
