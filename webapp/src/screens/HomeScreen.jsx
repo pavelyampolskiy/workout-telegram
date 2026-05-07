@@ -325,7 +325,7 @@ export default function HomeScreen() {
         className="w-full h-full flex flex-row justify-between items-center p-4"
         disabled={isEditMode}
       >
-        <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>{config.label}</div>
+        <div className="font-bebas text-base text-white/45 shrink-0 w-full text-left" style={{ letterSpacing: 'normal' }}>{config.label}</div>
       </button>
     );
   };
@@ -360,7 +360,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
-            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>History</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-left" style={{ letterSpacing: 'normal' }}>History</div>
           </button>
         )
       },
@@ -374,7 +374,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
-            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>Statistics</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-left" style={{ letterSpacing: 'normal' }}>Statistics</div>
           </button>
         )
       },
@@ -388,7 +388,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4 relative"
             disabled={isEditMode}
           >
-            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>Achievements</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-left" style={{ letterSpacing: 'normal' }}>Achievements</div>
           </button>
         )
       },
@@ -402,7 +402,7 @@ export default function HomeScreen() {
             className="card-press w-full h-full flex flex-row justify-between items-center py-4 pl-8 pr-4"
             disabled={isEditMode}
           >
-            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-center" style={{ letterSpacing: 'normal' }}>My program</div>
+            <div className="font-bebas text-base text-white/45 shrink-0 w-full text-left" style={{ letterSpacing: 'normal' }}>My program</div>
           </button>
         )
       },
