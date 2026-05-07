@@ -459,10 +459,11 @@ export default function HomeScreen() {
       .then(data => {
         console.log('Achievements data:', data);
         if (data && data.unlocked && data.unlocked.length > 0) {
-          // Get the hardest unlocked achievement (highest threshold)
-          const latestAchievement = data.unlocked.reduce((best, ach) =>
-            ach.threshold > best.threshold ? ach : best
-          );
+          const latestAchievement = data.unlocked.reduce((best, ach) => {
+            if (!best.unlocked_at) return ach;
+            if (!ach.unlocked_at) return best;
+            return ach.unlocked_at > best.unlocked_at ? ach : best;
+          });
           console.log('Latest achievement:', latestAchievement);
           setLatestAchievement(latestAchievement);
         } else {

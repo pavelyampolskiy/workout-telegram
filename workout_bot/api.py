@@ -277,6 +277,7 @@ def get_workout(workout_id: int):
             "avg_speed": cardio.get("avg_speed"),
             "difficulty_level": cardio.get("difficulty_level"),
             "notes": cardio["notes"],
+            "photo": cardio.get("photo"),
         } if cardio else None,
         "note": note["text"] if note else None,
     }
@@ -693,14 +694,16 @@ def get_achievements(user_id: int):
     week_count = week_stats[0] if week_stats else 0
     cardio_count = db_ops.get_cardio_count(user_id)
     weekly_streak = db_ops.get_weekly_streak(user_id)
-    
+
+    existing_unlocks = db_ops.get_user_achievements(user_id)
+
     unlocked = []
     locked = []
-    
+
     for ach in ACHIEVEMENTS:
         ach_type = ach.get("type", "workouts")
         threshold = ach["threshold"]
-        
+
         if ach_type == "volume":
             earned = total_volume >= threshold
             progress = min(total_volume / threshold, 1.0)
@@ -716,13 +719,17 @@ def get_achievements(user_id: int):
         else:
             earned = total >= threshold
             progress = min(total / threshold, 1.0)
-        
+
         item = {**ach, "earned": earned, "progress": round(progress, 2)}
         if earned:
+            if ach["id"] not in existing_unlocks:
+                db_ops.unlock_achievement(user_id, ach["id"])
+                existing_unlocks = db_ops.get_user_achievements(user_id)
+            item["unlocked_at"] = existing_unlocks.get(ach["id"])
             unlocked.append(item)
         else:
             locked.append(item)
-    
+
     return {"unlocked": unlocked, "locked": locked, "total_workouts": total, "total_volume": total_volume}
 
 

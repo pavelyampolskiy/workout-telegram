@@ -253,6 +253,15 @@ def init_db():
                 conn.execute(f"ALTER TABLE body_metrics ADD COLUMN {col} REAL")
             except Exception:
                 pass
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS user_achievements (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                achievement_id TEXT NOT NULL,
+                unlocked_at TEXT NOT NULL,
+                UNIQUE(user_id, achievement_id)
+            )
+        """)
 
 
 # ── Custom Days ──────────────────────────────────────────────────────────────
@@ -1326,3 +1335,22 @@ def has_body_metric_this_month(user_id: int) -> bool:
             (user_id, first_of_month),
         ).fetchone()
         return row["cnt"] > 0
+
+
+# ── User Achievements ───────────────────────────────────────────────────────
+
+def get_user_achievements(user_id: int):
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT achievement_id, unlocked_at FROM user_achievements WHERE user_id=? ORDER BY unlocked_at DESC",
+            (user_id,),
+        ).fetchall()
+        return {r["achievement_id"]: r["unlocked_at"] for r in rows}
+
+
+def unlock_achievement(user_id: int, achievement_id: str):
+    with db() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO user_achievements (user_id, achievement_id, unlocked_at) VALUES (?, ?, ?)",
+            (user_id, achievement_id, datetime.utcnow().isoformat()),
+        )
