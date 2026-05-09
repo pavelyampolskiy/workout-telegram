@@ -115,6 +115,8 @@ export default function TDEEHistoryScreen() {
           </button>
         </div>
         
+        {history.length > 0 && (
+        <>
         {/* Progress section */}
         <div className="mb-6">
           <h2 className="font-bebas text-white text-lg mb-4" style={{ letterSpacing: '0.05em' }}>
@@ -205,6 +207,8 @@ export default function TDEEHistoryScreen() {
               </div>
             ))}
           </div>
+        )}
+        </>
         )}
       </div>
 
