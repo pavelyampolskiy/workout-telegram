@@ -119,9 +119,13 @@ const TDEEScreen = () => {
   
   // Macro adjustment states
   const [showMacroAdjustment, setShowMacroAdjustment] = useState(false);
+  const [macroInputMode, setMacroInputMode] = useState('pct');
   const [customMacroProtein, setCustomMacroProtein] = useState(25);
   const [customMacroCarbs, setCustomMacroCarbs] = useState(50);
   const [customMacroFat, setCustomMacroFat] = useState(25);
+  const [gramProtein, setGramProtein] = useState('');
+  const [gramCarbs, setGramCarbs] = useState('');
+  const [gramFat, setGramFat] = useState('');
   const [macroError, setMacroError] = useState('');
 
   // Results state
@@ -356,28 +360,42 @@ const TDEEScreen = () => {
   // Apply macro adjustment
   const applyMacroAdjustment = () => {
     if (!results) return;
-    
-    const protein = customMacroProtein || 0;
-    const carbs = customMacroCarbs || 0;
-    const fat = customMacroFat || 0;
-    const total = protein + carbs + fat;
-    
-    if (total !== 100) {
-      setMacroError(`Total must be exactly 100%. Current: ${total}%`);
-      return;
+
+    let proteinG, carbsG, fatG, proteinKcal, carbsKcal, fatKcal;
+    const targetCalories = results.targetCalories;
+
+    if (macroInputMode === 'grams') {
+      proteinG = parseInt(gramProtein) || 0;
+      carbsG = parseInt(gramCarbs) || 0;
+      fatG = parseInt(gramFat) || 0;
+      proteinKcal = proteinG * 4;
+      carbsKcal = carbsG * 4;
+      fatKcal = fatG * 9;
+      const totalKcal = proteinKcal + carbsKcal + fatKcal;
+      if (totalKcal === 0) {
+        setMacroError('Enter at least one macro value');
+        return;
+      }
+      setCustomMacroProtein(Math.round((proteinKcal / totalKcal) * 100));
+      setCustomMacroCarbs(Math.round((carbsKcal / totalKcal) * 100));
+      setCustomMacroFat(Math.round((fatKcal / totalKcal) * 100));
+    } else {
+      const protein = customMacroProtein || 0;
+      const carbs = customMacroCarbs || 0;
+      const fat = customMacroFat || 0;
+      const total = protein + carbs + fat;
+      if (total !== 100) {
+        setMacroError(`Total must be exactly 100%. Current: ${total}%`);
+        return;
+      }
+      proteinKcal = Math.round(targetCalories * (protein / 100));
+      carbsKcal = Math.round(targetCalories * (carbs / 100));
+      fatKcal = Math.round(targetCalories * (fat / 100));
+      proteinG = Math.round(proteinKcal / 4);
+      carbsG = Math.round(carbsKcal / 4);
+      fatG = Math.round(fatKcal / 9);
     }
 
-    // Recalculate macros based on new percentages
-    const targetCalories = results.targetCalories;
-    const proteinKcal = Math.round(targetCalories * (protein / 100));
-    const carbsKcal = Math.round(targetCalories * (carbs / 100));
-    const fatKcal = Math.round(targetCalories * (fat / 100));
-    
-    const proteinG = Math.round(proteinKcal / 4);
-    const carbsG = Math.round(carbsKcal / 4);
-    const fatG = Math.round(fatKcal / 9);
-
-    // Update results with new macros
     const updatedResults = {
       ...results,
       protein: { grams: proteinG, kcal: proteinKcal },
@@ -387,8 +405,10 @@ const TDEEScreen = () => {
 
     setResults(updatedResults);
     setMacroError('');
-    
-    // Trigger animation
+    setGramProtein(String(proteinG));
+    setGramCarbs(String(carbsG));
+    setGramFat(String(fatG));
+
     setShowResults(false);
     setTimeout(() => setShowResults(true), 50);
   };
@@ -399,6 +419,9 @@ const TDEEScreen = () => {
       setCustomMacroProtein(Math.round((results.protein.kcal / results.targetCalories) * 100));
       setCustomMacroCarbs(Math.round((results.carbs.kcal / results.targetCalories) * 100));
       setCustomMacroFat(Math.round((results.fat.kcal / results.targetCalories) * 100));
+      setGramProtein(String(results.protein.grams));
+      setGramCarbs(String(results.carbs.grams));
+      setGramFat(String(results.fat.grams));
     }
   }, [results]);
 
@@ -876,77 +899,106 @@ const TDEEScreen = () => {
                     </span>
                   </button>
                 </div>
+                {showMacroAdjustment && (
+                  <div className="flex rounded-lg overflow-hidden border border-white/10">
+                    <button
+                      onClick={() => { setMacroInputMode('pct'); setMacroError(''); }}
+                      className={`px-3 py-1 text-xs font-bebas tracking-wider transition-colors ${
+                        macroInputMode === 'pct' ? 'bg-white/15 text-white' : 'text-white/40'
+                      }`}
+                    >%</button>
+                    <button
+                      onClick={() => { setMacroInputMode('grams'); setMacroError(''); }}
+                      className={`px-3 py-1 text-xs font-bebas tracking-wider transition-colors ${
+                        macroInputMode === 'grams' ? 'bg-white/15 text-white' : 'text-white/40'
+                      }`}
+                    >G</button>
+                  </div>
+                )}
               </div>
               
               {showMacroAdjustment && (
                 <div className="space-y-4 animate-in slide-in-from-top-2 duration-200">
                   <div className="grid grid-cols-3 gap-3">
-                    <div>
-                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>PROTEIN %</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={customMacroProtein}
-                        onChange={(e) => {
-                          const rawValue = e.target.value;
-                          if (rawValue === '') {
-                            setCustomMacroProtein('');
-                            validateMacroTotals(0, customMacroCarbs, customMacroFat);
-                          } else {
-                            const value = Math.max(0, Math.min(100, parseInt(rawValue) || 0));
-                            setCustomMacroProtein(value);
-                            validateMacroTotals(value, customMacroCarbs, customMacroFat);
-                          }
-                        }}
-                        className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
-                        placeholder="25"
-                      />
-                    </div>
-                    <div>
-                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>CARBOHYDRATES %</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={customMacroCarbs}
-                        onChange={(e) => {
-                          const rawValue = e.target.value;
-                          if (rawValue === '') {
-                            setCustomMacroCarbs('');
-                            validateMacroTotals(customMacroProtein, 0, customMacroFat);
-                          } else {
-                            const value = Math.max(0, Math.min(100, parseInt(rawValue) || 0));
-                            setCustomMacroCarbs(value);
-                            validateMacroTotals(customMacroProtein, value, customMacroFat);
-                          }
-                        }}
-                        className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
-                        placeholder="50"
-                      />
-                    </div>
-                    <div>
-                      <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>FATS %</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={customMacroFat}
-                        onChange={(e) => {
-                          const rawValue = e.target.value;
-                          if (rawValue === '') {
-                            setCustomMacroFat('');
-                            validateMacroTotals(customMacroProtein, customMacroCarbs, 0);
-                          } else {
-                            const value = Math.max(0, Math.min(100, parseInt(rawValue) || 0));
-                            setCustomMacroFat(value);
-                            validateMacroTotals(customMacroProtein, customMacroCarbs, value);
-                          }
-                        }}
-                        className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
-                        placeholder="25"
-                      />
-                    </div>
+                    {macroInputMode === 'pct' ? (
+                      <>
+                        <div>
+                          <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>PROTEIN %</label>
+                          <input
+                            type="number" min="0" max="100"
+                            value={customMacroProtein}
+                            onChange={(e) => {
+                              const rawValue = e.target.value;
+                              if (rawValue === '') { setCustomMacroProtein(''); validateMacroTotals(0, customMacroCarbs, customMacroFat); }
+                              else { const v = Math.max(0, Math.min(100, parseInt(rawValue) || 0)); setCustomMacroProtein(v); validateMacroTotals(v, customMacroCarbs, customMacroFat); }
+                            }}
+                            className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
+                            placeholder="25"
+                          />
+                        </div>
+                        <div>
+                          <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>CARBS %</label>
+                          <input
+                            type="number" min="0" max="100"
+                            value={customMacroCarbs}
+                            onChange={(e) => {
+                              const rawValue = e.target.value;
+                              if (rawValue === '') { setCustomMacroCarbs(''); validateMacroTotals(customMacroProtein, 0, customMacroFat); }
+                              else { const v = Math.max(0, Math.min(100, parseInt(rawValue) || 0)); setCustomMacroCarbs(v); validateMacroTotals(customMacroProtein, v, customMacroFat); }
+                            }}
+                            className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
+                            placeholder="50"
+                          />
+                        </div>
+                        <div>
+                          <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>FATS %</label>
+                          <input
+                            type="number" min="0" max="100"
+                            value={customMacroFat}
+                            onChange={(e) => {
+                              const rawValue = e.target.value;
+                              if (rawValue === '') { setCustomMacroFat(''); validateMacroTotals(customMacroProtein, customMacroCarbs, 0); }
+                              else { const v = Math.max(0, Math.min(100, parseInt(rawValue) || 0)); setCustomMacroFat(v); validateMacroTotals(customMacroProtein, customMacroCarbs, v); }
+                            }}
+                            className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
+                            placeholder="25"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>PROTEIN G</label>
+                          <input
+                            type="number" min="0"
+                            value={gramProtein}
+                            onChange={(e) => { setGramProtein(e.target.value); setMacroError(''); }}
+                            className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
+                            placeholder={results?.protein?.grams || '150'}
+                          />
+                        </div>
+                        <div>
+                          <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>CARBS G</label>
+                          <input
+                            type="number" min="0"
+                            value={gramCarbs}
+                            onChange={(e) => { setGramCarbs(e.target.value); setMacroError(''); }}
+                            className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
+                            placeholder={results?.carbs?.grams || '250'}
+                          />
+                        </div>
+                        <div>
+                          <label className={`text-xs font-bebas tracking-wider ${TEXT_MUTED} block mb-2`}>FATS G</label>
+                          <input
+                            type="number" min="0"
+                            value={gramFat}
+                            onChange={(e) => { setGramFat(e.target.value); setMacroError(''); }}
+                            className="w-full px-3 py-2 bg-white/5 rounded-lg text-white text-center focus:outline-none"
+                            placeholder={results?.fat?.grams || '70'}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                   
                   {macroError && (
@@ -956,20 +1008,41 @@ const TDEEScreen = () => {
                   )}
                   
                   <div className="flex justify-between items-center">
-                    <span className={`text-xs ${TEXT_MUTED}`}>
-                      Total: {(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0)}%
-                    </span>
-                    <button
-                      onClick={applyMacroAdjustment}
-                      disabled={(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) !== 100}
-                      className={`px-4 py-2 rounded-lg transition-all ${
-                        (customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) === 100
-                          ? 'bg-green-500/20 hover:bg-green-500/30 text-green-400'
-                          : 'bg-white/5 text-white/40 cursor-not-allowed'
-                      }`}
-                    >
-                      <span className="text-xs font-bebas tracking-wider">APPLY</span>
-                    </button>
+                    {macroInputMode === 'pct' ? (
+                      <>
+                        <span className={`text-xs ${TEXT_MUTED}`}>
+                          Total: {(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0)}%
+                        </span>
+                        <button
+                          onClick={applyMacroAdjustment}
+                          disabled={(customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) !== 100}
+                          className={`px-4 py-2 rounded-lg transition-all ${
+                            (customMacroProtein || 0) + (customMacroCarbs || 0) + (customMacroFat || 0) === 100
+                              ? 'bg-green-500/20 hover:bg-green-500/30 text-green-400'
+                              : 'bg-white/5 text-white/40 cursor-not-allowed'
+                          }`}
+                        >
+                          <span className="text-xs font-bebas tracking-wider">APPLY</span>
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <span className={`text-xs ${TEXT_MUTED}`}>
+                          {((parseInt(gramProtein) || 0) * 4 + (parseInt(gramCarbs) || 0) * 4 + (parseInt(gramFat) || 0) * 9)} / {results?.targetCalories || 0} kcal
+                        </span>
+                        <button
+                          onClick={applyMacroAdjustment}
+                          disabled={!(parseInt(gramProtein) || parseInt(gramCarbs) || parseInt(gramFat))}
+                          className={`px-4 py-2 rounded-lg transition-all ${
+                            (parseInt(gramProtein) || parseInt(gramCarbs) || parseInt(gramFat))
+                              ? 'bg-green-500/20 hover:bg-green-500/30 text-green-400'
+                              : 'bg-white/5 text-white/40 cursor-not-allowed'
+                          }`}
+                        >
+                          <span className="text-xs font-bebas tracking-wider">APPLY</span>
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
