@@ -65,7 +65,13 @@ function getMonthLabel(dateStr) {
 
 function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
   const countByDate = {};
-  dates.forEach((d) => { countByDate[d] = (countByDate[d] || 0) + 1; });
+  const cardioByDate = {};
+  dates.forEach((d) => {
+    const dt = typeof d === 'string' ? d : d.date;
+    const tp = typeof d === 'string' ? null : d.type;
+    countByDate[dt] = (countByDate[dt] || 0) + 1;
+    if (tp === 'CARDIO') cardioByDate[dt] = true;
+  });
 
   const now = new Date();
   const year = displayYear != null ? displayYear : now.getFullYear();
@@ -93,6 +99,7 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
         ))}
         {cells.map((dateStr, i) => {
           const count = countByDate[dateStr] || 0;
+          const hasCardio = !!cardioByDate[dateStr];
           const opacity = count === 0 ? 0.08 : Math.min(0.95, 0.35 + count * 0.2);
           return (
             <div
@@ -105,7 +112,10 @@ function ActivityHeatmap({ dates = [], displayYear, displayMonth }) {
               title={count > 0 ? `${dateStr}${count > 1 ? ` — ${count} workouts` : ''}` : dateStr}
               aria-hidden
             >
-              {count > 1 && (
+              {hasCardio && (
+                <span className="text-[8px] font-bebas text-white/90 leading-none">C</span>
+              )}
+              {!hasCardio && count > 1 && (
                 <span className="text-[8px] font-bebas text-white/90 leading-none">{count}</span>
               )}
             </div>
