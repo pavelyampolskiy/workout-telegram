@@ -187,21 +187,21 @@ export default function TDEEHistoryScreen() {
                     <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
                       {item.protein?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
                     </div>
-                    <div className="text-xs text-white/40">{item.protein?.calories} kcal</div>
+                    <div className="text-xs text-white/40">{item.protein?.kcal || item.protein?.calories || (item.protein?.grams && item.protein.grams * 4)} kcal</div>
                   </div>
                   <div>
                     <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Carbohydrates</div>
                     <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
                       {item.carbs?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
                     </div>
-                    <div className="text-xs text-white/40">{item.carbs?.calories} kcal</div>
+                    <div className="text-xs text-white/40">{item.carbs?.kcal || item.carbs?.calories || (item.carbs?.grams && item.carbs.grams * 4)} kcal</div>
                   </div>
                   <div>
                     <div className="text-xs text-white/40 mb-1" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>Fats</div>
                     <div className="text-lg font-bebas text-white/90 font-medium" style={{ fontSize: '1.125rem', lineHeight: '1.1' }}>
                       {item.fat?.grams?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}g
                     </div>
-                    <div className="text-xs text-white/40">{item.fat?.calories} kcal</div>
+                    <div className="text-xs text-white/40">{item.fat?.kcal || item.fat?.calories || (item.fat?.grams && item.fat.grams * 9)} kcal</div>
                   </div>
                 </div>
               </div>
