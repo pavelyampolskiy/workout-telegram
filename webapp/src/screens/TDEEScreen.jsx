@@ -396,8 +396,11 @@ const TDEEScreen = () => {
       fatG = Math.round(fatKcal / 9);
     }
 
+    const totalKcalFromMacros = proteinKcal + carbsKcal + fatKcal;
+
     const updatedResults = {
       ...results,
+      targetCalories: macroInputMode === 'grams' ? totalKcalFromMacros : results.targetCalories,
       protein: { grams: proteinG, kcal: proteinKcal },
       carbs: { grams: carbsG, kcal: carbsKcal },
       fat: { grams: fatG, kcal: fatKcal }
