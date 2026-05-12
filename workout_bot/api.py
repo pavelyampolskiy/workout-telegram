@@ -1,5 +1,6 @@
 # api.py
 import asyncio
+import math
 import os
 import pathlib
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Request, UploadFile, File
@@ -721,7 +722,8 @@ def get_achievements(user_id: int):
             earned = total >= threshold
             progress = min(total / threshold, 1.0)
 
-        item = {**ach, "earned": earned, "progress": round(progress, 2)}
+        display_progress = math.floor(progress * 100) / 100 if not earned else 1.0
+        item = {**ach, "earned": earned, "progress": display_progress}
         if earned:
             if ach["id"] not in existing_unlocks:
                 newly_earned.append(ach)
