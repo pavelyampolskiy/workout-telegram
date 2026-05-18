@@ -38,8 +38,8 @@ export const api = {
     req('POST', '/api/workouts', { user_id, type, date }),
   deleteWorkout: (id) => req('DELETE', `/api/workouts/${id}`),
   getWorkout: (id) => req('GET', `/api/workouts/${id}`),
-  getHistory: (user_id, offset = 0, limit = 10, type = null) =>
-    req('GET', `/api/history?user_id=${user_id}&offset=${offset}&limit=${limit}${type ? `&type=${type}` : ''}`),
+  getHistory: (user_id, offset = 0, limit = 10, type = null, exclude = null) =>
+    req('GET', `/api/history?user_id=${user_id}&offset=${offset}&limit=${limit}${type ? `&type=${type}` : ''}${exclude ? `&exclude=${exclude}` : ''}`),
   getUnfinishedWorkout: (user_id) => req('GET', `/api/workouts/unfinished?user_id=${user_id}`),
   deleteAllHistory: (user_id) => req('DELETE', `/api/history?user_id=${user_id}`),
 

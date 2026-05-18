@@ -285,8 +285,8 @@ def get_workout(workout_id: int):
 
 
 @app.get("/api/history")
-def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None):
-    rows, has_more = db_ops.get_history(user_id, offset, limit, workout_type=type)
+def get_history(user_id: int, offset: int = 0, limit: int = 10, type: str = None, exclude: str = None):
+    rows, has_more = db_ops.get_history(user_id, offset, limit, workout_type=type, exclude_type=exclude)
     return {
         "items": [{
             "id": r["id"], "date": r["date"], "type": r["type"],

@@ -458,9 +458,16 @@ def get_unfinished_workout(user_id: int):
         ).fetchone()
 
 
-def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: str = None):
-    type_clause = "AND w.type = ?" if workout_type else ""
-    params = [user_id] + ([workout_type] if workout_type else []) + [limit + 1, offset]
+def get_history(user_id: int, offset: int = 0, limit: int = 10, workout_type: str = None, exclude_type: str = None):
+    if workout_type:
+        type_clause = "AND w.type = ?"
+        params = [user_id, workout_type, limit + 1, offset]
+    elif exclude_type:
+        type_clause = "AND w.type != ?"
+        params = [user_id, exclude_type, limit + 1, offset]
+    else:
+        type_clause = ""
+        params = [user_id, limit + 1, offset]
     with db() as conn:
         rows = conn.execute(
             f"""

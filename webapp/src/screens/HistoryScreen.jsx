@@ -77,7 +77,7 @@ function formatTime(isoStr) {
 }
 
 const FILTER_TABS = [
-  { key: 'all', label: 'All', apiValue: null },
+  { key: 'all', label: 'All', apiValue: null, excludeValue: 'CARDIO' },
   { key: 'DAY_A', label: 'Day A', apiValue: 'DAY_A' },
   { key: 'DAY_B', label: 'Day B', apiValue: 'DAY_B' },
   { key: 'DAY_C', label: 'Day C', apiValue: 'DAY_C' },
@@ -100,9 +100,11 @@ export default function HistoryScreen() {
   const PAGE = 15;
 
   const load = useCallback(async (off = 0, append = false, filterKey = activeFilter) => {
-    const type = FILTER_TABS.find(f => f.key === filterKey)?.apiValue ?? null;
+    const tab = FILTER_TABS.find(f => f.key === filterKey);
+    const type = tab?.apiValue ?? null;
+    const exclude = tab?.excludeValue ?? null;
     try {
-      const data = await api.getHistory(userId, off, PAGE, type);
+      const data = await api.getHistory(userId, off, PAGE, type, exclude);
       
       if (append) {
         setItems(prev => [...prev, ...data.items]);
